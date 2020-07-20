@@ -1,0 +1,19 @@
+<h1>All Users</h1>
+
+<table class="table">
+<tr>
+	<th>Staff Name</th>
+	<th>Staff Email </th>
+	<th>Staff Office</th>
+	<th>Status</th>
+	<%if current_user.admin? %>
+	<th>Administrator's Panel</th>
+	<% end %>
+</tr>
+
+<tbody>
+	 <%= render partial: 'users_list', locals: { users: @users} %>
+</tbody>
+</table>
+ 
+ 

@@ -1,0 +1,2 @@
+module ConfirmTypesHelper
+end

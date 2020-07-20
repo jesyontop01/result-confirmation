@@ -1,0 +1,82 @@
+exam_name,exam_diet,table_name,centre_table_name,pix_folder,created_at,consolidated,waec_user_id
+W.A.S.S.C.E.,MAY/JUNE 2005,wassce_j2005s,waec_centres,mjall/mj2005,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2006,wassce_j2006s,waec_centres,mjall/mj2006,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2007,wassce_j2007s,waec_centres,mjall/mj2007,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2008,wassce_j2008s,waec_centres,mjall/mj2008,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2009,wassce_j2009s,waec_centres,mjall/mj2009,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2005,wassce_d2005s,waec_centres,ndall/nd2005,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2006,wassce_d2006s,waec_centres,ndall/nd2006,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2007,wassce_d2007s,waec_centres,ndall/nd2007,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2008,wassce_d2008s,waec_centres,ndall/nd2008,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2009,wassce_d2009s,waec_centres,ndall/nd2009,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2010, wassce_j2010s,waec_centres,mjall/mj2010,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2010,wassce_d2010s,waec_centres,ndall/nd2010,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2011,wassce_j2011s,waec_centres,mjall/mj2011,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2011,wassce_d2011s,waec_centres,ndall/nd2011,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2012,wassce_j2012s,waec_centres,mjall/mj2012,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2012,wassce_d2012s,waec_centres,ndall/nd2012,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2013,wassce_j2013s,waec_centres,mjall/mj2013,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2004,wassce_j2004s,waec_centres,mjall/mj2004,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2003,wassce_j2003s,waec_centres,mjall/mj2003,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2002,wassce_j2002s,waec_centres,mjall/mj2002,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2001,wassce_j2001s,waec_centres,mjall/mj2001,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2000,wassce_j2000s,waec_centres,mjall/mj2000,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 1999,wassce_j1999s,waec_centres,mjall/mj1999,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2004,wassce_d2004s,waec_centres,ndall/nd2004,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2003,wassce_d2003s,waec_centres,ndall/nd2003,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2002,wassce_d2002s,waec_centres,ndall/nd2002,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2001,wassce_d2001s,waec_centres,ndall/nd2001,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2000,wassce_d2000s,waec_centres,ndall/nd2000,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 1999,wassce_d1999s,waec_centres,ndall/nd1999,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2013 ,wassce_d2013s,waec_centres,ndall/nd2013,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2014,wassce_j2014s,waec_centres,mjall/mj2014,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2014,wassce_d2014s,waec_centres,ndall/nd2014,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1992,wassce_J1992s,waec_centres,mjall/MJ1992,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1992,wassce_d1992s,waec_centres,ndall/nd1992,NULL,NULL,NULL
+W.A.S.S.C.E.,MAY/JUNE 2015,wassce_j2015s,waec_centres,mjall/mj2015,NULL,NULL,NULL
+W.A.S.S.C.E.,NOVEMBER/DECEMBER 2015,wassce_d2015s,waec_centres,ndall/nd2015,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1994,wassce_j1994s,waec_centres,mjall/mj1994,NULL,NULL,NULL
+S.S.C.E.,SEPTEMBER 1991,wassce_j1991s,waec_centres,mjall/mj1991,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1993,wassce_j1993s,waec_centres,mjall/mj1993,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1995,wassce_j1995s,waec_centres,mjall/mj1995,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1996,wassce_j1996s,waec_centres,mjall/mj1996,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1997,wassce_j1997s,waec_centres,mjall/mj1997,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1998,wassce_j1998s,waec_centres,mjall/mj1998,NULL,NULL,NULL
+S.S.C.E.,AUGUST/SEPTEMBER 1991,wassce_d1991s,waec_centres,ndall/nd1991,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1993,wassce_d1993s,waec_centres,ndall/nd1993,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1994,wassce_d1994s,waec_centres,ndall/nd1994,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1995,wassce_d1995s,waec_centres,ndall/nd1995,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1996,wassce_d1996s,waec_centres,ndall/nd1996,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1997,wassce_d1997s,waec_centres,ndall/nd1997,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1998,wassce_d1998s,waec_centres,ndall/nd1998,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1990,wassce_d1990s,waec_centres,ndall/1990,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1989,wassce_j1989s,waec_centres,mjall/1989,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1988,wassce_j1988s,waec_centres,mjall/1988,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1980,wassce_j1980s,waec_centres,mjall/1980,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1985,wassce_j1985s,waec_centres,mjall/1985,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1984,wassce_j1984s,waec_centres,mjall/1984,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1986,wassce_j1986s,waec_centres,mjall/1986,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1987,wassce_d1987s,waec_centres,ndall/1987,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1981,wassce_j1981s,waec_centres,mjall/1981,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1983,wassce_j1983s,waec_centres,mjall/1983,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1987,wassce_j1987s,waec_centres,mjall/1987,NULL,NULL,NULL
+W.A.S.S.C.E.,SCHOOL CANDIDATE 2016,wassce_sc2016s,waec_centres,mjall/mj2016,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1988,wassce_d1988s,waec_centres,ndall/nd1988,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1989,wassce_d1989s,waec_centres,ndall/nd1989,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1982,wassce_j1982s,waec_centres,mjall/mj1982,NULL,NULL,NULL
+W.A.S.S.C.E.,PRIVATE CANDIDATE 2016,wassce_pc2016s,waec_centres,ndall/nd2016,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1990 ,wassce_j1990s,waec_centres,mjall/mj1990,NULL,NULL,NULL
+S.S.C.E.,JUNE 1978,wassce_j1978s,waec_centres,mjall/mj1978,NULL,NULL,NULL
+S.S.C.E.,JUNE 1975,wassce_j1975s,waec_centres,mjall/mj1975,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1982,wassce_d1982s,waec_centres,ndall/nd1982,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1979,wassce_d1979s,waec_centres,ndall/nd1979,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1980,wassce_d1980s,waec_centres,ndall/nd1980,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1981,wassce_d1981s,waec_centres,ndall/nd1981,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1983,wassce_d1983s,waec_centres,ndall/nd1983,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1984,wassce_d1984s,waec_centres,ndall/nd1984,NULL,NULL,NULL
+W.A.S.S.C.E.,SCHOOL CANDIDATES 2017,wassce_sc2017s,waec_centres,mjall/mj2017,NULL,NULL,NULL
+S.S.C.E.,MAY/JUNE 1974,wassce_j1974s,waec_centres,mjall/mj1974,NULL,NULL,NULL
+W.A.S.S.C.E.,PRIVATE CANDIDATE 2017,wassce_pc2017s,waec_centres,ndall/nd2017,NULL,NULL,NULL
+S.S.C.E.,NOVEMBER/DECEMBER 1985,wassce_d1985s,waec_centres,ndall/nd1985,NULL,NULL,NULL
+W.A.S.S.C.E.,PRIVATE CANDIDATE 2018,wassce_pc2018s,waec_centres,ndall/nd2018,NULL,NULL,NULL
+S.S.C.E.,NOV/DEC SSCE 1990,wassce_gce_j1990s,waec_centres,ndall/nd1990,NULL,NULL,NULL

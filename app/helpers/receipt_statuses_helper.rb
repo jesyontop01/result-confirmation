@@ -1,0 +1,2 @@
+module ReceiptStatusesHelper
+end

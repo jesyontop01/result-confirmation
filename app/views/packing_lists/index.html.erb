@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Packing Lists</h1>
+
+
+<br>
+
+<% if current_user.admin? %>
+   <%= link_to 'New Packing List', new_packing_list_path, class: "btn btn-primary" %>
+<%end%>
+
+
+
+
+<br>   
+<br>  
+<br>  
+  
+<table class = "table table-bordered table-striped">   
+   <thead>   
+      <tr>   
+         <th>Office Name</th>   
+         <th>Download Link</th>   
+         <th>Action</th>   
+      </tr>   
+   </thead>   
+      
+   <tbody>   
+      <% @packing_lists.each do |packing_list| %>  
+            
+         <tr>   
+            <td><%= packing_list.office %></td>   
+            <td><%= link_to "Download", packing_list.attachment_url %></td>   
+            <td><%= link_to "Delete",  packing_list, method: :delete, class: "btn btn-danger", confirm: "Are you sure you want to delete #{packing_list.office}?" %></td>   
+         </tr>   
+            
+      <% end %>   
+   </tbody>   
+      
+</table>   

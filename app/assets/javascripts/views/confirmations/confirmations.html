@@ -1,0 +1,209 @@
+<div class="container" >
+  <div class="row">
+    <div class="col-sm-12">
+
+<div  ng-controller="ConfirmationsController" >
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-responsive" ng-init="getAllConfirmation()">
+  <thead>
+     <tr>
+      <th>Index</th>
+      <th>Exam Diet</th>
+      <th>Candidate No</th>
+      <th>Reference No</th>
+      <th>Receipt No</th>
+      <th>Candidate Add.</th>
+      <th>Destination Title</th>
+      <th>Destination Add.1</th>
+      <th>Destination Location</th>
+      <th>Destination Country</th>
+      <th>Date created</th>
+      <th colspan="2">Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr ng-repeat="confirm in confirms  "> 
+      <td>{{$index+1}}</td>
+      <td >{{confirm.DietName}} {{confirm.YearName}}</td>
+      <td>{{confirm.exam_no}}</td>
+      <td>{{confirm.ref_no}}</td>
+      <td>{{confirm.receipt_no}}</td>
+      <td>{{confirm.Cand_address}}</td>
+      <td>{{confirm.dest_title}}</td>
+      <td>{{confirm.dest_address1}}</td>
+      <td>{{confirm.dest_location}}</td>
+      <td>{{confirm.typeName}}</td>
+      <td>{{confirm.updated_at}}</td>
+      <td><button ng-click="clickedEdit(confirm)" type="button" class="btn btn-primary"  data-toggle="modal" data-target="#myModalEdit">Edit</button></td>
+      <td><button ng-click="clickConfirm(confirm)" type="button" class="btn btn-info" data-toggle="modal" data-target="#myModalDetails">Detail</button></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!--------------------------------  Modal View for Details ------------------------------------->
+
+<!-- The Modal -->
+<div class="modal fade" id="myModalDetails">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Confirmation Details</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-9">
+              <table class="table">
+                <tr>
+                  <h3>Exam Diet: <span style="color: blue;">{{selectConfirm.DietName}} {{selectConfirm.YearName}}</span> </h3>
+                </tr>
+                <tr>
+                  <td><p>Candidate Examination No:</p></td>
+                  <td>{{selectConfirm.exam_no}}</td>
+                </tr>
+                 <tr>
+                  <td><p>Candidate Reference No:</p></td>
+                  <td>{{selectConfirm.ref_no}}</td>
+                </tr>
+
+                  <tr>
+                  <td><p>Receipt No:</p></td>
+                  <td>{{selectConfirm.receipt_no}}</td>
+                </tr>
+
+                <tr>
+                  <td><p>Recipient Title:</p></td>
+                  <td>{{selectConfirm.dest_title}}</td>
+                </tr>
+                <tr>
+                  <td><p>Recipient Address 1:</p></td>
+                 <td>{{selectConfirm.dest_address1}}</td>
+                </tr>
+                <tr>
+                  <td><p>Recipient Address 1:</p></td>
+                 <td>{{selectConfirm.dest_address2}}</td>
+                </tr>
+                <tr>
+                  <td><p>Recipient Location:</p></td>
+                 <td>{{selectConfirm.dest_location}}</td>
+                </tr>
+                <tr>
+                  <td><p>Recipient Email:</p></td>
+                 <td>{{selectConfirm.dest_email}}</td>
+                </tr>
+               <tr>
+                  <td><p>Recipient Country:</p></td>
+                <td>{{selectConfirm.countryName}}</td>
+                </tr>
+                  <tr>
+                  <td><p>Confirmation Type:</p></td>
+                 <td>{{selectConfirm.typeName}}</td>
+                </tr>
+                <tr>
+                  <td><p>Confirmation Created / Updated Date/Time :</p></td>
+                   <td>{{selectConfirm.updated_at}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="printConfirmation(selectConfirm);">Print Confirmation</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+  
+
+<!------------------------View for Editing Details-------------->
+
+  <!-- The Modal -->
+<div class="modal fade" id="myModalEdit">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+       <div class="modal-header">
+        <h4 class="modal-title">Edit Confirmation Details</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        
+        <form name="editConfirmForm" ng-submit="clickedEdit(editConfirm);" method="post" accept-charset="UTF-8">
+          <h3>Exam Diet: <span style="color: blue;">{{editConfirm.DietName}} {{editConfirm.YearName}}</span> </h3>
+          <div class="form-group">
+            <label for="exam_no">Exam no:*</label>
+            <input type="text" ng-model="editConfirm.exam_no" value="exam_no" class="form-control" disabled="true"/>  
+          </div>
+          <div class="form-group">
+            <label for="Cand_address">Candidate's Address:*</label>
+            <input  size="30" type="text" ng-model="editConfirm.Cand_address" class="form-control" placeholder="Candidate Address" required/>
+          </div>
+
+          <div colspan="2">
+
+           <div class="form-group">
+            <label for="Cand_address">Payment Receipt No.:*</label>
+            <input  size="30" type="text" ng-model="editConfirm.receipt_no" class="form-control" placeholder="Receipt No." disabled="true"/>
+          </div>
+
+          <div class="form-group">
+            <label for="Cand_address">Destination Title:*</label>
+            <input  size="30" type="text" ng-model="editConfirm.dest_title" class="form-control" placeholder="Destination Title" required/>
+          </div>
+            <div class="form-group">
+            <label for="Cand_address">Destination Address Line1:*</label>
+            <input  size="30" type="text" ng-model="editConfirm.dest_address1" class="form-control" placeholder="Destination Address1" required/>
+          </div>
+          <div class="form-group">
+            <label for="dest_address2">Destination Address Line2:</label>
+            <input  size="30" type="text" ng-model="editConfirm.dest_address2" class="form-control" placeholder="Destination Address2"> (Optional)
+          </div>
+
+          <div class="form-group">
+            <label for="dest_location">Destination Location:*</label>
+            <input  size="30" type="text" value="NULL" class="for" ng-model="editConfirm.dest_location" placeholder="Destination Location" required/>
+          </div>
+
+          <div class="form-group">
+            <label for="dest_email">Destination Email</label>
+            <input  size="30" type="text" value="NULL" ng-model="editConfirm.dest_email" class="form-control" placeholder="Destination Email Address">(Optional)
+          </div>
+
+          </div>
+
+                <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="submit" ng-click="UpdateConfirm()" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+       
+        </form>
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+             </div>
+    </div>
+

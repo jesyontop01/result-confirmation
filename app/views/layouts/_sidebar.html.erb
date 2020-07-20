@@ -1,0 +1,29 @@
+<% if signed_in? %>
+<div class="col-sm-3 col-md-2 sidebar">
+	<ul class="nav nav-sidebar">
+	    <li class="sidebar_overview"><%= link_to "Overview", "#" %></li>
+	    <% if current_user != nil  %>
+	      <li class="sidebar_personal_purchases"><%= link_to "Personal Purchase History", "#" %></li>
+	    <% end %>
+	    <!-- Only the COO, the operations chief, will be able to link his company to a bank account. -->
+	    <% if current_user.admin%>
+	      <li class="sidebar_stripe_settings"><%= link_to "Payment Settings", "#" %></li>
+	    <% end %>  
+  	</ul>
+
+  	<ul class="nav nav-sidebar">
+	    <!-- company_id is from the sessions_helper.id -->
+	    <% if current_user %>
+	      <li class="sidebar_company_info"><%= link_to "Company Information", "#" %></li>
+	      <li class="sidebar_company_people"><%= link_to "People", "#" %></li>
+	      <li class="sidebar_purchases"><%= link_to "Company Purchase History", "#" %></li>
+	        <li class="sidebar_post_items_for_sale"><%= link_to "Post Items For Sale", "#" %></li>
+	        <li class="sidebar_posted_items"><%= link_to "Posted Items", "#" %></li> 
+	        <li class="sidebar_orders"><%= link_to "Order Requests", "#" %></li>
+	        <li class="sidebar_completed_orders"><%= link_to "Completed Orders", "#" %></li>
+	      <% end %>
+	   
+	</ul>
+
+</div>
+<% end %>

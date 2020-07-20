@@ -1,0 +1,4 @@
+// debugger
+$('tbody tr#<%= @user.id %>').replaceWith("<%= j (render partial:'user_record', locals: {user: @user}) %>");
+// console.log($('tbody tr#<%= @user.id %>'));
+// $('tbody tr#<%= @user.id %>').appendTo("<%= j (render partial:'user_record', locals: {user: @user}) %>");

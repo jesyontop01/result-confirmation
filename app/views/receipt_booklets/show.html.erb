@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Rangefrom:</strong>
+  <%= @receipt_booklet.rangeFrom %>
+</p>
+
+<p>
+  <strong>Rangeto:</strong>
+  <%= @receipt_booklet.rangeTo %>
+</p>
+
+<p>
+  <strong>Office:</strong>
+  <%= @receipt_booklet.office %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @receipt_booklet.user %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @receipt_booklet.status %>
+</p>
+
+<%= link_to 'Edit', edit_receipt_booklet_path(@receipt_booklet) %> |
+<%= link_to 'Back', receipt_booklets_path %>

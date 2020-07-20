@@ -1,0 +1,31 @@
+<h1>Waec User Gate Keeper! </h1>
+
+<div class="container">
+	<div class="row">
+
+		<% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>"><%= value %></div>
+      <% end %>
+
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<!-- Default form subscription -->
+
+
+				<%= form_tag("/api_users", method: "get") do %>
+				  <%= label_tag(:email, "Waec Mail") %>
+				  <%= text_field_tag(:email) %> <hr>
+				  <%= label_tag(:password, "Password") %>
+				  <%= password_field_tag :password %>
+				  <%= submit_tag("Login") %>
+				<% end %>
+
+	
+
+
+
+
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+</div>

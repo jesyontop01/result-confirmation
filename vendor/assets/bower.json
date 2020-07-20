@@ -1,0 +1,34 @@
+{
+  "name": "dsl-generated-dependencies",
+  "dependencies": {
+    "bootstrap-sass-official": "latest",
+    "angular-mocks": "1.5",
+    "angular": " 1.5",
+    "angular-route": "1.5",
+    "angular-resource": "1.5",
+    "angular-messages": "1.5",
+    "angular-ui-router": "~> 0.4.2",
+    "angular-animate": " 1.5",
+    "angular-sanitize": " 1.5",
+    "angular-cookies": " 1.5",
+    "angular-touch": " 1.5",
+    "angular-cookie": "latest",
+    "ng-token-auth": "latest",
+    "angular-base64-upload": "latest",
+    "angular-devise": "latest",
+    "angular-bootstrap": "latest",
+    "angular-save-html-to-pdf": "latest",
+    "pdfmake": "latest",
+    "jspdf": "1.4.1",
+    "jspdf-autotable": "2.3.5",
+    "canvg": "https://github.com/canvg/canvg.git#v1.5.3",
+    "html2canvas": "https://github.com/niklasvh/html2canvas.git",
+    "cropperjs": "https://github.com/fengyuanchen/cropperjs.git",
+    "ng-cropperjs": "https://github.com/johannes85/ngCropperjs.git",
+    "angular-ui-utils": "latest"
+  },
+  "resolutions": {
+    "angular": "1.5",
+    "canvg": "1.5.3"
+  }
+}

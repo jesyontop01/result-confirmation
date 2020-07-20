@@ -1,0 +1,20 @@
+<h1>Advance Search </h1>
+<%= form_for @search, html: {class: "pure-form"} do |f| %>
+	<div class="field">
+		<%= f.label :keywords %> <br>
+		<%= f.text_field :keywords %>
+	</div>
+
+	<div class="field">
+		<%= f.label :office %> <br>
+		<%= f.text_field :office, options_for_select(@offices), :include_blank => true %>
+	</div>
+
+	<div class="field">
+		<%= f.label :office %> <br>
+		<%= f.text_field :office, options_for_select(@offices), :include_blank => true %>
+	</div>
+
+	<div class="actions"><%= f.submit 'Search' %></div>
+
+<% end %>

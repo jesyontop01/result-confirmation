@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Receipt Booklets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Rangefrom</th>
+      <th>Rangeto</th>
+      <th>Office</th>
+      <th>User</th>
+      <th>Status</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @receipt_booklets.each do |receipt_booklet| %>
+      <tr>
+        <td><%= receipt_booklet.rangeFrom %></td>
+        <td><%= receipt_booklet.rangeTo %></td>
+        <td><%= receipt_booklet.office %></td>
+        <td><%= receipt_booklet.user %></td>
+        <td><%= receipt_booklet.status %></td>
+        <td><%= link_to 'Show', receipt_booklet %></td>
+        <td><%= link_to 'Edit', edit_receipt_booklet_path(receipt_booklet) %></td>
+        <td><%= link_to 'Destroy', receipt_booklet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Receipt Booklet', new_receipt_booklet_path %>

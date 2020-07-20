@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ConfirmationAngularApp</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body ng-app='verifier'>  
+  
+  <!-- MAIN CONTENT -->
+  <div class="container">
+
+    <nav-bar></nav-bar>
+        <div ng-view></div>
+        
+  </div>
+  </body>
+</html>

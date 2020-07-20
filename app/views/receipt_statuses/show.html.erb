@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Receiptbooklet:</strong>
+  <%= @receipt_status.receipt_booklet_id %>
+</p>
+
+<p>
+  <strong>Receiptno:</strong>
+  <%= @receipt_status.receiptNo %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @receipt_status.status %>
+</p>
+
+<%= link_to 'Edit', edit_receipt_status_path(@receipt_status) %> |
+<%= link_to 'Back', receipt_statuses_path %>

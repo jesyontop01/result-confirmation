@@ -1,0 +1,29 @@
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Diet/Year:</strong>
+  <%= @confirm.diet.DietName %> <%= @confirm.year.YearName %>
+</p>
+<p>
+  <strong>Candidate No:</strong>
+ <%= @confirm.exam_no %>
+</p>
+<p>
+  <strong>Confirmation Reference:</strong>
+ <%= @confirm.ref_no %>
+</p>
+<p>
+  <strong>Receipt No:</strong>
+ <%= @confirm.receipt_no%>
+</p>
+<p>
+  <strong>Created By:</strong>
+ <%= @confirm.user.surname %> <%= @confirm.user.othernames %>
+</p>
+<p>
+  <strong>At Office:</strong>
+ <%= @confirm.office.office_name %>
+</p>
+
+<%= link_to 'Back', confirmations_path %>

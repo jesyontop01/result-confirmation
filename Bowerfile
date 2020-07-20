@@ -1,0 +1,32 @@
+# START_HIGHLIGHT
+# END_HIGHLIGHT
+
+asset 'bootstrap-sass-official'
+asset 'angular-mocks','1.5'
+asset 'angular', ' 1.5'
+resolution 'angular', '1.5'
+asset 'angular-route' ,'1.5'
+asset 'angular-resource', '1.5'
+asset 'angular-messages', '1.5'
+asset 'angular-ui-router', '~> 0.4.2'
+asset 'angular-animate', ' 1.5'
+asset 'angular-sanitize', " 1.5"
+asset 'angular-cookies', ' 1.5' 
+asset 'angular-touch', ' 1.5'
+asset 'angular-cookie' 
+asset 'ng-token-auth'
+asset 'angular-base64-upload'
+asset 'angular-devise'
+asset 'angular-bootstrap'
+asset 'angular-save-html-to-pdf'
+asset 'pdfmake'
+asset 'jspdf', '1.4.1'
+asset 'jspdf-autotable', '2.3.5'
+asset  'canvg','https://github.com/canvg/canvg.git#v1.5.3'
+resolution 'canvg', '1.5.3'
+asset 'html2canvas', 'https://github.com/niklasvh/html2canvas.git'
+asset 'cropperjs', 'https://github.com/fengyuanchen/cropperjs.git'
+asset 'ng-cropperjs', 'https://github.com/johannes85/ngCropperjs.git'
+asset 'angular-ui-utils'
+
+

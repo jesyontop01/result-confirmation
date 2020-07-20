@@ -1,0 +1,2 @@
+class WaecSchoolExamsController < ApplicationController
+end

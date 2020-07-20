@@ -1,0 +1,2 @@
+module ReceiptBookletsHelper
+end

@@ -1,0 +1,13 @@
+<h1>User's Profile</h1>
+<!-- <p><%#= current_user.title %>. <b><%#= current_user.surname %></b> <%#= current_user.othernames %> </p>
+		<h1><%#= current_user.email %> </h1>
+	<b><p>Waec Office: <%#= current_user.office.office_name %></b>, <%#= current_user.office.office_state.downcase %> State</p>
+<li><%#= link_to "Confirmation Of Result", exams_path %></li> -->
+
+
+
+
+<p><%= @user.title %>. <b><%= @user.surname %></b> <%= @user.othernames %> </p>
+		<h1><%= @user.email %> </h1>
+	<b><p>Waec Office: <%= @user.office.office_name %></b>, <%= @user.office.office_state.downcase %> State</p>
+<li><%= link_to "Confirmation Of Result", exams_path %></li>

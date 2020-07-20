@@ -1,0 +1,2 @@
+module ConfirmCountriesHelper
+end

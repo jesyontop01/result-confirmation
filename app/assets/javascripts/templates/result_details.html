@@ -1,0 +1,66 @@
+<article class="result-details">
+ 	<div style="font-size: 'h2'">
+ 		<div class="container">
+ 			<div class="row">
+ 				<div class="col-md-3">
+ 					
+ 					<img ng-src="data:image/jpeg;base64,{{result.Picture}}" id="photo-id" style="width: 275px; height: 314px"/>
+ 				</div>
+ 				<div class="col-md-9">
+ 					<p><h3><b>Exam : </b> {{ result.ExamDiet}} {{result.ExamYear}}</h3></p>
+ 					<p><h3><b>Exam No: </b> {{result.CandNo}}</h3></p>
+				 	<p><h3><b>Full Name:</b> {{result.CandName}}</h3></p>
+				 	<p><h3><b> Sex:</b> {{ result.Sex}}</h3></p>
+				 	<p><h3><b>Date of Birth:</b> {{result.DOB}}
+				 	<p><h3><b>Centre Name:</b> {{result.CentreName}}</h3></p>	
+ 				</div>
+ 			</div>
+ 		</div>
+ 	</div>
+ 	
+ 	<p><b>Subjects :</b></p>
+ 	<table class="table" >
+ 		<thead>
+ 			<tr>
+ 				<td>{{ result.Subject1 }}</td>
+ 				<td>{{ result.Grade1 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject2 }}</td>
+ 				<td>{{ result.Grade2 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject3 }}</td>
+ 				<td>{{ result.Grade3 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject4 }}</td>
+ 				<td>{{ result.Grade4 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject5 }}</td>
+ 				<td>{{ result.Grade5 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject6 }}</td>
+ 				<td>{{ result.Grade6 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject7 }}</td>
+ 				<td>{{ result.Grade7 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject8 }}</td>
+ 				<td>{{ result.Grade8 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject9 }}</td>
+ 				<td>{{ result.Grade9 }}</td>
+ 			</tr> 			
+ 		</thead>
+ 	</table>
+</article>
+
+<div class="pull-left">
+ 		<button class="btn btn-small btn-primary" ng-click="loadAddress(result)"> Fill Address Form ...</button> 
+ 	</div>

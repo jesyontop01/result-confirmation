@@ -1,0 +1,27 @@
+<%= form_with(model: packing_list, html: { multipart: true } ) do |form| %>
+  <% if packing_list.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(packing_list.errors.count, "error") %> prohibited this packing_list from being saved:</h2>
+
+      <ul>
+      <% packing_list.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+   <div class="field">
+    <%= form.label :office %>
+    <%= form.select :office, PackingList::STATES, prompt: "Select State" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :attachment %>
+    <%= form.file_field :attachment %> 
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Save", class: "btn btn-primary" %>
+  </div>
+<% end %>

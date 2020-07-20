@@ -1,0 +1,19 @@
+      <tr>
+        <td> <%= user.surname %> <%= user.othernames %></td>
+        <td> <%= user.email %></td>
+        <td> <%= user.office.office_name %></td>
+        <td> <%= user.activated %></td>
+
+        <% if current_user.admin? %>
+      <!--   <td> <%#= link_to 'Activate/Update User', edit_user_path(user), :class => 'navbar-link'  %> </td>  -->
+        <td><%= link_to 'Show', user_path(user) %></td>
+        <td><%= link_to 'Edit', edit_user_path(user) %></td>
+        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+             <% if user.activated %>
+        <td><%= link_to 'Deactivate User', account_activation_url(user, activated: 'false'),remote: true, method: :patch %></td>
+             <% else %>
+        <td><%= link_to 'Activate User', account_activation_url(user, activated: 'true'),  remote: true,  method: :patch %></td>
+              <% end %>
+            <% end %>     
+     </tr>
+  

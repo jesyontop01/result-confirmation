@@ -1,0 +1,27 @@
+<!-- client/app/views/user_registrations/new.html -->
+
+<div class="container">
+  <div class="row">
+     <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+      <h2>Forgot your password?</h2>
+
+<form ng-submit="submitPwdBtnClick()" role="form" ng-init="passwordRequestForm = {}">
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email"
+           name="email"
+           id="email"
+           ng-model="passwordRequestForm.email"
+           required="required"
+           class="form-control">
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-lg">Send me reset password instructions</button>
+  <p><a href="#/sign_in/">Go Back</a></p>
+</form>
+      
+    </div>
+     <div class="col-sm-4"></div>
+  </div>
+</div>

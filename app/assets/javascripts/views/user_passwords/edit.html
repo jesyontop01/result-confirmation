@@ -1,0 +1,48 @@
+<!-- client/app/views/user_registrations/new.html -->
+
+<div class="container">
+  <div class="row">
+     <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+      <h2>Change your password</h2>
+
+<form ng-submit="submitNewPwdBtnClick()" role="form" ng-init="passwordEditForm = {}">
+  <div class="form-group">
+    <input type="hidden" 
+           name="reset_password_token"
+           id="reset_password_token"
+           ng-model="passwordEditForm.reset_password_token">
+           
+    <label for="password">Password</label>
+    <input type="password"
+           name="password"
+           id="password"
+           autocomplete="off"
+           autofocus="true"
+           ng-model="passwordEditForm.password"
+           required="required"
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="password_confirmation">Password confirmation</label>
+    <input type="password"
+           name="password_confirmation"
+           id="password_confirmation"
+           ng-model="passwordEditForm.password_confirmation"
+           autocomplete="off"
+           autofocus="true" 
+           required="required"
+           class="form-control">
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-lg">"Change my password"</button>
+  <p><a href="#/sign_in/">Go Back</a></p>
+</form>
+      
+    </div>
+     <div class="col-sm-4"></div>
+  </div>
+</div>
+
+

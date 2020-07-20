@@ -1,0 +1,96 @@
+<!-- client/app/views/user_registrations/new.html -->
+
+<div class="container">
+  <div class="row">
+     <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+      <h3>User's Registration</h3>
+
+<form ng-submit="handleRegBtnClick()" role="form" ng-init="registrationForm = {}">
+   <div class="form-group">
+  <label for="surname">Surname</label>
+    <input type="text"
+           name="surname"
+           id="surname"
+           ng-model="registrationForm.surname"
+           required="required"
+           class="form-control">
+  </div>
+   <div class="form-group">
+  <label for="othernames">Othernames</label>
+    <input type="text"
+           name="othernames"
+           id="othernames"
+           ng-model="registrationForm.othernames"
+           required="required"
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+  <label for="lp_no">L/P No.</label>
+    <input type="text"
+           name="lp_no"
+           id="lp_no"
+           ng-model="registrationForm.lp_no"
+           required="required"
+           class="form-control">
+  </div>
+
+  <br> 
+    <label>Waec Office: <span>*</span></label>
+      <div  ng-controller="OfficesController">
+        <div class="form-group" >
+          <select ng-model="WaecOfficeId" ng-options="y.id as y.office_name for y in offices" ng-change="GetValue(y)" class="form-control" ng-required="true">
+            <option value="">Select Office</option>
+          </select>
+        </div>
+        Selected: <p ng-bind="WaecOfficeId"></p>
+      </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email"
+           name="email"
+           id="email"
+           ng-model="registrationForm.email"
+           required="required"
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password"
+           name="password"
+           id="password"
+           ng-model="registrationForm.password"
+           required="required"
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="password_confirmation">Password confirmation</label>
+    <input type="password"
+           name="password_confirmation"
+           id="password_confirmation"
+           ng-model="registrationForm.password_confirmation"
+           required="required"
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="is_management">International Staff Only!</label>
+    <input type="checkbox"
+           name="is_management"
+           id="is_management"
+           ng-model="registrationForm.is_management"
+           required="required"
+           class="form-control">
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-lg">Register</button>
+</form><br><br><br>
+      
+    </div>
+     <div class="col-sm-4"></div>
+  </div>
+</div>

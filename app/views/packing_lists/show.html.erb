@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Office:</strong>
+  <%= @packing_list.office %>
+</p>
+
+<p>
+  <strong>Attachment:</strong>
+  <%= @packing_list.attachment %>
+</p>
+
+<%= link_to 'Edit', edit_packing_list_path(@packing_list) %> |
+<%= link_to 'Back', packing_lists_path %>

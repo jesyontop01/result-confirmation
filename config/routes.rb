@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
   
-
+  resources :payment_search
+  get 'payment_search/index'
+  get 'payment_search/show'
+  resources :test_results
+  get 'confirm_amounts/index'
+  get 'confirm_amounts/show'
+  resources :payments
+  resources :assignments
+  resources :roles
   resources :receipt_statuses
   resources :receipt_booklets
   get 'confirm_countries/index'
@@ -22,6 +30,7 @@ Rails.application.routes.draw do
 
   resources :years
   resources :confirm_types
+  resources :confirm_amounts
 
 
 

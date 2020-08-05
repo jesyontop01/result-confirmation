@@ -22,6 +22,15 @@ angular.module('verifier').factory('ResultService', ['$http','$q',function($http
 
 		};
 
+		fac.ResultDetailsWithIDs = function(examno, examyear,examdiet){
+
+			return $http.get("/exams.json", 
+				   {"params": { "CandNo": examno, "yearId": examyear, "dietId": examdiet}}
+			);
+		
+
+		};
+
 		// fac.UpdateConfirmationToDB = function(id){
 
 

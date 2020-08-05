@@ -25,7 +25,12 @@
     "html2canvas": "https://github.com/niklasvh/html2canvas.git",
     "cropperjs": "https://github.com/fengyuanchen/cropperjs.git",
     "ng-cropperjs": "https://github.com/johannes85/ngCropperjs.git",
-    "angular-ui-utils": "latest"
+    "angular-ui-utils": "latest",
+    "ngstorage": "latest",
+    "angular-ui-grid": "latest",
+    "angular-data-grid": "latest",
+    "angular-loading-bar": "latest",
+    "angular-datatables": "latest"
   },
   "resolutions": {
     "angular": "1.5",

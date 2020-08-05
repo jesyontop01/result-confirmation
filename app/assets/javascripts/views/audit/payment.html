@@ -1,0 +1,84 @@
+
+<div class="container" >
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+    <h2>Log Confirmation Payment</h2><br>
+
+      <div class="row">
+
+      <form name="makePaymentForm" ng-submit="makePayment(result);" method="post" accept-charset="UTF-8" ng-controller="AuditsController" ng-init="loadResultDetail(CandNo)">
+
+        <div class="modal-body">             
+        
+        <span class="current-exam">
+                 
+          Working Exam: <span style="font-size:120%; color:green;"> <strong>{{result.ExamDiet}} {{result.ExamYear}} </strong></span> 
+                
+                 
+        </span>
+          
+       
+        <div id="main"> 
+
+      <!--[form:waec_confirmation]-->
+
+             <table>
+
+                  <tbody>
+                        <tr><td colspan="2">
+                      CANDIDATES CORRESPONDENCE<hr>
+                      </td></tr>
+                      <tr><td><label ><strong>Exam no:</strong></label>&nbsp;
+                      </td><td> <font color="red"><input type="text" ng-model="result.CandNo" value="result.CandNo" disabled="true"/></font> 
+                      </td></tr>
+
+                      <tr><td><label ><strong>Candidate's Full Name:</strong></label>&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.CandName" placeholder="Candidate Address" required disabled="true"/>
+                      </td></tr>
+
+                      <tr><td colspan="2">
+                      <br><br>
+                
+                      </td></tr>
+
+                      <tr><td><label ><strong>Confirmation Type:</strong></label>&nbsp;&nbsp;
+                       </td><td><select data-ng-model="result.confirm_type_id" data-ng-options="c.id as c.typeName for c in confirmType"  data-ng-change="GetAmount()" ng-init="getConfirmType()" >
+                        <option value="" >-- Select Confirmation Type --</option>
+                      </select></td></tr>
+
+                      <tr><td><label ><strong>Confirmation Fee:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.amount" placeholder="0.00"  required disabled="true"/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Receipt No:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.receipt_no" ng-init='GetNextReceiptNo()' value="result.receipt_no" disabled="true" required="true" > 
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Email:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.cand_email" placeholder="Candidate Email Address" >(Optional)
+                      </td></tr>
+                  </tbody>
+              </table>
+                  
+
+        </div>
+
+          <div class="footer">
+            <br>
+                <input name="commit" type="submit" value="Submit Payment" ng-disabled="makePaymentForm.$invalid" class="btn btn-primary">
+            <br>
+            <br/>
+
+            
+          </div>
+        </div>
+      </form> 
+
+
+
+
+              </div>
+    </div>
+  </div>
+</div>

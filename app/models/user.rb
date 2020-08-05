@@ -8,6 +8,16 @@ class User < ActiveRecord::Base
           has_many :confirmations, dependent: :destroy
           has_many :receipt_booklets
 
+          has_many :assignments  
+          has_many :roles, through: :assignments
+
+
+
+      def role?(role)  
+        roles.any? { |r| r.name.underscore.to_sym == role }  
+      end 
+
+
          def active_for_authentication?
 	        # Uncomment the below debug statement to view the properties of the returned self model values.
 	        # logger.debug self.to_yaml	

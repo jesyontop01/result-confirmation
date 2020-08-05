@@ -1,7 +1,8 @@
 source 'http://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.3.3'
+#ruby '2.6.6'
+ruby '2.5.8'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.3'
@@ -11,18 +12,21 @@ gem 'activerecord-sqlserver-adapter'
 gem 'puma', '~> 3.11'
 gem 'devise_token_auth'
 gem 'devise'
-gem "devise_ldap_authenticatable", :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
+gem "devise_ldap_authenticatable"#, :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
 gem 'devise-guests', '~> 0.5.0'
 gem 'tiny_tds', '~> 2.1', '>= 2.1.2'
-gem 'fakeweb'
+#gem 'fakeweb'
 gem 'pry'
 gem 'faraday-encoding'
-gem 'faraday'
+#gem 'faraday_middleware'
+#gem 'faraday'
+gem 'faraday', '~> 0.9.2'
 gem 'rest-client'
 gem 'toastr-rails'
 gem 'cancancan'
 gem 'rolify'
 gem 'rails_admin', '~> 2.0'
+gem "pundit" 
 #gem 'therubyracer', '0.12.1'
 #gem 'less-rails-bootstrap'
 gem "font-awesome-rails"
@@ -37,6 +41,7 @@ gem 'rack-cors'
 gem 'omniauth-github'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
+#gem 'angularjs-ng-grid-rails'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets

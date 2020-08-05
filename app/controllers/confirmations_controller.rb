@@ -2,6 +2,7 @@ class ConfirmationsController < ApplicationController
 	before_action :authenticate_user!
 	before_action :set_confirmation, only: [:show, :edit, :update, :destroy]
 		load_and_authorize_resource
+
 	def index
 
 		params[:office_id] = current_user.office_id
@@ -14,8 +15,7 @@ class ConfirmationsController < ApplicationController
 				  SELECT  
 					a.[id] ,a.[user_id] ,b.[DietName], c.[YearName], a.[ref_no],a.[exam_no]
 			      ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
-			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name]
-			      ,e.[typeName] ,f.[countryName] ,a.[receipt_no]
+			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no]
 				  FROM [verifierApp].[dbo].[confirmations] a
 				  inner join [verifierApp].[dbo].[Diets] b
 				  on a.diet_id = b.id
@@ -23,8 +23,6 @@ class ConfirmationsController < ApplicationController
 				  on a.year_id = c.id
 				  inner join [verifierApp].[dbo].[offices] d
 				  on a.office_id = d.id
-				  inner join [verifierApp].[dbo].[confirm_types] e
-				  on a.confirm_type_id = e.id
 				  inner join [verifierApp].[dbo].[confirm_countries] f
 				  on a.confirm_country_id = f.id
 
@@ -43,8 +41,7 @@ class ConfirmationsController < ApplicationController
 				  SELECT  
 					a.[id] ,a.[user_id] ,b.[DietName], c.[YearName], a.[ref_no],a.[exam_no]
 			      ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
-			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name]
-			      ,e.[typeName] ,f.[countryName] ,a.[receipt_no]
+			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no]
 				  FROM [verifierApp].[dbo].[confirmations] a
 				  inner join [verifierApp].[dbo].[Diets] b
 				  on a.diet_id = b.id
@@ -52,10 +49,6 @@ class ConfirmationsController < ApplicationController
 				  on a.year_id = c.id
 				  inner join [verifierApp].[dbo].[offices] d
 				  on a.office_id = d.id
-				  inner join [verifierApp].[dbo].[confirm_types] e
-				  on a.confirm_type_id = e.id
-				  inner join [verifierApp].[dbo].[confirm_countries] f
-				  on a.confirm_country_id = f.id
 				  where a.office_id = '#{params[:office_id]}'
 
 			  SQL
@@ -68,8 +61,6 @@ class ConfirmationsController < ApplicationController
 			format.html {}
 			format.json { render json: @confirms }
 		end
-		#binding.pry
-	   	#render json: @confirms
 	end
 	
 
@@ -81,11 +72,23 @@ class ConfirmationsController < ApplicationController
 		# byebug
 		#@user = User.find_by(params[:id])
 		#if @user == current_user
+		 if params[:DietName].present? && params[:YearName]
+
+            @year = Year.find_by(:YearName => params[:YearName])
+            params[:year_id] = @year.id
+
+            @diet = Diet.find_by(:DietName => params[:DietName])
+            params[:diet_id] = @diet.id
+
+         end
+
 		 @confirm = current_user.confirmations.create(confirmation_params)
  			
 			respond_to do |format|
 
 				if @confirm.save 
+
+					@confirm.update(:year_id => params[:year_id], :diet_id => params[:diet_id] )
 
 
 					if @confirm.exam_no[0,1]=='5'
@@ -96,17 +99,26 @@ class ConfirmationsController < ApplicationController
 				        @global_table = WaecSchoolExam.create(confirmation_id: @confirm.id)
 				    end    
 
-          			 if params[:receiptID] 
+          			 # if params[:receiptID] 
 
-          			 	params[:office_id] = current_user.office_id
+          			 # 	params[:office_id] = current_user.office_id
 
-			           	@receipt_status = ReceiptStatus.find_by(:id => params[:receiptID])
+			           # 	@receipt_status = ReceiptStatus.find_by(:id => params[:receiptID])
 
 
-			            @receipt_status.update(status: 'USED')
-			            @receipt_status.update(confirmation_id: @confirm.id )
+			           #  @receipt_status.update(status: 'USED')
+			           #  @receipt_status.update(confirmation_id: @confirm.id )
+
+          			 # end
+
+          			 if params[:paymentID] 
+
+			           	@payPrinted = Payment.find_by(:id => params[:paymentID])
+
+			            @payPrinted.update(printed: true)
 
           			 end
+
 
 				    if @global_table.save
 				#      raise params.inspect
@@ -117,8 +129,17 @@ class ConfirmationsController < ApplicationController
 				       # @serial_no= @serial.to_s
 
 				        #@my_reference = "L/CR/CONF/" + @waec_confirmation.exam_no[0,1]+ '259' +@serial_no.to_s[1,8]
+				        officeID = @confirm.user.office.id.to_s
+				        if  (officeID.length) == 1
+				        	 officeID = '0'+ officeID
+				        else
+				        	 officeID
+				        end
 
-				        @my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1].to_s + @confirm.user.office.id.to_s + @serial_no.to_s[1,8]
+				        @my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1].to_s + officeID.to_s + @serial_no.to_s[1,8]
+
+				         #@my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1].to_s + @confirm.user.office.id.to_s + @serial_no.to_s[1,8]
+				        
 				        # @my_reference = "L/CR/CONF/" + "#{@confirm.exam_no[0,1]}" + "#{@confirm.user.office.id}" +  "#{@serial_no[1,8]} "
 				        #@my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1] + @confirm.user.office.id + @serial_no[1,8]
 				        @confirm.update(:ref_no => @my_reference)

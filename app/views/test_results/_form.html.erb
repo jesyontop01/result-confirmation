@@ -1,0 +1,162 @@
+<%= form_with(model: test_result, local: true) do |form| %>
+  <% if test_result.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(test_result.errors.count, "error") %> prohibited this test_result from being saved:</h2>
+
+      <ul>
+      <% test_result.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :Picture %>
+    <%= form.text_field :Picture %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ExamDiet %>
+    <%= form.text_field :ExamDiet %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ExamYear %>
+    <%= form.text_field :ExamYear %>
+  </div>
+
+  <div class="field">
+    <%= form.label :CandNo %>
+    <%= form.text_field :CandNo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :CandName %>
+    <%= form.text_field :CandName %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Sex %>
+    <%= form.text_field :Sex %>
+  </div>
+
+  <div class="field">
+    <%= form.label :DOB %>
+    <%= form.text_field :DOB %>
+  </div>
+
+  <div class="field">
+    <%= form.label :CentreName %>
+    <%= form.text_field :CentreName %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Subject1 %>
+    <%= form.text_field :Subject1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Grade1 %>
+    <%= form.text_field :Grade1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Subject2 %>
+    <%= form.text_field :Subject2 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Grade2 %>
+    <%= form.text_field :Grade2 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Subject3 %>
+    <%= form.text_field :Subject3 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Grade3 %>
+    <%= form.text_field :Grade3 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Subject4 %>
+    <%= form.text_field :Subject4 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Grade4 %>
+    <%= form.text_field :Grade4 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Subject5 %>
+    <%= form.text_field :Subject5 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Grade5 %>
+    <%= form.text_field :Grade5 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Subject6 %>
+    <%= form.text_field :Subject6 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Grade6 %>
+    <%= form.text_field :Grade6 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Subject7 %>
+    <%= form.text_field :Subject7 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Grade7 %>
+    <%= form.text_field :Grade7 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Subject8 %>
+    <%= form.text_field :Subject8 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Grade8 %>
+    <%= form.text_field :Grade8 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Subject9 %>
+    <%= form.text_field :Subject9 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Grade9 %>
+    <%= form.text_field :Grade9 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :NoOfSubjects %>
+    <%= form.number_field :NoOfSubjects %>
+  </div>
+
+  <div class="field">
+    <%= form.label :yearId %>
+    <%= form.number_field :yearId %>
+  </div>
+
+  <div class="field">
+    <%= form.label :dietId %>
+    <%= form.number_field :dietId %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

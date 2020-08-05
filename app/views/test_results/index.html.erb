@@ -1,0 +1,83 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Test Results</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Picture</th>
+      <th>Examdiet</th>
+      <th>Examyear</th>
+      <th>Candno</th>
+      <th>Candname</th>
+      <th>Sex</th>
+      <th>Dob</th>
+      <th>Centrename</th>
+      <th>Subject1</th>
+      <th>Grade1</th>
+      <th>Subject2</th>
+      <th>Grade2</th>
+      <th>Subject3</th>
+      <th>Grade3</th>
+      <th>Subject4</th>
+      <th>Grade4</th>
+      <th>Subject5</th>
+      <th>Grade5</th>
+      <th>Subject6</th>
+      <th>Grade6</th>
+      <th>Subject7</th>
+      <th>Grade7</th>
+      <th>Subject8</th>
+      <th>Grade8</th>
+      <th>Subject9</th>
+      <th>Grade9</th>
+      <th>Noofsubjects</th>
+      <th>Yearid</th>
+      <th>Dietid</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @test_results.each do |test_result| %>
+      <tr>
+        <td><%= test_result.Picture %></td>
+        <td><%= test_result.ExamDiet %></td>
+        <td><%= test_result.ExamYear %></td>
+        <td><%= test_result.CandNo %></td>
+        <td><%= test_result.CandName %></td>
+        <td><%= test_result.Sex %></td>
+        <td><%= test_result.DOB %></td>
+        <td><%= test_result.CentreName %></td>
+        <td><%= test_result.Subject1 %></td>
+        <td><%= test_result.Grade1 %></td>
+        <td><%= test_result.Subject2 %></td>
+        <td><%= test_result.Grade2 %></td>
+        <td><%= test_result.Subject3 %></td>
+        <td><%= test_result.Grade3 %></td>
+        <td><%= test_result.Subject4 %></td>
+        <td><%= test_result.Grade4 %></td>
+        <td><%= test_result.Subject5 %></td>
+        <td><%= test_result.Grade5 %></td>
+        <td><%= test_result.Subject6 %></td>
+        <td><%= test_result.Grade6 %></td>
+        <td><%= test_result.Subject7 %></td>
+        <td><%= test_result.Grade7 %></td>
+        <td><%= test_result.Subject8 %></td>
+        <td><%= test_result.Grade8 %></td>
+        <td><%= test_result.Subject9 %></td>
+        <td><%= test_result.Grade9 %></td>
+        <td><%= test_result.NoOfSubjects %></td>
+        <td><%= test_result.yearId %></td>
+        <td><%= test_result.dietId %></td>
+        <td><%= link_to 'Show', test_result %></td>
+        <td><%= link_to 'Edit', edit_test_result_path(test_result) %></td>
+        <td><%= link_to 'Destroy', test_result, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Test Result', new_test_result_path %>

@@ -8,21 +8,13 @@ class ReceiptStatusesController < ApplicationController
 
    params[:office_id] = current_user.office_id
 
-          if params[:receiptNo] && params[:office_id]
+   if params[:receipt_no]
+     params[:receiptNo] =  params[:receipt_no]
+   else
+     
+   end
 
-                      # SELECT top 1
-                      #           a.[id]
-                      #           ,a.[receipt_booklet_id]
-                      #           ,a.[receiptNo]
-                      #           ,a.[status]
-                      #           ,a.[created_at]
-                      #           ,a.[updated_at]
-                      #         ,b.office_id
-                      #       FROM [verifierApp].[dbo].[receipt_statuses] a
-                      #       inner join receipt_booklets b
-                      #       on a.receipt_booklet_id = b.id
-                      #       where b.status='open' and b.office_id = 21 and a.status='unused'
-                      #       --where b.status='open' and a.receiptNo=40 and b.office_id = 21--
+          if params[:receiptNo] && params[:office_id]
 
             sql = <<-SQL 
                        SELECT a.[id]
@@ -36,6 +28,29 @@ class ReceiptStatusesController < ApplicationController
                       on a.[receipt_booklet_id] = b.id 
                       where b.status = 'open' AND b.office_id = '#{params[:office_id]}' AND a.receiptNo = '#{params[:receiptNo]}'
             SQL
+
+            @receipt_statuses = ActiveRecord::Base.connection.exec_query(sql)
+
+          elsif params[:office_id]
+
+             sql = <<-SQL
+
+                                  SELECT top 1
+                                a.[id]
+                                ,a.[receipt_booklet_id]
+                                ,a.[receiptNo]
+                                ,a.[status]
+                                ,a.[created_at]
+                                ,a.[updated_at]
+                              ,b.office_id
+                            FROM [verifierApp].[dbo].[receipt_statuses] a
+                            inner join receipt_booklets b
+                            on a.receipt_booklet_id = b.id
+                           where b.status = 'open' AND b.office_id = '#{params[:office_id]}' AND a.status='unused'
+
+            SQL
+
+            #       --where b.status='open' and a.receiptNo=40 and b.office_id = 21--    
 
             @receipt_statuses = ActiveRecord::Base.connection.exec_query(sql)
           

@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_15_102910) do
-
-  create_table "Diets", id: :integer, limit: 1, force: :cascade do |t|
-    t.varchar "DietName", limit: 50
-  end
+ActiveRecord::Schema.define(version: 2020_07_30_221510) do
 
   create_table "Grade", primary_key: "GradeType", id: :string, limit: 1, default: nil, force: :cascade do |t|
     t.string "GradeValue", limit: 2, null: false
@@ -30,8 +26,21 @@ ActiveRecord::Schema.define(version: 2020_07_15_102910) do
     t.decimal "GPSLat", precision: 9, scale: 6
   end
 
-  create_table "Years", id: :integer, limit: 1, force: :cascade do |t|
-    t.varchar "YearName", limit: 5
+  create_table "assignments", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_assignments_on_role_id"
+    t.index ["user_id"], name: "index_assignments_on_user_id"
+  end
+
+  create_table "confirm_amounts", force: :cascade do |t|
+    t.bigint "confirm_type_id"
+    t.decimal "amount", precision: 18, scale: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["confirm_type_id"], name: "index_confirm_amounts_on_confirm_type_id"
   end
 
   create_table "confirm_countries", force: :cascade do |t|
@@ -73,7 +82,7 @@ ActiveRecord::Schema.define(version: 2020_07_15_102910) do
     t.index ["year_id"], name: "index_confirmations_on_yearTbl_id"
   end
 
-  create_table "diets1", force: :cascade do |t|
+  create_table "diets", force: :cascade do |t|
     t.varchar "DietName", limit: 50
   end
 
@@ -102,6 +111,26 @@ ActiveRecord::Schema.define(version: 2020_07_15_102910) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "payments", force: :cascade do |t|
+    t.bigint "diet_id"
+    t.bigint "year_id"
+    t.string "exam_no"
+    t.bigint "confirm_type_id"
+    t.decimal "amount", precision: 18, scale: 0
+    t.string "receipt_no"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "cand_email"
+    t.bigint "user_id"
+    t.bigint "office_id"
+    t.boolean "printed", default: false
+    t.index ["confirm_type_id"], name: "index_payments_on_confirm_type_id"
+    t.index ["diet_id"], name: "index_payments_on_diet_id"
+    t.index ["office_id"], name: "index_payments_on_office_id"
+    t.index ["user_id"], name: "index_payments_on_user_id"
+    t.index ["year_id"], name: "index_payments_on_year_id"
+  end
+
   create_table "receipt_booklets", force: :cascade do |t|
     t.integer "rangeFrom"
     t.integer "rangeTo"
@@ -123,6 +152,12 @@ ActiveRecord::Schema.define(version: 2020_07_15_102910) do
     t.bigint "confirmation_id"
     t.index ["confirmation_id"], name: "index_receipt_statuses_on_confirmation_id"
     t.index ["receipt_booklet_id"], name: "index_receipt_statuses_on_receipt_booklet_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "schools", force: :cascade do |t|
@@ -175,6 +210,40 @@ ActiveRecord::Schema.define(version: 2020_07_15_102910) do
     t.string "ResultName", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "test_results", force: :cascade do |t|
+    t.text "Picture"
+    t.string "ExamDiet"
+    t.string "ExamYear"
+    t.string "CandNo"
+    t.string "CandName"
+    t.string "Sex"
+    t.string "DOB"
+    t.string "CentreName"
+    t.string "Subject1"
+    t.string "Grade1"
+    t.string "Subject2"
+    t.string "Grade2"
+    t.string "Subject3"
+    t.string "Grade3"
+    t.string "Subject4"
+    t.string "Grade4"
+    t.string "Subject5"
+    t.string "Grade5"
+    t.string "Subject6"
+    t.string "Grade6"
+    t.string "Subject7"
+    t.string "Grade7"
+    t.string "Subject8"
+    t.string "Grade8"
+    t.string "Subject9"
+    t.string "Grade9"
+    t.integer "NoOfSubjects"
+    t.integer "yearId"
+    t.integer "dietId"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -240,13 +309,21 @@ ActiveRecord::Schema.define(version: 2020_07_15_102910) do
     t.index ["exam_no"], name: "index_wassce_d2008s_on_exam_no", unique: true
   end
 
-  create_table "years1", force: :cascade do |t|
+  create_table "years", force: :cascade do |t|
     t.varchar "YearName", limit: 5
   end
 
+  add_foreign_key "assignments", "roles"
+  add_foreign_key "assignments", "users"
+  add_foreign_key "confirm_amounts", "confirm_types"
   add_foreign_key "confirm_countries", "confirm_types"
   add_foreign_key "confirmations", "confirm_countries"
   add_foreign_key "confirmations", "confirm_types"
+  add_foreign_key "payments", "confirm_types"
+  add_foreign_key "payments", "diets"
+  add_foreign_key "payments", "offices"
+  add_foreign_key "payments", "users"
+  add_foreign_key "payments", "years"
   add_foreign_key "receipt_booklets", "offices"
   add_foreign_key "receipt_booklets", "users"
   add_foreign_key "receipt_statuses", "confirmations"

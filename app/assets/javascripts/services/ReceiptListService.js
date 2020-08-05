@@ -1,21 +1,34 @@
+
 angular.module('verifier')
-       .service('ReceiptListService', function() {
-  this.userData = {};
+    .factory('ReceiptListService', ['$http', '$q', function($http, $q){
+      // body...
+     
+      // body...
+        var fac = {};
 
-  this.setReceiptStatus = function(list) {
-        this.userData.list = list;
-  };
+        fac.GetTopReceipt = function(){
 
-  this.getReceiptStatus = function() {
-        return this.userData.list;
-  };
+          return $http.get('/receipt_statuses.json');  
+        
+        };
 
-  this.setYear = function(year) {
-        this.userData.year = year;
-  };
 
-  this.getYear = function() {
-        return this.userData.year;
-  };
+        fac.ReceiptID = function(receipt_no){
+          
+          return $http.get('/receipt_statuses.json', 
+              {"params": { "receiptNo": receipt_no}})
+          .then(function(resp) {
+            // body...
+            resp.data.id;
+          });
 
-});
+        };
+
+        fac.UpdateConfirmationToDB = function(id){
+
+
+        };
+
+
+      return fac;
+    }])

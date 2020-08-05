@@ -10,6 +10,7 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//=angular-datatables
 //= require jquery
 //= require jquery_ujs
 //= require toastr
@@ -33,3 +34,7 @@
 //= require angular-base64-upload
 //= require angular-devise
 //= require angular-ui-utils
+//= require ngStorage
+//= ui-grid
+//= angular-data-grid
+//= angular-loading-bar

@@ -1,0 +1,98 @@
+
+<div class="container" >
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+    <h2>Add Receipient Address Details</h2><br>
+
+      <div class="row">
+
+      <form name="createConfirmForm" ng-submit="createConfirm(result);" method="post" accept-charset="UTF-8" ng-controller="ConfirmPaymentController" ng-init="resultForAddress()">
+
+        <div class="modal-header">
+          <h4 class="modal-title">Destination Address</h4>
+        </div>
+
+
+        <div class="modal-body">             
+        
+        <span class="current-exam">
+                 
+          Working Exam: <span style="font-size:120%; color:green;"> <strong>{{result.DietName}} {{result.YearName}} </strong></span> 
+                
+                 
+        </span>
+          
+       
+        <div id="main">
+                  <h4>To Send A Confirmation, Please fill out the following:</h4>  
+
+      <!--[form:waec_confirmation]-->
+
+             <table>
+
+                  <tbody>
+                        <tr><td colspan="2">
+                      CANDIDATES CORRESPONDENCE<hr>
+                      </td></tr>
+                      <tr><td><label ><strong>Exam no:</strong></label>&nbsp;
+                      </td><td> <font color="red"><input type="text" ng-model="result.exam_no" value="result.exam_no" disabled="true"/></font> 
+                      </td></tr>
+
+                      <tr><td><label ><strong>Candidate's Address:</strong></label>&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.Cand_address" placeholder="Candidate Address" required/>
+                      </td></tr>
+
+                        <tr>   <td> <label ><strong>Payment Receipt No:</strong></label>&nbsp;</td>
+                     <td><input  size="30" type="text" ng-model="result.receipt_no" placeholder="Receipt No" disabled="true" required/>
+                  </td>
+                    </tr>
+
+                      <tr><td colspan="2">
+                      <br><br>
+                      DESTINATION CORRESPONDENCE<hr>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Title:</strong></label>&nbsp;&nbsp;
+                      </td><td><input size="25" type="text" ng-model="result.dest_title" placeholder="Title of the Recipient" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Address Line1:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.dest_address1" placeholder="Destination Address1" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Address Line2:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.dest_address2" placeholder="Destination Address2"> (Optional)
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Location:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_location" placeholder="Destination Location" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Email:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_email" placeholder="Destination Email Address">(Optional)
+                      </td></tr>
+                  </tbody>
+              </table>
+                  
+
+        </div>
+
+          <div class="footer">
+            <br>
+                <input name="commit" type="submit" value="Create Confirmation" ng-disabled="createConfirmForm.$invalid" class="btn btn-primary">
+            <br>
+            <br/>
+
+            
+          </div>
+        </div>
+      </form> 
+
+
+
+
+              </div>
+    </div>
+  </div>
+</div>

@@ -29,6 +29,16 @@ angular
       $location.path('/');
     });
 
+
+    $scope.$on('permissionsChanged', function (e, permissionlist){
+      //console.log(Auth._currentUser.admin);
+     $rootScope.permissions = permissionlist;
+      
+    });
+    //console.log(permissions.getPermissions());
+
+
+
     $scope.AuditIn = function() {
       // body...
       $scope.user = {};

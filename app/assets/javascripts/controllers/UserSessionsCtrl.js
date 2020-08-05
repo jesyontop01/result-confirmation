@@ -24,6 +24,9 @@ angular.module('verifier')
         Auth.login($scope.loginForm, config).then(function(user) {
                   $rootScope.user = user
                   alert("Welcome, " + user.surname);
+                  var userPermissions = [];
+                 //$rootScope.userPermissions = userPermission.userPermission(user.id);
+                 //console.log( $rootScope.userPermissions);
                   $location.path('/');
             console.log(user); // => {id: 1, ect: '...'}
           }, function(error) {
@@ -48,7 +51,6 @@ angular.module('verifier')
             // user logged in by Auth.login({...})
             $rootScope.currentUser = currentUser;
 
-            console.log($rootScope.currentuser );
         });
     
   }]);

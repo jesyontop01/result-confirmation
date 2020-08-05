@@ -26,9 +26,9 @@ class ExamsController < ApplicationController
 
             response = Faraday.get do |req|
             req.url "http://172.21.13.44/WaecMobileApi/api/WaecMobile/GetResultForConfirmation?"
-            req.params['CandNo'] = params[:CandNo]
-            req.params['yearId'] = params[:yearId]
-            req.params['dietId'] = params[:dietId]
+            req.params['CandNo'] = '#{params[:CandNo]}'
+            req.params['yearId'] = '#{params[:yearId]}'
+            req.params['dietId'] = '#{params[:dietId]}'
             req.headers['Content-Type'] = 'application/json'
           end
           @results = response.body

@@ -24,5 +24,5 @@ angular.module('verifier')
 								  	
 									
 
-    	$scope.getAllConfirmation();
+    	//$scope.getAllConfirmation();
 }]);

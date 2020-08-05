@@ -72,6 +72,26 @@ angular
             templateUrl:"views/audit/log_booklet.html",
           controller: "AuditsController",
           })
+        .when('/audit/search',{
+            templateUrl:"views/audit/search.html",
+          controller: "AuditsController",
+          })
+        .when('/audit/payment/:ExamYear/:CandNo',{
+            templateUrl:"views/audit/payment.html",
+          controller: "AuditsController",
+          })
+        .when('/verifer/payments',{
+            templateUrl: "views/confirmPayment/payments.html",
+            controller: "ConfirmPaymentController",
+          })
+        .when('/verifer/:YearName/:exam_no',{
+            templateUrl: "views/confirmPayment/result_view.html",       
+            controller: "ConfirmPaymentController",
+          })
+        .when('/verifer/address/:ExamYear/:CandNo',{
+            templateUrl: "views/confirmPayment/confirm_address.html",       
+            controller: "ConfirmPaymentController",
+          })
 
       .otherwise({
         redirectTo: '/home'

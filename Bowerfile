@@ -28,5 +28,10 @@ asset 'html2canvas', 'https://github.com/niklasvh/html2canvas.git'
 asset 'cropperjs', 'https://github.com/fengyuanchen/cropperjs.git'
 asset 'ng-cropperjs', 'https://github.com/johannes85/ngCropperjs.git'
 asset 'angular-ui-utils'
+asset 'ngstorage'
+asset 'angular-ui-grid'
+asset 'angular-data-grid'
+asset 'angular-loading-bar'
+asset 'angular-datatables'
 
 

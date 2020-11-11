@@ -1,0 +1,52 @@
+<div class="container" ng-controller="RecordsController" ng-init="loadrecord(id)">
+
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-4">
+      <h2>Show Page</h2><br>
+
+      <table class="table">
+
+                <tr>
+                  <td><p>Exam Diet:</p></td>
+                  <td>{{getExamDietName(editRecord.diet_id)}} </td>
+                </tr>
+
+                <tr>
+                  <td><p>Exam Year:</p></td>
+                  <td>{{getExamYearName(editRecord.year_id)}}</td>
+                </tr>
+
+                <tr>
+                  <td><p>Candidate Examination No:</p></td>
+                  <td>{{editRecord.candNo}}</td>
+                </tr>
+
+                <tr>
+                  <td>Candidate Picture</td>
+                  <td><img data-ng-src="data:image/png;base64,{{editRecord.picture}}" data-err-src="images/png/avatar.png"/></td>
+                </tr>
+
+               <tr>
+                  <td>Candidate Result</td>
+                  <td><img data-ng-src="data:image/png;base64,{{editRecord.resultPix}}" data-err-src="images/png/avatar.png"/></td>
+                </tr>
+                <tr>
+                  <td>Candidate PhotoCard</td>
+                  <td><img data-ng-src="data:image/png;base64,{{editRecord.photocardPix}}" data-err-src="images/png/avatar.png"/></td>
+                </tr>
+
+              <tr>
+                  <td>Candidate Affidavit</td>
+                  <td><img data-ng-src="data:image/png;base64,{{editRecord.affidavitPix}}" data-err-src="images/png/avatar.png"/></td>
+              </tr>
+
+        </table>
+
+        
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+</div>
+
+

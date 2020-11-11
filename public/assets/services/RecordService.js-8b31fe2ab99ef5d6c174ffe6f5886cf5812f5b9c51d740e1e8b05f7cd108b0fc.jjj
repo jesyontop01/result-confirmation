@@ -1,0 +1,204 @@
+App.factory('RecordService', function ($http, $q, $window) {//I have disscussed little bit about service in 3rd tutorial of angularjs series. Declare with some dependencies.
+    return {
+    //Get all Employee List 
+    GetRecordList : function () {
+        return $http.get('/records.json');
+    },
+
+    GetRecordId : function () {//this function will get the last value of current page url.
+        var urlPath = $window.location.href;
+        var result = String(urlPath).split("/"); //will split the url by forword slash
+        if (result != null && result.length > 0) {
+           var id = result[result.length - 1]; //will get the last value from url.
+            return id;
+        }
+    },
+
+    GetRecordByID: function () { // this function will call the controller function GetEmployeeByID to get record by ID.
+        var currentRecordID = this.GetRecordId();//calling GetEmployeId to get the current page url's last value.
+        if (currentRecordID != null) {
+            return $http.get('/records/GetRecordById', { params: { id: currentRecordID } });
+        }
+    },
+
+    //Add Employee Data. This function will call the Controller's Create action to add a new employee.
+    AddRecord : function (data) {
+        var defer = $q.defer();
+        $http({
+            url: '/records/Create',
+            method: "POST",
+            data: data
+        }).success(function (d) {
+            //Callback after success
+            defer.resolve(d);
+        }).error(function (e) {
+            //callback after failed
+            alert("Error");
+            window.location.href = '/records/Create';
+            defer.reject(e);
+        });
+        return defer.promise;   
+    }, //End of Add Employee Data
+    
+    //Delete Employee Data. This function will call the controller's Delete action method to delete the employee record.
+    DelRecordData : function (employeeid) {
+        var defer = $q.defer(); // I have disscussed littel bit about $q and defer in 3rd tutorial of angualrjs. 
+        $http({
+            url: '/records/Delete/'+employeeid, 
+            method: 'POST'
+        }).success(function (d) {
+            alert("the person deleted successfully");
+            defer.resolve(d);
+        }).error(function (e) {
+            alert("Error");
+            defer.reject(e);
+        });
+        return defer.promise;
+
+    },
+
+    //Update Employee Data. This function will call the controller's Update action method to Update the employee record.
+    UpdateRecordData: function (record) {
+        var defer = $q.defer();
+        employee.Id = this.GetRecordId();
+        $http({
+            url: '/Records/UpdateEmployee',
+            method: 'POST',
+            data: employee
+        }).success(function (d) {
+            defer.resolve(d);
+            window.location.href = '/Record/Index';
+        }).error(function (e) {
+            alert("Error");
+            defer.reject(e);
+        });
+        return defer.promise;
+    },
+}
+});
+
+
+
+ar app = angular.module("Homeapp", []);
+
+ 
+
+app.controller("HomeController", function ($scope, $http) {
+
+    $scope.btntext = "Save";
+
+    // Add record
+
+    $scope.savedata = function () {
+
+        $scope.btntext = "Please Wait..";
+
+        $http({
+
+            method: 'POST',
+
+            url: '/Home/Add_record',
+
+            data: $scope.register
+
+        }).success(function (d) {
+
+            $scope.btntext = "Save";
+
+            $scope.register = null;
+
+            alert(d);
+
+        }).error(function () {
+
+            alert('Failed');
+
+        });
+
+    };
+
+    // Display all record
+
+    $http.get("/Home/Get_data").then(function (d) {
+
+        $scope.record = d.data;
+
+    }, function (error) {
+
+        alert('Failed');
+
+    });
+
+    // Display record by id
+
+    $scope.loadrecord = function (id) {
+
+        $http.get("/Home/Get_databyid?id="+id).then(function (d) {
+
+            $scope.register = d.data[0];
+
+        }, function (error) {
+
+            alert('Failed');
+
+        });
+
+    };
+
+    // Delete record
+
+    $scope.deleterecord = function (id) {
+
+        $http.get("/Home/delete_record?id=" + id).then(function (d) {
+
+            alert(d.data);
+
+            $http.get("/Home/Get_data").then(function (d) {
+
+                $scope.record = d.data;
+
+            }, function (error) {
+
+                alert('Failed');
+
+            });
+
+        }, function (error) {
+
+            alert('Failed');
+
+        });
+
+    };
+
+    // Update record
+
+    $scope.updatedata = function () {
+
+        $scope.btntext = "Please Wait..";
+
+        $http({
+
+            method: 'POST',
+
+            url: '/Home/update_record',
+
+            data: $scope.register
+
+        }).success(function (d) {
+
+            $scope.btntext = "Update";
+
+            $scope.register = null;
+
+            alert(d);
+
+        }).error(function () {
+
+            alert('Failed');
+
+        });
+
+    };
+
+});

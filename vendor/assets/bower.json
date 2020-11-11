@@ -30,7 +30,8 @@
     "angular-ui-grid": "latest",
     "angular-data-grid": "latest",
     "angular-loading-bar": "latest",
-    "angular-datatables": "latest"
+    "angular-datatables": "latest",
+    "ng-file-upload": "latest"
   },
   "resolutions": {
     "angular": "1.5",

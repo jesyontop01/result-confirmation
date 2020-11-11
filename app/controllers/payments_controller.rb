@@ -15,10 +15,7 @@ class PaymentsController < ApplicationController
                  sql = <<-SQL 
 
           SELECT  
-          a.[id] ,a.[user_id] ,b.[DietName], c.[YearName], a.[ref_no],a.[exam_no]
-            ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
-            ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name]
-            ,e.[typeName] ,f.[countryName] ,a.[receipt_no]
+           a.[id], b.[DietName], c.[YearName], a.[exam_no], a.[cand_email], a.[created_at], d.[office_name], a.[receipt_no], a.[printed]
           FROM [verifierApp].[dbo].[payments] a
           inner join [verifierApp].[dbo].[Diets] b
           on a.diet_id = b.id
@@ -28,8 +25,7 @@ class PaymentsController < ApplicationController
           on a.office_id = d.id
           inner join [verifierApp].[dbo].[confirm_types] e
           on a.confirm_type_id = e.id
-          inner join [verifierApp].[dbo].[confirm_countries] f
-          on a.confirm_country_id = f.id
+        
 
         SQL
 
@@ -93,15 +89,13 @@ class PaymentsController < ApplicationController
         @payment.update(:office_id => current_user.office_id)
 
                  if params[:receiptID] 
-
+#binding.pry
                   #params[:office_id] = current_user.office_id
 
                   @receipt_status = ReceiptStatus.find_by(:id => params[:receiptID])
 
-
-                  @receipt_status.update(status: 'USED')
+                  @receipt_status.update(:status => 'USED')
                   #@receipt_status.update(confirmation_id: @confirm.id )
-
                  end
 
         format.html { redirect_to @payment, notice: 'Payment was successfully created.' }

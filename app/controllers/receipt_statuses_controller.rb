@@ -8,13 +8,12 @@ class ReceiptStatusesController < ApplicationController
 
    params[:office_id] = current_user.office_id
 
-   if params[:receipt_no]
-     params[:receiptNo] =  params[:receipt_no]
-   else
-     
-   end
+         if params[:receipt_no]
+           params[:receiptNo] =  params[:receipt_no]
+           
+         end
 
-          if params[:receiptNo] && params[:office_id]
+          if params[:receiptNo] #&& params[:office_id]
 
             sql = <<-SQL 
                        SELECT a.[id]
@@ -42,7 +41,7 @@ class ReceiptStatusesController < ApplicationController
                                 ,a.[status]
                                 ,a.[created_at]
                                 ,a.[updated_at]
-                              ,b.office_id
+                               , b.office_id
                             FROM [verifierApp].[dbo].[receipt_statuses] a
                             inner join receipt_booklets b
                             on a.receipt_booklet_id = b.id
@@ -90,7 +89,7 @@ class ReceiptStatusesController < ApplicationController
             @receipt_status = ActiveRecord::Base.connection.exec_query(sql)
       end
 
-
+binding.pry
 
     render json: @receipt_status
   end
@@ -102,6 +101,7 @@ class ReceiptStatusesController < ApplicationController
 
   # GET /receipt_statuses/1/edit
   def edit
+
      @receipt_status = ReceiptStatus.find(params[:id])
   end
 
@@ -124,11 +124,40 @@ class ReceiptStatusesController < ApplicationController
   # PATCH/PUT /receipt_statuses/1
   # PATCH/PUT /receipt_statuses/1.json
   def update
-     @receipt_status = ReceiptStatus.find(params[:id])
+     #@receipt_status = ReceiptStatus.find(params[:id])
+
+            params[:office_id] = current_user.office_id
+
+         if params[:receipt_no]
+           params[:receiptNo] =  params[:receipt_no]
+           
+         end
+
+          if params[:receiptNo] #&& params[:office_id]
+
+            sql = <<-SQL 
+                       SELECT a.[id]
+                      ,a.[receipt_booklet_id]
+                      ,a.[receiptNo]
+                      ,a.[status]
+                      ,a.[created_at]
+                      ,a.[updated_at]
+                      FROM [verifierApp].[dbo].[receipt_statuses] a
+                      inner join [verifierApp].[dbo].[receipt_booklets] b
+                      on a.[receipt_booklet_id] = b.id 
+                      where b.status = 'open' AND b.office_id = '#{params[:office_id]}' AND a.receiptNo = '#{params[:receiptNo]}'
+            SQL
+
+            @receipt_status = ActiveRecord::Base.connection.exec_query(sql)
+            else
+
+            @receipt_status = ReceiptStatus.find(params[:id])
+      end
+binding.pry
     respond_to do |format|
-      if @receipt_status.update(receipt_status_params)
+      if @receipt_status.update(:status => params[:status])
         format.html { redirect_to @receipt_status, notice: 'Receipt status was successfully updated.' }
-        format.json { render :show, status: :ok, location: @receipt_status }
+        format.json { render json: @receipt_status }
       else
         format.html { render :edit }
         format.json { render json: @receipt_status.errors, status: :unprocessable_entity }
@@ -139,11 +168,53 @@ class ReceiptStatusesController < ApplicationController
   # DELETE /receipt_statuses/1
   # DELETE /receipt_statuses/1.json
   def destroy
-     @receipt_status = ReceiptStatus.find(params[:id])
+     #@receipt_status = ReceiptStatus.find(params[:id])
     @receipt_status.destroy
     respond_to do |format|
       format.html { redirect_to receipt_statuses_url, notice: 'Receipt status was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def receipt_correction
+    
+            params[:office_id] = current_user.office_id
+
+         if params[:receipt_no]
+           params[:receiptNo] =  params[:receipt_no]
+           
+         end
+
+          if params[:receiptNo] #&& params[:office_id]
+
+            sql = <<-SQL 
+                       SELECT a.[id]
+                      ,a.[receipt_booklet_id]
+                      ,a.[receiptNo]
+                      ,a.[status]
+                      ,a.[created_at]
+                      ,a.[updated_at]
+                      FROM [verifierApp].[dbo].[receipt_statuses] a
+                      inner join [verifierApp].[dbo].[receipt_booklets] b
+                      on a.[receipt_booklet_id] = b.id 
+                      where b.status = 'open' AND b.office_id = '#{params[:office_id]}' AND a.receiptNo = '#{params[:receiptNo]}'
+            SQL
+
+            @receipt_status = ActiveRecord::Base.connection.exec_query(sql)
+            else
+
+            @receipt_status = ReceiptStatus.find(params[:id])
+            end
+
+    @receipt_status.update(:status => params[:status])
+    respond_to do |format|
+      if @receipt_status.save
+        format.html { redirect_to @receipt_status, notice: 'Receipt status was successfully updated.' }
+        format.json { render json: @receipt_status }
+      else
+        format.html { render :edit }
+        format.json { render json: @receipt_status.errors, status: :unprocessable_entity }
+      end
     end
   end
 

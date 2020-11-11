@@ -1,0 +1,283 @@
+<div class="container" ng-controller="ConfirmationsController" ng-init="loadResultDetail(CandNo)">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+    <h2>Searched result Details</h2><br>
+
+ 			<div class="row">
+ 				<div class="col-sm-3">
+ 					
+ 					<img ng-src="data:image/jpeg;base64,{{result.Picture}}" id="photo-id" style="width: 150px; height: 150px"/>
+ 				</div>
+ 				<div class="col-sm-1"></div>
+ 				<div class="col-sm-8">
+ 					<p><b>Exam : </b> {{ result.ExamDiet}} {{result.ExamYear}}</p>
+ 					<p><b>Exam No: </b> {{result.CandNo}}</p>
+				 	<p><b>Full Name:</b> {{result.CandName}}</p>
+				 	<p><b> Sex:</b> {{ result.Sex}}</p>
+				 	<p><b>Date of Birth:</b> {{result.DOB}}
+				 	<p><b>Centre Name:</b> {{result.CentreName}}</p>	
+ 				</div>
+ 			</div>
+ 	
+ 	
+ 	<p><b>Subjects :</b></p>
+ 	<table class="table table-striped table-responsive" >
+ 		<thead>
+ 			<tr>
+ 				<td>{{ result.Subject1 }}</td>
+ 				<td>{{ result.Grade1 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject2 }}</td>
+ 				<td>{{ result.Grade2 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject3 }}</td>
+ 				<td>{{ result.Grade3 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject4 }}</td>
+ 				<td>{{ result.Grade4 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject5 }}</td>
+ 				<td>{{ result.Grade5 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject6 }}</td>
+ 				<td>{{ result.Grade6 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject7 }}</td>
+ 				<td>{{ result.Grade7 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject8 }}</td>
+ 				<td>{{ result.Grade8 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject9 }}</td>
+ 				<td>{{ result.Grade9 }}</td>
+ 			</tr> 			
+ 		</thead>
+ 	</table>
+</article>
+
+	<div class="pull-left">
+ 		 	<!-- Button trigger modal -->
+<!-- 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalSave" ng-click="loadResultDetail(result)">
+		  Fill Address Form 1...
+		</button> -->
+
+    <button type="button" class="btn btn-primary" ng-click="addressDetails(result)">
+      Fill Address Form ...
+    </button>
+ 	</div>
+ 	<br>
+ 	<br>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModalSave1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Receipient Address</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span class="current-exam">
+     <form name="createConfirmForm"  method="post" accept-charset="UTF-8" ng-controller="ConfirmationsController" ng-init="loadResultDetail(CandNo)">               
+        Working Exam: <span style="font-size:120%; color:green;"> <strong>{{result.ExamDiet}} {{result.ExamYear}} </strong></span>         
+        </span>
+        <div id="main">
+                  <h4>To Send A Confirmation, Please fill out the following:</h4>  
+      
+              <table>
+
+                  <tbody>
+                        <tr><td colspan="2">
+                      CANDIDATES CORRESPONDENCE<hr>
+                      </td></tr>
+                      <tr><td><label ><strong>Exam no:</strong></label>&nbsp;
+                      </td><td> <font color="red"><input type="text" ng-model="result.CandNo" value="result.CandNo" disabled="true"/></font> 
+                      </td></tr>
+
+                      <tr><td><label ><strong>Candidate's Address:</strong></label>&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.Cand_address" placeholder="Candidate Address" required/>
+                      </td></tr>
+
+                      <tr ng-controller="ConfirmationsController">
+                        <td><label ><strong>Payment Receipt No:</strong></label>&nbsp;
+                        </td><td><input  size="30" type="text" ng-model="result.receipt_no" placeholder="Receipt No"  ng-blur="confirmReceipt($event)" ui-event="{ blur : 'confirmReceipt($event)' }" required/></td>
+                        <span style="color:Red">{{result}}</span>
+                    </tr>
+
+                      <tr><td colspan="2">
+                      <br><br>
+                      DESTINATION CORRESPONDENCE<hr>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Confirmation Type:</strong></label>&nbsp;&nbsp;
+                       </td><td><select data-ng-model="result.confirm_type_id" data-ng-options="c.id as c.typeName for c in confirmType" data-ng-change="GetCountries()">
+                        <option value="">-- Select Confirmation Type --</option>
+                      </select></td></tr>
+
+                      <tr><td><label ><strong>Destination Title:</strong></label>&nbsp;&nbsp;
+                      </td><td><input size="25" type="text" ng-model="result.dest_title" placeholder="Title of the Recipient" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Address Line1:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.dest_address1" placeholder="Destination Address1" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Address Line2:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.dest_address2" placeholder="Destination Address2"> (Optional)
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Location:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_location" placeholder="Destination Location" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Confirmation Country:</strong></label>&nbsp;&nbsp;
+                      </td><td><select data-ng-model="result.confirm_country_id" data-ng-disabled="!countries" data-ng-options="s.id as s.countryName for s in countries" required>
+                          <option value="">-- Select Country --</option>
+                      </select></td></tr>
+
+                      <tr><td><label ><strong>Destination Email:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_email" placeholder="Destination Email Address">(Optional)
+                      </td></tr>
+                  </tbody>
+              </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" ng-submit="createConfirm(result)" ng-disabled="createConfirmForm.$invalid">Create New Confirmation</button>
+      </div>
+  </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>
+</div>
+</div>
+
+
+
+
+
+  <div class="modal fade" id="myModalSave">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+      <form name="createConfirmForm" ng-submit="createConfirm(result);" method="post" accept-charset="UTF-8" ng-controller="ConfirmationsController" ng-init="loadResultDetail(CandNo)">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Destination Address</h4>
+        </div>
+
+
+        <div class="modal-body">
+
+        <div class="alert alert-danger alert-dismissible" ng-show="error" >
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {{errorMessage}}
+        </div>
+
+             
+        
+        <span class="current-exam">
+                 
+          Working Exam: <span style="font-size:120%; color:green;"> <strong>{{result.examDiet}} {{result.examYear}} </strong></span>
+                
+                 
+        </span>
+          
+       
+        <div id="main">
+                  <h4>To Send A Confirmation, Please fill out the following:</h4>  
+
+      <!--[form:waec_confirmation]-->
+
+             <table>
+
+                  <tbody>
+                        <tr><td colspan="2">
+                      CANDIDATES CORRESPONDENCE<hr>
+                      </td></tr>
+                      <tr><td><label ><strong>Exam no:</strong></label>&nbsp;
+                      </td><td> <font color="red"><input type="text" ng-model="result.CandNo" value="result.CandNo" disabled="true"/></font> 
+                      </td></tr>
+
+                      <tr><td><label ><strong>Candidate's Address:</strong></label>&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.Cand_address" placeholder="Candidate Address" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Payment Receipt No:</strong></label>&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.receipt_no" placeholder="Receipt No" required/>
+                      </td></tr>
+
+                      <tr><td colspan="2">
+                      <br><br>
+                      DESTINATION CORRESPONDENCE<hr>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Confirmation Type:</strong></label>&nbsp;&nbsp;
+                       </td><td><select data-ng-model="result.confirm_type_id" data-ng-options="c.id as c.typeName for c in confirmType" data-ng-change="GetCountries()">
+                        <option value="">-- Select Confirmation Type --</option>
+                      </select></td></tr>
+
+                      <tr><td><label ><strong>Destination Title:</strong></label>&nbsp;&nbsp;
+                      </td><td><input size="25" type="text" ng-model="result.dest_title" placeholder="Title of the Recipient" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Address Line1:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.dest_address1" placeholder="Destination Address1" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Address Line2:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.dest_address2" placeholder="Destination Address2"> (Optional)
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Location:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_location" placeholder="Destination Location" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Confirmation Country:</strong></label>&nbsp;&nbsp;
+                      </td><td><select data-ng-model="result.confirm_country_id" data-ng-disabled="!countries" data-ng-options="s.id as s.countryName for s in countries" required>
+                          <option value="">-- Select Country --</option>
+                      </select></td></tr>
+
+                      <tr><td><label ><strong>Destination Email:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_email" placeholder="Destination Email Address">(Optional)
+                      </td></tr>
+                  </tbody>
+              </table>
+                  
+
+        </div>
+
+          <div class="modal-footer">
+            <br>
+                <input name="commit" type="submit" value="Create Confirmation" ng-disabled="createConfirmForm.$invalid" class="btn btn-primary">
+             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <br>
+            <br/>
+
+            
+          </div>
+      </form> 
+    </div>
+
+  </div>
+</div>

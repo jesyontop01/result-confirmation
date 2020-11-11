@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-4">
+      <h2>Update Exam Record</h2><br>
+
+      <label>Select Exam Diet <span>*</span></label>
+<form name="editRecordForm" ng-controller="RecordsController" ng-init="loadrecord(id)" ng-submit="UpdateRecord(editRecord);" method="post" accept-charset="UTF-8">
+  <div  ng-controller="DietController">
+    <div class="form-group">
+            <select ng-model="editRecord.ExamDietId" ng-options="d.id as d.Diet for d in diets" ng-change="GetValue(d)" class="form-control" ng-required="true">
+              <option value="">Select Exam Diet</option>
+            </select>
+    </div>
+        Selected: <p ng-bind="editRecord.ExamDietId"></p>
+  </div> <br> 
+  <label>Select Year <span>*</span></label>
+  <div  ng-controller="YearController">
+        <div class="form-group" >
+          <select ng-model="editRecord.ExamYearId" ng-options="y.id as y.Year for y in years" ng-change="GetValue(y)" class="form-control" ng-required="true">
+            <option value="">Select Exam Year</option>
+          </select>
+        </div>
+        Selected: <p ng-bind="editRecord.ExamYearId"></p>
+  </div>
+  <div class="form-group">
+    <label for="candNo">Exam No <span>*</span></label>
+    <input type="text" class="form-control" id="candNo" aria-describedby="candNo" placeholder="Exam No" ng-model="editRecord.candNo" ng-required="true" value="editRecord.candNo">
+  </div>
+  <div class="form-group">
+    <label for="picture">Picture <span>*</span></label>
+    <input type="file" class="form-control" id="picture" aria-describedby="picture" placeholder="picture" ng-model="editRecord.picture"  base-sixty-four-input >
+  </div>
+  <div class="form-group">
+    <label for="resultPix">Result <span>*</span></label>
+    <input type="file" class="form-control" id="resultPix" aria-describedby="resultPix" placeholder="resultPix" ng-model="editRecord.resultPix"  base-sixty-four-input>
+  </div>
+   <div class="form-group">
+    <label for="photocardPix">Result/PhotoCard <span>*</span></label>
+    <input type="file" class="form-control" id="photocardPix" aria-describedby="photocardPix" placeholder="photocardPix" ng-model="editRecord.photocardPix" ng-required="false" base-sixty-four-input>
+  </div>
+    <div class="form-group">
+    <label for=" affidavitPix"> AffidavitPix <span>*</span></label>
+    <input type="file" class="form-control" id=" affidavitPix" aria-describedby=" affidavitPix" placeholder=" affidavitPix" ng-model="editRecord.affidavitPix"  base-sixty-four-input>
+  </div>
+
+  <button type="submit" class="btn btn-primary" ng-click="UpdateRecord(editRecord)">Update</button>
+</form>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+</div>
+
+

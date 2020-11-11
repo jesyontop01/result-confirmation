@@ -1,0 +1,40 @@
+<!-- client/app/views/user_sessions/new.html -->
+
+<div class="alert alert-danger" role="alert" ng-show="error">
+  {{error}}
+</div>
+
+<div class="container">
+  <div class="row">
+     <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+
+<form ng-submit="submitLogin(loginForm)" role="form" ng-init="loginForm = {}">
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email"
+           name="email"
+           id="email"
+           ng-model="loginForm.email"
+           required="required"
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password"
+           name="password"
+           id="password"
+           ng-model="loginForm.password"
+           required="required"
+           class="form-control">
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-lg">Sign in</button>
+  <p>Create Account Here <a href="#/sign_Up/">Register</a></p>
+  <p>Forgot Password? <a href="#/passwords/new/">Change Password</a></p>
+</form>
+</div>
+</div>
+</div>
+</div>

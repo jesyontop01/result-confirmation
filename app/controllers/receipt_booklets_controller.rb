@@ -40,8 +40,9 @@ class ReceiptBookletsController < ApplicationController
             @receipt_statuses = ReceiptStatus.where(:receipt_booklet_id => @receipt_booklet.id )
           end
 
-        format.html { redirect_to @receipt_booklet, notice: 'Receipt booklet was successfully created.' }
-        format.json { render json: @receipt_statuses}
+        #format.html { redirect_to @receipt_booklet, notice: 'Receipt booklet was successfully created.' }
+        #format.json { render json: @receipt_statuses}
+        format.json { render json: @receipt_booklet, notice: 'Receipt booklet was successfully created.'}
       else
         format.html { render :new }
         format.json { render json: @receipt_booklet.errors, status: :unprocessable_entity }

@@ -44,9 +44,15 @@ $scope.results = {};
 	$scope.viewDetails = function(confirm){
 
 		$scope.DietName = confirm.DietName;
+		$scope.ConfirmID = confirm.id;
 
-						$scope.$watch('DietName', function(newValue, oldValue){
+					$scope.$watch('DietName', function(newValue, oldValue){
 						window.sessionStorage.setItem('DName', newValue);
+						//window.localStorage.setItem('currentMData', newValue);
+					})
+
+					$scope.$watch('ConfirmID', function(newValue, oldValue){
+						window.sessionStorage.setItem('confirmID', newValue);
 						//window.localStorage.setItem('currentMData', newValue);
 					})
 
@@ -108,13 +114,16 @@ $scope.results = {};
  	var exam_no = $routeParams.CandNo;
  	var Year = $routeParams.ExamYear;
  	let Diet = window.sessionStorage.getItem('DName');
+ 	let ConfirmID = window.sessionStorage.getItem('confirmID');
 
  	console.log($routeParams.CandNo, $routeParams.ExamYear, Diet);
 
-
-	$http.get("/payment_search.json", 
-				   {"params": { "CandNo": $routeParams.CandNo, "YearName": $routeParams.ExamYear, "DietName": Diet}}
-			).then(function(response){ 
+	// $http.get("/payment_search.json", 
+	// 			   {"params": { "CandNo": $routeParams.CandNo, "YearName": $routeParams.ExamYear, "DietName": Diet}}
+	// 		).then(function(response){ 
+		$http.get("/payment_search.json", 
+				   {"params": { "id": ConfirmID}}
+			).then(function(response){
     							//alert('Record successfully updated .');
 							    $scope.result = response.data[0];
 							    console.log( $scope.result);
@@ -173,30 +182,50 @@ $scope.results = {};
 		    dest_address2: $scope.result.dest_address2,
 		    dest_location: $scope.result.dest_location,
 		    paymentID:         $scope.result.id,
-		    dest_email: $scope.result.dest_email
+		    dest_email: $scope.result.dest_email,
+		    WES_Ref:  $scope.result.WES_Ref
 
 		};
 
 		console.log( $scope.applicantResult);
+	
+								$http({
+									method: 'POST',
+									url: "/confirmations.json",
+									data: angular.toJson($scope.applicantResult) ,
+									header: {
+												'Content_Type' :  'application/json'
+												}
+										})
+										.then(function(response){
+													// body...
+										alert('confirmation was created successfully.');
+										$scope.closeModalSave('#myModalSave');
+										$location.path('/confirmations');
+										}, function(response) {
+													// body...
+											alert("An Error occurred");
+								})
+			} 
 
-		$http({
-			method: 'POST',
-			url: "/confirmations.json",
-			data: angular.toJson($scope.applicantResult) ,
-			header: {
-						'Content_Type' :  'application/json'
-						}
-				})
-				.then(function(response){
-							// body...
-				alert('confirmation was created successfully.');
-				$scope.closeModalSave('#myModalSave');
-				$location.path('/confirmations');
-				}, function(response) {
-							// body...
-					alert("An Error occurred");
-		})
-   }
+		// $http({
+		// 	method: 'POST',
+		// 	url: "/confirmations.json",
+		// 	data: angular.toJson($scope.applicantResult) ,
+		// 	header: {
+		// 				'Content_Type' :  'application/json'
+		// 				}
+		// 		})
+		// 		.then(function(response){
+		// 					// body...
+		// 		alert('confirmation was created successfully.');
+		// 		$scope.closeModalSave('#myModalSave');
+		// 		$location.path('/confirmations');
+		// 		}, function(response) {
+		// 					// body...
+		// 			alert("An Error occurred");
+		// })
+   // }
 
 
    $scope.result.receiptID = 0;

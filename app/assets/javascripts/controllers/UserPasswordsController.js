@@ -10,8 +10,8 @@
  * Controller of the fakeLunchHubApp
  */
 angular.module('verifier')
-  .controller('UserPasswordsController', ['$scope', 'Auth','$rootScope', 'UserService','$location',
-         function ($scope, Auth, $rootScope, UserService, $location) {
+  .controller('UserPasswordsController', ['$scope', 'Auth','$rootScope', 'UserService','$location', '$routeParams',
+         function ($scope, Auth, $rootScope, UserService, $location, $routeParams) {
 
         var config = {
             headers: {
@@ -46,8 +46,10 @@ angular.module('verifier')
         var parameters = {
             password: $scope.passwordEditForm.password,
             password_confirmation: $scope.passwordEditForm.password_confirmation,
-            reset_password_token: $scope.passwordEditForm.reset_password_token
+            reset_password_token: $routeParams.resetToken
         };
+
+        console.log(parameters);
 
         Auth.resetPassword(parameters).then(function(new_data) {
             console.log(new_data); // => {id: 1, ect: '...'}

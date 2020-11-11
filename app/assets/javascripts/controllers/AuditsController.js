@@ -1,8 +1,10 @@
 angular.module('verifier')
-.controller('AuditsController',['$scope', '$http', '$window','$location', 'ReceiptListService', "ResultService", '$routeParams',
-			function($scope, $http, $window, $location, ReceiptListService, ResultService, $routeParams){
+.controller('AuditsController',['$scope', '$http', '$window','$location', 'ReceiptListService', "ResultService", '$routeParams','Auth','$rootScope',
+			function($scope, $http, $window, $location, ReceiptListService, ResultService, $routeParams, Auth, $rootScope){
 
 	$scope.bookletRange = {};
+	 
+	   console.log( $scope.user);
 
 
 		$scope.receiptLists = [];
@@ -27,13 +29,20 @@ angular.module('verifier')
 					    		//console.log($scope.confirms);
 					    		//debugger;
 					    		$scope.receiptLists = response.data;
-					    		console.log($scope.receiptLists);
-					  			ReceiptListService.setReceiptStatus($scope.receiptLists);
+					    		$scope.bookletRange = {};
+					    		$scope.bookletRange.rangeFrom = " ";
+					    		$scope.bookletRange.rangeTo = "";
+					    		//console.log($scope.receiptLists);
+					  			//ReceiptListService.setReceiptStatus($scope.receiptLists);
+
+				$scope.bookletRange1 = "";
 						    		
 					    	}, function(response){
 					    		alert("There was an Error:");
 					    	});
 				    	};
+
+
 
 				    	$scope.getAllNewReceipts = function() {
 				    		// body...
@@ -148,7 +157,7 @@ angular.module('verifier')
 	 //let year_id = ExamDietService.getYear();
 
 	  	year_id = window.sessionStorage.getItem('yearID');
-		console.log(diet_id, year_id, searchTerm );
+		//console.log(diet_id, year_id, searchTerm );
 			
 
 		// ResultService.ResultDetailsWithIDs(searchTerm, year_id, diet_id)
@@ -161,7 +170,7 @@ angular.module('verifier')
 			).then(function(response){ 
     							//alert('Record successfully updated .');
 							    $scope.result = response.data[0];
-							    console.log( $scope.result);
+							    //console.log( $scope.result);
 							    							   
     			},function(response){
     				alert('There was a problem:' + response.status);
@@ -179,17 +188,21 @@ $scope.receipt = {};
 					
 					return $scope.result.receipt_no = response.data[0].receiptNo;
 
-		             console.log(response.data[0]);
+		             //console.log(response.data[0]);
 		         },function (response) {
 		             alert('Unexpected Error');
 		         });
      }
-
+//debugger
+  $scope.$watch('$scope.result', function (newVal, oldVal) {
+	 $scope.GetNextReceiptNo();
+	});
+//debugger
        	$http.get('/receipt_statuses.json').then(function(response){ 
 					
-		return $scope.result.receipt_no = response.data[0].receiptNo;
+		return $scope.result.receipt_no = response.data.receiptNo;
 
-		       console.log(response.data[0]);
+		       //console.log(response.data[0]);
 		    },function (response) {
 		             alert('Unexpected Error');
 		 });
@@ -226,7 +239,7 @@ $scope.result.amount = 0;
 				   {"params": { "confirm_type_id": countryId}}
 					).then(function(response){ 
 						$scope.result.amount = response.data.amount;
-		             console.log(response.data);
+		             //console.log(response.data);
 		         },function (response) {
 		             alert('Unexpected Error');
 		         });
@@ -236,13 +249,90 @@ $scope.result.amount = 0;
      }
  }
 
+//Method to get the status of Receipt to use
+ 				$scope.result.receipt_no = {}
+				$scope.result.receiptConfirm = false;
+				$scope.result.receiptID = 0;
+				
+ 		$scope.confirmReceipt = function(receipt_no) {
+			 	// body...
+			 	//$scope.result.receipt_no = receipt_no;
+			 	//console.log(receipt_no);
+
+			 	if (receipt_no != null) {
+
+
+			 	$http.get('/receipt_statuses.json', 
+			 		{"params": { "receiptNo": receipt_no}
+			 	}).then(function(response) {
+			 		// body...
+			 		$scope.receipt = response.data[0];
+			 		//console.log(response.data);
+			 		//debugger
+			 		if ($scope.receipt != null && $scope.receipt.status === "UNUSED") {
+			 		//debugger	
+			 		$scope.receiptConfirm = true;
+			 		$scope.result.receiptID = $scope.receipt.id;
+			 		//console.log($scope.result.receiptID);
+			 		//debugger
+			 		}
+			 		else{
+			 			alert("Sorry, This receipt has being used");
+			 			$scope.receiptConfirm = false;
+			 		}
+			 	});
+
+			} 	
+		};
+
+
+	//receiptStatus(result)
+	$scope.receiptStatus = function(result) {
+			 	// body...
+			 	//$scope.result.receipt_no = receipt_no;
+			 	//console.log(receipt_no);
+
+				   $scope.badReceipt = {
+		    			office_id: window.sessionStorage.getItem('officeID'),
+		    			receiptNo: result.receiptNo,
+						status: result.status 
+		    		};
+
+		    		console.log($scope.badReceipt);
+		    		$http({
+							method: 'PUT',
+							url: '/receipt_statuses/receipt_correction.json',
+							data: angular.toJson( $scope.badReceipt) ,
+							header: {
+										'Content_Type' :  'application/json'
+									}
+						}) 
+		    		.then(function(response) {
+			 		// body...
+			 		$scope.receipt = response.data[0];
+			 		//console.log(response.data);
+			 		//debugger
+			 		if ($scope.receipt.status === 200) {
+			 		//debugger	
+			alert('Receipt Status corrected successfully');
+			 		//debugger
+			 		$scope.badReceipt = {};
+			 		}
+			 		else{
+			 			alert("Sorry, an error occurred");
+			 			$scope.receiptConfirm = false;
+			 		}
+			 	});
+	
+		};
+
 
 
    $scope.makePayment = function(result) {
    	// body...
    	$scope.receipt.receiptID = 0;
    	$scope.receipt = {};
-   	     			$http.get('/receipt_statuses.json').then(function(response){ 
+   	    $http.get('/receipt_statuses.json').then(function(response){ 
 					//return	$scope.result.receipt_no = response.data[0].receiptNo;
 					$scope.receipt = response.data[0];
 					 $scope.receiptID = response.data[0].id;
@@ -256,9 +346,9 @@ $scope.result.amount = 0;
 		//window.localStorage.setItem('currentMData', newValue);
 	})
 		             
-		                 },function (response) {
+			},function (response) {
 		              alert('Unexpected Error');
-		         });
+		});
    	     
    	    $scope.receiptID = window.sessionStorage.getItem('receiptID');
    	console.log( $scope.receiptID);
@@ -270,7 +360,7 @@ $scope.result.amount = 0;
 		    exam_no:  $scope.result.CandNo,
 		    amount:   $scope.result.amount,
 		    receipt_no: $scope.result.receipt_no,
-		    receiptID:  $scope.receiptID,
+		    receiptID:  $scope.result.receiptID,
 		    confirm_type_id: $scope.result.confirm_type_id,
 		    cand_email: $scope.result.cand_email
 		};

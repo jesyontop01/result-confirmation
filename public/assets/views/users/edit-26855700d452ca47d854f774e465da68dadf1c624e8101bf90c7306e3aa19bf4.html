@@ -1,0 +1,90 @@
+<div class="container" ng-controller="UsersController" ng-init="loadUser(id)">
+
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-4">
+
+    <h3>Admin Authorisation Page</h3><hr>
+    <div>
+      <form  name="userForm"  method="put" role="form" ng-controller="UsersController" ng-submit="updateUserPermission(user)">
+
+              <table class="table table-striped ">
+
+                <tr>
+                  <td><b>Surname:</b></td>
+                  <td>{{user.surname}} </td>
+                </tr>
+
+                <tr>
+                  <td><b>Other Names:</b></td>
+                  <td> {{user.othernames}}</td> 
+                </tr>
+
+                <tr>
+                  <td><b>User's Email:</b></td>
+                  <td>{{user.email}}</td>
+                </tr>
+
+                <tr>
+                  <td><b>Your Office:</b></td>
+                  <td>{{getOfficeName(user.office_id)}}</td>
+                </tr>
+
+                <tr>
+                  <td><b>LP Number:</b></td>
+                  <td>{{user.lp_no}}</td>
+                </tr>
+
+              <tr>
+                  <td><b>Management Staff:</b></td>
+                  <td>{{user.is_management}}</td>
+              </tr>
+            </table>
+
+        <div>
+           <div class="form-group">
+             <label for="user_role">User Role</label><span><input type="checkbox"
+             name="user_role"
+             id="user_role"
+             ng-model="user.user_role"
+             class="form-control"></span>
+          </div>  
+             
+          <div class="form-group">
+             <label for="is_management">International Staff Only!</label><span><input type="checkbox"
+             name="is_management"
+             id="is_management"
+             ng-model="user.is_management"
+             class="form-control"></span>
+          </div>
+
+          <div class="form-group">
+             <label for="admin">Admin User</label><span><input type="checkbox"
+             name="admin"
+             id="admin"
+             ng-model="user.admin"
+             class="form-control"></span>
+          </div>
+
+          <div class="form-group">
+             <label for="audit_role">Audit User</label><span><input type="checkbox"
+             name="audit_role"
+             id="audit_role"
+             ng-model="user.audit_role"
+             class="form-control"></span> -->
+          </div>
+
+           
+        <button type="submit" class="btn btn-primary" ng-submit="updateUserPermission(user)">Update User's Permission</button><br/><br/><br/>
+         </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+

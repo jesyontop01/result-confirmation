@@ -1,0 +1,133 @@
+<!-- client/app/views/user_updateAccount/edit.html -->
+<div class="container">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-4">
+       <form ng-submit="updateAccount(updateAccountForm)" role="form" ng-init="loadrecord()" ng-controller="UserRegistrationsCtrl">
+
+<fieldset ng-disabled="!signedIn()">
+
+<!--   <div class="form-group">
+  <label for="surname">Title</label>
+    <select id="title" name="title" ng-model="updateAccountForm.title">
+      <option value="Mr.">Mr</option>
+      <option value="Mrs.">Mrs</option>
+      <option value="Miss.">Miss</option>
+      <option value="Dr.">Dr</option>
+      <option value="Alhaji.">Alhaji</option>
+      <option value="Rev.">Rev</option>
+    </select>
+  </div> -->
+  
+  <div class="form-group">
+  <label for="surname">Surname</label>
+    <input type="text"
+           name="surname"
+           id="surname"
+           ng-model="updateAccountForm.surname"
+           required="required"
+           value="user.surname"
+           autocomplete="user.surname" 
+           class="form-control"
+           disabled>
+  </div><br>
+
+  <div class="form-group">
+     <label for="othernames">Othernames</label>
+    <input type="text"
+           name="othernames"
+           id="othernames"
+           ng-model="updateAccountForm.othernames"
+           required="required"
+           value="user.othernames" 
+           class="form-control"
+           disabled> <br>
+  </div>
+
+    <div class="form-group">
+  <label for="lp_no">L/P No.</label>
+    <input type="text"
+           name="lp_no"
+           id="lp_no"
+           ng-model="updateAccountForm.lp_no"
+           required="required"
+           value="user.lp_no" 
+           class="form-control"
+           disabled>
+  </div>
+
+  <br> 
+<!--     <label>Waec Office: <span>*</span></label>
+      <div  ng-controller="OfficesController">
+        <div class="form-group" >
+          <select ng-model="WaecOfficeId" ng-options="y.id as y.office_name for y in offices" ng-change="GetValue(y)" class="form-control" ng-required="true">
+            <option value="">Select Office</option>
+          </select>
+        </div>
+        Selected: <p ng-bind="WaecOfficeId"></p>
+      </div> -->
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email"
+           name="email"
+           id="email"
+           ng-model="updateAccountForm.email"
+           required="required"
+           disabled 
+           value="user.email" 
+           class="form-control"
+           >
+  </div>
+
+  <div class="form-group">
+    <label for="password">Current Password</label>
+    <input type="password"
+           name="password"
+           id="password"
+           ng-model="updateAccountForm.current_password"
+           required="required"
+          value="user.password" 
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password"
+           name="password"
+           id="password"
+           ng-model="updateAccountForm.password"
+           required="required"
+          value="user.password" 
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="password_confirmation">Password confirmation</label>
+    <input type="password"
+           name="password_confirmation"
+           id="password_confirmation"
+           ng-model="updateAccountForm.password_confirmation"
+           required="required"
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="is_management">International Staff Only!</label><span><input type="checkbox"
+           name="is_management"
+           id="is_management"
+           ng-model="updateAccountForm.is_management"
+           required="required"
+           class="form-control"
+           disabled></span>
+    
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-lg">Update Profile</button><br/><br/><br/>
+  </fieldset>
+</form>
+    </div>
+    <div class="col-sm-4"></div>
+  </div>
+</div>
+

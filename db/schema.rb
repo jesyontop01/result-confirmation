@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_30_221510) do
+ActiveRecord::Schema.define(version: 2020_08_11_125158) do
 
   create_table "Grade", primary_key: "GradeType", id: :string, limit: 1, default: nil, force: :cascade do |t|
     t.string "GradeValue", limit: 2, null: false
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2020_07_30_221510) do
     t.bigint "confirm_type_id"
     t.bigint "confirm_country_id"
     t.string "receipt_no", null: false
+    t.string "WES_Ref"
     t.index ["confirm_country_id"], name: "index_confirmations_on_confirm_countries_id"
     t.index ["confirm_type_id"], name: "index_confirmations_on_confirm_type_id"
     t.index ["diet_id"], name: "index_confirmations_on_dietTbl_id"

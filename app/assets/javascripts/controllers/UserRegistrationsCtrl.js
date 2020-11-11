@@ -24,6 +24,7 @@ angular.module('verifier')
     $scope.handleRegBtnClick = function() {
      
       $scope.registerForm = {
+        title:               $scope.registrationForm.title,
         surname:             $scope.registrationForm.surname,
       othernames:            $scope.registrationForm.othernames, 
       lp_no:                  $scope.registrationForm.lp_no,
@@ -53,7 +54,7 @@ angular.module('verifier')
                 alert(response.data.error)
               }
 
-              );
+          );
 
 
           $scope.$on('auth:registration-email-error', function(ev, reason) {
@@ -91,22 +92,31 @@ $scope.updateAccountForm = {};
 
     $scope.updateAccount = function(updateAccountForm) {
 
-      $scope.updateForm = {
-        surname:             $scope.updateAccountForm.surname,
-      othernames:            $scope.updateAccountForm.othernames,
-       lp_no:                $scope.updateAccountForm.lp_no, 
-      office_id:             window.sessionStorage.getItem('officeID'), 
-      email:                 $scope.updateAccountForm.email,
-      password:              $scope.updateAccountForm.password,
-      password_confirmation: $scope.updateAccountForm.password_confirmation,
-      is_management:         $scope.updateAccountForm.is_management  
+      // $scope.updateForm = {
+      //   title:               $scope.updateAccountForm.title,
+      //   surname:             $scope.updateAccountForm.surname,
+      // othernames:            $scope.updateAccountForm.othernames,
+      //  lp_no:                $scope.updateAccountForm.lp_no, 
+      // office_id:             window.sessionStorage.getItem('officeID'), 
+      // email:                 $scope.updateAccountForm.email,
+      // current_password:      $scope.updateAccountForm.current_password,
+      // password:              $scope.updateAccountForm.password,
+      // password_confirmation: $scope.updateAccountForm.password_confirmation,
+      // is_management:         $scope.updateAccountForm.is_management  
 
+      // };
+
+      $scope.updateForm = {
+      current_password:      $scope.updateAccountForm.current_password,
+      password:              $scope.updateAccountForm.password,
+      password_confirmation: $scope.updateAccountForm.password_confirmation
+       
       };
 
        console.log($scope.updateForm);
 
         $http({
-                url: 'users/'+updateAccountForm.id+'.json', 
+                url: 'peoples/'+updateAccountForm.id+'.json', 
                 method: 'PUT',
                 data: angular.toJson($scope.updateForm) ,
           header: {
@@ -114,7 +124,11 @@ $scope.updateAccountForm = {};
           }
             }).then(function(response){
                       alert('User successfully Updated .');
-                      $location.path('/');
+                      if (response.status == 200) {
+                        Auth.logout();
+                         $location.path('/');
+                       } 
+                     
                   },function(response){
                 alert('There was a problem:' + response.status);
 

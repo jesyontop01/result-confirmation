@@ -40,7 +40,6 @@ angular.module('verifier')
 
          };
 
- 
 
         $scope.$on('devise:login', function(event, currentUser) {
             // after a login, a hard refresh, a new tab
@@ -52,5 +51,35 @@ angular.module('verifier')
             $rootScope.currentUser = currentUser;
 
         });
+
+
+    $scope.signedIn = Auth.isAuthenticated;
+    $scope.logout = Auth.logout;
+    //$scope.AuditIn = Auth.isAuthenticated && ;
+    $rootScope.currentUser={};
+    Auth.currentUser().then(function (user){
+      $rootScope.user = user;
+      $rootScope.currentUser = user;
+
+    });
+
+    $scope.$on('devise:new-registration', function (e, user){
+     
+       $scope.logout = Auth.logout;
+        $location.path("/sign_in");
+    });
+
+    $scope.$on('devise:login', function (e, currentUser){
+      //console.log(Auth._currentUser.admin);
+     $rootScope.currentUser = Auth._currentUser;
+      
+    });
+
+    $scope.$on('devise:logout', function (e, currentUser){
+      alert("You have been logged out.")
+      $rootScope.user = undefined
+      $location.path('/');
+    });
+
     
   }]);

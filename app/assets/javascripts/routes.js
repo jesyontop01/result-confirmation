@@ -54,6 +54,10 @@ angular
             templateUrl:"views/confirmations/confirmations.html",
           controller: "ConfirmationsController",
           })
+        .when('/wes_upload/:id',{
+            templateUrl:"views/confirmations/wes_connection.html",
+          controller: "ConfirmationsController",
+          })
        
         .when('/users',{
           templateUrl:"views/users/index.html",
@@ -70,6 +74,10 @@ angular
           })
         .when('/audit/new',{
             templateUrl:"views/audit/log_booklet.html",
+          controller: "AuditsController",
+          })
+        .when('/audit/edit',{
+            templateUrl:"views/audit/receipt_status.html",
           controller: "AuditsController",
           })
         .when('/audit/search',{

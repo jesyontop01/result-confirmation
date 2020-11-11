@@ -7,7 +7,20 @@
       <h3>User's Registration</h3>
 
 <form ng-submit="handleRegBtnClick()" role="form" ng-init="registrationForm = {}">
-   <div class="form-group">
+  
+<div class="form-group">
+  <label for="surname">Title</label>
+    <select id="title" name="title" ng-model="registrationForm.title">
+      <option value="Mr.">Mr</option>
+      <option value="Mrs.">Mrs</option>
+      <option value="Miss.">Miss</option>
+      <option value="Dr.">Dr</option>
+      <option value="Alhaji.">Alhaji</option>
+      <option value="Rev.">Rev</option>
+    </select>
+  </div>
+
+  <div class="form-group">
   <label for="surname">Surname</label>
     <input type="text"
            name="surname"
@@ -83,7 +96,6 @@
            name="is_management"
            id="is_management"
            ng-model="registrationForm.is_management"
-           required="required"
            class="form-control">
   </div>
 

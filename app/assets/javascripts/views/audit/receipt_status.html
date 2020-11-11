@@ -1,0 +1,61 @@
+
+<div class="container" >
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+    <h2>Receipt Status Correction For Bad Receipt Leaflet</h2><br>
+
+      <div class="row">
+
+      <form name="receiptStatusForm" ng-submit="receiptStatus(result);" method="post" accept-charset="UTF-8" ng-controller="AuditsController" >
+          
+       
+        <div id="main">
+                  
+
+             <table>
+
+                  <tbody>
+                        <tr><td colspan="2">
+                      <hr>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Receipt Number:</strong></label>&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.receiptNo" placeholder="Receipt Number" class="form-control" required/>
+                      </td></tr>&nbsp;&nbsp;
+                      <tr><td>
+                        <br><br>
+
+                      <tr><td><label ><strong>Change Status:</strong></label>&nbsp;&nbsp;
+                      </td><td>
+                        <select id="status" name="status" ng-model="result.status" class="form-control" required>
+                            <option value="CANCELLED">Cancelled</option>
+                          </select>
+                      </td></tr>
+
+                  </tbody>
+              </table>
+
+
+                  
+
+        </div>
+
+          <div class="footer">
+            <br>
+                <input name="commit" type="submit" value="Correct Receipt Status" ng-disabled="receiptStatusForm.$invalid" class="btn btn-primary">
+            <br>
+            <br/>
+
+            
+          </div>
+        </div>
+      </form> 
+
+
+
+
+              </div>
+    </div>
+  </div>
+</div>

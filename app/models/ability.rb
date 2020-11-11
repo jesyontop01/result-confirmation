@@ -13,7 +13,7 @@ class Ability
         can :read, Confirmation
         can :manage, :User if user.admin?
       elsif user.user_role?
-        can :manage, Confirmation, user_id: user.id
+        can :manage, Confirmation#, user_id: user.id
         can :manage, Exam, user_id: user.id 
       else
         can :read, :all

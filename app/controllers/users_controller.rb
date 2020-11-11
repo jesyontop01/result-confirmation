@@ -57,6 +57,7 @@ class UsersController < ApplicationController
   end
 
   def permitted_users
+   
   #Performing AND operation
     #User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
     @signatoryArray = [] 
@@ -65,6 +66,17 @@ class UsersController < ApplicationController
         user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames)
         @signatoryArray[1] = user1
         aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => false))
+             # if aRStaff.timedout?(Time.now)
+             #     aRStaff.update(:is_signedIn => 0 )
+             #     aRStaff.update(:logged_in => true )
+             #     sign_out(aRStaff)
+             #   return false
+             # else
+             #   user2 = User.where(id: aRStaff).pluck(:title, :surname, :othernames)
+             #   @signatoryArray[0] = user2
+
+             #   return true
+             # end
         user2 = User.where(id: aRStaff).pluck(:title, :surname, :othernames)
         @signatoryArray[0] = user2
 

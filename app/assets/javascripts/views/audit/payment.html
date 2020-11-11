@@ -51,9 +51,26 @@
                       </td><td><input  size="30" type="text" ng-model="result.amount" placeholder="0.00"  required disabled="true"/>
                       </td></tr>
 
-                      <tr><td><label ><strong>Receipt No:</strong></label>&nbsp;&nbsp;
+<!--                       <tr><td><label ><strong>Receipt No:</strong></label>&nbsp;&nbsp;
                       </td><td><input  size="30" type="text" ng-model="result.receipt_no" ng-init='GetNextReceiptNo()' value="result.receipt_no" disabled="true" required="true" > 
-                      </td></tr>
+                      <button ng-click="GetNextReceiptNo()">Get Current Receipt</button></td></tr> -->
+
+                    <tr>   <td> <label ><strong>Payment Receipt No:</strong></label>&nbsp;</td>
+                     <td><input  size="30" type="text" ng-model="result.receipt_no" placeholder="Receipt No"  ng-blur="confirmReceipt(result.receipt_no)" required/>
+                        <span style="color:Blue">
+                           <div ng-if="receiptConfirm === true">
+                                <input type="checkbox" ng-model="receiptConfirm" disabled="true">
+                              <label style="color:Blue"> Receipt is valid</label><br>
+                              </div>
+
+                              <div ng-if="receiptConfirm === false">
+                                <input type="checkbox" ng-model="receiptConfirm" disabled="true">
+                              <label style="color:Red"> Receipt is invalid</label><br>
+                            </div>
+
+                        </span>
+                  </td>
+                    </tr>
 
                       <tr><td><label ><strong>Destination Email:</strong></label>&nbsp;&nbsp;
                       </td><td><input  size="30" type="text" value="NULL" ng-model="result.cand_email" placeholder="Candidate Email Address" >(Optional)

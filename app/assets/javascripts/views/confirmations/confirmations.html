@@ -13,7 +13,7 @@
       <th>Candidate No</th>
       <th>Reference No</th>
       <th>Receipt No</th>
-      <th>Candidate Add.</th>
+      <th>WES Reference</th>
       <th>Destination Title</th>
       <th>Destination Add.1</th>
       <th>Destination Location</th>
@@ -29,13 +29,15 @@
       <td>{{confirm.exam_no}}</td>
       <td>{{confirm.ref_no}}</td>
       <td>{{confirm.receipt_no}}</td>
-      <td>{{confirm.Cand_address}}</td>
+      <td>{{confirm.WES_Ref}}</td>
       <td>{{confirm.dest_title}}</td>
       <td>{{confirm.dest_address1}}</td>
       <td>{{confirm.dest_location}}</td>
       <td>{{confirm.updated_at}}</td>
       <td><button ng-click="clickedEdit(confirm)" type="button" class="btn btn-primary"  data-toggle="modal" data-target="#myModalEdit">Edit</button></td>
       <td><button ng-click="clickConfirm(confirm)" type="button" class="btn btn-info" data-toggle="modal" data-target="#myModalDetails">Detail</button></td>
+      <td><button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="printConfirmation1(confirm)">Print</button></td>
+      <td><button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="ConnecttoWES(confirm)">WES</button></td>
     </tr>
   </tbody>
 </table>
@@ -117,7 +119,7 @@
 
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="printConfirmation(selectConfirm);">Print Confirmation</button>
+        
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
       </div>
 

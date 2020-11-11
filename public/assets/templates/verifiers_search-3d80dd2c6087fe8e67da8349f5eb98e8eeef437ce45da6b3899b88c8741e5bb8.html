@@ -1,0 +1,110 @@
+
+<header >
+  <h1 class="h2">Online Confirmation</h1>
+</header>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+				<div class="container" ng-controller="ExamDietController">
+				<div class="form-group">
+					<select ng-model="ExamDietId" ng-options="d.id as d.DietName for d in diets" ng-change="GetValue(d)" class="form-field input-lg">
+						<option value="">Select Exam Diet</option>
+					</select>
+				</div>
+				Selected: <p ng-bind="ExamDietId"></p>
+			</div>
+		</div> 
+		
+		
+			<div class="col-md-4">
+				<div class="container" ng-controller="ExamYearController">
+				<div class="form-group">
+					<select ng-model="ExamYearId" ng-options="y.id as y.YearName for y in years" ng-change="GetValue(y)" class="form-field input-lg">
+						<option value="">Select Exam Year</option>
+					</select>
+				</div>
+				Selected: <p ng-bind="ExamYearId"></p>
+			</div>
+			
+		</div>
+		
+	</div>
+</div>
+
+
+<div ng-controller="VerifiersController">
+<section class="search-form">
+		
+  <form>
+    <label for="search.keywords" class="sr-only">Keywords</label>
+    <input type="text" 
+           name="keywords" 
+           class="form-control input-lg"
+           placeholder="Candidate Name or Serial No"
+           ng-change="search(keywords, ExamDietId, ExamYearId)"
+           ng-model="keywords">
+
+    <span class="input-group-btn">
+    	<button class="btn btn-primary btn-lg" ng-click ="search(keywords, ExamDietId, ExamYearId)">"Find Candidate"</button></span>
+  </form>
+</section>
+<aside class="sr-only loading-progress">
+  <span ng-if="loading" class="loading">Loading</span>
+  <span ng-if="!loading" class="not-loading">Done Loading</span>
+</aside>
+
+ <section class="search-results" ng-if="results.length > 0">
+  <header>
+    <h1 class="h3">Results</h1>
+  </header>
+
+  <nav>
+<ul class="pager">
+<li class="previous">
+<a href="" ng-click="previousPage()">&larr; Previous</a>
+</li>
+<li class="next">
+<a href="" ng-click="nextPage()">Next &rarr;</a>
+</li>
+</ul>
+</nav>
+
+<section>
+	<table class="table table_striped">
+		<thead>
+			<tr>
+				<th>Candidate Exam_no</th>
+				<th>Candidate Name</th>
+				<th>Results</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="result in results" >
+			<tr>
+				<td>{{result.CandNo}} </td>
+				<td>{{result.CandName}} </td>
+				<td> </td>
+				<td><div class="pull-right">
+ 					<button class="btn btn-small btn-primary" ng-click="viewDetails(result)"> View Details…</button>
+ 				</div></td>
+			</tr>
+		</tbody>
+		
+	</table>
+</section>
+<nav>
+<ul class="pager">
+<li class="previous">
+<a href="" ng-click="previousPage()">&larr; Previous</a>
+</li>
+<li class="next">
+<a href="" ng-click="nextPage()">Next &rarr;</a>
+</li>
+</ul>
+</nav>
+</section>
+
+</div>
+
+</div>
+

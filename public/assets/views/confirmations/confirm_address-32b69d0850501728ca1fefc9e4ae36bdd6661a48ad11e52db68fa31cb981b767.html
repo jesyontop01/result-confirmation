@@ -1,0 +1,121 @@
+
+<div class="container" >
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+    <h2>Add Receipient Address Details</h2><br>
+
+      <div class="row">
+
+      <form name="createConfirmForm" ng-submit="createConfirm(result);" method="post" accept-charset="UTF-8" ng-controller="ConfirmationsController" ng-init="loadResultDetail(CandNo)">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Destination Address</h4>
+        </div>
+
+
+        <div class="modal-body">             
+        
+        <span class="current-exam">
+                 
+          Working Exam: <span style="font-size:120%; color:green;"> <strong>{{result.ExamDiet}} {{result.ExamYear}} </strong></span> 
+                
+                 
+        </span>
+          
+       
+        <div id="main">
+                  <h4>To Send A Confirmation, Please fill out the following:</h4>  
+
+      <!--[form:waec_confirmation]-->
+
+             <table>
+
+                  <tbody>
+                        <tr><td colspan="2">
+                      CANDIDATES CORRESPONDENCE<hr>
+                      </td></tr>
+                      <tr><td><label ><strong>Exam no:</strong></label>&nbsp;
+                      </td><td> <font color="red"><input type="text" ng-model="result.CandNo" value="result.CandNo" disabled="true"/></font> 
+                      </td></tr>
+
+                      <tr><td><label ><strong>Candidate's Address:</strong></label>&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.Cand_address" placeholder="Candidate Address" required/>
+                      </td></tr>
+
+                        <tr>   <td> <label ><strong>Payment Receipt No:</strong></label>&nbsp;</td>
+                     <td><input  size="30" type="text" ng-model="result.receipt_no" placeholder="Receipt No"  ng-blur="confirmReceipt(result.receipt_no)" required/>
+                        <span style="color:Blue">
+                           <div ng-if="receiptConfirm === true">
+                                <input type="checkbox" ng-model="receiptConfirm" disabled="true">
+                              <label style="color:Blue"> Receipt is valid</label><br>
+                              </div>
+
+                              <div ng-if="receiptConfirm === false">
+                                <input type="checkbox" ng-model="receiptConfirm" disabled="true">
+                              <label style="color:Red"> Receipt is invalid</label><br>
+                            </div>
+
+                        </span>
+                  </td>
+                    </tr>
+
+                      <tr><td colspan="2">
+                      <br><br>
+                      DESTINATION CORRESPONDENCE<hr>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Confirmation Type:</strong></label>&nbsp;&nbsp;
+                       </td><td><select data-ng-model="result.confirm_type_id" data-ng-options="c.id as c.typeName for c in confirmType" data-ng-change="GetCountries()" ng-disabled="!receiptConfirm">
+                        <option value="" >-- Select Confirmation Type --</option>
+                      </select></td></tr>
+
+                      <tr><td><label ><strong>Destination Title:</strong></label>&nbsp;&nbsp;
+                      </td><td><input size="25" type="text" ng-model="result.dest_title" placeholder="Title of the Recipient" ng-disabled="!receiptConfirm" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Address Line1:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.dest_address1" placeholder="Destination Address1" ng-disabled="!receiptConfirm" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Address Line2:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.dest_address2" placeholder="Destination Address2" ng-disabled="!receiptConfirm"> (Optional)
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Location:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_location" placeholder="Destination Location" ng-disabled="!receiptConfirm" required/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Confirmation Country:</strong></label>&nbsp;&nbsp;
+                      </td><td><select data-ng-model="result.confirm_country_id" data-ng-disabled="!countries" data-ng-options="s.id as s.countryName for s in countries" required>
+                          <option value="">-- Select Country --</option>
+                      </select></td></tr>
+
+                      <tr><td><label ><strong>Destination Email:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_email" placeholder="Destination Email Address" ng-disabled="!receiptConfirm">(Optional)
+                      </td></tr>
+                  </tbody>
+              </table>
+                  
+
+        </div>
+
+          <div class="footer">
+            <br>
+                <input name="commit" type="submit" value="Create Confirmation" ng-disabled="createConfirmForm.$invalid" class="btn btn-primary">
+            <br>
+            <br/>
+
+            
+          </div>
+        </div>
+      </form> 
+
+
+
+
+              </div>
+    </div>
+  </div>
+</div>

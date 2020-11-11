@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
           has_many :assignments  
           has_many :roles, through: :assignments
 
-
+#before_save :activate_user_or_timedout
 
       def role?(role)  
         roles.any? { |r| r.name.underscore.to_sym == role }  
@@ -45,7 +45,21 @@ end
   end
 
   # end Devise overrides
-
+ def activate_user_or_timedout
+    if self.is_signedIn == 3
+   
+     if self.timedout?(Time.now.localtime)
+         current_user.update(:is_signedIn => 0 )
+         sign_out(current_user)
+       return false
+     else
+       return true
+     end
+   
+    else
+     false
+    end
+   end
    
 
 end

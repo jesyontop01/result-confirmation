@@ -33,5 +33,6 @@ asset 'angular-ui-grid'
 asset 'angular-data-grid'
 asset 'angular-loading-bar'
 asset 'angular-datatables'
+asset 'ng-file-upload'
 
 

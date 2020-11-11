@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :peoples
   resources :payment_search
   get 'payment_search/index'
   get 'payment_search/show'
@@ -10,6 +11,13 @@ Rails.application.routes.draw do
   resources :assignments
   resources :roles
   resources :receipt_statuses
+
+   resources :receipt_statuses do
+         collection do
+          put :receipt_correction
+        end
+    end
+
   resources :receipt_booklets
   get 'confirm_countries/index'
   get 'confirm_countries/show'
@@ -39,11 +47,12 @@ Rails.application.routes.draw do
 
  devise_for :users, controllers: {
      registrations: 'users/registrations',
-      sessions: 'users/sessions'
+      sessions: 'users/sessions',
+      passwords: 'users/passwords'
   }
   root 'dashboard#index'
   #root 'api_users#new'
-  get 'confirmations/index' => 'exams/index'
+  #get 'confirmations/index' => 'exams/index'
 
   resource :api_users
 
@@ -61,7 +70,7 @@ Rails.application.routes.draw do
           get :confirmations
         end
     end
-  get "*unmatched_route" => "exams#index"
+  #get "*unmatched_route" => "exams#index"
 
   get 'account_activation/new'
 

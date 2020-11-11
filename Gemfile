@@ -68,6 +68,7 @@ gem 'mini_magick', '~> 4.8'
 gem 'carrierwave'
 gem 'carrierwave-base64'
 gem "paperclip"
+gem 'angularjs-file-upload-rails'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

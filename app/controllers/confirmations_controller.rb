@@ -1,7 +1,8 @@
 class ConfirmationsController < ApplicationController
 	before_action :authenticate_user!
-	before_action :set_confirmation, only: [:show, :edit, :update, :destroy]
+	#before_action :set_confirmation, only: [:show, :edit, :update, :destroy]
 		load_and_authorize_resource
+		
 
 	def index
 
@@ -15,7 +16,7 @@ class ConfirmationsController < ApplicationController
 				  SELECT  
 					a.[id] ,a.[user_id] ,b.[DietName], c.[YearName], a.[ref_no],a.[exam_no]
 			      ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
-			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no]
+			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref]
 				  FROM [verifierApp].[dbo].[confirmations] a
 				  inner join [verifierApp].[dbo].[Diets] b
 				  on a.diet_id = b.id
@@ -23,8 +24,7 @@ class ConfirmationsController < ApplicationController
 				  on a.year_id = c.id
 				  inner join [verifierApp].[dbo].[offices] d
 				  on a.office_id = d.id
-				  inner join [verifierApp].[dbo].[confirm_countries] f
-				  on a.confirm_country_id = f.id
+				  order by a.[created_at] DESC
 
 			  SQL
 
@@ -41,7 +41,7 @@ class ConfirmationsController < ApplicationController
 				  SELECT  
 					a.[id] ,a.[user_id] ,b.[DietName], c.[YearName], a.[ref_no],a.[exam_no]
 			      ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
-			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no]
+			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref]
 				  FROM [verifierApp].[dbo].[confirmations] a
 				  inner join [verifierApp].[dbo].[Diets] b
 				  on a.diet_id = b.id
@@ -50,6 +50,7 @@ class ConfirmationsController < ApplicationController
 				  inner join [verifierApp].[dbo].[offices] d
 				  on a.office_id = d.id
 				  where a.office_id = '#{params[:office_id]}'
+				  order by a.[created_at] DESC
 
 			  SQL
 
@@ -99,17 +100,17 @@ class ConfirmationsController < ApplicationController
 				        @global_table = WaecSchoolExam.create(confirmation_id: @confirm.id)
 				    end    
 
-          			 # if params[:receiptID] 
+          			 if params[:receiptID] 
 
-          			 # 	params[:office_id] = current_user.office_id
+          			 	params[:office_id] = current_user.office_id
 
-			           # 	@receipt_status = ReceiptStatus.find_by(:id => params[:receiptID])
+			           	@receipt_status = ReceiptStatus.find_by(:id => params[:receiptID])
 
+			           	@receipt_status.update(confirmation_id: @confirm.id )
+			            @receipt_status.update(status: 'USED')
+			           
 
-			           #  @receipt_status.update(status: 'USED')
-			           #  @receipt_status.update(confirmation_id: @confirm.id )
-
-          			 # end
+          			 end
 
           			 if params[:paymentID] 
 
@@ -162,6 +163,31 @@ class ConfirmationsController < ApplicationController
 	#end
 
 	def show
+
+		#if params[:id]
+
+			sql = <<-SQL 
+
+				  SELECT  
+					a.[id] ,a.[user_id] ,b.[DietName], c.[YearName], a.[ref_no],a.[exam_no]
+			      ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
+			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref]
+				  FROM [verifierApp].[dbo].[confirmations] a
+				  inner join [verifierApp].[dbo].[Diets] b
+				  on a.diet_id = b.id
+				  inner join [verifierApp].[dbo].[Years] c
+				  on a.year_id = c.id
+				  inner join [verifierApp].[dbo].[offices] d
+				  on a.office_id = d.id
+				  where a.[id] = '#{params[:id]}'
+				  order by a.[created_at] DESC
+
+			  SQL
+
+            @confirm = ActiveRecord::Base.connection.exec_query(sql)
+			#binding.pry
+		#end
+		
 		respond_to do |format|
           format.html {}
           format.json { render json: @confirm }
@@ -197,6 +223,7 @@ class ConfirmationsController < ApplicationController
   # PATCH/PUT /documents/1
   # PATCH/PUT /documents/1.json
   def update
+  	 @confirm = Confirmation.find(params[:id]) 
     respond_to do |format|
       if @confirm.update(confirmation_params)
        
@@ -211,6 +238,7 @@ class ConfirmationsController < ApplicationController
   # DELETE /documents/1
   # DELETE /documents/1.json
   def destroy
+  	 @confirm = Confirmation.find(params[:id]) 
     @confirm.destroy
     respond_to do |format|
       format.html { redirect_to documents_url, notice: 'Confirmation was successfully destroyed.' }
@@ -228,7 +256,7 @@ class ConfirmationsController < ApplicationController
 	def confirmation_params
 		params.require(:confirmation).permit(:user_id,:diet_id,:year_id,:ref_no,:exam_no,:Cand_address,:dest_title,
 						:dest_address1,:dest_address2,:dest_location,:dest_email, :confirm_type_id, :confirm_country_id,
-						:receipt_no)
+						:receipt_no, :WES_Ref)
 	end
 
 	protected

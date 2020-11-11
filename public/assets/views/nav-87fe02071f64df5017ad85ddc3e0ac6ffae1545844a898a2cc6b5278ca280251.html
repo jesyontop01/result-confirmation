@@ -1,0 +1,45 @@
+      <div class="navbar navbar-inverse" role="navigation">
+          <div class="navbar-header">
+              <a class="navbar-brand" href="#/">WAEC Confirmation Of Result</a>
+          </div>
+          <ul class="nav navbar-nav">
+              <li><a href="#/home/">Home</a></li>
+              <li><a href="#/about/">About</a></li>               
+              <li ng-hide="signedIn()"><a href="#/sign_in">Sign in</a></li> 
+              <li ng-show="signedIn()"><a href="#/users/{{user.id}}">{{"Welcome! " + user.surname + " "+ user.othernames}}</a></li>
+
+              <li ng-show="signedIn()" class="dropdown">
+                <a class="dropdown-toggle"  data-toggle="dropdown">Account
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li ng-show="signedIn()"><a href="#/account_update" ng-click="clickedEdit(user)">Update Profile</a></li>
+                    <li><a href="#/users">Users</a></li>
+                    <li><a href="#/">JavaScript</a></li>
+                    <li class="divider"></li>
+                    <li ng-show="signedIn()"><a ng-click="logout()">Log Out</a></li>
+                  </ul>
+              </li> 
+
+              <li ng-show="signedIn()" class="dropdown">
+                <a class="dropdown-toggle"  data-toggle="dropdown">Verifier
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#/search">Search Verifier</a></li>
+                    <li><a href="#/confirmations">Confirmations List</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#/verifer/payments">payments Search</a></li>
+                 </ul>
+              </li>
+
+              <li ng-show="signedIn()" class="dropdown">
+                <a class="dropdown-toggle"  data-toggle="dropdown">Audit
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#/audit/new">Log Receipt Booklet</a></li>
+                    <li><a href="#/audit/search">Confirm Search</a></li>
+                    <li class="divider"></li>
+                 </ul>
+              </li>
+
+          </ul>
+      </div>

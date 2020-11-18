@@ -1,6 +1,6 @@
 angular.module('verifier')
-	.controller("ConfirmationsController", [ "$scope", "$http", "$location", "crudService",'$window', "$routeParams", 'ExamDietService',"ConfirmationService", "fileUpload", "ResultService", 
-		function ($scope, $http, $location, crudService,$window, $routeParams, ExamDietService, ConfirmationService, fileUpload, ResultService) {
+	.controller("ConfirmationsController", [ "$scope", "$http", "$location", "crudService",'$window', "$routeParams", 'ExamDietService',"ConfirmationService", "fileUpload", "ResultService", "$route",
+		function ($scope, $http, $location, crudService,$window, $routeParams, ExamDietService, ConfirmationService, fileUpload, ResultService, $route) {
 
 
 $scope.results = {};
@@ -227,7 +227,7 @@ debugger
 		  	 if(response.data.auth_token) {
 			    window.sessionStorage.setItem('token', JSON.stringify(response.data.auth_token));
 
-			    console.log(window.sessionStorage.getItem('token'));
+			    //console.log(window.sessionStorage.getItem('token'));
 			  }
   
 
@@ -766,16 +766,44 @@ $scope.selectConfirm = selectConfirm;
 	let base64Pdf;
 
 	$scope.signatory = [];
+	$scope.second_signatory = [];
 	$http.get("/users/permitted_users").then(function(response){
 		// body...
+		debugger
 		$scope.signatory  = response.data;
-		console.log($scope.signatory);
-		console.log($scope.signatory.length);
+		//console.log($scope.signatory);
 
-		if( ($scope.signatory[0][0]== null) || ($scope.signatory[1][0] == null)) {
-			alert("Sorry!, You Can Not Print Right Now, You Need A Second Signatory Or An AR To Effect Printing.");
+
+		if( $window.localStorage.getItem('signatory2') == null) {
+		//if( ($scope.signatory[0]== null) || ($scope.signatory[1] == null)) {
+			if (confirm("Sorry!, You Can Not Print Right Now, You Need A Second Signatory Or An AR To Effect Printing. \n Click OK to continue or CANCEL to abort") == true) {
+					$window.open('#/log_in');
+				}
+			else{
+				alert('Operation cancelled');
+				//$route.reload(); or 
+				window.location.reload();
+					$location.path('/confirmations');
+			}
 		} 
 		else {
+
+				
+				$scope.second_signatory = [];
+				$scope.second_signatory = JSON.parse($window.localStorage.getItem('signatory2'));
+				//console.log($scope.second_signatory);
+				
+				if ( $scope.signatory[0]== null) {
+					    $scope.signatory[0] = $scope.second_signatory[0];
+					    //console.log($scope.signatory[0]);
+					     
+					
+				} else {
+					$scope.signatory[1] = $scope.second_signatory[1];
+					//console.log($scope.signatory[1]);
+				}
+
+				console.log($scope.signatory);
 
 			$scope.$watch('selectConfirm', function(newValue, oldValue){
 	
@@ -1311,9 +1339,9 @@ $scope.selectConfirm = selectConfirm;
 					// 	$scope.signatory = obj.retSignatories;
 					// };
 		
-					console.log(signatory);
+					//console.log(signatory);
 		
-					console.log($scope.resultDetail.CentreName);
+					//console.log($scope.resultDetail.CentreName);
 		
 
 		
@@ -1337,12 +1365,12 @@ $scope.selectConfirm = selectConfirm;
 		alert("Error getting the signatories");
 	});
 
-	console.log($scope.signatory.length);
+	//console.log($scope.signatory.length);
 
 	
 	};
 
-	console.log($scope.binaryData);
+	//console.log($scope.binaryData);
 
 
 
@@ -1355,16 +1383,44 @@ $scope.selectConfirm = selectConfirm;
 	let base64Pdf;
 
 	$scope.signatory = [];
+	$scope.second_signatory = [];
 	$http.get("/users/permitted_users").then(function(response){
 		// body...
+		debugger
 		$scope.signatory  = response.data;
-		console.log($scope.signatory);
-		console.log($scope.signatory.length);
+		//console.log($scope.signatory);
 
-		if( ($scope.signatory[0][0]== null) || ($scope.signatory[1][0] == null)) {
-			alert("Sorry!, You Can Not Print Right Now, You Need A Second Signatory Or An AR To Effect Printing.");
+
+		if( $window.localStorage.getItem('signatory2') == null) {
+		//if( ($scope.signatory[0]== null) || ($scope.signatory[1] == null)) {
+			if (confirm("Sorry!, You Can Not Print Right Now, You Need A Second Signatory Or An AR To Effect Printing. \n Click OK to continue or CANCEL to abort") == true) {
+					$window.open('#/log_in');
+				}
+			else{
+				alert('Operation cancelled');
+				//$route.reload(); or 
+				window.location.reload();
+					$location.path('/confirmations');
+			}
 		} 
 		else {
+
+				
+				$scope.second_signatory = [];
+				$scope.second_signatory = JSON.parse($window.localStorage.getItem('signatory2'));
+				//console.log($scope.second_signatory);
+				
+				if ( $scope.signatory[0]== null) {
+					    $scope.signatory[0] = $scope.second_signatory[0];
+					    //console.log($scope.signatory[0]);
+					     
+					
+				} else {
+					$scope.signatory[1] = $scope.second_signatory[1];
+					//console.log($scope.signatory[1]);
+				}
+
+				console.log($scope.signatory);
 
 			$scope.$watch('selectConfirm', function(newValue, oldValue){
 	

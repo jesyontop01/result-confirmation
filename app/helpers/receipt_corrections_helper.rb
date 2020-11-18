@@ -1,0 +1,2 @@
+module ReceiptCorrectionsHelper
+end

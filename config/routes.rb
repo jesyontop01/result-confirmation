@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :receipt_corrections
   resources :peoples
   resources :payment_search
   get 'payment_search/index'
@@ -14,7 +15,9 @@ Rails.application.routes.draw do
 
    resources :receipt_statuses do
          collection do
-          put :receipt_correction
+          get :receipt_correction
+          patch 'receipt_correction/:receiptNo', :to => 'receipt_statuses#receipt_correction'
+
         end
     end
 
@@ -62,6 +65,7 @@ Rails.application.routes.draw do
   resources :users do
     collection do
       get :permitted_users
+      get :second_signatory
     end
   end
   resources :verifiers

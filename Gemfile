@@ -69,6 +69,7 @@ gem 'carrierwave'
 gem 'carrierwave-base64'
 gem "paperclip"
 gem 'angularjs-file-upload-rails'
+gem 'jwt'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

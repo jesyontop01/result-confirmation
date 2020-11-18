@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Receipt status:</strong>
+  <%= @receipt_correction.receipt_status %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @receipt_correction.user %>
+</p>
+
+<%= link_to 'Edit', edit_receipt_correction_path(@receipt_correction) %> |
+<%= link_to 'Back', receipt_corrections_path %>

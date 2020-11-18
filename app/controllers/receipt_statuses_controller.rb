@@ -89,7 +89,7 @@ class ReceiptStatusesController < ApplicationController
             @receipt_status = ActiveRecord::Base.connection.exec_query(sql)
       end
 
-binding.pry
+#binding.pry
 
     render json: @receipt_status
   end
@@ -153,7 +153,6 @@ binding.pry
 
             @receipt_status = ReceiptStatus.find(params[:id])
       end
-binding.pry
     respond_to do |format|
       if @receipt_status.update(:status => params[:status])
         format.html { redirect_to @receipt_status, notice: 'Receipt status was successfully updated.' }
@@ -178,7 +177,7 @@ binding.pry
 
   def receipt_correction
     
-            params[:office_id] = current_user.office_id
+          params[:office_id] = current_user.office_id
 
          if params[:receipt_no]
            params[:receiptNo] =  params[:receipt_no]
@@ -200,22 +199,28 @@ binding.pry
                       where b.status = 'open' AND b.office_id = '#{params[:office_id]}' AND a.receiptNo = '#{params[:receiptNo]}'
             SQL
 
-            @receipt_status = ActiveRecord::Base.connection.exec_query(sql)
-            else
-
-            @receipt_status = ReceiptStatus.find(params[:id])
+              receipt = ActiveRecord::Base.connection.exec_query(sql).as_json
+             
             end
+            
+             params[:id] = receipt[0]["id"]
+             #binding.pry
+            receipt_status = ReceiptStatus.find(params[:id])
 
-    @receipt_status.update(:status => params[:status])
-    respond_to do |format|
-      if @receipt_status.save
-        format.html { redirect_to @receipt_status, notice: 'Receipt status was successfully updated.' }
-        format.json { render json: @receipt_status }
-      else
-        format.html { render :edit }
-        format.json { render json: @receipt_status.errors, status: :unprocessable_entity }
-      end
-    end
+            receipt_status.update(:status => params[:status])
+
+
+            render json: receipt_status.as_json, :status => 200
+
+    # respond_to do |format|
+    #   if @receipt_status.save
+    #     format.html { redirect_to @receipt_status, notice: 'Receipt status was successfully updated.' }
+    #     format.json { render json: receipt_status }
+    #   else
+    #     format.html { render :edit }
+    #     format.json { render json: @receipt_status.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   private

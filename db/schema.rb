@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_11_125158) do
+ActiveRecord::Schema.define(version: 2020_11_11_104752) do
 
   create_table "Grade", primary_key: "GradeType", id: :string, limit: 1, default: nil, force: :cascade do |t|
     t.string "GradeValue", limit: 2, null: false
@@ -142,6 +142,15 @@ ActiveRecord::Schema.define(version: 2020_08_11_125158) do
     t.datetime "updated_at", null: false
     t.index ["office_id"], name: "index_receipt_booklets_on_office_id"
     t.index ["user_id"], name: "index_receipt_booklets_on_user_id"
+  end
+
+  create_table "receipt_corrections", force: :cascade do |t|
+    t.bigint "receipt_status_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["receipt_status_id"], name: "index_receipt_corrections_on_receipt_status_id"
+    t.index ["user_id"], name: "index_receipt_corrections_on_user_id"
   end
 
   create_table "receipt_statuses", force: :cascade do |t|
@@ -327,6 +336,8 @@ ActiveRecord::Schema.define(version: 2020_08_11_125158) do
   add_foreign_key "payments", "years"
   add_foreign_key "receipt_booklets", "offices"
   add_foreign_key "receipt_booklets", "users"
+  add_foreign_key "receipt_corrections", "receipt_statuses"
+  add_foreign_key "receipt_corrections", "users"
   add_foreign_key "receipt_statuses", "confirmations"
   add_foreign_key "receipt_statuses", "receipt_booklets"
   add_foreign_key "searches", "confirm_types"

@@ -397,6 +397,7 @@ DEPENDENCIES
   hirb
   jbuilder (~> 2.5)
   jquery-rails
+  jwt
   mini_magick (~> 4.8)
   omniauth-facebook
   omniauth-github

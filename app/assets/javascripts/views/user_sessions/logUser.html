@@ -1,0 +1,38 @@
+<!-- client/app/views/user_sessions/new.html -->
+
+<div class="alert alert-danger" role="alert" ng-show="error">
+  {{error}}
+</div>
+
+<div class="container">
+  <div class="row">
+     <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+
+<form ng-submit="submitLogUser(logUserForm)" role="form" ng-init="logUserForm = {}">
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email"
+           name="email"
+           id="email"
+           ng-model="logUserForm.email"
+           required="required"
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password"
+           name="password"
+           id="password"
+           ng-model="logUserForm.password"
+           required="required"
+           class="form-control">
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-lg">Sign in</button>
+</form>
+</div>
+</div>
+</div>
+</div>

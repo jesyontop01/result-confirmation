@@ -1,0 +1,27 @@
+<%= form_with(model: receipt_correction, local: true) do |form| %>
+  <% if receipt_correction.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(receipt_correction.errors.count, "error") %> prohibited this receipt_correction from being saved:</h2>
+
+      <ul>
+      <% receipt_correction.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :receipt_status_id %>
+    <%= form.text_field :receipt_status_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

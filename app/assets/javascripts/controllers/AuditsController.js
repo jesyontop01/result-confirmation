@@ -286,35 +286,39 @@ $scope.result.amount = 0;
 		};
 
 
-	//receiptStatus(result)
+	//Updating Badly used or Mutilated Receipt number
+
 	$scope.receiptStatus = function(result) {
 			 	// body...
 			 	//$scope.result.receipt_no = receipt_no;
 			 	//console.log(receipt_no);
 
 				   $scope.badReceipt = {
-		    			office_id: window.sessionStorage.getItem('officeID'),
 		    			receiptNo: result.receiptNo,
 						status: result.status 
 		    		};
 
 		    		console.log($scope.badReceipt);
 		    		$http({
-							method: 'PUT',
-							url: '/receipt_statuses/receipt_correction.json',
-							data: angular.toJson( $scope.badReceipt) ,
+							method: 'PATCH',
+							url: '/receipt_statuses/receipt_correction/'+ result.receiptNo+ '.json',
+							data: {status: result.status },
 							header: {
 										'Content_Type' :  'application/json'
 									}
 						}) 
 		    		.then(function(response) {
 			 		// body...
-			 		$scope.receipt = response.data[0];
-			 		//console.log(response.data);
+			 		$scope.receipt = response.data;
+			 		console.log(response.data);
 			 		//debugger
-			 		if ($scope.receipt.status === 200) {
+			 		if ($scope.receipt.status === "CANCELLED") {
 			 		//debugger	
 			alert('Receipt Status corrected successfully');
+					
+		    			$scope.result = {};
+						$scope.result.receiptNo = "" ;
+		    
 			 		//debugger
 			 		$scope.badReceipt = {};
 			 		}

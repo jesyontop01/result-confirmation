@@ -18,6 +18,10 @@ angular
           templateUrl: 'views/user_sessions/new.html',
           controller: 'UserSessionsCtrl'
         })
+      .when('/log_in', {
+          templateUrl: 'views/user_sessions/logUser.html',
+          controller: 'UserSessionsCtrl'
+        })
 
         .when('/sign_Up', {
           templateUrl: 'views/user_registrations/new.html',

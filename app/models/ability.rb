@@ -7,14 +7,39 @@ class Ability
     # Define abilities for the passed in user here. For example:
     #
       user ||= User.new # guest user (not logged in)
-      if user.admin?
+      # if user.admin?
+      #   can :manage, :all
+      # elsif user.audit_role?
+      #   can :read, Confirmation
+      #   can :manage, :User if user.admin?
+      # elsif user.user_role?
+      #   can :manage, Confirmation#, user_id: user.id
+      #   can :manage, Exam, user_id: user.id 
+      # else
+      #   can :read, :all
+      # end
+      if user.role? :admin
         can :manage, :all
-      elsif user.audit_role?
-        can :read, Confirmation
-        can :manage, :User if user.admin?
-      elsif user.user_role?
+      elsif user.role? :exam_staff
+        can :manage, User, :id => user.id 
         can :manage, Confirmation#, user_id: user.id
-        can :manage, Exam, user_id: user.id 
+        cannot :destroy, Confirmation
+        can :manage, Payment
+         # can :manage, PaymentSearch
+        can :manage, Exam 
+        can :manage, TestResult
+      elsif user.role? :audit_staff
+        can :read, :all
+        can :manage, :User
+        can :read, Confirmation
+        can :manage, Payment
+        can :manage, TestResult
+        can :manage, ReceiptBooklet
+        can :manage, ReceiptStatus
+        can :read, Diet
+        can :read, Year
+        can :read, :user_permissions, Assignment
+
       else
         can :read, :all
       end

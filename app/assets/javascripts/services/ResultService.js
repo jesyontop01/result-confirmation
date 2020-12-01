@@ -25,8 +25,8 @@ angular.module('verifier').factory('ResultService', ['$http','$q',function($http
 
 		fac.ResultDetailsWithIDs = function(examno, examyear,examdiet){
 
-			//return $http.get("/exams.json", 
-			return $http.get("/test_results.json",
+			return $http.get("/exams.json", 
+			//return $http.get("/test_results.json",
 				   {"params": { "CandNo": examno, "yearId": examyear, "dietId": examdiet}}
 			);
 		

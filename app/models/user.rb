@@ -1,18 +1,35 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  before_save { email.downcase! }
+
   devise :database_authenticatable, :registerable, :timeoutable,
          :recoverable, :rememberable, :trackable, :validatable
+
+
+VALID_EMAIL_REGEX = /\A[^@]+@waec\.org.ng\z/
+validates :email, presence: true, length: { maximum: 255 }, 
+          format: { with: VALID_EMAIL_REGEX }, uniqueness: true, case_sensitive: false
+validate :user_exists, on: :create    
 
           belongs_to :office
           has_many :confirmations, dependent: :destroy
           has_many :receipt_booklets
 
-          has_many :assignments  
+          has_many :assignments , dependent: :delete_all
           has_many :roles, through: :assignments
 
 #before_save :activate_user_or_timedout
 
+
+  def user_exists
+    if self.class.exists?(:email => email)
+      #render json: { error: "Email already taken" }
+      errors.add( "Email already taken" )
+    end
+  end
+      # Method to access roles in the controllers.
+      # @user.role? :admin
       def role?(role)  
         roles.any? { |r| r.name.underscore.to_sym == role }  
       end 

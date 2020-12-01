@@ -1,4 +1,11 @@
-class PaymentSearchController < ApplicationController
+class PaymentSearchesController < ApplicationController
+  before_action :authenticate_user!
+  #load_and_authorize_resource
+
+  def new
+    @paymentSearch = PaymentSearch.new
+  end
+
   def index
   	params[:office_id] = current_user.office_id
 

@@ -12,9 +12,10 @@
     <%= javascript_include_tag 'application' %>
   </head>
 
-  <body ng-app='verifier' ng-controller="UserSessionsCtrl">  
+  <body ng-app='verifier' ng-controller="UserSessionsCtrl as sessions">  
   
   <!-- MAIN CONTENT -->
+  <!-- <div class="container"> -->
   <div class="container">
 
     <!--  <nav-bar></nav-bar>-->
@@ -23,11 +24,11 @@
         <a class="navbar-brand" href="#/">WAEC Confirmation Of Result</a>
     </div>
     <ul class="nav navbar-nav">
-        <li><a href="#/home/">Home</a></li>
-        <li><a href="#/about/">About</a></li>               
+        <li><a href="#/home/">Home</a></li>              
         <li ng-hide="user.id"><a href="#/sign_in">Sign in</a></li> 
 
-        <li ng-show="user.id" class="dropdown">
+
+          <li ng-show="sessions.signedIn() && sessions.examAccess" class="dropdown">
           <a class="dropdown-toggle"  data-toggle="dropdown">Verifier
             <span class="caret"></span></a>
             <ul class="dropdown-menu">
@@ -38,30 +39,34 @@
            </ul>
         </li>
 
-        <li ng-show="user.id" class="dropdown">
+
+        <li ng-show="sessions.signedIn() && sessions.auditAccess" class="dropdown">
           <a class="dropdown-toggle"  data-toggle="dropdown">Account
             <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="#/audit/new">Log Receipt Booklet</a></li>
               <li><a href="#/audit/edit">Receipt Correction</a></li>
               <li><a href="#/audit/search">Confirm Search</a></li>
+              <li><a href="#/audit/payments">Make Payment</a></li>
+              <li><a href="#/verifer/payments">payments Search</a></li>
               <li class="divider"></li>
            </ul>
         </li>
 
     </ul>
 
-      <ul class="nav navbar-nav navbar-right" ng-show="user.id">   
-              <li ng-show="signedIn()"><a href="#/users/{{user.id}}">{{"Welcome! " + user.surname + " "+ user.othernames}}</a>/
-              {{signatory2[0][1] + " "+ signatory2[0][2]}}</li> 
-          <li ng-show="signedIn()" class="dropdown">
+      <ul class="nav navbar-nav navbar-right" ng-show="user.id"> 
+        <li ng-show="sessions.signedIn() && sessions.adminAccess"><a href="#/management">management</a></li>
+              <li ng-show="sessions.signedIn()"><a href="#/users/{{user.id}}">{{"Welcome! " + user.surname + " "+ user.othernames}}</a>/
+              {{signatory2[0][0][1] + " "+ signatory2[0][2]}}</li> 
+          <li ng-show="sessions.signedIn()" class="dropdown">
             <a class="dropdown-toggle"  data-toggle="dropdown" >Profile<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li ng-show="signedIn()"><a href="#/account_update" ng-click="clickedEdit(user)">Update Profile</a></li>
+                <li ng-show="sessions.signedIn()"><a href="#/account_update" ng-click="clickedEdit(user)">Update Profile</a></li>
                 <li><a href="#/users">Users</a></li>
                 <li><a href="#/">JavaScript</a></li>
                 <li class="divider"></li>
-                <li ng-show="signedIn()"><a ng-click="logout()">Log Out</a></li>
+                <li ng-show="sessions.signedIn()"><a ng-click="sessions.logout()">Log Out</a></li>
               </ul>
           </li> 
         </ul>

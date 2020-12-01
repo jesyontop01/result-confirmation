@@ -1,6 +1,7 @@
 class PaymentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_payment, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /payments
   # GET /payments.json
@@ -9,7 +10,7 @@ class PaymentsController < ApplicationController
         params[:office_id] = current_user.office_id
 
     
-    if current_user.audit_role?
+    if current_user.role? :audit_staff
     #@confirms = Confirmation.all.paginate(:page => params[:page], :per_page => 10).order("created_at DESC")
 
                  sql = <<-SQL 
@@ -37,7 +38,7 @@ class PaymentsController < ApplicationController
              sql = <<-SQL 
 
           SELECT  
-          a.[id], b.[DietName], c.[YearName], a.[exam_no], a.[cand_email], a.[created_at], d.[office_name], a.[receipt_no]
+           a.[id], b.[DietName], c.[YearName], a.[exam_no], a.[cand_email], a.[created_at], d.[office_name], a.[receipt_no], a.[printed]
           FROM [verifierApp].[dbo].[payments] a
           inner join [verifierApp].[dbo].[Diets] b
           on a.diet_id = b.id
@@ -139,6 +140,8 @@ class PaymentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def payment_params
-      params.require(:payment).permit(:diet_id, :year_id, :exam_no, :confirm_type_id, :amount, :receipt_no, :cand_email, :printed, :user_id, :office_id)
+      params.require(:payment).permit(:diet_id, :year_id, :exam_no, :confirm_type_id, :amount, :receipt_no,
+                       :cand_email, :printed, :user_id, :office_id, :CandName, :PhoneNo, :transaction_type_id)
     end
 end
+

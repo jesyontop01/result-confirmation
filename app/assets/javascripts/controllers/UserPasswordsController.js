@@ -10,8 +10,8 @@
  * Controller of the fakeLunchHubApp
  */
 angular.module('verifier')
-  .controller('UserPasswordsController', ['$scope', 'Auth','$rootScope', 'UserService','$location', '$routeParams',
-         function ($scope, Auth, $rootScope, UserService, $location, $routeParams) {
+  .controller('UserPasswordsController', ['$scope', 'Auth','$rootScope', '$location', '$routeParams',
+         function ($scope, Auth, $rootScope,$location, $routeParams) {
 
         var config = {
             headers: {
@@ -20,7 +20,6 @@ angular.module('verifier')
         };
 
   $scope.passwordRequestForm = {};
-
  $scope.submitPwdBtnClick= function() {
        var parameters = {
             email: $scope.passwordRequestForm.email

@@ -23,7 +23,7 @@ class ExamsController < ApplicationController
   
 
           if params[:CandNo].present? && params[:yearId].present? && params[:dietId].present?
-
+binding.pry
             response = Faraday.get do |req|
             req.url "http://172.21.13.44/WaecMobileApi/api/WaecMobile/GetResultForConfirmation?"
             req.params['CandNo'] = '#{params[:CandNo]}'

@@ -1,5 +1,6 @@
 class TestResultsController < ApplicationController
   before_action :set_test_result, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource 
 
   # GET /test_results
   # GET /test_results.json
@@ -13,14 +14,14 @@ class TestResultsController < ApplicationController
             @diet = Diet.find_by(:DietName => params[:DietName])
             params[:dietId] = @diet.id
       
-  
+  #binding.pry
 
           if params[:CandNo].present? && params[:yearId].present? && params[:dietId].present?
 
                 sql = <<-SQL 
           
                   SELECT 
-                      *
+                     TOP(1) *
                   FROM [verifierApp].[dbo].[test_results]
                   where yearId = '#{params[:yearId]}' and dietId = '#{params[:dietId]}'  and CandNo='#{params[:CandNo]}'
 
@@ -38,7 +39,7 @@ class TestResultsController < ApplicationController
                 sql = <<-SQL 
           
                   SELECT 
-                      *
+                      TOP(1) *
                   FROM [verifierApp].[dbo].[test_results]
                   where yearId = '#{params[:yearId]}' and dietId = '#{params[:dietId]}'  and CandNo='#{params[:CandNo]}'
 

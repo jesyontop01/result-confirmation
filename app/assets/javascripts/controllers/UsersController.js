@@ -1,6 +1,6 @@
 angular.module('verifier')
-	.controller("UsersController", [ "$scope", "$http", "$location", "crudService", "$routeParams","Auth",
-		function ($scope, $http, $location, crudService, $routeParams, Auth) {
+	.controller("UsersController", [ "$scope", "$http", "$location", "crudService", "$routeParams","Auth", "Role",
+		function ($scope, $http, $location, crudService, $routeParams, Auth, Role) {
 
 
 	    	// Return All Confirmations to  View...............
@@ -14,7 +14,7 @@ angular.module('verifier')
 		    		method: 'GET',
 		    		url: '/users.json',
 					}).then(function(response){
-					    		$scope.users = response.data;
+					    		$scope.users = response.data.users;
 					    		console.log($scope.users);
 					  						    		
 					    	}, function(response){
@@ -22,7 +22,7 @@ angular.module('verifier')
 					    	});
 				    	};
 
-		$scope.getAllUsers();
+		//$scope.getAllUsers();
 
 					$scope.offices = [];
 
@@ -106,10 +106,33 @@ angular.module('verifier')
 
     		};
 
+    		   Role.getRoles().then(function (response) {
+    				// body...
+    				$scope.roles = response.data;
+    				console.log($scope.roles);
+    			})
+// debugger
+//     		$scope.getAllRoles = function () {
+//     			// body...
+//     			Role.getRoles().then(function (response) {
+//     				// body...
+//     				$scope.roles = response.data;
+//     				console.log($scope.roles);
+//     			})
+//     		}
+
 // load All Users from the Database
 		 $scope.loadUser = function (id) {
 
             $scope.id = $routeParams.id;
+
+  						$scope.user.admin;
+						$scope.user.is_management;
+						$scope.user.audit_staff;
+						$scope.user.exam_staff;
+						$scope.user.account_staff;
+
+		  $scope.user = {};
     //console.log($scope.id);
         	 $http({
     				method: 'GET',
@@ -119,7 +142,39 @@ angular.module('verifier')
 					}
     			}).then(function(response){
     							//alert('Record successfully updated .');
-							    $scope.user = response.data;
+							   $scope.user = response.data;
+							    console.log($scope.user.roles)
+							    if ($scope.user) {
+							$scope.user.roles.forEach(role => {
+								console.log(role);
+
+									switch(role.name){
+							    			case "user": 
+								    		return	$scope.user.user = true;
+								    		break;
+								    		case "admin":
+								    		return $scope.user.admin = true;
+								    		console.log($scope.user.admin = true)
+								    		break;
+								    		case "audit_staff":
+								    		return $scope.user.audit_staff = true;
+								    		break;
+								    		case "audit_admin":
+								    		return $scope.user.audit_admin = true;
+								    		case "exam_staff":
+								    		return $scope.user.exam_staff = true;
+								    		break;
+								    		case "account_staff":
+								    		return $scope.user.account_staff = true;
+								    		break;
+								    		default:
+								    		return	$scope.user.user = true;
+								    		break;
+
+							    		}
+						});
+				}
+
     			},function(response){
     				alert('There was a problem:' + response.status);
 
@@ -127,28 +182,19 @@ angular.module('verifier')
 
     };
 
-      $scope.containsFalsy = (user) => arr.some(o => o.admin === false);
 
-    $scope.IsAdmin = function (user) {
-    	// body...
-    	if (user.admin == true) {
-    		return true;
-    	}
-    }
+    // //$scope.current_user = function (){
+    // 	// body...
+    // 	Auth.currentUser().then(function(user) {
+    //         // User was logged in, or Devise returned
+    //         // previously authenticated session.
+    //         $scope.current_user = user;
+    //         console.log(user); // => {id: 1, ect: '...'}
+    //     }, function(error) {
+    //         // unauthenticated error
+    //     });
 
-
-    //$scope.current_user = function (){
-    	// body...
-    	Auth.currentUser().then(function(user) {
-            // User was logged in, or Devise returned
-            // previously authenticated session.
-            $scope.current_user = user;
-            console.log(user); // => {id: 1, ect: '...'}
-        }, function(error) {
-            // unauthenticated error
-        });
-
-    //}
+    // //}
 
     		// Editing and Update User............................
 
@@ -159,17 +205,96 @@ angular.module('verifier')
     			$location.path("/users/"+ user.id +"/edit");
     		};
 
+
+
     $scope.updateUserPermission = function (user){
     	$scope.user = user;
+
+    	 var admin = "";
+		 var is_management = "";
+		 var audit_role = "";
+		 var exam_staff = "";
+		 var audit_staff = "";
+		 var account_staff = "";
+
+
+	var admin = null;
+    if (user.admin == true) {
+    	 admin = 2;
+    }
+
+    var audit_admin = null;
+    if (user.audit_admin == true) {
+    	 audit_admin = 3;
+    }
+
+    var audit_staff = null;
+    if (user.audit_staff == true) {
+    	audit_staff = 4;
+    }
+
+    var exam_staff = null;
+    if (user.exam_staff == true) {
+    	exam_staff = 7;
+    }
+
+    var account_staff = null;
+    if (user.account_staff == true) {
+    	 account_staff = 8;
+    }
+
+
+
+
+	var Role_data = {
+		admin: admin,
+		audit_staff: audit_staff,
+		audit_admin: audit_admin,
+		exam_staff: exam_staff,
+		account_staff: account_staff
+	}
+
+// 	var data2 = {
+// 		admin, is_management: user.is_management,
+// 		audit_staff, exam_staff,
+// 		account_staff
+// 	}
+
+// console.log(data2);
+
+
+ 
+     			console.log(Role_data);
+  //   		$scope.user.roles.forEach(role => {
+		// 		console.log(role);
+
+		// 	switch(role.name){
+		// 		case "user": 
+		// 		return	$scope.user.user = true;
+		// 		break;
+		// 		case "admin":
+		// 		return $scope.user.admin = true;
+		// 		console.log($scope.user.admin = true)
+		// 		break;
+		// 		case "audit_staff":
+		// 		return $scope.user.audit_staff = true;
+		// 		break;
+		// 		case "audit_admin":
+		// 		return $scope.user.audit_admin = true;
+		// 		case "exam_staff":
+		// 		return $scope.user.exam_staff = true;
+		// 		break;
+		// 		default:
+		// 		return	$scope.user.user = true;
+		// 		break;
+ 	//   		}
+		// });{"params": { "CandNo": searchTerm, "yearId": idYear, "dietId": idDiet}}
+
     			$http({
-    				method: 'PUT',
-					url: "/users/"+ $scope.user.id +".json",
-					data: angular.toJson({
-						admin: user.admin,
-						is_management: user.is_management,
-						audit_role: user.audit_role,
-						superadmin_role: user.superadmin_role
-					}) ,
+    				method: 'PATCH',
+					url: " /users/set_user_role/"+ $scope.user.id +".json",
+					data: Role_data,
+
 					header: {
 						'Content_Type' : 'application/json'
 					}
@@ -180,6 +305,27 @@ angular.module('verifier')
     				alert('There was a problem:' + response.status);
 
     			});
+
+
+    	// 		$http({
+    	// 			method: 'PUT',
+					// url: "/users/"+ $scope.user.id +".json",
+					// data: angular.toJson({
+					// 	admin: user.admin,
+					// 	is_management: user.is_management,
+					// 	audit_role: user.audit_role,
+					// 	superadmin_role: user.superadmin_role
+					// }) ,
+					// header: {
+					// 	'Content_Type' : 'application/json'
+					// }
+    	// 		}).then(function(response){
+    	// 						alert('User Access Role Updated successfully.');
+    	// 						$location.path('/users/'+ user.id);
+    	// 		},function(response){
+    	// 			alert('There was a problem:' + response.status);
+
+    	// 		});
     		}
 
 

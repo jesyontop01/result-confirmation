@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_11_104752) do
+ActiveRecord::Schema.define(version: 2020_12_01_112645) do
 
   create_table "Grade", primary_key: "GradeType", id: :string, limit: 1, default: nil, force: :cascade do |t|
     t.string "GradeValue", limit: 2, null: false
@@ -125,9 +125,13 @@ ActiveRecord::Schema.define(version: 2020_11_11_104752) do
     t.bigint "user_id"
     t.bigint "office_id"
     t.boolean "printed", default: false
+    t.string "CandName"
+    t.string "PhoneNo"
+    t.bigint "transaction_type_id"
     t.index ["confirm_type_id"], name: "index_payments_on_confirm_type_id"
     t.index ["diet_id"], name: "index_payments_on_diet_id"
     t.index ["office_id"], name: "index_payments_on_office_id"
+    t.index ["transaction_type_id"], name: "index_payments_on_transaction_type_id"
     t.index ["user_id"], name: "index_payments_on_user_id"
     t.index ["year_id"], name: "index_payments_on_year_id"
   end
@@ -161,6 +165,7 @@ ActiveRecord::Schema.define(version: 2020_11_11_104752) do
     t.datetime "updated_at", null: false
     t.bigint "confirmation_id"
     t.index ["confirmation_id"], name: "index_receipt_statuses_on_confirmation_id"
+    t.index ["receiptNo"], name: "index_receipt_statuses_on_receiptNo", unique: true
     t.index ["receipt_booklet_id"], name: "index_receipt_statuses_on_receipt_booklet_id"
   end
 
@@ -256,6 +261,12 @@ ActiveRecord::Schema.define(version: 2020_11_11_104752) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "transaction_types", force: :cascade do |t|
+    t.string "transName"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_password", limit: 255, default: "", null: false
@@ -284,6 +295,7 @@ ActiveRecord::Schema.define(version: 2020_11_11_104752) do
     t.boolean "superadmin_role", default: false
     t.boolean "audit_role", default: false
     t.boolean "user_role", default: true
+    t.string "permission", default: "user"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, where: "([reset_password_token] IS NOT NULL)"
   end
@@ -332,6 +344,7 @@ ActiveRecord::Schema.define(version: 2020_11_11_104752) do
   add_foreign_key "payments", "confirm_types"
   add_foreign_key "payments", "diets"
   add_foreign_key "payments", "offices"
+  add_foreign_key "payments", "transaction_types"
   add_foreign_key "payments", "users"
   add_foreign_key "payments", "years"
   add_foreign_key "receipt_booklets", "offices"

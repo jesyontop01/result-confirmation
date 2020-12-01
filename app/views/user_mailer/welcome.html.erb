@@ -4,5 +4,5 @@
 <p>Congratulations !</p>
 <p> Dear <%= @user.title %> <%= @user.surname%>, this is to inform you that your account has being activated.
 
- click here to login <%= link_to "Login", new_user_session_url %> 
+ click here to login <%= link_to "Login", root_url + "#/log_in" %> <%#= link_to "Login", new_user_session_url %> 
 </p>

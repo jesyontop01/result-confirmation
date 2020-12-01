@@ -9,7 +9,7 @@
      <div class="col-sm-4"></div>
     <div class="col-sm-4">
 
-<form ng-submit="submitLogin(loginForm)" role="form" ng-init="loginForm = {}">
+<form ng-submit="sessions.submitLogin(loginForm)" role="form" ng-init="loginForm = {}">
   <div class="form-group">
     <label for="email">Email</label>
     <input type="email"
@@ -38,3 +38,25 @@
 </div>
 </div>
 </div>
+
+<br>
+<div class="jumbotron text-center"  ng-show="sessions.loading">
+    <span class="glyphicon glyphicon-repeat spinner"></span>
+    <p>Loading.......</p>
+
+</div>
+
+<br>
+
+
+<div class="row show-hide-message" ng-show="sessions.successMsg">
+    <div class="alert alert-success">{{sessions.successMsg}}</div>
+</div>
+
+<br>
+<div class="row show-hide-message" ng-show="sessions.errorMsg">
+    <div class="alert alert-danger">{{sessions.errorMsg}}</div>
+</div>
+
+<br>
+

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  #load_and_authorize_resource
+  load_and_authorize_resource :except => [:user_permissions, :second_signatory, :permitted_users ]
 
   def index
   	if params[:activated] == "false"
@@ -11,8 +11,30 @@ class UsersController < ApplicationController
 
     else
       @users = User.all
+      
+             params[:user_id] = current_user.id
+
+              sql = <<-SQL 
+      
+              SELECT 
+                   b.name
+            FROM [verifierApp].[dbo].[assignments] as a
+            inner join roles as b
+            on a.role_id = b.id
+            where a.[user_id] =  '#{params[:user_id]}'
+
+            SQL
+
+                @assignments = ActiveRecord::Base.connection.exec_query(sql)
     end
-    render json: @users
+   # render json: @users
+
+    respond_to do |format|
+      format.json { render json: {users: @users, success: true, permission: @assignments}}
+      else
+      format.html { redirect_to users_path, notice: 'User was successfully Removed.' }
+      
+    end
   end
 
   def show
@@ -54,6 +76,25 @@ class UsersController < ApplicationController
       format.html { redirect_to users_path, notice: 'User was successfully Removed.' }
       format.json { head :no_content }
     end
+  end
+
+  def set_user_role
+    # params[:admin] = nil
+    # params[:audit_staff] = nil
+    # params[:audit_admin] = nil
+    # params[:exam_staff] = nil
+    # params[:account_staff] = nil
+    
+     @user = User.find(params[:id])
+       @user.role_ids = [ params[:admin] , params[:audit_staff] , params[:audit_admin], params[:exam_staff] , params[:account_staff]]  
+    
+    #binding.pry
+    render json: {user:   @user}
+  end
+
+  def user_permissions
+    @user_permission = current_user.permission
+    render json: {permission:  @user_permission}
   end
 
   def second_signatory
@@ -124,6 +165,6 @@ class UsersController < ApplicationController
   private
   
   def activation_params
-  	params.require(:user).permit(:activated, :admin, :encrypted_password, :is_management, :superadmin_role, :audit_role)
+  	params.require(:user).permit(:activated, :admin, :encrypted_password, :is_management, :superadmin_role, :audit_role, :permission)
   end
 end

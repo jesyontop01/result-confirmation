@@ -41,6 +41,7 @@ respond_to :json
     respond_to do |format|
       #format.html { redirect_to users_path, notice: 'User was successfully Removed.' }
       format.json { render json: @user }
+      format.json { render json: @user.errors, status: :unprocessable_entity }
     end
 end
 

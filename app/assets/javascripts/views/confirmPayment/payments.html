@@ -31,7 +31,7 @@
       <td>{{confirm.office_name}}</td>
       <td>{{confirm.printed}}</td>
       <td>{{confirm.created_at}}</td>
-      <td><button ng-click="viewDetails(confirm)" type="button" class="btn btn-info">View Detail</button></td>
+      <td ng-show="sessions.examAccess"><button ng-click="viewDetails(confirm)" type="button" class="btn btn-info">View Detail</button></td>
     </tr>
   </tbody>
 </table>

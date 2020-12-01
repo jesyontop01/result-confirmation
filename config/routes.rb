@@ -1,15 +1,22 @@
 Rails.application.routes.draw do
   
+  resources :transaction_types
   resources :receipt_corrections
   resources :peoples
-  resources :payment_search
-  get 'payment_search/index'
-  get 'payment_search/show'
+  resources :payment_searches
+  get 'payment_searches/index'
+  get 'payment_searches/show'
   resources :test_results
   get 'confirm_amounts/index'
   get 'confirm_amounts/show'
   resources :payments
-  resources :assignments
+  #resources :assignments
+
+   resources :assignments do
+    collection do
+        get :user_permissions#, :to => 'assignments#user_permissions'
+      end
+  end
   resources :roles
   resources :receipt_statuses
 
@@ -66,6 +73,9 @@ Rails.application.routes.draw do
     collection do
       get :permitted_users
       get :second_signatory
+      get :user_permissions#
+      post :set_user_role  
+      patch 'set_user_role/:id', :to => 'users#set_user_role'
     end
   end
   resources :verifiers

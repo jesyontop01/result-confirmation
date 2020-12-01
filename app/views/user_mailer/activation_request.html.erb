@@ -3,5 +3,5 @@
 <p>
  <%= @user.title %> <%= @user.surname%>, has just signed up to the Confirmation portal, Kindly activate or deactivate this account to allow or restrict access.
 
- click here, <%= link_to "Login", new_user_session_url %> 
+ click here, <%= link_to "Login", root_url + "#/log_in" %> <%#= link_to "Login", new_user_session_url %> 
 </p>

@@ -1,7 +1,7 @@
 class PackingListsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_packing_list, only: [:show, :edit, :update, :destroy]
-
+ load_and_authorize_resource
   # GET /packing_lists
   # GET /packing_lists.json
   def index

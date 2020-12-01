@@ -1,0 +1,61 @@
+<div class="page-header">
+<h1>User Management </h1>
+</div>
+
+
+<br>
+<div class="jumbotron text-center"  ng-show="management.loading">
+    <span class="glyphicon glyphicon-repeat spinner"></span>
+    <p>Loading.......</p>
+
+</div>
+
+<br>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+	 <strong>User Management</strong>
+	</div>
+
+	<table class="table" ng-init="getAllUsers()">
+                <tbody>
+                  
+                    <tr>
+                      <th>Index</th>
+                      <th>Full Name</th>
+                      <th>Email Address</th>
+                      <th>Office</th>               
+                      <th>Activation</th>
+                      <th colspan="3">Action</th>
+                    </tr>
+
+                    <tr ng-repeat="user in management.users"> 
+                      <td>{{$index+1}}</td>
+                      <td>{{user.surname}} {{user.othernames}}</td> 
+                       <td>{{user.email}}</td>
+                       <td>{{getOfficeName(user.office_id)}}</td>
+                       <td><b>{{user.activated}}</b></td>
+                  <td><button ng-click="clickDetailView(user)" type="button" class="btn btn-primary">View</button></td>
+              <div ng-hide="!currentUser.admin">
+
+             <td ><button ng-click="clickEdit(user)" ng-show="management.editAccess" type="button" class="btn btn-primary">Edit</button></td>
+              <td ng-show="user.activated"><button ng-click="clickDeactivate(user)" ng-show="management.deleteAccess" type="button" class="btn btn-danger">Deactivate</button></td>
+              <td ng-show="!user.activated"><button ng-click="clickDeactivate(user)" ng-show="management.deleteAccess" type="button" class="btn btn-success">Activate</button></td>
+            </div>
+                    
+                    </tr>
+                              
+                  </tbody>
+              </table>
+</div>
+
+
+<div class="row show-hide-message" ng-show="management.successMsg">
+    <div class="alert alert-success">{{management.successMsg}}</div>
+</div>
+
+<br>
+<div class="row show-hide-message" ng-show="management.errorMsg">
+    <div class="alert alert-danger">{{management.errorMsg}}</div>
+</div>
+
+<br>

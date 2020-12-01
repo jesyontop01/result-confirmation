@@ -220,10 +220,12 @@ $scope.ConnecttoWES = function(confirm) {
 		  	// body...
 		  	 response.data;
 		  	if (response.status == 200) {
+
+		  		alert("Login to WES was successful");
 		  		$location.path('/wes_upload/'+ confirm.id);
 		  	}
-		  	console.log(response.data);
-debugger
+		  	//console.log(response.data);
+//debugger
 		  	 if(response.data.auth_token) {
 			    window.sessionStorage.setItem('token', JSON.stringify(response.data.auth_token));
 
@@ -233,7 +235,7 @@ debugger
 
 		  }, function(response) {
 		  	// body...
-		  	alert(response.status);
+		  	alert("WES Server not available , please try later " + response.status);
 		  });
 	//http://localhost:3000//auth/sign_in?email=waec@waec.org.ng&password=waecyaba
 // 		$http.post('http://localhost:5000//auth/sign_in?email=waec@waec.org.ng&password=waecyaba')
@@ -315,12 +317,18 @@ $scope.getConfirmByID = function(confirmId) {
 		  .then(function(response) {
 		  	// body...
 		  	$scope.wesApplicant = response.data;
-		  	console.log($scope.wesApplicant);
-		  	$scope.wesApplicantID = $scope.wesApplicant.id;
+		  	if ($scope.wesApplicant != null) {
+			  	
+			  	console.log($scope.wesApplicant);
+			  	$scope.wesApplicantID = $scope.wesApplicant.id;
+
+			  	} else {
+		  		alert("Candidate's Records with "+ ref_no+ " could not be fetched from WES");
+		  	}
 
 		  }, function(response) {
 		  	// body...
-		  	alert("Server not available , please try later " + response.status);
+		  	alert("WES Server not available , please try later " + response.status);
 		  });
 
 		}
@@ -386,7 +394,7 @@ $scope.getConfirmByID = function(confirmId) {
 					'Content-Type': undefined
 				},
 		   }).success(function(data){
-		        alert(data);
+		        alert("PDF submission to WES  was successful ");
 		        console.log(data);
 		        
 		   });
@@ -1187,10 +1195,8 @@ $scope.selectConfirm = selectConfirm;
 							 //pdfMake.createPdf(docDefinition).open();
 							 //pdfMake.createPdf(docDefinition).open(newValue.ref_no+'.pdf');
 							 //pdfMake.createPdf(docDefinition).download(newValue.WES_Ref+'.pdf');
-							 const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-							 pdfDocGenerator.download(newValue.WES_Ref+'.pdf');
-
-							 									var data;
+							  const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+								var data;
 								//pdfMake.createPdf(docDefinition).getBuffer(function(buffer) {
 								pdfDocGenerator.getBlob(function(blob) {
 								    // turn buffer into blob
@@ -1204,34 +1210,6 @@ $scope.selectConfirm = selectConfirm;
 							            });
 //debugger
 							            console.log( $scope.BlobPdfFile);
-
-							            	//		let token = window.sessionStorage.getItem('token');
-
-											// $http({
-											// 	method: 'PUT',
-											// 	url: "http://localhost:5000/applicants/"+wesApplicantID+".json",
-											// 	headers: {
-											// 				Authorization :`Bearer ${token.replace("\"", "")}`,
-											// 				Content_Type :  'application/json'
-											// 			},
-											// 	params: newValue.WES_Ref,
-											// 	confirmPDF: angular.toJson($scope.BlobPdfFile)
-											// 	})
-
-											// // $http.get("http://localhost:5000/applicants", 
-											// // 		 {"params": { "ref_no": ref_no}})
-											//   .then(function(response) {
-											//   	// body...
-											//   	alert('PDF file was successfully sent');
-											//   	console.log(response.data);
-
-											//   }, function(response) {
-											//   	// body...
-											//   	alert(response.status);
-											//   	console.log('There was an error with the file upload');
-											//   });
-
-
 								});
 
 							 pdfDocGenerator.getDataUrl((dataUrl) => {
@@ -1255,80 +1233,9 @@ $scope.selectConfirm = selectConfirm;
 
 							});
 
-
-
-				// const pdfDocGenerator = pdfMake.createPdf(doc);
-    //               pdfDocGenerator.getBuffer( function (buffer) {
-    //                 const dataUrl =  URL.createObjectURL(new Blob([buffer], {
-    //                     type: "application/pdf"
-    //                 }));
-    //                 iframe.src = dataUrl;
-    //                 iframe.width = "100%";
-    //                 iframe.height = "600px";
-    //                 targetElement.appendChild(iframe);
-    //             });
 							
-							  //var Unit8data;
-								// const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-								// pdfDocGenerator.getBase64((data) => {
-								// 	//alert(data);
-								// 	binaryData = data;
-								// 	console.log(data);
-								// });
+							 pdfDocGenerator.download(newValue.WES_Ref+'.pdf');
 
-
-								// pdfDocGenerator.getDataUrl((dataUrl) => {
-								// 	// const targetElement = document.querySelector('#iframeContainer');
-								// 	// const iframe = document.createElement('iframe');
-								// 	// iframe.src = dataUrl;
-								// 	// targetElement.appendChild(iframe);
-								// 	console.log(dataUrl);
-								// });
-
-								// pdfDocGenerator.getUint8Arrayr((buffer) => {
-								// 	// ...
-								// 	console.log(buffer);
-								// });
-
-
-								// // if (confirm("You are about to delete a record, Are You Sure?") == true) {
-
-
-								// // }
-
-								// pdfMake.createPdf(docDefinition).getBuffer(function (buffer) {
-								// 	let utf8 = new Uint8Array(buffer);
-								// 	let binaryArray = utf8.buffer;
-								// 	let pdfData = ({
-							 //                fileName: newValue.WES_Ref+'.pdf',
-							 //                attachment: buffer
-							 //            });
-								// 	console.log(pdfData);
-								// 	})
-							
-
-								// pdfMake.createPdf(test).getBase64(function(buffer) {
-							 //    var data = ({
-							 //                to: toArray,
-							 //                subject: messageSubject,
-							 //                message: messageBody,
-							 //                fileName: fileName,
-							 //                attachment: buffer
-							 //            });
-
-							 //            $http.post('/api/sendPRMail', data).
-							 //              success(function(data, status, headers, config) {
-							 //                console.log('Message was successfully sent');
-							 //              }).
-							 //              error(function(data, status, headers, config) {
-							 //                console.log('There was an error with the message');
-							 //            });
-							 //       });
-
-								// pdfDocGenerator.getUint8Arrayr((buffer) => {
-								// 	// ...
-								// 	console.log(buffer);
-								// });
 
 					}, function() {
 						// body...

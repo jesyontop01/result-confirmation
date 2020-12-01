@@ -10,7 +10,7 @@
     <label>Waec Office: <span>*</span></label>
       <div  ng-controller="OfficesController">
         <div class="form-group" >
-          <select ng-model="WaecOfficeId" ng-options="y.id as y.office_name for y in offices" ng-change="GetValue(y)" class="form-control" ng-required="true">
+          <select ng-model="WaecOfficeId" ng-options="y.id as y.office_name for y in offices" ng-change="GetValue(y)" class="form-control" ng-required="true" ng-disabled = "true">
             <option value="">Select Office</option>
           </select>
         </div>

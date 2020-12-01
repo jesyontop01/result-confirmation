@@ -4,7 +4,6 @@ angular.module('verifier')
 
 	$scope.bookletRange = {};
 	 
-	   console.log( $scope.user);
 
 
 		$scope.receiptLists = [];
@@ -25,20 +24,21 @@ angular.module('verifier')
 									}
 							}).then(function(response){
 
-						   	alert("New Receipt Booklet Range logged ");
+						   	//alert("New Receipt Booklet Range logged ");
+						   	alert(response.data.message);
 					    		//console.log($scope.confirms);
 					    		//debugger;
 					    		$scope.receiptLists = response.data;
 					    		$scope.bookletRange = {};
 					    		$scope.bookletRange.rangeFrom = " ";
 					    		$scope.bookletRange.rangeTo = "";
-					    		//console.log($scope.receiptLists);
+					    		//console.log(response);
 					  			//ReceiptListService.setReceiptStatus($scope.receiptLists);
 
 				$scope.bookletRange1 = "";
 						    		
 					    	}, function(response){
-					    		alert("There was an Error:");
+					    		alert("There was an Error: " + response.data.message);
 					    	});
 				    	};
 
@@ -64,11 +64,11 @@ angular.module('verifier')
 		year_id = window.sessionStorage.getItem('yearID');
 			//ExamDietService.setYear( year_id);
 
-			// ResultService.ResultDetailsWithIDs(searchTerm, year_id, diet_id)
-			// 			.then(function(response){
-		$http.get("/test_results.json", 
-				   {"params": { "CandNo": searchTerm, "yearId": year_id, "dietId": diet_id}}
-			).then(function(response){ 
+			ResultService.ResultDetailsWithIDs(searchTerm, year_id, diet_id)
+						.then(function(response){
+		// $http.get("/test_results.json", 
+		// 		   {"params": { "CandNo": searchTerm, "yearId": year_id, "dietId": diet_id}}
+		// 	).then(function(response){ 
 				
 				//$scope.results = response.data;
 
@@ -79,58 +79,59 @@ angular.module('verifier')
 					$scope.results = response.data;
 // 				$scope.results[0] = response.data;
 
-// 				console.log($scope.results);
-// 				$scope.applicantResult = {};
+ 				//console.log($scope.results);
+ 				//console.log($scope.results[0].CandNo);
+				$scope.applicantResult = {};
 
-// 		$scope.applicantResult1 = {
-// 	  	    Picture: $scope.results[0][0].Picture,
-// 	  	    ExamDiet: $scope.results[0][0].ExamDiet,
-// 	  	    ExamYear: $scope.results[0][0].ExamYear,
-// 	  	    CandNo: $scope.results[0][0].CandNo,
-// 	  	    CandName: $scope.results[0][0].CandName,
-// 	  	    Sex: $scope.results[0][0].Sex,
-// 	  	    DOB: $scope.results[0][0].DOB,
-// 	  	    CentreName: $scope.results[0][0].CentreName,
-// 	  	    Subject1: $scope.results[0][0].Subject1,
-// 	  	    Grade1: $scope.results[0][0].Grade1,  
-// 	  	    Subject2: $scope.results[0][0].Subject2,
-// 	  	    Grade2: $scope.results[0][0].Grade2,   
-// 	  	    Subject3: $scope.results[0][0].Subject3,
-// 	  	    Grade3: $scope.results[0][0].Grade3,   
-// 	  	    Subject4: $scope.results[0][0].Subject4,
-// 	  	    Grade4: $scope.results[0][0].Grade4,   
-// 	  	    Subject5: $scope.results[0][0].Subject5,
-// 	  	    Grade5: $scope.results[0][0].Grade5,       
-// 	  	    Subject6: $scope.results[0][0].Subject6,
-// 	  	    Grade6: $scope.results[0][0].Grade6,   
-// 	  	    Subject7: $scope.results[0][0].Subject7,
-// 	  	    Grade7: $scope.results[0][0].Grade7,   
-// 	  	    Subject8: $scope.results[0][0].Subject8,
-// 	  	    Grade8: $scope.results[0][0].Grade8,   
-// 	  	    Subject9: $scope.results[0][0].Subject9,
-// 	  	    Grade9: $scope.results[0][0].Grade9,  
-// 	  	    NoOfSubjects: $scope.results[0][0].NoOfSubjects
-// 	  	     //dietId:  window.sessionStorage.getItem('examID'),
-// 	  	    //yearId: window.sessionStorage.getItem('yearID')
-// 	  	}
-// console.log($scope.applicantResult1);
+		$scope.applicantResult1 = {
+	  	    Picture: $scope.results[0].Picture,
+	  	    ExamDiet: $scope.results[0].ExamDiet,
+	  	    ExamYear: $scope.results[0].ExamYear,
+	  	    CandNo: $scope.results[0].CandNo,
+	  	    CandName: $scope.results[0].CandName,
+	  	    Sex: $scope.results[0].Sex,
+	  	    DOB: $scope.results[0].DOB,
+	  	    CentreName: $scope.results[0].CentreName,
+	  	    Subject1: $scope.results[0].Subject1,
+	  	    Grade1: $scope.results[0].Grade1,  
+	  	    Subject2: $scope.results[0].Subject2,
+	  	    Grade2: $scope.results[0].Grade2,   
+	  	    Subject3: $scope.results[0].Subject3,
+	  	    Grade3: $scope.results[0].Grade3,   
+	  	    Subject4: $scope.results[0].Subject4,
+	  	    Grade4: $scope.results[0].Grade4,   
+	  	    Subject5: $scope.results[0].Subject5,
+	  	    Grade5: $scope.results[0].Grade5,       
+	  	    Subject6: $scope.results[0].Subject6,
+	  	    Grade6: $scope.results[0].Grade6,   
+	  	    Subject7: $scope.results[0].Subject7,
+	  	    Grade7: $scope.results[0].Grade7,   
+	  	    Subject8: $scope.results[0].Subject8,
+	  	    Grade8: $scope.results[0].Grade8,   
+	  	    Subject9: $scope.results[0].Subject9,
+	  	    Grade9: $scope.results[0].Grade9,  
+	  	    NoOfSubjects: $scope.results[0].NoOfSubjects,
+	  	    dietId:  window.sessionStorage.getItem('examID'),
+	  	    yearId: window.sessionStorage.getItem('yearID')
+	  	}
+//console.log($scope.applicantResult1);
              
 
-// 		$http({
-// 			method: 'POST',
-// 			url: "/test_results.json",
-// 			data: angular.toJson($scope.applicantResult1) ,
-// 			header: {
-// 						'Content_Type' :  'application/json'
-// 						}
-// 				})
-// 				.then(function(response){
-// 							// body...
-// 				alert('test_results was created successfully.');
-// 				}, function(response) {
-// 							// body...
-// 					alert("An Error occurred");
-// 		})
+						$http({
+							method: 'POST',
+							url: "/test_results.json",
+							data: angular.toJson($scope.applicantResult1) ,
+							header: {
+										'Content_Type' :  'application/json'
+										}
+								})
+								.then(function(response){
+											// body...
+								alert('test_results was created successfully.');
+								}, function(response) {
+											// body...
+									alert("An Error occurred");
+						})
 
 
 
@@ -164,7 +165,8 @@ angular.module('verifier')
 		// 				.then(function(response){
 		// $http.get("/exams.json", 
 		// 		   {"params": { "CandNo": searchTerm, "yearId": year_id, "dietId": diet_id}}
-		// 	).then(function(response){ 
+		// 	).then(function(response){
+
 			$http.get("/test_results.json", 
 				   {"params": { "CandNo": searchTerm, "yearId": year_id, "dietId": diet_id}}
 			).then(function(response){ 
@@ -198,14 +200,14 @@ $scope.receipt = {};
 	 $scope.GetNextReceiptNo();
 	});
 //debugger
-       	$http.get('/receipt_statuses.json').then(function(response){ 
+  //      	$http.get('/receipt_statuses.json').then(function(response){ 
 					
-		return $scope.result.receipt_no = response.data.receiptNo;
+		// return $scope.result.receipt_no = response.data.receiptNo;
 
-		       //console.log(response.data[0]);
-		    },function (response) {
-		             alert('Unexpected Error');
-		 });
+		//        console.log(response.data[0]);
+		//     },function (response) {
+		//              alert('Unexpected Error');
+		//  });
 
     
 
@@ -298,7 +300,7 @@ $scope.result.amount = 0;
 						status: result.status 
 		    		};
 
-		    		console.log($scope.badReceipt);
+		    		//console.log($scope.badReceipt);
 		    		$http({
 							method: 'PATCH',
 							url: '/receipt_statuses/receipt_correction/'+ result.receiptNo+ '.json',
@@ -310,7 +312,7 @@ $scope.result.amount = 0;
 		    		.then(function(response) {
 			 		// body...
 			 		$scope.receipt = response.data;
-			 		console.log(response.data);
+			 		//console.log(response.data);
 			 		//debugger
 			 		if ($scope.receipt.status === "CANCELLED") {
 			 		//debugger	
@@ -336,37 +338,29 @@ $scope.result.amount = 0;
    	// body...
    	$scope.receipt.receiptID = 0;
    	$scope.receipt = {};
-   	    $http.get('/receipt_statuses.json').then(function(response){ 
-					//return	$scope.result.receipt_no = response.data[0].receiptNo;
-					$scope.receipt = response.data[0];
-					 $scope.receiptID = response.data[0].id;
-					 //$scope.result.receiptID = response.data[0].id;
 
-					 
-			var dietSelected = $scope.ExamDietId;
-		
-		$scope.$watch('receiptID', function(newValue, oldValue){
-		window.sessionStorage.setItem('receiptID', newValue);
-		//window.localStorage.setItem('currentMData', newValue);
-	})
-		             
-			},function (response) {
-		              alert('Unexpected Error');
-		});
-   	     
-   	    $scope.receiptID = window.sessionStorage.getItem('receiptID');
-   	console.log( $scope.receiptID);
+  //  	$scope.applicantResult = {
+  //  			diet_id:  window.sessionStorage.getItem('examID'),
+	 //  	    year_id:  window.sessionStorage.getItem('yearID'),
+		//     exam_no:  $scope.result.CandNo,
+		//     amount:   $scope.result.amount,
+		//     receipt_no: $scope.result.receipt_no,
+		//     receiptID:  $scope.result.receiptID,
+		//     confirm_type_id: $scope.result.confirm_type_id,
+		//     cand_email: $scope.result.cand_email
+		// };
 
-
-   	$scope.applicantResult = {
-   			diet_id:  window.sessionStorage.getItem('examID'),
-	  	    year_id:  window.sessionStorage.getItem('yearID'),
-		    exam_no:  $scope.result.CandNo,
-		    amount:   $scope.result.amount,
+		$scope.applicantResult = {
+		    
 		    receipt_no: $scope.result.receipt_no,
+		    transaction_type_id: $scope.result.TransId,
+		    amount:   $scope.result.amount,
 		    receiptID:  $scope.result.receiptID,
 		    confirm_type_id: $scope.result.confirm_type_id,
-		    cand_email: $scope.result.cand_email
+		    cand_email: $scope.result.cand_email,
+		    CandName:   $scope.result.CandName,
+		    PhoneNo: $scope.result.PhoneNo
+		    
 		};
 
 		console.log( $scope.applicantResult);

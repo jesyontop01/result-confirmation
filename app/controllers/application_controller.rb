@@ -13,8 +13,9 @@ class ApplicationController < ActionController::Base
   before_action :check_if_logged_out
 
   rescue_from CanCan::AccessDenied do |exception|
-        flash[:error] = exception.message
-        redirect_to current_user #root_url
+        #flash[:error] = exception.message
+        #redirect_to current_user #root_url
+        render json: { success: false, message: exception.message }
     end
  
  def before_sign_in_path_for(resource)

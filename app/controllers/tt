@@ -1,0 +1,29 @@
+    //     if(userPermissions.includes(({name: 'admin'}) || ({name: 'is_management'}))){
+    //     //if(userPermissions[i].name == "admin" || userPermissions[i].name == "is_management" ){
+    //     	    vm.users = response.data.users;
+				// vm.loading = false;
+				// vm.accessdenied = true;
+				// vm.errorMsg = false;
+				// vm.successMsg = false;	
+				// console.log(response.data);
+    //         return true;
+    //         if (userPermissions.includes({name: 'admin'}){
+    //         	vm.editAccess = true;
+		 	// 	vm.deleteAccess = true;
+
+    //   		}else 
+    //   			if(userPermissions.includes({name: 'is_management'){
+    //   				vm.editAccess = true;
+    //     		}
+    //     		else{
+    //     			vm.errorMsg = "Insufficient Permission";
+		 	// 	    vm.loading = false;
+    //     		}
+
+     
+       
+
+    //         return false;
+    //     }
+    //   }
+    //         console.log(check());

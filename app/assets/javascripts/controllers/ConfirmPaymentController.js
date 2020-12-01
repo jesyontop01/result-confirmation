@@ -62,7 +62,7 @@ $scope.results = {};
 
 	   		$scope.result = [];
 	$scope.getResultDetails = function () {
-
+debugger
 	console.log(confirm);
  	var exam_no = $routeParams.exam_no;
  	var Year = $routeParams.YearName;
@@ -121,7 +121,7 @@ $scope.results = {};
 	// $http.get("/payment_search.json", 
 	// 			   {"params": { "CandNo": $routeParams.CandNo, "YearName": $routeParams.ExamYear, "DietName": Diet}}
 	// 		).then(function(response){ 
-		$http.get("/payment_search.json", 
+		$http.get("/payment_searches.json", 
 				   {"params": { "id": ConfirmID}}
 			).then(function(response){
     							//alert('Record successfully updated .');

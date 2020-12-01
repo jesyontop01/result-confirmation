@@ -26,10 +26,12 @@
                     <td><button ng-click="clickDetailView(user)" type="button" class="btn btn-primary">View</button></td>
               <div ng-hide="!currentUser.admin">
 
-             <td ><button ng-click="clickEdit(user)" type="button" class="btn btn-primary">Edit</button></td>
-              <td ng-show="user.activated"><button ng-click="clickDeactivate(user)" type="button" class="btn btn-danger">Deactivate</button></td>
-              <td ng-show="!user.activated"><button ng-click="clickDeactivate(user)" type="button" class="btn btn-success">Activate</button></td>
+             <td ng-if="user.id && sessions.adminAccess"><button ng-click="clickEdit(user)" type="button" class="btn btn-primary">Edit</button></td>
+              <td ng-if="user.id && sessions.adminAccess" ng-show="user.activated"><button ng-click="clickDeactivate(user)" type="button" class="btn btn-danger">Deactivate</button></td>
+              <td ng-if="user.id && sessions.adminAccess" ng-show="!user.activated"><button ng-click="clickDeactivate(user)" type="button" class="btn btn-success">Activate</button></td>
             </div>
+
+          
                     
                     </tr>
                               

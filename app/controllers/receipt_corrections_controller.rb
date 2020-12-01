@@ -1,6 +1,7 @@
 class ReceiptCorrectionsController < ApplicationController
    before_action :authenticate_user!
   before_action :set_receipt_correction, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /receipt_corrections
   # GET /receipt_corrections.json

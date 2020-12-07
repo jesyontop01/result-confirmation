@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_01_112645) do
+ActiveRecord::Schema.define(version: 2020_12_07_165604) do
 
   create_table "Grade", primary_key: "GradeType", id: :string, limit: 1, default: nil, force: :cascade do |t|
     t.string "GradeValue", limit: 2, null: false
@@ -76,9 +76,11 @@ ActiveRecord::Schema.define(version: 2020_12_01_112645) do
     t.bigint "confirm_country_id"
     t.string "receipt_no", null: false
     t.string "WES_Ref"
+    t.bigint "payment_id"
     t.index ["confirm_country_id"], name: "index_confirmations_on_confirm_countries_id"
     t.index ["confirm_type_id"], name: "index_confirmations_on_confirm_type_id"
     t.index ["diet_id"], name: "index_confirmations_on_dietTbl_id"
+    t.index ["payment_id"], name: "index_confirmations_on_payment_id"
     t.index ["user_id"], name: "index_confirmations_on_user_id"
     t.index ["year_id"], name: "index_confirmations_on_yearTbl_id"
   end
@@ -128,9 +130,11 @@ ActiveRecord::Schema.define(version: 2020_12_01_112645) do
     t.string "CandName"
     t.string "PhoneNo"
     t.bigint "transaction_type_id"
+    t.bigint "receipt_status_id"
     t.index ["confirm_type_id"], name: "index_payments_on_confirm_type_id"
     t.index ["diet_id"], name: "index_payments_on_diet_id"
     t.index ["office_id"], name: "index_payments_on_office_id"
+    t.index ["receipt_status_id"], name: "index_payments_on_receipt_status_id"
     t.index ["transaction_type_id"], name: "index_payments_on_transaction_type_id"
     t.index ["user_id"], name: "index_payments_on_user_id"
     t.index ["year_id"], name: "index_payments_on_year_id"
@@ -225,6 +229,14 @@ ActiveRecord::Schema.define(version: 2020_12_01_112645) do
     t.string "ResultName", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "sysdiagrams", primary_key: "diagram_id", id: :integer, force: :cascade do |t|
+    t.string "name", limit: 128, null: false
+    t.integer "principal_id", null: false
+    t.integer "version"
+    t.binary "definition"
+    t.index ["principal_id", "name"], name: "UK_principal_name", unique: true
   end
 
   create_table "test_results", force: :cascade do |t|
@@ -331,6 +343,13 @@ ActiveRecord::Schema.define(version: 2020_12_01_112645) do
     t.index ["exam_no"], name: "index_wassce_d2008s_on_exam_no", unique: true
   end
 
+  create_table "web_services", force: :cascade do |t|
+    t.string "clientName"
+    t.string "clientURL"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "years", force: :cascade do |t|
     t.varchar "YearName", limit: 5
   end
@@ -341,9 +360,11 @@ ActiveRecord::Schema.define(version: 2020_12_01_112645) do
   add_foreign_key "confirm_countries", "confirm_types"
   add_foreign_key "confirmations", "confirm_countries"
   add_foreign_key "confirmations", "confirm_types"
+  add_foreign_key "confirmations", "payments"
   add_foreign_key "payments", "confirm_types"
   add_foreign_key "payments", "diets"
   add_foreign_key "payments", "offices"
+  add_foreign_key "payments", "receipt_statuses"
   add_foreign_key "payments", "transaction_types"
   add_foreign_key "payments", "users"
   add_foreign_key "payments", "years"

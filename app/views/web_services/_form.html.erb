@@ -1,0 +1,27 @@
+<%= form_with(model: web_service, local: true) do |form| %>
+  <% if web_service.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(web_service.errors.count, "error") %> prohibited this web_service from being saved:</h2>
+
+      <ul>
+      <% web_service.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :clientName %>
+    <%= form.text_field :clientName %>
+  </div>
+
+  <div class="field">
+    <%= form.label :clientAddress %>
+    <%= form.text_field :clientAddress %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

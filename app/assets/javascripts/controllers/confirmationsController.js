@@ -116,6 +116,7 @@ $scope.results = {};
 
    $scope.createConfirm = function(result) {
    	// body...
+
    	console.log( $scope.result);
    	$scope.applicantResult = {
    			diet_id:  window.sessionStorage.getItem('examID'),
@@ -130,7 +131,9 @@ $scope.results = {};
 		    dest_location: $scope.result.dest_location,
 		    confirm_country_id: $scope.result.confirm_country_id,
 		    receiptID:         $scope.result.receiptID,
-		    dest_email: $scope.result.dest_email
+		    dest_email: $scope.result.dest_email,
+		     WES_Ref:  $scope.result.WES_Ref,
+		     payment_id: $scope.result.paymentID
 		};
 
 		console.log( $scope.applicantResult);
@@ -153,6 +156,59 @@ $scope.results = {};
 					alert("An Error occurred");
 		})
    }
+
+	$scope.result.receiptConfirm1 = false;
+		   $scope.getdetails = function () {
+//debugger
+console.log($scope.result.receiptConfirm1);
+				if ($scope.result.receiptConfirm1 === true)
+
+				$scope.result.receiptConfirm1 = true;
+
+				else
+
+				$scope.result.receiptConfirm1 = false;
+
+		}
+
+    				$scope.result.receipt_no = {}
+				$scope.result.receiptConfirm = false;
+				$scope.result.receiptID = 0;
+
+			$scope.confirmPayment = function(receipt_no) {
+			 	// body...
+			 	//$scope.result.receipt_no = receipt_no;
+
+			 	if (receipt_no != null) {
+
+
+			 	
+			 	$http.get('/payments/receipt_payment_details.json', 
+			 		{"params": { "receiptNo": receipt_no}
+			 	}).then(function(response) {
+			 		// body...
+			 		$scope.payment = response.data;
+			 		console.log($scope.payment);
+			 		//debugger
+			 		if ($scope.payment != null && $scope.payment.success === true) {
+			 		//debugger	
+			 		$scope.receiptConfirm2 = true;
+			 		$scope.result.Cand_payment_Name = response.data.payment[0].CandName;
+			 		 $scope.result.cand_email = response.data.payment[0].cand_email;
+			 		$scope.result.amount = response.data.payment[0].amount;
+			 		$scope.result.paymentID = response.data.payment[0].id;
+			 		
+			 		//debugger
+			 		}
+			 		else if ($scope.payment != null && $scope.payment.success === false){
+			 			alert($scope.payment.message);
+			 			$scope.receiptConfirm2 = false;
+			 			$scope.result.receiptConfirm1 = false;
+			 		}
+			 	});
+
+			} 	
+		}
 
 
  				$scope.result.receipt_no = {}
@@ -187,7 +243,8 @@ $scope.results = {};
 			 		}
 			 	});
 
-			} 	}
+			} 	
+		}
 
 
    // Return All Confirmations to  View...............
@@ -777,7 +834,7 @@ $scope.selectConfirm = selectConfirm;
 	$scope.second_signatory = [];
 	$http.get("/users/permitted_users").then(function(response){
 		// body...
-		debugger
+		//debugger
 		$scope.signatory  = response.data;
 		//console.log($scope.signatory);
 
@@ -1194,7 +1251,8 @@ $scope.selectConfirm = selectConfirm;
 						
 							 //pdfMake.createPdf(docDefinition).open();
 							 //pdfMake.createPdf(docDefinition).open(newValue.ref_no+'.pdf');
-							 //pdfMake.createPdf(docDefinition).download(newValue.WES_Ref+'.pdf');
+							 pdfMake.createPdf(docDefinition).download(newValue.WES_Ref+'.pdf');
+							  //pdfDocGenerator.download(newValue.WES_Ref+'.pdf');
 							  const pdfDocGenerator = pdfMake.createPdf(docDefinition);
 								var data;
 								//pdfMake.createPdf(docDefinition).getBuffer(function(buffer) {
@@ -1234,7 +1292,7 @@ $scope.selectConfirm = selectConfirm;
 							});
 
 							
-							 pdfDocGenerator.download(newValue.WES_Ref+'.pdf');
+							
 
 
 					}, function() {
@@ -1293,7 +1351,7 @@ $scope.selectConfirm = selectConfirm;
 	$scope.second_signatory = [];
 	$http.get("/users/permitted_users").then(function(response){
 		// body...
-		debugger
+		//debugger
 		$scope.signatory  = response.data;
 		//console.log($scope.signatory);
 
@@ -1710,7 +1768,7 @@ $scope.selectConfirm = selectConfirm;
 						
 							 //pdfMake.createPdf(docDefinition).open();
 							 //pdfMake.createPdf(docDefinition).open(newValue.ref_no+'.pdf');
-					 pdfMake.createPdf(docDefinition).download('C:\\Users\\Jesyontop\\Desktop\\New folder\\' + newValue.WES_Ref+'.pdf');
+					 		pdfMake.createPdf(docDefinition).download( newValue.WES_Ref+'.pdf');
 
 							 //  //var Unit8data;
 								 const pdfDocGenerator = pdfMake.createPdf(docDefinition);
@@ -1726,47 +1784,49 @@ $scope.selectConfirm = selectConfirm;
 
 								// // // }
 
-								// 	var data;
-								// pdfMake.createPdf(docDefinition).getBuffer(function(buffer) {
-								//     // turn buffer into blob
-								//     //data = buffer;
-								//     //$scope.binaryData = buffer;
-								//     //alert(data);
-								//    // console.log( $scope.binaryData);
-								//     	var data = ({
-							 //                fileName: newValue.WES_Ref+'.pdf',
-							 //                attachment: buffer
-							 //            });
+									var data;
+								pdfMake.createPdf(docDefinition).getBuffer(function(buffer) {
+								    // turn buffer into blob
+								    data = buffer;
+								    $scope.binaryData = buffer;
+								    //alert(data);
+								   console.log( $scope.binaryData);
+								    	var data = ({
+							                fileName: newValue.WES_Ref+'.pdf',
+							                attachment: buffer
+							            });
 
-							 //            console.log( data);
+							            console.log( data);
 
-							 //            			let token = window.sessionStorage.getItem('token');
+							            			let token = window.sessionStorage.getItem('token');
 
-								// 			$http({
-								// 				method: 'PUT',
-								// 				url: "http://localhost:5000/applicants/"+newValue.WES_Ref+".json",
-								// 				headers: {
-								// 							Authorization :`Bearer ${token.replace("\"", "")}`,
-								// 							Content_Type :  'application/json'
-								// 						},
-								// 				confirmPDF: angular.toJson(data)
-								// 				})
+											// $http({
+											// 	method: 'PUT',
+											// 	url: "http://localhost:5000/applicants/"+newValue.WES_Ref+".json",
+											// 	headers: {
+											// 				Authorization :`Bearer ${token.replace("\"", "")}`,
+											// 				Content_Type :  'application/json'
+											// 			},
+											// 	confirmPDF: angular.toJson(data)
+											// 	})
 
-								// 			// $http.get("http://localhost:5000/applicants", 
-								// 			// 		 {"params": { "ref_no": ref_no}})
-								// 			  .then(function(response) {
-								// 			  	// body...
-								// 			  	alert('PDF file was successfully sent');
-								// 			  	console.log(response.data);
+											// // $http.get("http://localhost:5000/applicants", 
+											// // 		 {"params": { "ref_no": ref_no}})
+											//   .then(function(response) {
+											//   	// body...
+											//   	alert('PDF file was successfully sent');
+											//   	console.log(response.data);
 
-								// 			  }, function(response) {
-								// 			  	// body...
-								// 			  	alert(response.status);
-								// 			  	console.log('There was an error with the file upload');
-								// 			  });
+											//   }, function(response) {
+											//   	// body...
+											//   	alert(response.status);
+											//   	console.log('There was an error with the file upload');
+											//   });
 
 
-								//});
+								});
+
+								
 
 
 					}, function() {

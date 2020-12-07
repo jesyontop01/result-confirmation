@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Web Services</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Clientname</th>
+      <th>Clientaddress</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @web_services.each do |web_service| %>
+      <tr>
+        <td><%= web_service.clientName %></td>
+        <td><%= web_service.clientAddress %></td>
+        <td><%= link_to 'Show', web_service %></td>
+        <td><%= link_to 'Edit', edit_web_service_path(web_service) %></td>
+        <td><%= link_to 'Destroy', web_service, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Web Service', new_web_service_path %>

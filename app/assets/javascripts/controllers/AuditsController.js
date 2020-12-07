@@ -355,7 +355,7 @@ $scope.result.amount = 0;
 		    receipt_no: $scope.result.receipt_no,
 		    transaction_type_id: $scope.result.TransId,
 		    amount:   $scope.result.amount,
-		    receiptID:  $scope.result.receiptID,
+		    receipt_status_id:  $scope.result.receiptID,
 		    confirm_type_id: $scope.result.confirm_type_id,
 		    cand_email: $scope.result.cand_email,
 		    CandName:   $scope.result.CandName,
@@ -378,7 +378,7 @@ $scope.result.amount = 0;
 				.then(function(response){
 							// body...
 				alert('Payment was successful.');
-				$location.path('/search');
+				$location.path('/audit/All-Payments');
 				}, function(response) {
 							// body...
 					alert("An Error occurred");
@@ -387,7 +387,7 @@ $scope.result.amount = 0;
 		}
 		else {
 				    alert(" Payment was cancelled ");
-				   $location.path("/audit/search");
+				   $location.path("/audit/payments");
 		}
    }
 

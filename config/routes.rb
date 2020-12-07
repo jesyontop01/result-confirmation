@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :web_services
   resources :transaction_types
   resources :receipt_corrections
   resources :peoples
@@ -9,7 +10,11 @@ Rails.application.routes.draw do
   resources :test_results
   get 'confirm_amounts/index'
   get 'confirm_amounts/show'
-  resources :payments
+  resources :payments do
+    collection do
+         get :receipt_payment_details
+      end
+  end
   #resources :assignments
 
    resources :assignments do

@@ -36,56 +36,81 @@
                         <tr><td colspan="2">
                       CANDIDATES CORRESPONDENCE<hr>
                       </td></tr>
+                      <tr><td><label ><strong>Candidate's Name:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.CandName" placeholder="Candidate Name" ng-disabled="true">
+                      </td></tr>
                       <tr><td><label ><strong>Exam no:</strong></label>&nbsp;
                       </td><td> <font color="red"><input type="text" ng-model="result.CandNo" value="result.CandNo" disabled="true"/></font> 
                       </td></tr>
 
                       <tr><td><label ><strong>Candidate's Address:</strong></label>&nbsp;
                       </td><td><input  size="30" type="text" ng-model="result.Cand_address" placeholder="Candidate Address" required/>
+                      </td></tr><hr>
+
+                    <tr>   <td> <label ><strong>Payment Receipt No:</strong></label>&nbsp;</td>
+                         <td><input  size="30" type="text" ng-model="result.receipt_no" placeholder="Receipt No"  ng-blur="confirmPayment(result.receipt_no)" required/>
+                            <span style="color:Blue">
+                               <div ng-if="receiptConfirm2 === true">
+                                    <input type="checkbox" ng-model="result.receiptConfirm1"  ng-change="getdetails()">
+                                  <label style="color:Blue"> Receipt is valid</label><br>
+                                  </div>
+
+                                  <div ng-if="receiptConfirm2 === false">
+                                    <input type="checkbox" ng-model="result.receiptConfirm1" disabled="true">
+                                  <label style="color:Red"> Receipt is invalid</label><br>
+                                </div>
+
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr><td colspan="2">
+                      <br><br>
+                     PAYMENT CONFIRMATION<hr>
                       </td></tr>
 
-                        <tr>   <td> <label ><strong>Payment Receipt No:</strong></label>&nbsp;</td>
-                     <td><input  size="30" type="text" ng-model="result.receipt_no" placeholder="Receipt No"  ng-blur="confirmReceipt(result.receipt_no)" required/>
-                        <span style="color:Blue">
-                           <div ng-if="receiptConfirm === true">
-                                <input type="checkbox" ng-model="receiptConfirm" disabled="true">
-                              <label style="color:Blue"> Receipt is valid</label><br>
-                              </div>
 
-                              <div ng-if="receiptConfirm === false">
-                                <input type="checkbox" ng-model="receiptConfirm" disabled="true">
-                              <label style="color:Red"> Receipt is invalid</label><br>
-                            </div>
+                      <tr><td><label ><strong>Candidate's Name (Payment):</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.Cand_payment_Name" placeholder="Candidate Name" ng-disabled="true">
+                      </td></tr>
 
-                        </span>
-                  </td>
-                    </tr>
+                      <tr><td><label ><strong>Candidate's Email (Payment):</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.cand_email" placeholder="Candidate Email Address" ng-disabled="true">
+                      </td></tr>
+
+                      <tr><td><label ><strong>Candidate's Email (Payment):</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.amount" placeholder="Amount Paid" ng-disabled="true">
+                      </td></tr><hr>
 
                       <tr><td colspan="2">
                       <br><br>
                       DESTINATION CORRESPONDENCE<hr>
                       </td></tr>
 
-                      <tr><td><label ><strong>Confirmation Type:</strong></label>&nbsp;&nbsp;
-                       </td><td><select data-ng-model="result.confirm_type_id" data-ng-options="c.id as c.typeName for c in confirmType" data-ng-change="GetCountries()" ng-disabled="!receiptConfirm">
-                        <option value="" >-- Select Confirmation Type --</option>
-                      </select></td></tr>
-
                       <tr><td><label ><strong>Destination Title:</strong></label>&nbsp;&nbsp;
-                      </td><td><input size="25" type="text" ng-model="result.dest_title" placeholder="Title of the Recipient" ng-disabled="!receiptConfirm" required/>
+                      </td><td><input size="25" type="text" ng-model="result.dest_title" placeholder="Title of the Recipient" ng-disabled="!result.receiptConfirm1" required/>
                       </td></tr>
 
                       <tr><td><label ><strong>Destination Address Line1:</strong></label>&nbsp;&nbsp;
-                      </td><td><input  size="30" type="text" ng-model="result.dest_address1" placeholder="Destination Address1" ng-disabled="!receiptConfirm" required/>
+                      </td><td><input  size="30" type="text" ng-model="result.dest_address1" placeholder="Destination Address1" ng-disabled="!result.receiptConfirm1" required/>
                       </td></tr>
 
                       <tr><td><label ><strong>Destination Address Line2:</strong></label>&nbsp;&nbsp;
-                      </td><td><input  size="30" type="text" ng-model="result.dest_address2" placeholder="Destination Address2" ng-disabled="!receiptConfirm"> (Optional)
+                      </td><td><input  size="30" type="text" ng-model="result.dest_address2" placeholder="Destination Address2" ng-disabled="!result.receiptConfirm1"> (Optional)
                       </td></tr>
 
                       <tr><td><label ><strong>Destination Location:</strong></label>&nbsp;&nbsp;
-                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_location" placeholder="Destination Location" ng-disabled="!receiptConfirm" required/>
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_location" placeholder="Destination Location" ng-disabled="!result.receiptConfirm1" required/>
                       </td></tr>
+
+                      <tr><td><label ><strong>WES Reference No:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="result.WES_Ref" placeholder="WES Reference No"> (Optional)
+                      </td></tr>
+
+                      <tr><td><label ><strong>Confirmation Type:</strong></label>&nbsp;&nbsp;
+                       </td><td><select data-ng-model="result.confirm_type_id" data-ng-options="c.id as c.typeName for c in confirmType" data-ng-change="GetCountries()" ng-disabled="!result.receiptConfirm1">
+                        <option value="" >-- Select Confirmation Type --</option>
+                      </select></td></tr>
 
                       <tr><td><label ><strong>Confirmation Country:</strong></label>&nbsp;&nbsp;
                       </td><td><select data-ng-model="result.confirm_country_id" data-ng-disabled="!countries" data-ng-options="s.id as s.countryName for s in countries" required>
@@ -93,7 +118,7 @@
                       </select></td></tr>
 
                       <tr><td><label ><strong>Destination Email:</strong></label>&nbsp;&nbsp;
-                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_email" placeholder="Destination Email Address" ng-disabled="!receiptConfirm">(Optional)
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_email" placeholder="Destination Email Address" ng-disabled="!result.receiptConfirm1">(Optional)
                       </td></tr>
                   </tbody>
               </table>

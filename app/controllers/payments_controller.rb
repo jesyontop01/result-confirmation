@@ -5,6 +5,8 @@ class PaymentsController < ApplicationController
 
   # GET /payments
   # GET /payments.json
+  
+
   def index
 
         params[:office_id] = current_user.office_id
@@ -30,7 +32,7 @@ class PaymentsController < ApplicationController
 
 
           SELECT
-          a.[id], a.[CandName], a.[PhoneNo], b.[transName], a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
+          a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
           FROM [verifierApp].[dbo].[payments] a
           inner join [verifierApp].[dbo].[transaction_types] b
           on a.transaction_type_id = b.id
@@ -44,6 +46,7 @@ class PaymentsController < ApplicationController
 
             @confirms = ActiveRecord::Base.connection.exec_query(sql)
 
+      
 
       else
         
@@ -57,10 +60,29 @@ class PaymentsController < ApplicationController
           # # inner join [verifierApp].[dbo].[offices] d
           # # on a.office_id = d.id
 
+
+  #         [id]
+  #     ,[diet_id]
+  #     ,[year_id]
+  #     ,[exam_no]
+  #     ,[confirm_type_id]
+  #     ,[amount]
+  #     ,[receipt_no]
+  #     ,[created_at]
+  #     ,[updated_at]
+  #     ,[cand_email]
+  #     ,[user_id]
+  #     ,[office_id]
+  #     ,[printed]
+  #     ,[CandName]
+  #     ,[PhoneNo]
+  #     ,[transaction_type_id]
+  # FROM [verifierApp].[dbo].[payments]
+
              sql = <<-SQL 
 
           SELECT
-          a.[id], a.[CandName], a.[PhoneNo], b.[transName], a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
+          a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
           FROM [verifierApp].[dbo].[payments] a
           inner join [verifierApp].[dbo].[transaction_types] b
           on a.transaction_type_id = b.id
@@ -111,11 +133,11 @@ class PaymentsController < ApplicationController
         @payment.update(:user_id => current_user.id)
         @payment.update(:office_id => current_user.office_id)
 
-                 if params[:receiptID] 
+                 if params[:receipt_status_id] 
 #binding.pry
                   #params[:office_id] = current_user.office_id
 
-                  @receipt_status = ReceiptStatus.find_by(:id => params[:receiptID])
+                  @receipt_status = ReceiptStatus.find_by(:id => params[:receipt_status_id])
 
                   @receipt_status.update(:status => 'USED')
                   #@receipt_status.update(confirmation_id: @confirm.id )
@@ -154,6 +176,43 @@ class PaymentsController < ApplicationController
     end
   end
 
+  def receipt_payment_details
+     params[:office_id] = current_user.office_id
+
+      if params[:receiptNo]
+          
+          sql = <<-SQL 
+
+            SELECT
+            a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
+            FROM [verifierApp].[dbo].[payments] a
+            inner join [verifierApp].[dbo].[transaction_types] b
+            on a.transaction_type_id = b.id
+            inner join [verifierApp].[dbo].[offices] c
+            on a.office_id = c.id
+            inner join [verifierApp].[dbo].[confirm_types] d
+            on a.confirm_type_id = d.id
+            where a.office_id = '#{params[:office_id]}' and a.[receipt_no] = '#{params[:receiptNo]}'
+
+          SQL
+
+              @payment = ActiveRecord::Base.connection.exec_query(sql)
+      end
+
+      if @payment.length == 0
+
+         render json: {success: false, message: "Payment not found for this Receipt No." }
+        
+      else
+         render json: {success: true, payment: @payment }
+        
+      end
+
+     
+
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_payment
@@ -163,7 +222,7 @@ class PaymentsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def payment_params
       params.require(:payment).permit(:diet_id, :year_id, :exam_no, :confirm_type_id, :amount, :receipt_no,
-                       :cand_email, :printed, :user_id, :office_id, :CandName, :PhoneNo, :transaction_type_id)
+                       :cand_email, :printed, :user_id, :office_id, :CandName, :PhoneNo, :transaction_type_id, :receipt_status_id)
     end
 end
 

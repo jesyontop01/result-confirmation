@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Clientname:</strong>
+  <%= @web_service.clientName %>
+</p>
+
+<p>
+  <strong>Clientaddress:</strong>
+  <%= @web_service.clientAddress %>
+</p>
+
+<%= link_to 'Edit', edit_web_service_path(@web_service) %> |
+<%= link_to 'Back', web_services_path %>

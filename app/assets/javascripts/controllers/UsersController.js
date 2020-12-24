@@ -121,6 +121,46 @@ angular.module('verifier')
 //     			})
 //     		}
 
+		$scope.uploadedFile = function(element){
+//debugger
+			$scope.currentFile = element.files[0];
+		    var reader = new FileReader();
+
+		    reader.onload = function(event) {
+		    	var output = document.getElementById('output');
+    			output.src = URL.createObjectURL(element.files[0]);
+	
+		      $scope.image_source = event.target.result
+		      $scope.$apply(function($scope) {
+		        $scope.files = element.files;
+		      });
+		    }
+                    reader.readAsDataURL(element.files[0]);
+		  }
+
+		  $scope.loadSignature = function (record) {
+		  	// body...
+		  	console.log(record.signature);
+///users/upload_user_signature/:id
+		  	    $http({
+    				method: 'POST',
+					//url: " /users/upload_user_signature/"+ $scope.user.id +".json",
+					url: " /signatures.json",
+					data: record.signature,
+
+					header: {
+						'Content_Type' : 'application/json'
+					}
+    			}).then(function(response){
+    							alert('User Signature Updated successfully.');
+    							$location.path('/users/'+ user.id);
+    			},function(response){
+    				alert('There was a problem:' + response.status);
+
+    			});
+		  }
+
+
 // load All Users from the Database
 		 $scope.loadUser = function (id) {
 
@@ -264,31 +304,8 @@ angular.module('verifier')
 
 
  
-     			console.log(Role_data);
-  //   		$scope.user.roles.forEach(role => {
-		// 		console.log(role);
-
-		// 	switch(role.name){
-		// 		case "user": 
-		// 		return	$scope.user.user = true;
-		// 		break;
-		// 		case "admin":
-		// 		return $scope.user.admin = true;
-		// 		console.log($scope.user.admin = true)
-		// 		break;
-		// 		case "audit_staff":
-		// 		return $scope.user.audit_staff = true;
-		// 		break;
-		// 		case "audit_admin":
-		// 		return $scope.user.audit_admin = true;
-		// 		case "exam_staff":
-		// 		return $scope.user.exam_staff = true;
-		// 		break;
-		// 		default:
-		// 		return	$scope.user.user = true;
-		// 		break;
- 	//   		}
-		// });{"params": { "CandNo": searchTerm, "yearId": idYear, "dietId": idDiet}}
+     			//console.log(Role_data);
+  
 
     			$http({
     				method: 'PATCH',

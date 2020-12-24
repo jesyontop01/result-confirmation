@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_07_165604) do
+ActiveRecord::Schema.define(version: 2020_12_16_131623) do
 
   create_table "Grade", primary_key: "GradeType", id: :string, limit: 1, default: nil, force: :cascade do |t|
     t.string "GradeValue", limit: 2, null: false
@@ -204,6 +204,17 @@ ActiveRecord::Schema.define(version: 2020_12_07_165604) do
     t.datetime "updated_at"
   end
 
+  create_table "signatures", force: :cascade do |t|
+    t.string "filetype"
+    t.string "filename"
+    t.integer "filesize"
+    t.text "base64"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_signatures_on_user_id"
+  end
+
   create_table "staffs", force: :cascade do |t|
     t.string "name", limit: 255
     t.string "department", limit: 255
@@ -308,6 +319,7 @@ ActiveRecord::Schema.define(version: 2020_12_07_165604) do
     t.boolean "audit_role", default: false
     t.boolean "user_role", default: true
     t.string "permission", default: "user"
+    t.text "signature"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, where: "([reset_password_token] IS NOT NULL)"
   end
@@ -348,6 +360,8 @@ ActiveRecord::Schema.define(version: 2020_12_07_165604) do
     t.string "clientURL"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "authURL"
+    t.string "submitURL"
   end
 
   create_table "years", force: :cascade do |t|
@@ -376,4 +390,5 @@ ActiveRecord::Schema.define(version: 2020_12_07_165604) do
   add_foreign_key "receipt_statuses", "receipt_booklets"
   add_foreign_key "searches", "confirm_types"
   add_foreign_key "searches", "offices"
+  add_foreign_key "signatures", "users"
 end

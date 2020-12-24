@@ -28,7 +28,8 @@ class Ability
          # can :manage, PaymentSearch
         can :manage, Exam 
         can :manage, TestResult
-      elsif user.role? :audit_staff
+
+      elsif user.role? :account_staff
         can :read, :all
         can :manage, :User
         can :read, Confirmation
@@ -40,6 +41,18 @@ class Ability
         can :read, Year
         can :read, :user_permissions, Assignment
 
+      elsif user.role? :audit_staff
+        can :read, :all
+        can :manage, :User
+        can :read, Confirmation
+        can :manage, Payment
+        can :manage, TestResult
+        can :manage, ReceiptBooklet
+        can :manage, ReceiptStatus
+        can :read, Diet
+        can :read, Year
+        can :read, :user_permissions, Assignment
+        
       else
         can :read, :all
       end

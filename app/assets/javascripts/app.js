@@ -18,8 +18,13 @@
     'RolesCtrl',
     'RoleService',
     'TransactionTypeServices',
-    'TransactionController'
-
+    'TransactionController',
+    'WebClientServices',
+    'WebServicesController',
+    'dataGrid', 'pagination',
+    'ui.bootstrap',
+    'datatables',
+    'userPersistenceService'
    ])
     // .config(function(AuthInterceptProvider) {
     //     // Intercept 401 Unauthorized everywhere

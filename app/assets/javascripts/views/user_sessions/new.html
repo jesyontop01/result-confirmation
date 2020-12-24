@@ -4,10 +4,15 @@
   {{error}}
 </div>
 
-<div class="container">
-  <div class="row">
-     <div class="col-sm-4"></div>
-    <div class="col-sm-4">
+    <div class="container">
+      <div class="row">
+         <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+          <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Sign In.</h3>
+          </div>
+          <div class="panel-body">  
 
 <form ng-submit="sessions.submitLogin(loginForm)" role="form" ng-init="loginForm = {}">
   <div class="form-group">
@@ -33,11 +38,13 @@
   <button type="submit" class="btn btn-primary btn-lg">Sign in</button>
   <p>Create Account Here <a href="#/sign_Up/">Register</a></p>
   <p>Forgot Password? <a href="#/passwords/new/">Change Password</a></p>
-</form>
-</div>
-</div>
-</div>
-</div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
 
 <br>
 <div class="jumbotron text-center"  ng-show="sessions.loading">

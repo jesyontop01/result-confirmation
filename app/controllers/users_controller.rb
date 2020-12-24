@@ -53,7 +53,7 @@ class UsersController < ApplicationController
   	@user = User.find(params[:id])
   	  @user.update_attributes(activation_params) 
        if @user.activated =="true"
-        binding.pry
+        #binding.pry
       UserMailer.welcome(@user).deliver_now!
   		 flash[:notice] = "User account Successfully activated."
         redirect_to users_path
@@ -77,6 +77,22 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def decode_base64
+    decoded_data = Base64.decode64(params[:signature][:base64])
+    data = StringIO.new(decoded_data)
+    data
+  end
+
+    def upload_user_signature
+    
+     @user = User.find(params[:id]) 
+      current_user.update(:signature => params[:signature])
+    binding.pry
+    render json: {user:   @user}
+  end
+
+
 
   def set_user_role
     # params[:admin] = nil
@@ -104,16 +120,22 @@ class UsersController < ApplicationController
 
       if user.is_management == true
         user2 = User.where(id: user).pluck(:title, :surname, :othernames, :is_management)
+          u = Signature.where(user_id: user.id).first.base64 
+          user2 << u 
          signatoryUser = [] 
          signatoryUser[1] = user2
-
-        render json: signatoryUser
+         
+         #render json: signatoryUser
+        render json: {signatory2: signatoryUser, logUser: user , success: false }
       elsif user.is_management == false
          user2 = User.where(id: user).pluck(:title, :surname, :othernames, :is_management)
+          u = Signature.where(user_id: user.id).first.base64 
+          user2 << u
          signatoryUser = [] 
          signatoryUser[0] = user2
          
-        render json: signatoryUser
+        #render json: signatoryUser
+        render json: {signatory2: signatoryUser, logUser: user , success: false }
 
         else
         
@@ -132,6 +154,8 @@ class UsersController < ApplicationController
       ## setting AR staff at array number 2 and National staff at array number 1
     if current_user.is_management?
         user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames)
+         u = Signature.where(user_id: current_user.id).first.base64 
+          user1 << u  
         @signatoryArray[1] = user1
         # aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => false))
         #                # if aRStaff.timedout?(Time.now)
@@ -151,6 +175,8 @@ class UsersController < ApplicationController
     else
       ## setting AR staff at array number 2 and National staff at array number 1
             user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames)
+            u = Signature.where(user_id: current_user.id).first.base64 
+            user1 << u 
             @signatoryArray[0] = user1
 
       # aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
@@ -165,6 +191,6 @@ class UsersController < ApplicationController
   private
   
   def activation_params
-  	params.require(:user).permit(:activated, :admin, :encrypted_password, :is_management, :superadmin_role, :audit_role, :permission)
+  	params.require(:user).permit(:activated, :admin, :encrypted_password, :is_management, :superadmin_role, :audit_role, :permission, :signature)
   end
 end

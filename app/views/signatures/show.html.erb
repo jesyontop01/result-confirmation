@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Filetype:</strong>
+  <%= @signature.filetype %>
+</p>
+
+<p>
+  <strong>Filename:</strong>
+  <%= @signature.filename %>
+</p>
+
+<p>
+  <strong>Filesize:</strong>
+  <%= @signature.filesize %>
+</p>
+
+<p>
+  <strong>Base64:</strong>
+  <%= @signature.base64 %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @signature.user %>
+</p>
+
+<%= link_to 'Edit', edit_signature_path(@signature) %> |
+<%= link_to 'Back', signatures_path %>

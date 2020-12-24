@@ -31,7 +31,10 @@
     "angular-data-grid": "latest",
     "angular-loading-bar": "latest",
     "angular-datatables": "latest",
-    "ng-file-upload": "latest"
+    "ng-file-upload": "latest",
+    "Font-Awesome": "latest",
+    "angularjs-datatables": "latest",
+    "datatables.net": "latest"
   },
   "resolutions": {
     "angular": "1.5",

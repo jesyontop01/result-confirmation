@@ -5,7 +5,7 @@ class Payment < ActiveRecord::Base
 
 
 
-  after_create :check_receipt_booklet_availability
+  after_save :check_receipt_booklet_availability
 
   def check_receipt_booklet_availability
   	receipt_status = ReceiptStatus.find(receipt_status_id)
@@ -20,5 +20,7 @@ class Payment < ActiveRecord::Base
   	 	#render json: {message: "Receipt Leaflet remains #{u.count}"}
   	 	puts message: "Receipt Leaflet remains #{u.count}"
   	 end
+
+     return true
   end
 end

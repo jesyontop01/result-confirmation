@@ -71,6 +71,13 @@ angular
           controller: "ConfirmationsController",
           authenticated: true
           })
+
+        .when('/webServices/:id',{
+            templateUrl:"views/confirmations/webServices.html",
+          controller: "ConfirmationsController",
+          authenticated: true
+          })
+
         .when('/wes_upload/:id',{
             templateUrl:"views/confirmations/wes_connection.html",
           controller: "ConfirmationsController",
@@ -93,41 +100,53 @@ angular
           controller: "UsersController",
           authenticated: true
           })
+        .when('/signature',{
+          templateUrl:"views/users/signature.html",
+          controller: "UsersController",
+          authenticated: true
+          })
         .when('/audit/new',{
             templateUrl:"views/audit/log_booklet.html",
           controller: "AuditsController",
           authenticated: true,
-          permission: ['admin', 'audit_admin', 'audit_staff']
+          permission: ['admin', 'audit_admin', 'audit_staff' , 'account_staff']
           })
         .when('/audit/edit',{
             templateUrl:"views/audit/receipt_status.html",
           controller: "AuditsController",
           authenticated: true,
-          permission: ['admin', 'audit_admin', 'audit_staff']
+          permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff']
           })
         .when('/audit/search',{
             templateUrl:"views/audit/search.html",
           controller: "AuditsController",
           authenticated: true,
-          permission: ['admin', 'audit_admin', 'audit_staff']
+          permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff']
           })
         .when('/audit/payment/:ExamYear/:CandNo',{
             templateUrl:"views/audit/payment.html",
           controller: "AuditsController",
           authenticated: true,
-          permission: ['admin', 'audit_admin', 'audit_staff']
+          permission: ['admin', 'audit_admin', 'audit_staff' , 'account_staff']
           })
         .when('/audit/payments',{
             templateUrl:"views/audit/payment_Trans.html",
           controller: "AuditsController",
           authenticated: true,
-          permission: ['admin', 'audit_admin', 'audit_staff'],
+          permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff'],
           })
         .when('/audit/All-Payments',{
           templateUrl: "views/audit/All_Payment_Transactions.html",
           controller: "AuditsController",
           authenticated: true,
-          permission: ['admin', 'audit_admin', 'audit_staff'],
+          permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff'],
+        })
+        
+        .when('/audit/Audit_All-Payments',{
+          templateUrl: "views/audit/audit_all_payment_trans.html",
+          controller: "AuditsController",
+          authenticated: true,
+          permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff'],
         })
         .when('/verifer/payments',{
             templateUrl: "views/confirmPayment/payments.html",

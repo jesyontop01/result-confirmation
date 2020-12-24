@@ -9,6 +9,6 @@
     "commit": "3f2afabc06a59ccc6c5d8b3b5ee754801ab26cbb"
   },
   "_source": "https://github.com/canvg/canvg.git",
-  "_target": "1.5.3",
-  "_originalSource": "canvg"
+  "_target": "v1.5.3",
+  "_originalSource": "https://github.com/canvg/canvg.git"
 }

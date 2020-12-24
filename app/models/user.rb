@@ -19,6 +19,8 @@ validate :user_exists, on: :create
           has_many :assignments , dependent: :delete_all
           has_many :roles, through: :assignments
 
+          has_one :signature
+
 #before_save :activate_user_or_timedout
 
 

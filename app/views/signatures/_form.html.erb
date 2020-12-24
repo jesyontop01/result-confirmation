@@ -1,0 +1,42 @@
+<%= form_with(model: signature, local: true) do |form| %>
+  <% if signature.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(signature.errors.count, "error") %> prohibited this signature from being saved:</h2>
+
+      <ul>
+      <% signature.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :filetype %>
+    <%= form.text_field :filetype %>
+  </div>
+
+  <div class="field">
+    <%= form.label :filename %>
+    <%= form.text_field :filename %>
+  </div>
+
+  <div class="field">
+    <%= form.label :filesize %>
+    <%= form.number_field :filesize %>
+  </div>
+
+  <div class="field">
+    <%= form.label :base64 %>
+    <%= form.text_area :base64 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

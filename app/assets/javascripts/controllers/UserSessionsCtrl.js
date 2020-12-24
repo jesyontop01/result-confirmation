@@ -10,9 +10,9 @@
  * Controller of the fakeLunchHubApp
  */
 angular.module('sessionsController', [])
-  .controller('UserSessionsCtrl', ['$scope', 'Auth','$rootScope', 'User','$location','$http', '$window',
-         function ($scope, Auth, $rootScope, User
-          , $location, $http, $window) {
+  .controller('UserSessionsCtrl', ['$scope', 'Auth','$rootScope', 'User','$location',
+              '$http', '$window','userSession',
+         function ($scope, Auth, $rootScope, User, $location, $http, $window, userSession) {
 
            var vm = this;
 
@@ -128,18 +128,65 @@ angular.module('sessionsController', [])
 
     $scope.$on('devise:logout', function (e, currentUser){
       $window.localStorage.removeItem('signatory2');
+      $window.localStorage.removeItem('signatoryUser');
       alert("You have been logged out.")
       $rootScope.user = undefined
       $location.path('/');
     });
 
-    var signatory2 = [];
-     signatory2 = $window.localStorage.getItem('signatory2');
-     console.log(signatory2);
+    this.signatoryLogout2 = function () {
+      // body...
+      if ($window.localStorage.getItem('signatoryUser') != null) {
+            if (confirm("You are about log out signatory 2..?") == true) {
+              $window.localStorage.removeItem('signatoryUser');
+              window.location.reload();
+              $location.path('/');
+            }
+            else {
+              vm.usrSecond = userSession.getCookieData('usr');
+              console.log(vm.usrSecond);
+                  alert(" Operation was cancelled ");
+                  window.location.reload();
+                 $location.path('/');
+           
+          
+          }
+      }
+      else{
+        $window.localStorage.getItem('signatoryUser') = null;
+      
+    }
+  }
+
+      this.signatoryLogout = function () {
+      // body...
+      if (userSession.getCookieData('usr') != null) {
+            if (confirm("You are about log out signatory 2..?") == true) {
+              userSession.clearCookieData();
+              window.location.reload();
+              $location.path('/');
+            }
+            else {
+              vm.usrSecond = userSession.getCookieData('usr');
+              console.log(vm.usrSecond);
+                  alert(" Operation was cancelled ");
+                  window.location.reload();
+                 $location.path('/');
+           
+          
+          }
+      }
+      else{
+        userSession.getCookieData('usr') = null;
+      
+    }
+  }
+
+
      
 
 
-    vm.submitLogUser  = function(logUserForm) {
+     this.submitLogUser  = function(logUserForm) {
       // body...
       vm.loading = true;
       console.log(logUserForm);
@@ -147,39 +194,67 @@ angular.module('sessionsController', [])
         .then(function(response) {
           // body...
            vm.loading = false;
-         console.log(response.data);
-      
-          vm.second_signatory2 = response.data;
-         $window.localStorage.setItem('signatory2', JSON.stringify( vm.second_signatory2));
+         //console.log(response.data);
+         //vm.second2 = response.data;
+   //{signatory2: signatoryUser, logUser: user , success: false }   
+          //vm.second2 = JSON.stringify(response.data.signatory2);
+
+          vm.User2 = {
+            surname: response.data.logUser.surname,
+            othernames: response.data.logUser.othernames
+          }
+
+          vm.second2 = {
+            surname: response.data.logUser.surname,
+            othernames: response.data.logUser.othernames.slice(0,1),
+            userID: response.data.logUser.email
+          }
+
+          //console.log(vm.User2);
+          //console.log(vm.second2);
+          var encodedStringBtoA = btoa(JSON.stringify(vm.second2));
+          //console.log( encodedStringBtoA);
+
+          //userSession.setCookieData(JSON.stringify(vm.second2));
+          userSession.setCookieData(encodedStringBtoA);
+           //$cookies.put("usr", user);
+         //$window.localStorage.setItem('signatory2', JSON.stringify( vm.second_signatory2));
+
+         //$window.localStorage.setItem('signatoryUser', JSON.stringify( vm.User2));
+         alert("Welcome " + response.data.logUser.surname + " " + response.data.logUser.othernames );
+         window.location.reload();
+
          $location.path('/');
         }, function(response) {
           // body...
         })
     }
 
+    // $scope.SetCookies = function () {
+    //             userPersistenceService.setCookieData($scope.username)
+    //         };
+    //         $scope.GetCookies = function () {
+    //             $window.alert(userPersistenceService.getCookieData('username'));
+    //         };
+    //         $scope.ClearCookies = function () {
+    //             userPersistenceService.clearCookieData();
+    //         };
+
         // Loads everytime a new route or view is loaded.....
                 vm.isLoggedIn = false;
                 vm.loadme = false;
        $rootScope.$on('$routeChangeStart', function () {
 
+      if (userSession.getCookieData() != null) {
+        var encodedString = atob(userSession.getCookieData()); 
+          //console.log( JSON.parse(encodedString));
+                  vm.usrSecond = JSON.parse(encodedString) ;
+                  //console.log(vm.usrSecond);
+          }
+
         Auth.currentUser().then(function (user) {
           // body...
           console.log(user.roles);
-          // console.log(user.roles.map(x=> x.name.indexOf('audit_admin')) )
-          // if (user.roles.map(x=> x.name.indexOf('audit_admin')) > -1) {
-          //   vm.auditAccess = true;
-          // }
-          // else
-          //   if (user.roles.map(x=> x.name.indexOf('audit_staff')) > -1) {
-          //   vm.auditAccess = true; 
-          // }
-
-            //           // Find if the array contains an object by comparing the property value
-            // if(persons.some(person => person.name === "Peter")){
-            //     alert("Object found inside the array.");
-            // } else{
-            //     alert("Object not found.");
-            // }
 
             // Find if the array contains an object by comparing the property value
               if(user.roles.some(role => role.name === "admin")){
@@ -187,16 +262,25 @@ angular.module('sessionsController', [])
                   vm.adminAccess = true;
                   vm.auditAccess = true;
                   vm.examAccess = true;
+                  vm.accountAccess = true;
+              } else if(user.roles.some(role => role.name === "account_staff")){
+                  console.log(vm.auditAccess = true)
+                  vm.adminAccess = false;
+                  vm.auditAccess = false;
+                  vm.examAccess = false;
+                  vm.accountAccess = true;
               } else if(user.roles.some(role => role.name === "audit_staff")){
                   console.log(vm.auditAccess = true)
                   vm.adminAccess = false;
                   vm.auditAccess = true;
                   vm.examAccess = false;
-              } else if(user.roles.some(role => role.name === "exam_staff")){
+                  vm.accountAccess = false;
+              }  else if(user.roles.some(role => role.name === "exam_staff")){
                   console.log(vm.examAccess = true)
                   vm.adminAccess = false;
                   vm.auditAccess = false;
                   vm.examAccess = true;
+                  vm.accountAccess = false;
               } 
 
             if (Auth.isAuthenticated() == true) {
@@ -222,7 +306,7 @@ angular.module('sessionsController', [])
                 }
               });
                     
-                    //console.log(user);
+                    console.log(user);
 
               });
 
@@ -235,6 +319,17 @@ angular.module('sessionsController', [])
         })
  
           });
+
+       if ($window.localStorage.getItem('signatoryUser') != null) {
+          //console.log($window.localStorage.getItem('signatory2'));
+           vm.signatoryUser = {};
+            vm.signatoryUser = JSON.parse($window.localStorage.getItem('signatoryUser'));
+             console.log(vm.signatoryUser);
+                   
+           //JSON.parse
+         } else {
+
+         }
 
 
 

@@ -1,0 +1,24 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-4">
+      <h2>Upload Your Signature</h2><br>
+      <form name="record" ng-controller="UsersController">
+
+  <div class="form-group">
+    <label for=" signature"> Signature <span>*</span></label>
+
+      <input type="file" class="form-control" accept="image/*" id="signature" aria-describedby="signature" placeholder="signature" ng-model="record.signature" onchange="angular.element(this).scope().uploadedFile(this)" ng-required="true" base-sixty-four-input /><br>
+
+  </div>
+
+   <div class="col-lg-4"><img id="output" style="width:200px; height:150px" class="img-responsive"/></div><br>
+
+  <div>
+    <button type="submit" class="btn btn-primary" ng-click="loadSignature(record)">Submit</button>
+  </div>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+</div>

@@ -5,11 +5,14 @@ class WebServicesController < ApplicationController
   # GET /web_services.json
   def index
     @web_services = WebService.all
+     render json: {success: true, data: @web_services  }
   end
 
   # GET /web_services/1
   # GET /web_services/1.json
   def show
+    @web_service = WebService.find(params[:id])
+    render json: {success: true, data: @web_service  }
   end
 
   # GET /web_services/new

@@ -1,7 +1,9 @@
 angular.module('verifier')
-	.controller("ConfirmationsController", [ "$scope", "$http", "$location", "crudService",'$window', "$routeParams", 'ExamDietService',"ConfirmationService", "fileUpload", "ResultService", "$route",
-		function ($scope, $http, $location, crudService,$window, $routeParams, ExamDietService, ConfirmationService, fileUpload, ResultService, $route) {
-
+	.controller("ConfirmationsController", [ "$scope", "$http", "$location", "crudService",'$window', "$routeParams",
+		'ExamDietService',"ConfirmationService", "fileUpload", "ResultService", "$route", "WebClient", "userSession",
+		function ( $scope, $http, $location, crudService,$window, $routeParams, ExamDietService, ConfirmationService, 
+			fileUpload, ResultService, $route, WebClient, userSession) {
+var vm = this ;
 
 $scope.results = {};
 		let year_id;
@@ -136,7 +138,7 @@ $scope.results = {};
 		     payment_id: $scope.result.paymentID
 		};
 
-		console.log( $scope.applicantResult);
+		//console.log( $scope.applicantResult);
 
 		$http({
 			method: 'POST',
@@ -160,7 +162,7 @@ $scope.results = {};
 	$scope.result.receiptConfirm1 = false;
 		   $scope.getdetails = function () {
 //debugger
-console.log($scope.result.receiptConfirm1);
+//console.log($scope.result.receiptConfirm1);
 				if ($scope.result.receiptConfirm1 === true)
 
 				$scope.result.receiptConfirm1 = true;
@@ -188,7 +190,7 @@ console.log($scope.result.receiptConfirm1);
 			 	}).then(function(response) {
 			 		// body...
 			 		$scope.payment = response.data;
-			 		console.log($scope.payment);
+			 		//console.log($scope.payment);
 			 		//debugger
 			 		if ($scope.payment != null && $scope.payment.success === true) {
 			 		//debugger	
@@ -228,14 +230,14 @@ console.log($scope.result.receiptConfirm1);
 			 	}).then(function(response) {
 			 		// body...
 			 		$scope.receipt = response.data[0];
-			 		console.log($scope.receipt);
+			 		//console.log($scope.receipt);
 			 		//debugger
 			 		if ($scope.receipt != null && $scope.receipt.status === "UNUSED") {
 			 		//debugger	
 			 		$scope.receiptConfirm = true;
 			 		$scope.result.receiptID = $scope.receipt.id;
-			 		console.log($scope.result.receiptID);
-			 		debugger
+			 		//console.log($scope.result.receiptID);
+			 		//debugger
 			 		}
 			 		else{
 			 			alert("Sorry, This receipt has being used");
@@ -259,27 +261,81 @@ console.log($scope.result.receiptConfirm1);
 		    		url: '/confirmations.json',
 					}).then(function(response){
 					    		$scope.confirms = response.data;
-					    		console.log($scope.confirms);
+					    		//console.log($scope.confirms);
 					  
 						    		
 					    	}, function(response){
 					    		alert("There was an Error:");
 					    	});
-				    	};
+			};
 
 // Establish Connection To WES and Upload File
 
-$scope.ConnecttoWES = function(confirm) {
+  	var vm = this;
+	$scope.webClientURL  = {};
+
+	$scope.getAllWebServices = function () {
+		// body...
+
+		WebClient.getWebServices().then(function(response){
+			$scope.webClients  = response.data.data;
+			console.log($scope.webClients );
+		},function(response){
+			alert("There was a problem: " + response.status);
+		});
+
+	}
+
+
+	$scope.selectWebService = function(confirm){
+			$location.path("/webServices/" + confirm.id );
+		}
+
+	$scope.clientSelected = {};
+
+	$scope.GetValue = function(d) {
+		// body...
+		$scope.clientSelected = d;
+
+			console.log($scope.clientSelected);
+		
+
+		$scope.$watch('clientSelected.id', function(newValue, oldValue){
+		window.sessionStorage.setItem('clientID', newValue);
+		//window.localStorage.setItem('currentMData', newValue);
+	})		
+		$scope.$watch('clientSelected.authURL', function(newValue, oldValue){
+		window.sessionStorage.setItem('clientAuthURL', newValue);
+		//window.localStorage.setItem('currentMData', newValue);
+	})
+		$scope.$watch('clientSelected.submitURL', function(newValue, oldValue){
+		window.sessionStorage.setItem('clientSubmitURL', newValue);
+		//window.localStorage.setItem('currentMData', newValue);
+	})
+
+
+	}
+
+$scope.webClientURL = {};
+
+$scope.clientURL = null;
+
+$scope.ConnecttoWES = function(confirmID) {
 	// body...
 
-		$http.post('http://localhost:5000/auth_user?email=waec@waec.org.ng&password=waecyaba')
+	$scope.confirmID = $routeParams.id;
+	$scope.clientSelected.clientURL
+	
+	console.log($scope.clientSelected.clientURL);
+		//$http.post('http://localhost:5000/auth_user?email=waec@waec.org.ng&password=waecyaba')
+		$http.post($scope.clientSelected.clientURL)
 		  .then(function(response) {
 		  	// body...
 		  	 response.data;
 		  	if (response.status == 200) {
 
 		  		alert("Login to WES was successful");
-		  		$location.path('/wes_upload/'+ confirm.id);
+		  		$location.path('/wes_upload/'+ $scope.confirmID);
 		  	}
 		  	//console.log(response.data);
 //debugger
@@ -293,7 +349,10 @@ $scope.ConnecttoWES = function(confirm) {
 		  }, function(response) {
 		  	// body...
 		  	alert("WES Server not available , please try later " + response.status);
-		  });
+		  })
+
+
+
 	//http://localhost:3000//auth/sign_in?email=waec@waec.org.ng&password=waecyaba
 // 		$http.post('http://localhost:5000//auth/sign_in?email=waec@waec.org.ng&password=waecyaba')
 // 		  .then(function(response) {
@@ -340,7 +399,7 @@ $scope.getConfirmByID = function(confirmId) {
 		  .then(function(response) {
 		  	// body...
 		  	$scope.confirm = response.data[0];
-		  	console.log(response.data);
+		  	//console.log(response.data);
 
 		  }, function(response) {
 		  	// body...
@@ -351,32 +410,50 @@ $scope.getConfirmByID = function(confirmId) {
 	$scope.wesApplicant = {} ;
 	$scope.wesApplicantID = 0;
 	$scope.wesApplicant.ref_no = 0;
+	$scope.webClient = {} ;
 
 		$scope.wesAuthentication = function (WES_Ref) {
 			// body...
-			var ref_no  = WES_Ref;
-			console.log(ref_no);
-			console.log(window.sessionStorage.getItem('token'));
-			let token = window.sessionStorage.getItem('token');
+							//window.sessionStorage.setItem('clientAuthURL', newValue);
+			let clientAuthURL = window.sessionStorage.getItem('clientAuthURL');
 
+// 			if ($scope.clientID != null ) {
+
+// 					WebClient.getOneWebServices($scope.clientID).then(function(response) {
+// 					// body...
+// 					$scope.webServiceSelected = response.data.data;
+// 					console.log($scope.webServiceSelected);
+
+// 					$scope.$watch('webServiceSelected', function(newValue, oldValue){
+// 						$scope.webClient =  newValue ;
+// 						//window.localStorage.setItem('currentMData', newValue);
+// 					})
+// 				})
+					
+// 			} else {
+// 				alert("Please select a web service to use");
+// 			};
+// console.log($scope.webClient);
+
+			var ref_no  = WES_Ref;
+			let token = window.sessionStorage.getItem('token');
+			console.log($scope.clientSelected);
+//url: "http://localhost:5000/applicants.json",
 		$http({
 			method: 'GET',
-			url: "http://localhost:5000/applicants.json",
+			url: clientAuthURL,
 			headers: {
 						Authorization :`Bearer ${token.replace("\"", "")}`,
 						Content_Type :  'application/json'
 					},
 			params: { "ref_no": ref_no} 
 			})
-
-		// $http.get("http://localhost:5000/applicants", 
-		// 		 {"params": { "ref_no": ref_no}})
 		  .then(function(response) {
 		  	// body...
 		  	$scope.wesApplicant = response.data;
 		  	if ($scope.wesApplicant != null) {
 			  	
-			  	console.log($scope.wesApplicant);
+			  	//console.log($scope.wesApplicant);
 			  	$scope.wesApplicantID = $scope.wesApplicant.id;
 
 			  	} else {
@@ -399,7 +476,7 @@ $scope.getConfirmByID = function(confirmId) {
 
 			$scope.selectConfirm = confirm; 
 
-			console.log($scope.selectConfirm);
+			//console.log($scope.selectConfirm);
 			$scope.wesApplicantID = $scope.wesApplicant.id;
 			$scope.printConfirmation($scope.selectConfirm, $scope.wesApplicantID );
 
@@ -423,12 +500,16 @@ $scope.getConfirmByID = function(confirmId) {
 		$scope.SendToCarrier = function(){
 
 			let token = window.sessionStorage.getItem('token');
+			let clientSubmitURL = window.sessionStorage.getItem('clientSubmitURL');
 			$scope.photo=$scope.files[0];
 			
-			console.log($scope.form.photo);
+			//console.log($scope.form.photo);
+
+			//url: "http://localhost:5000/documents.json",
+			
 			$http({
 				method:'POST',
-				url: "http://localhost:5000/documents.json",
+				url: clientSubmitURL,
 				data : $scope.form,
 				processData:false,
 				transformRequest:function(data){
@@ -657,14 +738,14 @@ $scope.BlobPdfFile = {};
 
     	let idYear = $window.sessionStorage.getItem('yearID');
 
-    	console.log(idYear);
+    	//console.log(idYear);
 
     	//.......................
 
 
   		let idDiet = $window.sessionStorage.getItem('examID');
 
-   	    console.log(idDiet);
+   	    //console.log(idDiet);
 
     	
 //--------- Creating A synchronious Drop-down for Confirmation Type
@@ -825,8 +906,15 @@ $scope.BlobPdfFile = {};
 //$scope.binaryData = [];
 //$scope.BlobPdfFile = {};
 
+      // if (userSession.getCookieData() != null) {
+      //   var encodedString = atob(userSession.getCookieData()); 
+      //     //console.log( JSON.parse(encodedString));
+      //             vm.usrSecond = JSON.parse(encodedString) ;
+      //             //console.log(vm.usrSecond);
+      //     }
+
 $scope.printConfirmation = function(selectConfirm, wesApplicantID){
-console.log(selectConfirm);
+//console.log(selectConfirm);
 $scope.selectConfirm = selectConfirm;  
 	let base64Pdf;
 
@@ -838,8 +926,8 @@ $scope.selectConfirm = selectConfirm;
 		$scope.signatory  = response.data;
 		//console.log($scope.signatory);
 
-
-		if( $window.localStorage.getItem('signatory2') == null) {
+		if( userSession.getCookieData() == null) {
+		//if( $window.localStorage.getItem('signatory2') == null) {
 		//if( ($scope.signatory[0]== null) || ($scope.signatory[1] == null)) {
 			if (confirm("Sorry!, You Can Not Print Right Now, You Need A Second Signatory Or An AR To Effect Printing. \n Click OK to continue or CANCEL to abort") == true) {
 					$window.open('#/log_in');
@@ -853,8 +941,16 @@ $scope.selectConfirm = selectConfirm;
 		} 
 		else {
 
+
+		                 
 				
 				$scope.second_signatory = [];
+
+				var encodedString = atob(userSession.getCookieData()); 
+		          //console.log( JSON.parse(encodedString));
+		         $scope.usrSecond = JSON.parse(encodedString) ;
+		          //console.log(vm.usrSecond);
+
 				$scope.second_signatory = JSON.parse($window.localStorage.getItem('signatory2'));
 				//console.log($scope.second_signatory);
 				
@@ -1135,8 +1231,15 @@ $scope.selectConfirm = selectConfirm;
 								  },
 						
 								  {
-									margin:[0,33,0,33],
+									margin:[0,2,0,5],
 									stack:[
+											{
+												 fit: [180, 30],
+
+												 image: 'data:image/jpg;base64,'+$scope.signatory[0][1],
+												  width: 200
+												//image: 'image/waec.jpeg'
+											},
 										{text: $scope.signatory[0][0][1] + " "+ $scope.signatory[0][0][2]+ " " + "(" + $scope.signatory[0][0][0] +")" , bold:true},
 										//{text:'ADEKUNLE R.O. (MRS)', bold:true},
 										{text: 'RESULTS OFFICER'},
@@ -1144,8 +1247,15 @@ $scope.selectConfirm = selectConfirm;
 								  },
 						
 								  {
-									margin:[0,2,0,17],
+									margin:[0,0,0,15],
 									stack:[
+											{
+												 fit: [180, 30],
+
+												 image: 'data:image/jpg;base64,'+$scope.signatory[1][1],
+												  width: 200
+												//image: 'image/waec.jpeg'
+											},
 										{text: $scope.signatory[1][0][1] + " "+ $scope.signatory[1][0][2]+ " " + "(" + $scope.signatory[1][0][0] +")" , bold:true},
 										//{text:'JOHN-NWAFA H.A. (MRS)', bold:true},
 										{text: 'For: HEAD OF NATIONAL OFFICE'},

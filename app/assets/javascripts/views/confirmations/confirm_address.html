@@ -66,7 +66,7 @@
 
                     <tr><td colspan="2">
                       <br><br>
-                     PAYMENT CONFIRMATION<hr>
+                    <strong> PAYMENT CONFIRMATION</strong><hr>
                       </td></tr>
 
 
@@ -103,14 +103,14 @@
                       </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_location" placeholder="Destination Location" ng-disabled="!result.receiptConfirm1" required/>
                       </td></tr>
 
-                      <tr><td><label ><strong>WES Reference No:</strong></label>&nbsp;&nbsp;
+                      <tr><td><label ><strong>Reference No:</strong></label>&nbsp;&nbsp;
                       </td><td><input  size="30" type="text" ng-model="result.WES_Ref" placeholder="WES Reference No"> (Optional)
                       </td></tr>
 
-                      <tr><td><label ><strong>Confirmation Type:</strong></label>&nbsp;&nbsp;
+<!--                       <tr><td><label ><strong>Confirmation Type:</strong></label>&nbsp;&nbsp;
                        </td><td><select data-ng-model="result.confirm_type_id" data-ng-options="c.id as c.typeName for c in confirmType" data-ng-change="GetCountries()" ng-disabled="!result.receiptConfirm1">
                         <option value="" >-- Select Confirmation Type --</option>
-                      </select></td></tr>
+                      </select></td></tr> -->
 
                       <tr><td><label ><strong>Confirmation Country:</strong></label>&nbsp;&nbsp;
                       </td><td><select data-ng-model="result.confirm_country_id" data-ng-disabled="!countries" data-ng-options="s.id as s.countryName for s in countries" required>

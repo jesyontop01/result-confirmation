@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :signatures
   resources :web_services
   resources :transaction_types
   resources :receipt_corrections
@@ -81,6 +82,7 @@ Rails.application.routes.draw do
       get :user_permissions#
       post :set_user_role  
       patch 'set_user_role/:id', :to => 'users#set_user_role'
+      patch 'upload_user_signature/:id', :to => 'users#upload_user_signature'
     end
   end
   resources :verifiers

@@ -145,7 +145,7 @@ class UsersController < ApplicationController
     
   end
 
-  def permitted_users
+  def permitted_users1
    
   #Performing AND operation
     #User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
@@ -157,20 +157,22 @@ class UsersController < ApplicationController
          u = Signature.where(user_id: current_user.id).first.base64 
           user1 << u  
         @signatoryArray[1] = user1
-        # aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => false))
-        #                # if aRStaff.timedout?(Time.now)
-        #                #     aRStaff.update(:is_signedIn => 0 )
-        #                #     aRStaff.update(:logged_in => true )
-        #                #     sign_out(aRStaff)
-        #                #   return false
-        #                # else
-        #                #   user2 = User.where(id: aRStaff).pluck(:title, :surname, :othernames)
-        #                #   @signatoryArray[0] = user2
+        aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => false))
+                       # if aRStaff.timedout?(Time.now)
+                       #     aRStaff.update(:is_signedIn => 0 )
+                       #     aRStaff.update(:logged_in => true )
+                       #     sign_out(aRStaff)
+                       #   return false
+                       # else
+                       #   user2 = User.where(id: aRStaff).pluck(:title, :surname, :othernames)
+                       #   @signatoryArray[0] = user2
 
-        #                #   return true
-        #                # end
-        # user2 = User.where(id: aRStaff).pluck(:title, :surname, :othernames)
-        #@signatoryArray[0] = user2
+                       #   return true
+                       # end
+        user2 = User.where(id: aRStaff).pluck(:title, :surname, :othernames)
+        u = Signature.where(user_id: aRStaff.id).first.base64 
+        user2 << u  
+        @signatoryArray[0] = user2
 
     else
       ## setting AR staff at array number 2 and National staff at array number 1
@@ -179,10 +181,59 @@ class UsersController < ApplicationController
             user1 << u 
             @signatoryArray[0] = user1
 
-      # aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
-      # user2 = User.where(id: aRStaff).pluck(:title, :surname, :othernames)
-      # @signatoryArray[1] = user2
+      aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
+      user2 = User.where(id: aRStaff).pluck(:title, :surname, :othernames)
+      u = Signature.where(user_id: aRStaff.id).first.base64 
+        user2 << u
+      @signatoryArray[1] = user2
     end
+
+     render json: @signatoryArray   
+  end
+
+
+  def permitted_users
+   
+   if params[:email].present?
+     
+       #Performing AND operation
+    #User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
+    @signatoryArray = [] 
+    
+      ## setting AR staff at array number 2 and National staff at array number 1
+    if current_user.is_management?
+        user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames, :id)
+         u = Signature.where(user_id: current_user.id).first.base64 
+          user1 << u  
+        @signatoryArray[1] = user1
+
+        #natStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => false))
+        user2 = User.where(email: params[:email]).pluck(:title, :surname, :othernames, :id)
+        u2 = Signature.where(user_id: user2)
+        u = u2.first.base64 
+     #binding.pry   
+        user2 << u  
+        @signatoryArray[0] = user2
+
+    else
+      ## setting AR staff at array number 2 and National staff at array number 1
+            user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames, :id)
+            u = Signature.where(user_id: current_user.id).first.base64 
+            user1 << u 
+            @signatoryArray[0] = user1
+
+      #aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
+        user2 = User.where(email: params[:email]).pluck(:title, :surname, :othernames, :id)
+        u2 = Signature.where(user_id: user2)
+        u = u2.first.base64 
+     #binding.pry    
+        user2 << u
+      @signatoryArray[1] = user2
+    end
+
+
+   end
+
 
      render json: @signatoryArray   
   end

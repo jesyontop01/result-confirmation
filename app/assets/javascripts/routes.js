@@ -148,6 +148,12 @@ angular
           authenticated: true,
           permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff'],
         })
+                .when('/audit/Audit_Payments_view',{
+          templateUrl: "views/audit/All_Payments.html",
+          controller: "AuditsController",
+          authenticated: true,
+          permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff'],
+        })
         .when('/verifer/payments',{
             templateUrl: "views/confirmPayment/payments.html",
             controller: "ConfirmPaymentController",

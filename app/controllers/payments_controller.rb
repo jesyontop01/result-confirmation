@@ -12,72 +12,96 @@ class PaymentsController < ApplicationController
         params[:office_id] = current_user.office_id
 
     
-    if current_user.role? :admin #:audit_staff
+    if ((current_user.role? :admin) || (current_user.role? :audit_admin)) #:audit_staff
     #@confirms = Confirmation.all.paginate(:page => params[:page], :per_page => 10).order("created_at DESC")
 
-              #SELECT  
-          #  a.[id], b.[DietName], c.[YearName], a.[exam_no], a.[cand_email], a.[created_at], d.[office_name], a.[receipt_no], a.[printed]
-          # FROM [verifierApp].[dbo].[payments] a
-          # inner join [verifierApp].[dbo].[Diets] b
-          # on a.diet_id = b.id
-          # inner join [verifierApp].[dbo].[Years] c
-          # on a.year_id = c.id
-          # inner join [verifierApp].[dbo].[offices] d
-          # on a.office_id = d.id
-          # inner join [verifierApp].[dbo].[confirm_types] e
-          # on a.confirm_type_id = e.id
+                if params[:WaecOfficeId] == "undefined" 
 
-                 sql = <<-SQL 
+                        if params[:dateFrom] && params[:dateTo] 
+
+                        sql = <<-SQL
+                            SELECT [id]
+                          ,[diet_id]
+                          ,[year_id]
+                          ,[exam_no]
+                          ,[confirm_type_id]
+                          ,[amount]
+                          ,[receipt_no]
+                          ,[created_at]
+                          ,[updated_at]
+                          ,[cand_email]
+                          ,[user_id]
+                          ,[office_id]
+                          ,[printed]
+                          ,[CandName]
+                          ,[PhoneNo]
+                          ,[transaction_type_id]
+                          ,[receipt_status_id]
+                      FROM [verifierApp].[dbo].[payments]
+                      WHERE cast(created_at as date) between '#{params[:dateFrom]}' and '#{params[:dateTo]}';
+
+                            SQL
+
+                          @confirms = ActiveRecord::Base.connection.exec_query(sql)
+                          
+                        end
+
+                
+
+                  elsif params[:dateFrom] && params[:dateTo] && params[:WaecOfficeId]
+
+                  sql = <<-SQL
+                      SELECT [id]
+                    ,[diet_id]
+                    ,[year_id]
+                    ,[exam_no]
+                    ,[confirm_type_id]
+                    ,[amount]
+                    ,[receipt_no]
+                    ,[created_at]
+                    ,[updated_at]
+                    ,[cand_email]
+                    ,[user_id]
+                    ,[office_id]
+                    ,[printed]
+                    ,[CandName]
+                    ,[PhoneNo]
+                    ,[transaction_type_id]
+                    ,[receipt_status_id]
+                FROM [verifierApp].[dbo].[payments]
+                WHERE cast(created_at as date) between '#{params[:dateFrom]}' and '#{params[:dateTo]}' AND office_id = '#{params[:WaecOfficeId]}';
+
+                      SQL
+
+                    @confirms = ActiveRecord::Base.connection.exec_query(sql)
 
 
 
-          SELECT
-          a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
-          FROM [verifierApp].[dbo].[payments] a
-          inner join [verifierApp].[dbo].[transaction_types] b
-          on a.transaction_type_id = b.id
-          inner join [verifierApp].[dbo].[offices] c
-          on a.office_id = c.id
-          inner join [verifierApp].[dbo].[confirm_types] d
-          on a.confirm_type_id = d.id
-        
+              else
+                         sql = <<-SQL 
 
-        SQL
+                  SELECT
+                  a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
+                  FROM [verifierApp].[dbo].[payments] a
+                  inner join [verifierApp].[dbo].[transaction_types] b
+                  on a.transaction_type_id = b.id
+                  inner join [verifierApp].[dbo].[offices] c
+                  on a.office_id = c.id
+                  inner join [verifierApp].[dbo].[confirm_types] d
+                  on a.confirm_type_id = d.id
+                
 
-            @confirms = ActiveRecord::Base.connection.exec_query(sql)
+                SQL
 
-      
+                    @confirms = ActiveRecord::Base.connection.exec_query(sql)
+
+              end
+
+
+
 
       else
         
-          # SELECT  
-          # #  a.[id], b.[DietName], c.[YearName], a.[exam_no], a.[cand_email], a.[created_at], d.[office_name], a.[receipt_no], a.[printed]
-          # # FROM [verifierApp].[dbo].[payments] a
-          # # inner join [verifierApp].[dbo].[Diets] b
-          # # on a.diet_id = b.id
-          # # inner join [verifierApp].[dbo].[Years] c
-          # # on a.year_id = c.id
-          # # inner join [verifierApp].[dbo].[offices] d
-          # # on a.office_id = d.id
-
-
-  #         [id]
-  #     ,[diet_id]
-  #     ,[year_id]
-  #     ,[exam_no]
-  #     ,[confirm_type_id]
-  #     ,[amount]
-  #     ,[receipt_no]
-  #     ,[created_at]
-  #     ,[updated_at]
-  #     ,[cand_email]
-  #     ,[user_id]
-  #     ,[office_id]
-  #     ,[printed]
-  #     ,[CandName]
-  #     ,[PhoneNo]
-  #     ,[transaction_type_id]
-  # FROM [verifierApp].[dbo].[payments]
 
              sql = <<-SQL 
 
@@ -100,7 +124,7 @@ class PaymentsController < ApplicationController
 
    
 
-        respond_to do |format|
+      respond_to do |format|
       format.html {}
       format.json { render json: @confirms }
     end

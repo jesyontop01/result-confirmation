@@ -3,9 +3,14 @@
   <div class="row">
     <div class="col-sm-2"></div>
     <div class="col-sm-7">
-    <h2>Log Confirmation Payment</h2><br>
+    <h2>Log Confirmation Payment</h2>
 
-      <form name="makePaymentForm" ng-submit="makePayment(result);" method="post" accept-charset="UTF-8" ng-controller="AuditsController" ng-init="{}">                  
+
+      <form name="makePaymentForm" ng-submit="makePayment(result);" method="post" accept-charset="UTF-8" ng-controller="AuditsController" ng-init="{}">  
+
+    <div ng-controller="AuditsController" ng-init="receiptLeafletCount()">
+      <p>Available Receipt Leaflets :<span><h2>Count: {{receiptCount}}</h2></span>.</p>
+    </div>                
       
              <table>
 

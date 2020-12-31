@@ -7,7 +7,30 @@ class ReceiptBookletsController < ApplicationController
   # GET /receipt_booklets
   # GET /receipt_booklets.json
   def index
-    @receipt_booklets = ReceiptBooklet.all
+    params[:officeID] = current_user.office_id
+
+      sql= <<-SQL
+              SELECT 
+              a.[id]
+              ,a.[rangeFrom]
+              ,a.[rangeTo]
+              ,b.[office_name]
+              ,a.[user_id]
+              ,a.[status]
+              ,a.[created_at]
+              ,a.[updated_at]
+          FROM [verifierApp].[dbo].[receipt_booklets] a
+          INNER JOIN [verifierApp].[dbo].[offices] b
+          on a.office_id  = b.id 
+          where office_id = '#{params[:officeID]}'
+
+      SQL
+
+          @booklets = ActiveRecord::Base.connection.exec_query(sql)
+
+
+    #@receipt_booklets = ReceiptBooklet.all
+    render json: {receipt_booklet: @booklets, success: true,  message: 'Receipt booklets per office'}
   end
 
   # GET /receipt_booklets/1
@@ -28,48 +51,60 @@ class ReceiptBookletsController < ApplicationController
   # POST /receipt_booklets.json
   def create
     #@user = User.find(:current_user.id)
-    @receipt_booklet = current_user.receipt_booklets.new(receipt_booklet_params)
+    if params[:rangeFrom] && params[:rangeTo]
 
-        begin
-          # do stuff
-         (@receipt_booklet.rangeFrom..@receipt_booklet.rangeTo ).to_a.each do |receipt| 
-            @receipt_status = ReceiptStatus.create(:receiptNo=> receipt)
-          end
+      #begin
 
-        rescue ActiveRecord::RecordNotUnique
-          # handle the exception however you want to
-          #render json: {success: false, message: "Cannot insert duplicate Receipt Numbers"}
-        end
+      sql = <<-SQL
 
-    respond_to do |format|
-      if @receipt_status.present? && @receipt_status.save
+          SELECT [id]
+              ,[receipt_booklet_id]
+              ,[receiptNo]
+              ,[status]
+              ,[created_at]
+              ,[updated_at]
+              ,[confirmation_id]
+          FROM [verifierApp].[dbo].[receipt_statuses]
+          where [receiptNo] between '#{params[:rangeFrom]}' and '#{params[:rangeTo]}'
 
-        @receipt_booklet.save
-        @receipt_statuses = ReceiptStatus.update(:receipt_booklet_id => @receipt_booklet.id )
-          
-        # @receipt_booklet = current_user.receipt_booklets.build(receipt_booklet_params)
+          SQL
+
+            @statuses = ActiveRecord::Base.connection.exec_query(sql)
+
+            if @statuses.count > 0
+              render json: {success: false, message: "Cannot insert duplicate Receipt Numbers"}  
+
+            else
+
+                      @receipt_booklet = current_user.receipt_booklets.build(receipt_booklet_params)
 
 
-                        # respond_to do |format|
-                        #   if @receipt_booklet.save
-                        #     #@receipt_booklet.update_attribute(:office_id => current_user.office_id)
-                        #       ( @receipt_booklet.rangeFrom..@receipt_booklet.rangeTo ).to_a.each do |receipt| 
-                        #         @receipt_status = ReceiptStatus.create(:receipt_booklet_id=>@receipt_booklet.id , :receiptNo=> receipt)
-                        #       end
-                        #       if @receipt_status.save
-                        #         @receipt_statuses = ReceiptStatus.where(:receipt_booklet_id => @receipt_booklet.id )
-                        #       end
+                    respond_to do |format|
+                        if @receipt_booklet.save
+                            #@receipt_booklet.update_attribute(:office_id => current_user.office_id)
+                              ( @receipt_booklet.rangeFrom..@receipt_booklet.rangeTo ).to_a.each do |receipt| 
+                                @receipt_status = ReceiptStatus.create(:receipt_booklet_id=>@receipt_booklet.id , :receiptNo=> receipt)
+                              end
+                              if @receipt_status.save
+                                @receipt_statuses = ReceiptStatus.where(:receipt_booklet_id => @receipt_booklet.id )
+                              end
 
-        #format.html { redirect_to @receipt_booklet, notice: 'Receipt booklet was successfully created.' }
-        #format.json { render json: @receipt_statuses}
-        format.json { render json: {receipt_booklet: @receipt_booklet, success: true,  message: 'Receipt booklet was successfully created.'}}
-        #format.json { render json: {users: @users, success: true, permission: @assignments}}
-      else
-        format.html { render :new }
-        format.json { render json: {success: false, message: "Cannot insert duplicate Receipt Numbers"} }
-      end
+                            # format.html { redirect_to @receipt_booklet, notice: 'Receipt booklet was successfully created.' }
+                            # format.json { render json: @receipt_statuses}
+                            format.json { render json: {receipt_booklet: @receipt_booklet, success: true,  message: 'Receipt booklet was successfully created.'}}
+                      
+                        else
+                            #format.html { render :new }
+                            format.json { render json: {success: false, message: "Cannot insert duplicate Receipt Numbers"} }
+
+                        end
+              
+                    end
+        
+            end
     end
   end
+
 
   # PATCH/PUT /receipt_booklets/1
   # PATCH/PUT /receipt_booklets/1.json

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  get 'leaflets/index'
+  resources :leaflets
   resources :signatures
   resources :web_services
   resources :transaction_types
@@ -27,10 +29,11 @@ Rails.application.routes.draw do
   resources :receipt_statuses
 
    resources :receipt_statuses do
-         collection do
+        collection do
           get :receipt_correction
+          #get :getReceiptLeafletCount
+          #get '/receipt_statuses/getReceiptLeafletCount', :to => 'receipt_statuses#getReceiptLeafletCount'
           patch 'receipt_correction/:receiptNo', :to => 'receipt_statuses#receipt_correction'
-
         end
     end
 

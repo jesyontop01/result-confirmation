@@ -24,6 +24,11 @@ angular.module('verifier')
 
         };
 
+        fac.getReceiptBooklet = function () {
+          // body...
+          return $http.get('/receipt_booklets.json');  
+        };
+
         fac.UpdateConfirmationToDB = function(id){
 
 

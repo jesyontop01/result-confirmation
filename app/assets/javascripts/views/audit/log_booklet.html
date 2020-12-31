@@ -31,30 +31,28 @@
       </div>
 
 
-<!-- <form>
         <table class="table table-striped table-bordered" ng-init="getAllNewReceipts()">
                 <tbody>     
                     <tr>
                       <th>Index</th>
-                      <th>Booklet ID</th>
-                      <th>Receipt Number</th>
+                      <th>Booklet From</th>
+                      <th>Booklet To</th>
                       <th>Office</th>               
                       <th>Status</th>
                       <th colspan="3">Action</th>
                     </tr>
 
-                    <tr ng-repeat="receiptList in receiptList"> 
+                    <tr ng-repeat="receiptList in receiptLists"> 
                       <td>{{$index+1}}</td>
-                      <td>{{receiptList.receipt_booklet_id}}</td> 
-                       <td>{{receiptList.receiptNo}}</td>
-                       <td>{{receiptList.receipt_booklet_id}}</td>
+                      <td>{{receiptList.rangeFrom}}</td> 
+                       <td>{{receiptList.rangeTo}}</td>
+                       <td>{{receiptList.office_name}}</td>
                        <td><b>{{receiptList.status}}</b></td>
                     
                     </tr>
                               
                   </tbody>
               </table>
-</form> -->
 
 
 

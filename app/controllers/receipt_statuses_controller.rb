@@ -56,7 +56,7 @@ class ReceiptStatusesController < ApplicationController
           
           else
 
-             @receipt_statuses = ReceiptStatus.all
+             @receipt_statuses = ReceiptStatus.where(:office_id => params[:office_id])
 
           end
 
@@ -213,16 +213,8 @@ class ReceiptStatusesController < ApplicationController
 
             render json: receipt_status.as_json, :status => 200
 
-    # respond_to do |format|
-    #   if @receipt_status.save
-    #     format.html { redirect_to @receipt_status, notice: 'Receipt status was successfully updated.' }
-    #     format.json { render json: receipt_status }
-    #   else
-    #     format.html { render :edit }
-    #     format.json { render json: @receipt_status.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

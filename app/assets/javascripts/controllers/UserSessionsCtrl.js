@@ -177,7 +177,7 @@ angular.module('sessionsController', [])
           }
       }
       else{
-        userSession.getCookieData('usr') = null;
+        userSession.getCookieData() = null;
       
     }
   }
@@ -275,7 +275,13 @@ angular.module('sessionsController', [])
                   vm.auditAccess = true;
                   vm.examAccess = false;
                   vm.accountAccess = false;
-              }  else if(user.roles.some(role => role.name === "exam_staff")){
+              }  else if(user.roles.some(role => role.name === "audit_admin")){
+                  console.log(vm.auditAccess = true)
+                  vm.adminAccess = false;
+                  vm.auditAccess = true;
+                  vm.examAccess = false;
+                  vm.accountAccess = false;
+              } else if(user.roles.some(role => role.name === "exam_staff")){
                   console.log(vm.examAccess = true)
                   vm.adminAccess = false;
                   vm.auditAccess = false;

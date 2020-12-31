@@ -32,10 +32,10 @@ angular.module('verifier')
 					    		$scope.bookletRange = {};
 					    		$scope.bookletRange.rangeFrom = " ";
 					    		$scope.bookletRange.rangeTo = "";
-					    		//console.log(response);
-					  			//ReceiptListService.setReceiptStatus($scope.receiptLists);
+					    		$scope.getAllNewReceipts();
+					  			
 
-				$scope.bookletRange1 = "";
+								$scope.bookletRange1 = "";
 						    		
 					    	}, function(response){
 					    		alert("There was an Error: " + response.data.message);
@@ -43,10 +43,29 @@ angular.module('verifier')
 				    	};
 
 
-
+				    	$scope.receiptLists = [];
 				    	$scope.getAllNewReceipts = function() {
-				    		// body...
-				    		$scope.receiptLists = ReceiptListService.getReceiptStatus();
+				    		// body...			  ReceiptListService
+				    		 $http.get('/receipt_booklets.json').then(function(response) {
+				    			// body...
+				    			$scope.receiptLists = response.data.receipt_booklet;
+				    			console.log($scope.receiptLists);
+				    		});
+				    		
+
+				    	}
+
+				    	$scope.receiptLeafletCount();
+				    	$scope.receiptLeafletCount = function() {
+				    		// body...			  ReceiptListService
+				    		//debugger
+				    		 $http.get('/leaflets.json').then(function(response) {
+				    			// body...
+				    			$scope.receiptCount = response.data.length;
+				    			console.log($scope.receiptCount);
+				    		});
+				    		
+
 				    	}
 
 

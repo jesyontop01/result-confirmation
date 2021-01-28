@@ -49,24 +49,26 @@ angular.module('verifier')
 				    		 $http.get('/receipt_booklets.json').then(function(response) {
 				    			// body...
 				    			$scope.receiptLists = response.data.receipt_booklet;
-				    			console.log($scope.receiptLists);
+				    			//console.log($scope.receiptLists);
 				    		});
 				    		
 
 				    	}
 
-				    	$scope.receiptLeafletCount();
+				    	
 				    	$scope.receiptLeafletCount = function() {
 				    		// body...			  ReceiptListService
 				    		//debugger
 				    		 $http.get('/leaflets.json').then(function(response) {
 				    			// body...
 				    			$scope.receiptCount = response.data.length;
-				    			console.log($scope.receiptCount);
+				    			//console.log($scope.receiptCount);
 				    		});
 				    		
 
 				    	}
+
+				    	$scope.receiptLeafletCount();
 
 
 	$scope.results = {};
@@ -206,10 +208,14 @@ $scope.receipt = {};
 
    	      	 $scope.GetNextReceiptNo = function () {
      			$http.get('/receipt_statuses.json').then(function(response){ 
+					if (response == null) {
+						return $scope.result.receipt_no = 0;
+					} else {
+						return $scope.result.receipt_no = response.data[0].receiptNo;
+					}
 					
-					return $scope.result.receipt_no = response.data[0].receiptNo;
 
-		             //console.log(response.data[0]);
+		             console.log(response.data);
 		         },function (response) {
 		             alert('Unexpected Error');
 		         });
@@ -271,7 +277,8 @@ $scope.result.amount = 0;
  }
 
 //Method to get the status of Receipt to use
- 				$scope.result.receipt_no = {}
+ 				//$scope.result.receipt_no = {}
+ 				$scope.result.receipt_no = 0;
 				$scope.result.receiptConfirm = false;
 				$scope.result.receiptID = 0;
 				
@@ -351,11 +358,11 @@ $scope.result.amount = 0;
 	
 		};
 
-
-
+	$scope.result.receiptID = 0;
+	$scope.result.TransId = 0;
    $scope.makePayment = function(result) {
    	// body...
-   	$scope.receipt.receiptID = 0;
+   	//$scope.receipt.receiptID = 0;
    	$scope.receipt = {};
 
   //  	$scope.applicantResult = {

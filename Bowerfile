@@ -39,4 +39,4 @@ asset 'ng-file-upload'
 asset 'Font-Awesome'
 asset 'angularjs-datatables'
 asset 'datatables.net'
-
+asset 'admin-lte', '3.0'

@@ -9,6 +9,7 @@ respond_to :json
      #@user = User.new(:email => params[:email], :password=> params[:password], :password_confirmation => params[:password])
   end
 
+
   # POST /resource
   def create
   build_resource(sign_up_params)
@@ -22,10 +23,9 @@ respond_to :json
        set_flash_message! :notice, :signed_up 
 
       sign_up(resource_name, resource)
-#binding.pry!
+
       #UserMailer.activation_request(@user).deliver_now
        #flash[:alert] = "Your account Requires Admin Authorisation"
-
       #respond_with resource, location: after_sign_up_path_for(resource)
     else
       set_flash_message! :notice, :signed_up_but_#{resource.inactive_message}"

@@ -70,16 +70,16 @@
                       </td></tr>
 
 
-                      <tr><td><label ><strong>Candidate's Name (Payment):</strong></label>&nbsp;&nbsp;
-                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.Cand_payment_Name" placeholder="Candidate Name" ng-disabled="true">
+                      <tr><td><label ><strong>Candidate's Name (Payment):</strong></label>&nbsp;&nbsp;</td>
+                      <td><input  size="30" type="text" value="NULL" ng-model="result.Cand_payment_Name" placeholder="Candidate Name" ng-disabled="true">
                       </td></tr>
 
-                      <tr><td><label ><strong>Candidate's Email (Payment):</strong></label>&nbsp;&nbsp;
-                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.cand_email" placeholder="Candidate Email Address" ng-disabled="true">
+                      <tr><td><label ><strong>Candidate's Email (Payment):</strong></label>&nbsp;&nbsp;</td>
+                      <td><input  size="30" type="text" value="NULL" ng-model="result.cand_email" placeholder="Candidate Email Address" ng-disabled="true">
                       </td></tr>
 
-                      <tr><td><label ><strong>Candidate's Email (Payment):</strong></label>&nbsp;&nbsp;
-                      </td><td><input  size="30" type="text" value="NULL" ng-model="result.amount" placeholder="Amount Paid" ng-disabled="true">
+                      <tr><td><label ><strong>Candidate's Email (Payment):</strong></label>&nbsp;&nbsp;</td>
+                      <td><input  size="30" type="text" value="NULL" ng-model="result.amount" placeholder="Amount Paid" ng-disabled="true">
                       </td></tr><hr>
 
                       <tr><td colspan="2">
@@ -104,7 +104,7 @@
                       </td></tr>
 
                       <tr><td><label ><strong>Reference No:</strong></label>&nbsp;&nbsp;
-                      </td><td><input  size="30" type="text" ng-model="result.WES_Ref" placeholder="WES Reference No"> (Optional)
+                      </td><td><input  size="30" type="text" ng-model="result.WES_Ref" placeholder="Client Reference No"> (Optional)
                       </td></tr>
 
 <!--                       <tr><td><label ><strong>Confirmation Type:</strong></label>&nbsp;&nbsp;
@@ -112,10 +112,10 @@
                         <option value="" >-- Select Confirmation Type --</option>
                       </select></td></tr> -->
 
-                      <tr><td><label ><strong>Confirmation Country:</strong></label>&nbsp;&nbsp;
-                      </td><td><select data-ng-model="result.confirm_country_id" data-ng-disabled="!countries" data-ng-options="s.id as s.countryName for s in countries" required>
+<!--                       <tr><td><label ><strong>Confirmation Country:</strong></label>&nbsp;&nbsp;</td>
+                      <td><select data-ng-model="result.confirm_country_id" data-ng-disabled="!countries" data-ng-options="s.id as s.countryName for s in countries" required>
                           <option value="">-- Select Country --</option>
-                      </select></td></tr>
+                      </select></td></tr> -->
 
                       <tr><td><label ><strong>Destination Email:</strong></label>&nbsp;&nbsp;
                       </td><td><input  size="30" type="text" value="NULL" ng-model="result.dest_email" placeholder="Destination Email Address" ng-disabled="!result.receiptConfirm1">(Optional)

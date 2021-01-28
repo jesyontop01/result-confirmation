@@ -29,8 +29,12 @@ gem 'rails_admin', '~> 2.0'
 gem "pundit" 
 #gem 'therubyracer', '0.12.1'
 #gem 'less-rails-bootstrap'
+
+# Using AdminLTE
+
 gem "font-awesome-rails"
-#gem 'jquery-easing-rails'
+gem 'bootstrap', '~> 4.3.1'
+gem 'popper_js', '~> 1.14'#gem 'jquery-easing-rails'
 # Use Puma as the app server
 gem 'angular-rails-templates'
 gem 'bower-rails'

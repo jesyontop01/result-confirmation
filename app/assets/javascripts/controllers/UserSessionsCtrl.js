@@ -61,6 +61,149 @@ angular.module('sessionsController', [])
                     deferred.reject(error);
                 });
             });
+
+
+
+      // this.submitLogin = function(loginForm) {
+      //   //vm.logging = true;
+      //   Auth.login($scope.loginForm, config).then(function(user) {
+      //     vm.logging = false;
+
+      // if( userSession.getCookieData() != null) {
+
+      //         vm.second_signatory = [];
+
+      //         var encodedString = atob(userSession.getCookieData()); 
+      //             //console.log( JSON.parse(encodedString));
+      //         vm.usrSecond = JSON.parse(encodedString) ;
+      //         vm.userID = vm.usrSecond.userID;
+
+      //         $http.get("/users/get_SecondUser",{"params": { "email": vm.userID}} ).then(function(response){
+      //         vm.secondUser = response.data.secondUser;
+      //   debugger
+      //                 console.log(vm.secondUser);
+      //         if (vm.secondUser.office_id != user.office_id) {
+      //           alert("Sorry!, users from different offices detected.\n And so, You will be logged out. Thanks");
+      //            Auth.logout;
+      //           $rootScope.user = undefined
+      //           //$location.path("/sign_in");
+      //           $location.path('/');
+      //         } else {
+
+      //             $rootScope.user = user
+      //                 alert("Welcome, " + user.surname);
+      //                 vm.successMsg = "Log in is Successful"; 
+      //                 var userPermissions = [];
+      //                        //$rootScope.userPermissions = userPermission.userPermission(user.id);
+      //                        //console.log( $rootScope.userPermissions);
+      //               if (user.signature == null) {
+      //                   alert("Please upload your Signature Before You Continue. \n Thanks.");
+      //                   $location.path('/signature');
+      //                 }
+      //                 else  {
+      //                       $location.path('/');
+                                
+      //               }
+                              
+      //                 //console.log(user);
+
+      //                         }
+      //               })
+
+      //   } else {
+      //       $rootScope.user = user
+      //             alert("Welcome, " + user.surname);
+      //           vm.successMsg = "Log in is Successful"; 
+      //             var userPermissions = [];
+      //            //$rootScope.userPermissions = userPermission.userPermission(user.id);
+      //            //console.log( $rootScope.userPermissions);
+      //       if (user.signature == null) {
+      //         alert("Please upload your Signature Before You Continue. \n Thanks.");
+      //             $location.path('/signature');
+      //            }
+      //            else  {
+      //           $location.path('/');
+                
+      //       }
+                  
+      //       console.log(user); // => {id: 1, ect: '...'}
+      //     }
+      
+
+      //     }, function(error) {
+      //         // Authentication failed...
+      //         vm.logging = false;
+      //         vm.errorMsg = "Invalid username/password";
+      //         console.log(error);
+      //         //alert(error)
+      //         if (error.status == 401) {
+      //           alert("Your Account Needs Authorisation. \nPlease Contact The Admin");
+      //         }
+
+      //     });
+      // }
+
+
+
+
+
+      // this.submitLogin = function(loginForm) {
+      //   //vm.logging = true;
+      //   Auth.login($scope.loginForm, config).then(function(user) {
+      //     vm.logging = false;
+      //             $rootScope.user = user
+      //             alert("Welcome, " + user.surname);
+      //           vm.successMsg = "Log in is Successful"; 
+      //             var userPermissions = [];
+      //            //$rootScope.userPermissions = userPermission.userPermission(user.id);
+      //            //console.log( $rootScope.userPermissions);
+      //       if (user.signature == null) {
+      //         alert("Please upload your Signature Before You Continue. \n Thanks.");
+      //             $location.path('/signature');
+      //            }
+      //            else  {
+      //           $location.path('/');
+                
+      //         }
+                  
+      //       console.log(user); // => {id: 1, ect: '...'}
+      //     }, function(error) {
+      //         // Authentication failed...
+      //         vm.logging = false;
+      //         vm.errorMsg = "Invalid username/password";
+      //         console.log(error);
+      //         //alert(error)
+      //         if (error.status == 401) {
+      //           alert("Your Account Needs Authorisation. \nPlease Contact The Admin");
+      //         }
+
+      //     });
+      // if( userSession.getCookieData() != null) {
+
+      //         var encodedString = atob(userSession.getCookieData()); 
+      //             //console.log( JSON.parse(encodedString));
+      //         vm.usrSecond = JSON.parse(encodedString) ;
+      //         vm.userID = vm.usrSecond.userID;
+
+      //         $http.get("/users/get_SecondUser",{"params": { "email": vm.userID}} ).then(function(response){
+      //         vm.secondUser = response.data.secondUser;
+      //   debugger
+      //                 console.log(vm.secondUser);
+      //         if (vm.secondUser.office_id != user.office_id) {
+      //           alert("Sorry!, users from different offices detected.\n And so, You will be logged out. Thanks");
+      //            Auth.logout;
+      //           $rootScope.user = undefined
+      //           //$location.path("/sign_in");
+      //           $location.path('/');
+      //         }
+
+      //       }); 
+      //     }
+
+
+      //    };
+
+
     
 
       this.submitLogin = function(loginForm) {
@@ -69,12 +212,30 @@ angular.module('sessionsController', [])
           vm.logging = false;
                   $rootScope.user = user
                   alert("Welcome, " + user.surname);
-
                 vm.successMsg = "Log in is Successful"; 
                   var userPermissions = [];
                  //$rootScope.userPermissions = userPermission.userPermission(user.id);
                  //console.log( $rootScope.userPermissions);
-                  $location.path('/');
+                      console.log(user.roles);
+
+            // Find if the array contains an object by comparing the property value
+            // if(user.roles.some(role => role.name === "exam_staff")){
+            //       console.log(vm.adminAccess = true)
+            //       vm.adminAccess = true;
+            //       vm.auditAccess = true;
+            //       vm.examAccess = true;
+            //       vm.accountAccess = true;
+            //   }
+
+            if (user.roles.some(role => role.name === "exam_staff") && (user.signature == null)) {
+              alert("Please upload your Signature Before You Continue. \n Thanks.");
+                  $location.path('/signature');
+                 }
+                 else  {
+                $location.path('/');
+                
+              }
+                  
             console.log(user); // => {id: 1, ect: '...'}
           }, function(error) {
               // Authentication failed...
@@ -85,6 +246,7 @@ angular.module('sessionsController', [])
               if (error.status == 401) {
                 alert("Your Account Needs Authorisation. \nPlease Contact The Admin");
               }
+
           });
 
          };
@@ -134,29 +296,29 @@ angular.module('sessionsController', [])
       $location.path('/');
     });
 
-    this.signatoryLogout2 = function () {
-      // body...
-      if ($window.localStorage.getItem('signatoryUser') != null) {
-            if (confirm("You are about log out signatory 2..?") == true) {
-              $window.localStorage.removeItem('signatoryUser');
-              window.location.reload();
-              $location.path('/');
-            }
-            else {
-              vm.usrSecond = userSession.getCookieData('usr');
-              console.log(vm.usrSecond);
-                  alert(" Operation was cancelled ");
-                  window.location.reload();
-                 $location.path('/');
+  //   this.signatoryLogout2 = function () {
+  //     // body...
+  //     if ($window.localStorage.getItem('signatoryUser') != null) {
+  //           if (confirm("You are about log out signatory 2..?") == true) {
+  //             $window.localStorage.removeItem('signatoryUser');
+  //             window.location.reload();
+  //             $location.path('/');
+  //           }
+  //           else {
+  //             vm.usrSecond = userSession.getCookieData('usr');
+  //             console.log(vm.usrSecond);
+  //                 alert(" Operation was cancelled ");
+  //                 window.location.reload();
+  //                $location.path('/');
            
           
-          }
-      }
-      else{
-        $window.localStorage.getItem('signatoryUser') = null;
+  //         }
+  //     }
+  //     else{
+  //       $window.localStorage.getItem('signatoryUser') = null;
       
-    }
-  }
+  //   }
+  // }
 
       this.signatoryLogout = function () {
       // body...
@@ -168,7 +330,7 @@ angular.module('sessionsController', [])
             }
             else {
               vm.usrSecond = userSession.getCookieData('usr');
-              console.log(vm.usrSecond);
+              //console.log(vm.usrSecond);
                   alert(" Operation was cancelled ");
                   window.location.reload();
                  $location.path('/');
@@ -181,6 +343,11 @@ angular.module('sessionsController', [])
       
     }
   }
+
+      $scope.closeModalSave = function(){
+        var modal_popup = angular.element('#userLogIn');
+        modal_popup.modal('hide');
+      };
 
 
      
@@ -198,33 +365,42 @@ angular.module('sessionsController', [])
          //vm.second2 = response.data;
    //{signatory2: signatoryUser, logUser: user , success: false }   
           //vm.second2 = JSON.stringify(response.data.signatory2);
+          if (response.data.success == false) {
+            alert(response.data.message)
+            window.location.reload();
+          } 
+          else {
 
-          vm.User2 = {
-            surname: response.data.logUser.surname,
-            othernames: response.data.logUser.othernames
+              vm.User2 = {
+                surname: response.data.logUser.surname,
+                othernames: response.data.logUser.othernames
+              }
+
+              vm.second2 = {
+                surname: response.data.logUser.surname,
+                othernames: response.data.logUser.othernames.slice(0,1),
+                userID: response.data.logUser.email
+              }
+
+              //console.log(vm.User2);
+              //console.log(vm.second2);
+              var encodedStringBtoA = btoa(JSON.stringify(vm.second2));
+              //console.log( encodedStringBtoA);
+
+              //userSession.setCookieData(JSON.stringify(vm.second2));
+              userSession.setCookieData(encodedStringBtoA);
+               //$cookies.put("usr", user);
+             //$window.localStorage.setItem('signatory2', JSON.stringify( vm.second_signatory2));
+
+             //$window.localStorage.setItem('signatoryUser', JSON.stringify( vm.User2));
+             alert("Welcome " + response.data.logUser.surname );
+             //window.location.reload();
+             $scope.closeModalSave();
+              window.location.reload();
+             //$location.path('#/confirmations');
           }
 
-          vm.second2 = {
-            surname: response.data.logUser.surname,
-            othernames: response.data.logUser.othernames.slice(0,1),
-            userID: response.data.logUser.email
-          }
 
-          //console.log(vm.User2);
-          //console.log(vm.second2);
-          var encodedStringBtoA = btoa(JSON.stringify(vm.second2));
-          //console.log( encodedStringBtoA);
-
-          //userSession.setCookieData(JSON.stringify(vm.second2));
-          userSession.setCookieData(encodedStringBtoA);
-           //$cookies.put("usr", user);
-         //$window.localStorage.setItem('signatory2', JSON.stringify( vm.second_signatory2));
-
-         //$window.localStorage.setItem('signatoryUser', JSON.stringify( vm.User2));
-         alert("Welcome " + response.data.logUser.surname + " " + response.data.logUser.othernames );
-         window.location.reload();
-
-         $location.path('/');
         }, function(response) {
           // body...
         })
@@ -283,9 +459,14 @@ angular.module('sessionsController', [])
                   vm.accountAccess = false;
               } else if(user.roles.some(role => role.name === "exam_staff")){
                   console.log(vm.examAccess = true)
+                  if (user.signature == null ) {
+                    vm.examAccess = false;
+                  } else {
+                    vm.examAccess = true;
+                  }
                   vm.adminAccess = false;
                   vm.auditAccess = false;
-                  vm.examAccess = true;
+                  //vm.examAccess = true;
                   vm.accountAccess = false;
               } 
 
@@ -312,7 +493,7 @@ angular.module('sessionsController', [])
                 }
               });
                     
-                    console.log(user);
+                    //console.log(user);
 
               });
 

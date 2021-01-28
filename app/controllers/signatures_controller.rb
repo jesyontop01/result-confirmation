@@ -71,6 +71,26 @@ class SignaturesController < ApplicationController
     data
   end
 
+  def users_signatures
+     if params[:email].present?
+        user1 = User.where(id: current_user.id)
+        u = Signature.where(user_id: current_user.id)
+  
+                
+        user2 = User.where(email: params[:email])
+        u2 = Signature.where(user_id: user2)
+
+        if  u == []
+            render json: {success: false, message: "Please upload your signature to continue"}
+        elsif u2 == []
+            render json: {success: false, message: "Signatory-user requires signature upload to continue"}
+         else
+              render json: {success: true, message: "Printing permitted"}     
+        end
+    end
+                  
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_signature

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!
-  load_and_authorize_resource :except => [:user_permissions, :second_signatory, :permitted_users ]
+  before_action :authenticate_user!, :except => [:email_validity]
+  load_and_authorize_resource :except => [:user_permissions, :second_signatory, :permitted_users , :email_validity]
 
   def index
   	if params[:activated] == "false"
@@ -102,7 +102,7 @@ class UsersController < ApplicationController
     # params[:account_staff] = nil
     
      @user = User.find(params[:id])
-       @user.role_ids = [ params[:admin] , params[:audit_staff] , params[:audit_admin], params[:exam_staff] , params[:account_staff]]  
+       @user.role_ids = [ params[:admin],  params[:Management_Staff] , params[:audit_staff] , params[:audit_admin], params[:exam_staff] , params[:account_staff]]  
     
     #binding.pry
     render json: {user:   @user}
@@ -113,39 +113,73 @@ class UsersController < ApplicationController
     render json: {permission:  @user_permission}
   end
 
+  def email_validity
+    if params[:email]
+      user = User.find_by(:email => params[:email])
+      if user.present?
+         render json: {message: "Sorry! Email has being taken", success: true }
+      else
+        render json: {message: "Email is available", success: false }
+      end
+    end
+
+  end
+
   def second_signatory
+
     if params[:email] && params[:password]
     user = User.find_for_authentication(:email => params[:email])
     user&.valid_password?(params[:password]) ? user : nil
 
-      if user.is_management == true
-        user2 = User.where(id: user).pluck(:title, :surname, :othernames, :is_management)
-          u = Signature.where(user_id: user.id).first.base64 
-          user2 << u 
-         signatoryUser = [] 
-         signatoryUser[1] = user2
+      # if user.is_management == true
+      #   user2 = User.where(id: user).pluck(:title, :surname, :othernames, :is_management)
+      #     # u = Signature.where(user_id: user.id).first.base64 
+      #     # user2 << u 
+      #    signatoryUser = [] 
+      #    signatoryUser[1] = user2
          
-         #render json: signatoryUser
-        render json: {signatory2: signatoryUser, logUser: user , success: false }
-      elsif user.is_management == false
-         user2 = User.where(id: user).pluck(:title, :surname, :othernames, :is_management)
-          u = Signature.where(user_id: user.id).first.base64 
-          user2 << u
-         signatoryUser = [] 
-         signatoryUser[0] = user2
+      #    #render json: signatoryUser
+      #   render json: {signatory2: signatoryUser, logUser: user , success: false }
+      # elsif user.is_management == false
+      #    user2 = User.where(id: user).pluck(:title, :surname, :othernames, :is_management)
+      #     # u = Signature.where(user_id: user.id).first.base64 
+      #     # user2 << u
+      #    signatoryUser = [] 
+      #    signatoryUser[0] = user2
          
-        #render json: signatoryUser
-        render json: {signatory2: signatoryUser, logUser: user , success: false }
+      #   #render json: signatoryUser
+      #   render json: {signatory2: signatoryUser, logUser: user , success: false }
 
-        else
-        
-        render json: {message: "User not authenticated"}
+      #   else
+            if user.nil?
+
+                  render json: {message: "User not authenticated"}  
+              else
+
+                if user.office_id != current_user.office_id
+                  render json: {message: "Sorry! Signatories must be from same office", success: false }
+
+                elsif user.role? :account_staff
+                  render json: {message: "Sorry! Signatories must be from TAD", success: false }
+
+                elsif user.role? :audit_staff
+                  render json: {message: "Sorry! Signatories must be from TAD", success: false }
+
+                elsif user.email == current_user.email
+                  render json: {message: "Sorry! Signatories must be two(2) individuals", success: false }
+
+                else
+                  render json: {logUser: user , success: true }
+                end
+           
+
+            end 
+        #binding.pry
       end
-    end
     
   end
 
-  def permitted_users1
+  def permitted_users2
    
   #Performing AND operation
     #User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
@@ -154,8 +188,8 @@ class UsersController < ApplicationController
       ## setting AR staff at array number 2 and National staff at array number 1
     if current_user.is_management?
         user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames)
-         u = Signature.where(user_id: current_user.id).first.base64 
-          user1 << u  
+         # u = Signature.where(user_id: current_user.id).first.base64 
+         #  user1 << u  
         @signatoryArray[1] = user1
         aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => false))
                        # if aRStaff.timedout?(Time.now)
@@ -170,73 +204,204 @@ class UsersController < ApplicationController
                        #   return true
                        # end
         user2 = User.where(id: aRStaff).pluck(:title, :surname, :othernames)
-        u = Signature.where(user_id: aRStaff.id).first.base64 
-        user2 << u  
+        # u = Signature.where(user_id: aRStaff.id).first.base64 
+        # user2 << u  
         @signatoryArray[0] = user2
 
     else
       ## setting AR staff at array number 2 and National staff at array number 1
             user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames)
-            u = Signature.where(user_id: current_user.id).first.base64 
-            user1 << u 
+            # u = Signature.where(user_id: current_user.id).first.base64 
+
+            # if u.present?
+            #   user1 << u 
+            # end
+
+            user1 
+            
             @signatoryArray[0] = user1
 
       aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
       user2 = User.where(id: aRStaff).pluck(:title, :surname, :othernames)
-      u = Signature.where(user_id: aRStaff.id).first.base64 
-        user2 << u
+      # u = Signature.where(user_id: aRStaff.id).first.base64 
+      #   user2 << u
       @signatoryArray[1] = user2
     end
 
      render json: @signatoryArray   
   end
 
-
-  def permitted_users
+    def permitted_users
    
-   if params[:email].present?
-     
-       #Performing AND operation
-    #User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
-    @signatoryArray = [] 
-    
-      ## setting AR staff at array number 2 and National staff at array number 1
-    if current_user.is_management?
-        user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames, :id)
-         u = Signature.where(user_id: current_user.id).first.base64 
-          user1 << u  
-        @signatoryArray[1] = user1
+       if params[:email].present?
 
-        #natStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => false))
-        user2 = User.where(email: params[:email]).pluck(:title, :surname, :othernames, :id)
-        u2 = Signature.where(user_id: user2)
-        u = u2.first.base64 
-     #binding.pry   
-        user2 << u  
-        @signatoryArray[0] = user2
+                @signatoryArray = [] 
+                
+                  ## setting AR staff at array number 2 and National staff at array number 1
+                if current_user.is_management?
+                    user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames, :id)
+                     u = Signature.where(user_id: current_user.id).first.base64 
+                      user1 << u  
+                    @signatoryArray[1] = user1
 
-    else
-      ## setting AR staff at array number 2 and National staff at array number 1
-            user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames, :id)
-            u = Signature.where(user_id: current_user.id).first.base64 
-            user1 << u 
-            @signatoryArray[0] = user1
+                    #natStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => false))
+                       ## Get Second Signatory as a National Staff
+                       u = User.where(email: params[:email])
 
-      #aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
-        user2 = User.where(email: params[:email]).pluck(:title, :surname, :othernames, :id)
-        u2 = Signature.where(user_id: user2)
-        u = u2.first.base64 
-     #binding.pry    
-        user2 << u
-      @signatoryArray[1] = user2
-    end
+                    if u[0]["is_national_Staff"] == true
+
+                      user2 = User.where(email: params[:email]).pluck(:title, :surname, :othernames, :id)
+                        u2 = Signature.where(user_id: user2)
+                        u = u2.first.base64 
+                     #binding.pry   
+                        user2 << u  
+                        @signatoryArray[0] = user2
+
+                        render json: {data: @signatoryArray , success: true } 
+                        
+                    else
+                      render json: {message: "Sorry! this printing requires a National Staff signatory", success: false }
+                    end
+                 #    user2 = User.where(email: params[:email]).pluck(:title, :surname, :othernames, :id)
+                 #    u2 = Signature.where(user_id: user2)
+                 #    u = u2.first.base64 
+                 # #binding.pry   
+                 #    user2 << u  
+                 #    @signatoryArray[0] = user2
+
+                else
+                  ## setting AR staff at array number 2 and National staff at array number 1
+                        user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames, :id)
+                        u = Signature.where(user_id: current_user.id).first.base64 
+                        user1 << u 
+                        @signatoryArray[0] = user1
+
+                    u = User.where(email: params[:email])
+
+                    if u[0]["is_management"] == true
+
+                      user2 = User.where(email: params[:email]).pluck(:title, :surname, :othernames, :id)
+                        u2 = Signature.where(user_id: user2)
+                        u = u2.first.base64 
+                     #binding.pry   
+                        user2 << u  
+                        @signatoryArray[1] = user2
+
+                        render json: {data: @signatoryArray , success: true } 
+
+                    else
+                      render json: {message: "Sorry! this printing requires a Management Staff signatory", success: false }
+                    end
+
+                 #  #aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
+                 #    user2 = User.where(email: params[:email]).pluck(:title, :surname, :othernames, :id)
+                 #    u2 = Signature.where(user_id: user2)
+                 #    u = u2.first.base64 
+                 # #binding.pry    
+                 #    user2 << u
+                 #  @signatoryArray[1] = user2
+                end
+
+                 
+
+             end 
+
+       #       render json: @signatoryArray 
+       # end
 
 
-   end
-
-
-     render json: @signatoryArray   
+     # render json: @signatoryArray   
   end
+
+      def permitted_users1
+   
+       if params[:email].present?
+
+                @signatoryArray = [] 
+                
+                  ## setting AR staff at array number 2 and National staff at array number 1
+                if current_user.is_management?
+                    user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames, :id)
+                     # u = Signature.where(user_id: current_user.id).first.base64 
+                     #  user1 << u  
+                    @signatoryArray[1] = user1
+
+                    #natStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => false))
+                 
+                    u = User.where(email: params[:email])
+
+                    if u[0]["is_national_Staff"] == true
+
+                      user2 = User.where(email: params[:email]).pluck(:title, :surname, :othernames, :id)
+                     #binding.pry   
+                        @signatoryArray[0] = user2
+
+                        render json: {data: @signatoryArray , success: true } 
+                    else
+                      render json: {message: "Sorry! this printing requires a National Staff signatory", success: false }
+                      #binding.pry 
+                    end
+
+                 #    user2 = User.where(email: params[:email]).pluck(:title, :surname, :othernames, :id)
+                 # #    u2 = Signature.where(user_id: user2)
+                 # #    u = u2.first.base64 
+                 # # #binding.pry   
+                 # #    user2 << u  
+                 #    @signatoryArray[0] = user2
+
+            else
+                  ## setting AR staff at array number 2 and National staff at array number 1
+
+                   user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames, :id) 
+                        @signatoryArray[0] = user1
+                 
+                     u = User.where(email: params[:email])
+
+                    if u[0]["is_management"] == true
+
+                      user2 = User.where(email: params[:email]).pluck(:title, :surname, :othernames, :id)   
+                     
+                        @signatoryArray[1] = user2
+
+                        render json: {data: @signatoryArray , success: true } 
+                    else
+                      render json: {message: "Sorry! this printing requires a Management Staff signatory", success: false }
+                    
+                    end
+                 #        user1 = User.where(id: current_user.id).pluck(:title, :surname, :othernames, :id)
+                 #        # u = Signature.where(user_id: current_user.id).first.base64 
+                 #        # user1 << u 
+                 #        @signatoryArray[0] = user1
+
+                 #  #aRStaff = User.where(:office_id => current_user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
+                 #    user2 = User.where(email: params[:email]).pluck(:title, :surname, :othernames, :id)
+                 # #    u2 = Signature.where(user_id: user2)
+                 # #    u = u2.first.base64 
+                 # # #binding.pry    
+                 # #    user2 << u
+                 #  @signatoryArray[1] = user2
+                end
+
+                 
+
+             end 
+
+       #       render json: @signatoryArray 
+       # end
+
+
+     # render json: @signatoryArray   
+  end
+
+
+ def get_SecondUser
+   if params[:email].present?
+     user = User.find_by(:email => params[:email])     
+   end
+   render json: {success: true, secondUser: user}
+ end
+
+
 
 
   private

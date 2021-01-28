@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_16_131623) do
+ActiveRecord::Schema.define(version: 2021_01_18_204623) do
 
   create_table "Grade", primary_key: "GradeType", id: :string, limit: 1, default: nil, force: :cascade do |t|
     t.string "GradeValue", limit: 2, null: false
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 2020_12_16_131623) do
     t.string "receipt_no", null: false
     t.string "WES_Ref"
     t.bigint "payment_id"
+    t.boolean "isPrinted", default: false
     t.index ["confirm_country_id"], name: "index_confirmations_on_confirm_countries_id"
     t.index ["confirm_type_id"], name: "index_confirmations_on_confirm_type_id"
     t.index ["diet_id"], name: "index_confirmations_on_dietTbl_id"
@@ -85,8 +86,22 @@ ActiveRecord::Schema.define(version: 2020_12_16_131623) do
     t.index ["year_id"], name: "index_confirmations_on_yearTbl_id"
   end
 
+  create_table "departments", force: :cascade do |t|
+    t.string "name"
+    t.bigint "division_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["division_id"], name: "index_departments_on_division_id"
+  end
+
   create_table "diets", force: :cascade do |t|
     t.varchar "DietName", limit: 50
+  end
+
+  create_table "divisions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "exams", force: :cascade do |t|
@@ -98,6 +113,14 @@ ActiveRecord::Schema.define(version: 2020_12_16_131623) do
     t.string "model_name1", limit: 255
     t.string "view_name1", limit: 255
     t.string "subjectYear", limit: 255
+  end
+
+  create_table "finance_depts", force: :cascade do |t|
+    t.string "name"
+    t.bigint "division_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["division_id"], name: "index_finance_depts_on_division_id"
   end
 
   create_table "offices", id: :bigint, default: nil, force: :cascade do |t|
@@ -149,6 +172,8 @@ ActiveRecord::Schema.define(version: 2020_12_16_131623) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["office_id"], name: "index_receipt_booklets_on_office_id"
+    t.index ["rangeFrom"], name: "index_receipt_booklets_on_rangeFrom", unique: true
+    t.index ["rangeTo"], name: "index_receipt_booklets_on_rangeTo", unique: true
     t.index ["user_id"], name: "index_receipt_booklets_on_user_id"
   end
 
@@ -320,7 +345,12 @@ ActiveRecord::Schema.define(version: 2020_12_16_131623) do
     t.boolean "user_role", default: true
     t.string "permission", default: "user"
     t.text "signature"
+    t.bigint "division_id"
+    t.bigint "finance_dept_id"
+    t.boolean "is_national_Staff", default: false
+    t.index ["division_id"], name: "index_users_on_division_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["finance_dept_id"], name: "index_users_on_finance_dept_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, where: "([reset_password_token] IS NOT NULL)"
   end
 
@@ -375,6 +405,8 @@ ActiveRecord::Schema.define(version: 2020_12_16_131623) do
   add_foreign_key "confirmations", "confirm_countries"
   add_foreign_key "confirmations", "confirm_types"
   add_foreign_key "confirmations", "payments"
+  add_foreign_key "departments", "divisions"
+  add_foreign_key "finance_depts", "divisions"
   add_foreign_key "payments", "confirm_types"
   add_foreign_key "payments", "diets"
   add_foreign_key "payments", "offices"
@@ -391,4 +423,6 @@ ActiveRecord::Schema.define(version: 2020_12_16_131623) do
   add_foreign_key "searches", "confirm_types"
   add_foreign_key "searches", "offices"
   add_foreign_key "signatures", "users"
+  add_foreign_key "users", "divisions"
+  add_foreign_key "users", "finance_depts"
 end

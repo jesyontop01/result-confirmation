@@ -8,9 +8,7 @@ load_and_authorize_resource :except => :user_permissions
 
       sql = <<-SQL 
   
-          SELECT  a.[id]
-             ,a.[user_id]
-               ,b.name
+          SELECT  a.[id] ,a.[user_id] ,b.name
         FROM [verifierApp].[dbo].[assignments] as a
         inner join roles as b
         on a.role_id = b.id

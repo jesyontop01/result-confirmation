@@ -13,7 +13,7 @@
             <option value="">Select Exam Diet</option>
           </select>
         </div>
-        Selected: <p ng-bind="ExamDietId"></p>
+        <!-- Selected: <p ng-bind="ExamDietId"></p> -->
         </div> <br> 
     <label>Select Year <span>*</span></label>
       <div  ng-controller="YearController">
@@ -22,11 +22,12 @@
             <option value="">Select Exam Year</option>
           </select>
         </div>
-        Selected: <p ng-bind="ExamYearId"></p>
+        <!-- Selected: <p ng-bind="ExamYearId"></p> -->
       </div>
 
   <div ng-controller="ConfirmationsController">
     <form >
+    <label>Candidate's Exam No. <span>*</span></label>
     <label for="search.keywords" class="sr-only">Keywords</label>
     <input type="text" 
            name="keywords" 
@@ -52,7 +53,7 @@
       <th>Exam Diet</th>
       <th>Candidate Name</th>
       <th>Candidate No.</th>
-      <th colspan="3">Action</th>
+      <th>Action</th>
     </tr>
   </thead>
 
@@ -62,7 +63,7 @@
       <td>{{result.ExamDiet}} {{result.ExamYear}}</td>
       <td>{{result.CandName}} </td>
       <td>{{result.CandNo}}</td>
-      <td><button class="btn btn-small btn-primary" ng-click="viewDetails(result)"> Details…</button>
+      <td><button type="button" class="btn btn-primary" ng-click="viewDetails(result)">Details…</button>
      </td>
     </tr>
   </tbody>

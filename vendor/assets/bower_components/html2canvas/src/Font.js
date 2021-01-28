@@ -1,64 +1,73 @@
-_html2canvas.Util.Font = (function () {
+/* @flow */
+'use strict';
 
-  var fontData = {};
+import type {Font} from './parsing/font';
 
-  return function(font, fontSize, doc) {
-    if (fontData[font + "-" + fontSize] !== undefined) {
-      return fontData[font + "-" + fontSize];
+const SAMPLE_TEXT = 'Hidden Text';
+import {SMALL_IMAGE} from './Util';
+
+export class FontMetrics {
+    _data: {};
+    _document: Document;
+
+    constructor(document: Document) {
+        this._data = {};
+        this._document = document;
     }
+    _parseMetrics(font: Font) {
+        const container = this._document.createElement('div');
+        const img = this._document.createElement('img');
+        const span = this._document.createElement('span');
 
-    var container = doc.createElement('div'),
-    img = doc.createElement('img'),
-    span = doc.createElement('span'),
-    sampleText = 'Hidden Text',
-    baseline,
-    middle,
-    metricsObj;
+        const body = this._document.body;
+        if (!body) {
+            throw new Error(__DEV__ ? 'No document found for font metrics' : '');
+        }
 
-    container.style.visibility = "hidden";
-    container.style.fontFamily = font;
-    container.style.fontSize = fontSize;
-    container.style.margin = 0;
-    container.style.padding = 0;
+        container.style.visibility = 'hidden';
+        container.style.fontFamily = font.fontFamily;
+        container.style.fontSize = font.fontSize;
+        container.style.margin = '0';
+        container.style.padding = '0';
 
-    doc.body.appendChild(container);
+        body.appendChild(container);
 
-    // http://probablyprogramming.com/2009/03/15/the-tiniest-gif-ever (handtinywhite.gif)
-    img.src = "data:image/gif;base64,R0lGODlhAQABAIABAP///wAAACwAAAAAAQABAAACAkQBADs=";
-    img.width = 1;
-    img.height = 1;
+        img.src = SMALL_IMAGE;
+        img.width = 1;
+        img.height = 1;
 
-    img.style.margin = 0;
-    img.style.padding = 0;
-    img.style.verticalAlign = "baseline";
+        img.style.margin = '0';
+        img.style.padding = '0';
+        img.style.verticalAlign = 'baseline';
 
-    span.style.fontFamily = font;
-    span.style.fontSize = fontSize;
-    span.style.margin = 0;
-    span.style.padding = 0;
+        span.style.fontFamily = font.fontFamily;
+        span.style.fontSize = font.fontSize;
+        span.style.margin = '0';
+        span.style.padding = '0';
 
-    span.appendChild(doc.createTextNode(sampleText));
-    container.appendChild(span);
-    container.appendChild(img);
-    baseline = (img.offsetTop - span.offsetTop) + 1;
+        span.appendChild(this._document.createTextNode(SAMPLE_TEXT));
+        container.appendChild(span);
+        container.appendChild(img);
+        const baseline = img.offsetTop - span.offsetTop + 2;
 
-    container.removeChild(span);
-    container.appendChild(doc.createTextNode(sampleText));
+        container.removeChild(span);
+        container.appendChild(this._document.createTextNode(SAMPLE_TEXT));
 
-    container.style.lineHeight = "normal";
-    img.style.verticalAlign = "super";
+        container.style.lineHeight = 'normal';
+        img.style.verticalAlign = 'super';
 
-    middle = (img.offsetTop-container.offsetTop) + 1;
-    metricsObj = {
-      baseline: baseline,
-      lineWidth: 1,
-      middle: middle
-    };
+        const middle = img.offsetTop - container.offsetTop + 2;
 
-    fontData[font + "-" + fontSize] = metricsObj;
+        body.removeChild(container);
 
-    doc.body.removeChild(container);
+        return {baseline, middle};
+    }
+    getMetrics(font: Font) {
+        const key = `${font.fontFamily} ${font.fontSize}`;
+        if (this._data[key] === undefined) {
+            this._data[key] = this._parseMetrics(font);
+        }
 
-    return metricsObj;
-  };
-})();
+        return this._data[key];
+    }
+}

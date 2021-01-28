@@ -19,9 +19,78 @@ angular.module('verifier')
                   'X-HTTP-Method-Override': 'POST'
               }
           };
-    //:username, :surname, :othernames, :office_id, :is_management, :email, :password, :password_confirmation, :remember_me
-     $scope.registerForm = {};
+  
+
+//Validating the non-existence of email.
+
+        $scope.emailIsValid = "";
+        //$scope.registrationForm.IsValid = false;
+
+        $scope.validEmail = function(email) {
+          // body...email_validity
+          $http.get("/users/email_validity.json", 
+               {"params": { "email": email}}
+              ).then(function(response){ 
+                   debugger
+                  console.log(response.data);
+                  if (response.data.success == true) {
+                    $scope.emailIsValid = false;
+                    $scope.registrationForm.IsValid = false;
+                    alert(response.data.message);
+                  } else {
+                    $scope.emailIsValid = true;
+                    $scope.registrationForm.IsValid = true;
+                    alert(response.data.message);
+                    console.log(response);
+                  }
+                
+                
+          },function (response) {
+                     alert('Unexpected Error');
+                 });
+    } 
+
+    $scope.management = {
+        "value": true
+      };
+      $scope.national = {
+          "value": true
+      };
+
+     //$scope.registerForm = {};
+      $scope.registerForm = {
+            title:               "",
+            surname:             "",
+          othernames:            "", 
+          lp_no:                  "",
+          office_id:             "", 
+          email:                 "",
+          password:              "",
+          password_confirmation: "",
+          is_management:         false,
+          is_national_Staff:      false,
+          division_id:            "",
+          finance_dept_id:         ""  
+
+          };
+
+
     $scope.handleRegBtnClick = function() {
+//debugger
+console.log($scope.registrationForm.staffCategory);
+      if ($scope.registrationForm.staffCategory == "management") {
+        $scope.registrationForm.is_management = true;
+        $scope.registrationForm.is_national_Staff = false;
+      }
+      else{
+                $scope.registrationForm.is_management = false;
+                $scope.registrationForm.is_national_Staff = true;
+      }
+
+      //  if($scope.registrationForm.staffCategory.value == $scope.national.value) {
+      //           $scope.registrationForm.is_management = false;
+      //           $scope.registrationForm.is_national_Staff = true;
+      // }
      
       $scope.registerForm = {
         title:               $scope.registrationForm.title,
@@ -32,14 +101,19 @@ angular.module('verifier')
       email:                 $scope.registrationForm.email,
       password:              $scope.registrationForm.password,
       password_confirmation: $scope.registrationForm.password_confirmation,
-      is_management:         $scope.registrationForm.is_management  
+      is_management:         $scope.registrationForm.is_management,
+      is_national_Staff:      $scope.registrationForm.is_national_Staff,
+      division_id:            $scope.registrationForm.WaecDivisionId,
+      finance_dept_id:         $scope.registrationForm.FinDeptId  
 
       };
+  
 
-       console.log($scope.registerForm);
+      console.log($scope.registerForm);
 
-   
-      Auth.register($scope.registerForm, config).then(function(user){
+      
+
+          Auth.register($scope.registerForm, config).then(function(user){
         //$rootScope.user = user;
         
         Auth.logout();
@@ -55,12 +129,17 @@ angular.module('verifier')
               }
 
           );
+   
+   
+
 
 
           $scope.$on('auth:registration-email-error', function(ev, reason) {
             $scope.error = reason.errors[0];
         });
-     }; 
+     }
+
+
 
    
 
@@ -78,6 +157,8 @@ angular.module('verifier')
 
     };
 
+   
+
     $scope.loadOffices = function() {
       // body...
         $http.get("/offices.json").then(function(response){
@@ -87,6 +168,58 @@ angular.module('verifier')
           alert("There was a problem: " + response.status);
         });
     }
+
+
+      $scope.diets = [];
+
+  $http.get("/divisions.json").then(function(response){
+    $scope.divisions = response.data;
+    console.log($scope.divisions);
+  },function(response){
+    alert("There was a problem: " + response.status);
+  });
+
+  $scope.WaecDivisionId = 0;
+
+   $scope.$watch('$scope.registrationForm.WaecDivisionId', function(newValue, oldValue){
+    window.sessionStorage.setItem('divisionID', newValue);
+    //window.localStorage.setItem('currentMData', newValue);
+  })
+
+ $scope.finDepts = null;
+ $scope.arPicker = false;
+
+
+   $scope.getFinDept = function () {
+     var divisionId = $scope.registrationForm.WaecDivisionId;
+
+
+ 
+     if (divisionId == 2) {
+
+      $scope.arPicker = false;
+
+          $http.get("/finance_depts.json", 
+           {"params": { "division_id": divisionId}}
+          ).then(function(response){ 
+      // debugger
+            $scope.finDepts = response.data;
+                 console.log(response);
+             },function (response) {
+                 alert('Unexpected Error');
+             });
+     }
+     else if(divisionId == 1){
+          $scope.arPicker = true;
+          $scope.finDepts = null;
+     }
+     else {
+         $scope.finDepts = null;
+         $scope.arPicker = true;
+     }
+ }
+
+
 
 $scope.updateAccountForm = {};
 

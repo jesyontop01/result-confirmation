@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   before_save { email.downcase! }
+  after_create :set_role_on_registration
 
   devise :database_authenticatable, :registerable, :timeoutable,
          :recoverable, :rememberable, :trackable, :validatable
@@ -27,7 +28,7 @@ validate :user_exists, on: :create
   def user_exists
     if self.class.exists?(:email => email)
       #render json: { error: "Email already taken" }
-      errors.add( "Email already taken" )
+      errors.add("Email already taken" )
     end
   end
       # Method to access roles in the controllers.
@@ -78,6 +79,23 @@ end
     else
      false
     end
+   end
+
+   private
+   def set_role_on_registration
+        if self.division_id == 1
+         self.role_ids = [7]  
+        end
+
+        if self.division_id == 2 && self.finance_dept_id == 1
+
+            self.role_ids = [8]
+        elsif self.division_id == 2 && self.finance_dept_id == 2
+          
+          self.role_ids = [4]
+            
+        end
+     
    end
    
 

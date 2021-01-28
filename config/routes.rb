@@ -1,8 +1,16 @@
 Rails.application.routes.draw do
   
+  resources :finance_depts
+  resources :departments
+  resources :divisions
   get 'leaflets/index'
   resources :leaflets
-  resources :signatures
+  resources :signatures do 
+    collection  do
+      get :users_signatures
+    end
+    
+  end
   resources :web_services
   resources :transaction_types
   resources :receipt_corrections
@@ -25,6 +33,8 @@ Rails.application.routes.draw do
         get :user_permissions#, :to => 'assignments#user_permissions'
       end
   end
+
+
   resources :roles
   resources :receipt_statuses
 
@@ -51,6 +61,9 @@ Rails.application.routes.draw do
   resources :waec_private_exams
 
   resources :confirmations do
+    collection do
+      get :confirm_IsPrint
+    end
     resources :confirm_types
   end
   resources :confirm_countries
@@ -81,9 +94,12 @@ Rails.application.routes.draw do
   resources :users do
     collection do
       get :permitted_users
+      get :permitted_users1
       get :second_signatory
       get :user_permissions#
       post :set_user_role  
+      get :get_SecondUser
+      get :email_validity
       patch 'set_user_role/:id', :to => 'users#set_user_role'
       patch 'upload_user_signature/:id', :to => 'users#upload_user_signature'
     end

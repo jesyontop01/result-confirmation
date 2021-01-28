@@ -153,7 +153,10 @@ angular.module('verifier')
 					}
     			}).then(function(response){
     							alert('User Signature Updated successfully.');
-    							$location.path('/users/'+ user.id);
+    							//$location.path('/users/'+ user.id);
+    							
+    							window.location.reload();
+    							$location.path('/');
     			},function(response){
     				alert('There was a problem:' + response.status);
 
@@ -183,29 +186,40 @@ angular.module('verifier')
     			}).then(function(response){
     							//alert('Record successfully updated .');
 							   $scope.user = response.data;
+
+							   if ($scope.user.is_management) {
+							   	$scope.user.staffCategory = "management";
+							   } else {
+							   	$scope.user.staffCategory = "national";
+							   }
+
 							    console.log($scope.user.roles)
 							    if ($scope.user) {
 							$scope.user.roles.forEach(role => {
 								console.log(role);
-
+						//debugger
 									switch(role.name){
 							    			case "user": 
 								    		return	$scope.user.user = true;
 								    		break;
 								    		case "admin":
 								    		return $scope.user.admin = true;
-								    		console.log($scope.user.admin = true)
+								    		//console.log($scope.user.admin = true)
 								    		break;
 								    		case "audit_staff":
-								    		return $scope.user.audit_staff = true;
+								    		//return $scope.user.audit_staff = true;
+								    		return $scope.user.assignment = "audit" ;
 								    		break;
 								    		case "audit_admin":
 								    		return $scope.user.audit_admin = true;
+								    		//return $scope.user.assignment = true;
 								    		case "exam_staff":
-								    		return $scope.user.exam_staff = true;
+								    		//return $scope.user.exam_staff = true;
+								    		return $scope.user.assignment = "tad";
 								    		break;
 								    		case "account_staff":
-								    		return $scope.user.account_staff = true;
+								    		//return $scope.user.account_staff = true;
+								    		return $scope.user.assignment = "account";
 								    		break;
 								    		default:
 								    		return	$scope.user.user = true;
@@ -246,8 +260,8 @@ angular.module('verifier')
     		};
 
 
-
-    $scope.updateUserPermission = function (user){
+$scope.user.assignment = "";
+   $scope.updateUserPermission = function (user){
     	$scope.user = user;
 
     	 var admin = "";
@@ -256,8 +270,9 @@ angular.module('verifier')
 		 var exam_staff = "";
 		 var audit_staff = "";
 		 var account_staff = "";
+		 console.log($scope.user.assignment);
 
-
+$scope.user.assignment == "";
 	var admin = null;
     if (user.admin == true) {
     	 admin = 2;
@@ -269,18 +284,37 @@ angular.module('verifier')
     }
 
     var audit_staff = null;
-    if (user.audit_staff == true) {
+    // if (user.audit_staff == true) {
+    // 	audit_staff = 4;
+    // }
+    if ($scope.user.assignment == "audit") {
     	audit_staff = 4;
     }
 
     var exam_staff = null;
-    if (user.exam_staff == true) {
-    	exam_staff = 7;
+    // if (user.exam_staff == true) {
+    // 	exam_staff = 7;
+    // }
+    if ($scope.user.assignment == "tad") {
+     	exam_staff = 7;
     }
 
     var account_staff = null;
-    if (user.account_staff == true) {
+    // if (user.account_staff == true) {
+    // 	 account_staff = 8;
+    // }
+    if ($scope.user.assignment == "account") {
     	 account_staff = 8;
+    }
+
+    var Management_Staff = null;
+    if (user.is_management == true) {
+    	is_management = 5;
+    }
+
+    var National_Staff = null;
+    if ($scope.user.assignment == "national") {
+    	is_national_Staff = true;
     }
 
 
@@ -291,7 +325,8 @@ angular.module('verifier')
 		audit_staff: audit_staff,
 		audit_admin: audit_admin,
 		exam_staff: exam_staff,
-		account_staff: account_staff
+		account_staff: account_staff,
+		Management_Staff: is_management
 	}
 
 // 	var data2 = {
@@ -343,7 +378,7 @@ angular.module('verifier')
     	// 			alert('There was a problem:' + response.status);
 
     	// 		});
-    		}
+    }
 
 
 	$scope.new_record = {};

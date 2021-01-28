@@ -34,7 +34,8 @@
     "ng-file-upload": "latest",
     "Font-Awesome": "latest",
     "angularjs-datatables": "latest",
-    "datatables.net": "latest"
+    "datatables.net": "latest",
+    "admin-lte": "3.0"
   },
   "resolutions": {
     "angular": "1.5",

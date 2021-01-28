@@ -16,7 +16,7 @@ class ConfirmationsController < ApplicationController
 				  SELECT  
 					a.[id] ,a.[user_id] ,b.[DietName], c.[YearName], a.[ref_no],a.[exam_no]
 			      ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
-			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref]
+			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted]
 				  FROM [verifierApp].[dbo].[confirmations] a
 				  inner join [verifierApp].[dbo].[Diets] b
 				  on a.diet_id = b.id
@@ -41,7 +41,7 @@ class ConfirmationsController < ApplicationController
 				  SELECT  
 					a.[id] ,a.[user_id] ,b.[DietName], c.[YearName], a.[ref_no],a.[exam_no]
 			      ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
-			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref]
+			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted]
 				  FROM [verifierApp].[dbo].[confirmations] a
 				  inner join [verifierApp].[dbo].[Diets] b
 				  on a.diet_id = b.id
@@ -171,7 +171,7 @@ class ConfirmationsController < ApplicationController
 				SELECT
                               a.[id] ,a.[user_id] ,b.[DietName], c.[YearName], a.[ref_no],a.[exam_no]
                               ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
-                              ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref]
+                              ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted]
 							  ,e.[CandName] ,e.[cand_email]
                                   FROM [verifierApp].[dbo].[confirmations] a
                                   inner join [verifierApp].[dbo].[Diets] b
@@ -250,6 +250,23 @@ class ConfirmationsController < ApplicationController
   end
 
 
+  def confirm_IsPrint
+  	if params[:id]
+  	 @confirm = Confirmation.find(params[:id]) 
+    respond_to do |format|
+      if @confirm.update(:isPrinted => true)
+     #binding.pry  
+        # format.json { render json: @confirm }
+        format.json { head :no_content }
+      else
+        
+        format.json { render json: @confirm.errors, status: :unprocessable_entity }
+      end
+     end
+    end
+  end
+
+
 	private
 
 	def set_confirmation
@@ -259,7 +276,7 @@ class ConfirmationsController < ApplicationController
 	def confirmation_params
 		params.require(:confirmation).permit(:user_id,:diet_id,:year_id,:ref_no,:exam_no,:Cand_address,:dest_title,
 						:dest_address1,:dest_address2,:dest_location,:dest_email, :confirm_type_id, :confirm_country_id,
-						:receipt_no, :WES_Ref, :payment_id)
+						:receipt_no, :WES_Ref, :payment_id, :isPrinted)
 	end
 
 	protected

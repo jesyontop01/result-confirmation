@@ -11,8 +11,14 @@
       <div class="col-md-4">
       <h4>Waec Office: <span>*</span></h4>
       <div  ng-controller="OfficesController">
-        <div class="form-group" >
+        <div class="form-group"  ng-show="sessions.signedIn() && sessions.adminAccess">
           <select ng-model="WaecOfficeId" ng-options="y.id as y.office_name for y in offices" ng-change="GetValue(y)" class="form-control" ng-required="true">
+            <option value="">Select Office</option>
+          </select>
+        </div>
+
+        <div class="form-group"  ng-show="sessions.signedIn() && sessions.auditAccess">
+          <select ng-model="WaecOfficeId" ng-options="y.id as y.office_name for y in offices" ng-change="GetValue(y)" class="form-control" ng-required="true" ng-disabled = "true">
             <option value="">Select Office</option>
           </select>
         </div>
@@ -32,7 +38,7 @@
                  close-text="Close" 
                  alt-input-formats="altInputFormats" />
           <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+            <button type="button" class="btn btn-default" ng-click="open1()"><i class="fas fa-calendar-alt"></i></button>
           </span>
         </p>
       </div>
@@ -49,7 +55,7 @@
                  ng-required="true" 
                  close-text="Close" />
           <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+            <button type="button" class="btn btn-default" ng-click="open2()"><i class="fas fa-calendar-alt"></i></button>
           </span>
         </p>
       </div>
@@ -67,94 +73,18 @@
     <button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" uib-tooltip="After today restriction">Min date</button>
 
   <p><b>Search: </b><input type="text" name="" placeholder="Search by Receipt number" ng-model='searchText.receipt_no'></p>
-
-                         <hr>
-<!--     <div class="row">
-        <div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="orderIdFilter">Search by Order #</label>
-                    <input id="orderIdFilter" type="text" class="form-control order-search-box"
-                           placeholder="Enter Order #"
-                           ng-change="gridActions.filter()"
-                           ng-model="code"
-                           filter-by="code"
-                           filter-type="text">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="dateFromFilter">Date From</label>
-
-                    <div class="input-group">
-                        <input type="text"
-                               id="dateFromFilter"
-                               class="form-control"
-                               uib-datepicker-popup="dd/MM/yyyy"
-                               placeholder="DD/MM/YYYY"
-                               max-date="dateTo"
-                               close-text="Close"
-                               ng-model="dateFrom"
-                               show-weeks="true"
-                               is-open="dateFromOpened"
-                               ng-click="dateFromOpened = true"
-                               filter-by="placed"
-                               filter-type="dateFrom"
-                               ng-blur="gridActions.filter()"
-                               ng-focus="gridActions.filter()"
-                               show-weeks="false"
-                               close-text="Close"/>
-                        <span class="input-group-btn">
-                            <label for="dateFromFilter" class="btn btn-default">
-                                <i class="fa fa-calendar"></i></label>
-                          </span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="dateToInput">Date To</label>
-
-                    <div class="input-group">
-                        <input type="text"
-                               id="dateToInput"
-                               class="form-control"
-                               uib-datepicker-popup="dd/MM/yyyy"
-                               placeholder="DD/MM/YYYY"
-                               min-date="dateFrom"
-                               max-date="dateTo"
-                               close-text="Close"
-                               ng-model="dateTo"
-                               show-weeks="true"
-                               is-open="dateToOpened"
-                               ng-click="dateToOpened = true"
-                               filter-by="placed"
-                               filter-type="dateTo"
-                               ng-blur="gridActions.filter()"
-                               ng-focus="gridActions.filter()"
-                               show-weeks="false"
-                               close-text="Close">
-                        <span class="input-group-btn">
-                            <label for="dateToInput" class="btn btn-default">
-                                <i class="fa fa-calendar"></i></label>
-                          </span>
-                    </div>
-                </div>
-                <div ng-show="dateTo || dateFrom" class="buttons-right">
-                    <a href="" ng-click="dateTo = ''; dateFrom = ''; gridActions.refresh();">Clear Dates</a>
-                </div>
-            </div>
-        </div>
-    </div> -->
     
     <hr>
     <div class="text-right">
         <button class="btn btn-default" ng-click="exportToCsv(gridOptions.data)">Export all data to CSV <i
                 class="fa fa-download"></i></button>
-        <button class="btn btn-default" ng-click="exportToCsv(gridOptions.grid.filtered)">Export filtered data to CSV <i
+        <button class="btn btn-default" ng-click="exportJSONToCsv(confirms)">Export filtered data to CSV2 <i
                 class="fa fa-download"></i></button>
- <!--        <button class="btn btn-default" ng-click="exportToCsv(confirms.filtered)">Export filtered data to CSV2 <i
-                class="fa fa-download"></i></button> -->
+        <button class="btn btn-default" ng-click="printPDFReport(confirms)">Print To PDF <i
+                class="fa fa-print"></i></button>
+
+        <button class="btn btn-default" ng-click="printPDFReport4(confirms)">Print To PDF2 <i
+                class="fa fa-print"></i></button>
     </div>
     <hr>
     <div class="row">
@@ -163,6 +93,9 @@
                 <div class="row">
                     <div class="col-md-3">
                         <span class="items">{{filtered.length}} items total</span>
+                    </div>
+                    <div class="col-md-3">
+                      Total Amount: <b><span class="items" ng-bind="confirms | sumOfValue:'amount'"></span> Naira</b> 
                     </div>
                     <div class="col-md-9 text-right">
                         <form class="form-inline pull-right margin-bottom-basic">
@@ -202,7 +135,6 @@
       <th>Cand.Contact</th>
       <th>Office</th>
       <th>Date created</th>
-      <th colspan="2">Action</th>
     </tr>
   </thead>
 
@@ -215,8 +147,8 @@
       <td>{{confirm.transName}}</td>
       <td>{{confirm.PhoneNo}}</td>
       <td>{{confirm.office_name}}</td>
-      <td>{{confirm.created_at}}</td>
-      <td ng-show="sessions.examAccess"><button ng-click="viewDetails(confirm)" type="button" class="btn btn-info">View Detail</button></td>
+      <td>{{confirm.created_at | date:'dd/MM/yyyy'}}</td>
+      <!-- <td><b ng-model="TotalOrders" ng-bind="order_items | sumOfValue:'amount'" ></b></td> -->
     </tr>
   </tbody>
 </table>

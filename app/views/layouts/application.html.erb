@@ -1,83 +1,348 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ConfirmationAngularApp</title>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
+     <title>Confirmation Of Result</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%#= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
+    <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   </head>
 
-  <body ng-app='verifier' ng-controller="UserSessionsCtrl as sessions">  
-  
-  <!-- MAIN CONTENT -->
-  <!-- <div class="container"> -->
-  <div class="container">
+  <body ng-app='verifier' ng-controller="UserSessionsCtrl as sessions" data-scrollbar-auto-hide="n" class="hold-transition sidebar-mini layout-fixed">
+      <div class="wrapper">
+        <%#= render "base/header" %>
+        <%#= render "base/sidebar" %>
 
-    <!--  <nav-bar></nav-bar>-->
-    <div class="navbar navbar-inverse navbar-shrink" role="navigation">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="#/">WAEC Confirmation Of Result</a>
-    </div>
-    <ul class="nav navbar-nav">
-        <li><a href="#/home/">Home</a></li>              
-        <li ng-hide="user.id"><a href="#/sign_in">Sign in</a></li> 
+          <!-- Navbar -->
+            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+              <!-- Left navbar links -->
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" data-widget="pushmenu" href="#/" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                  <a href="#/" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                  <a href="#/" class="nav-link">Contact</a>
+                </li>
+                <li ng-hide="user.id">
+                  <a href="#/sign_in" class="nav-link">Sign in</a>
+                </li>
+                <li ng-show="sessions.signedIn()">
+                  <a ng-click="sessions.logout()"  class="nav-link">Log Out</a>
+                </li> 
+              </ul>
 
+              <!-- SEARCH FORM -->
+<!--               <form class="form-inline ml-3">
+                <div class="input-group input-group-sm">
+                  <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                  <div class="input-group-append">
+                    <button class="btn btn-navbar" type="submit">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </form> -->
 
-          <li ng-show="sessions.signedIn() && sessions.examAccess" class="dropdown">
-          <a class="dropdown-toggle"  data-toggle="dropdown">Verifier
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#/search">Search Verifier</a></li>
-              <li><a href="#/confirmations">Confirmations List</a></li>
-              <li class="divider"></li>
-              <li><a href="#/verifer/payments">payments Search</a></li>
-           </ul>
-        </li>
-          <li ng-show="sessions.usrSecond"><a ng-click="sessions.signatoryLogout()">{{sessions.usrSecond.surname + " "+ sessions.usrSecond.othernames}}(LogOut)</a></li>
-        <li ng-show="sessions.signedIn() && sessions.auditAccess || sessions.signedIn() && sessions.accountAccess" class="dropdown">
-          <a class="dropdown-toggle"  data-toggle="dropdown">Account
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#/audit/new">Log Receipt Booklet</a></li>
-              <li><a href="#/audit/edit">Receipt Correction</a></li>
-              <li><a href="#/audit/search">Confirm Search</a></li>
-               <li><a href="#/audit/Audit_Payments_view">Audit all Pay</a></li>
-              
-              <li ng-show="sessions.signedIn() && sessions.accountAccess"><a href="#/audit/payments">Make Payment</a></li>
-              <li ng-show="sessions.signedIn() && sessions.accountAccess"><a href="#/audit/All-Payments">All Payments Transactions</a></li>
-              <li ng-show="sessions.signedIn() && sessions.auditAccess"><a href="#/audit/Audit_All-Payments">All Payments Transactions(Audit)</a></li>
-              
-              <li class="divider"></li>
-           </ul>
-        </li>
-
-    </ul>
-
-
-      <ul class="nav navbar-nav navbar-right" ng-show="user.id"> 
-        <li ng-show="sessions.signedIn() && sessions.adminAccess"><a href="#/management">management</a></li>
-        <li ng-show="sessions.signedIn()"><a href="#/users/{{user.id}}">{{"Welcome! " + user.surname + " "+ user.othernames}}</a></li> 
-          <li ng-show="sessions.signedIn()" class="dropdown">
-            <a class="dropdown-toggle"  data-toggle="dropdown" >Profile<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li ng-show="sessions.signedIn()"><a href="#/account_update" ng-click="clickedEdit(user)">Update Password</a></li>
+              <!-- Right navbar links -->
+              <ul class="navbar-nav ml-auto">
+                <!-- Messages Dropdown Menu -->
+<!--                 <li class="nav-item dropdown">
+                  <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-comments"></i>
+                    <span class="badge badge-danger navbar-badge">3</span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <a href="#" class="dropdown-item"> -->
+                      <!-- Message Start -->
+<!--                       <div class="media">
+                        <img src="" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                        <div class="media-body">
+                          <h3 class="dropdown-item-title">
+                            Brad Diesel
+                            <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                          </h3>
+                          <p class="text-sm">Call me whenever you can...</p>
+                          <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                        </div>
+                      </div> -->
+                      <!-- Message End -->
+                  <!--   </a> -->
+<!--                   <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item"> -->
+                      <!-- Message Start -->
+<!--                       <div class="media">
+                        <img src="" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                        <div class="media-body">
+                          <h3 class="dropdown-item-title">
+                            John Pierce
+                            <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                          </h3>
+                          <p class="text-sm">I got your message bro</p>
+                          <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                        </div>
+                      </div> -->
+                      <!-- Message End -->
+                   <!--  </a> -->
+<!--                     <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item"> -->
+                      <!-- Message Start -->
+<!--                       <div class="media">
+                        <img src="" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                        <div class="media-body">
+                          <h3 class="dropdown-item-title">
+                            Nora Silvester
+                            <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                          </h3>
+                          <p class="text-sm">The subject goes here</p>
+                          <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                        </div>
+                      </div> -->
+                      <!-- Message End -->
+   <!--                  </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                  </div>
+                </li> -->
+<!--                 <li ng-show="sessions.signedIn()"><a href="#/account_update" ng-click="clickedEdit(user)">Update Password</a></li>
                 <li><a href="#/users">Users</a></li>
                 <li><a href="#/signature">Upload Your Signature</a></li>
                 <li class="divider"></li>
-                <li ng-show="sessions.signedIn()"><a ng-click="sessions.logout()">Log Out</a></li>
-              </ul>
-          </li> 
-        </ul>
-        <br>
-</div>
+                <li ng-show="sessions.signedIn()"><a ng-click="sessions.logout()">Log Out</a></li> -->
 
-        <div ng-view ></div>
-        
-  </div>
+              <li ng-show="sessions.usrSecond"><a ng-click="sessions.signatoryLogout()">Logged In {{sessions.usrSecond.surname + " "+ sessions.usrSecond.othernames}}(LogOut)</a></li>
+
+                <!-- Notifications Dropdown Menu -->
+                <li class="nav-item dropdown" ng-show="user.id">
+                  <a class="nav-link" data-toggle="dropdown" href="">
+                    <i class="fas fa-user"></i>
+                    <span class="badge badge-warning navbar-badge"></span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-header">User's Profile</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#/account_update" ng-click="clickedEdit(user)" class="dropdown-item">
+                      <i class="fas fa-unlock-alt"></i> Update Password
+                      <span class="float-right text-muted text-sm"></span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#/users" class="dropdown-item">
+                      <i class="fas fa-users mr-2"></i> Users
+                      <span class="float-right text-muted text-sm"></span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#/signature" class="dropdown-item" ng-show="sessions.signedIn() && sessions.examAccess">
+                     <i class="fas fa-signature"></i> Upload Your Signature
+                      <span class="float-right text-muted text-sm"></span>
+                    </a>
+<!--                     <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                  </div> -->
+                </li>
+<!--                 <li class="nav-item">
+                  <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i
+                      class="fas fa-th-large"></i></a>
+                </li> -->
+              </ul>
+            </nav>
+            <!-- /.navbar -->
+
+            <!-- Main Sidebar Container -->
+            <aside class="main-sidebar sidebar-dark-primary elevation-4">
+              <!-- Brand Logo -->
+              <a href="#/" class="brand-link">
+                <!-- <img src="" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                     style="opacity: .8"> -->
+                <span class="brand-text font-weight-light">WAEC</span>
+              </a>
+
+              <!-- Sidebar -->
+              <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+<!--                   <div class="image">
+                    <img src="" class="img-circle elevation-2" alt="User Image">
+                  </div> -->
+                  <div class="info">
+                    <a href="#/users/{{user.id}}" class="d-block"><strong> {{"Welcome ! " +user.surname + " "+ user.othernames}}</strong></a>
+                  <!--   <a href="#" class="d-block">Alexander Pierce</a> -->
+                  </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                  <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+<!--                     <li class="nav-item has-treeview menu-open">
+                      <a href="#/" class="nav-link active">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                          Starter Pages
+                          <i class="right fas fa-angle-left"></i>
+                        </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                          <a href="#" class="nav-link active">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Active Page</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="#" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Inactive Page</p>
+                          </a>
+                        </li>
+                      </ul>
+                    </li> -->
+                    <li class="nav-item has-treeview menu-open" ng-show="sessions.signedIn() && sessions.auditAccess || sessions.signedIn() && sessions.accountAccess">
+                      <a href="#/" class="nav-link active">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                          Account Profile
+                          <i class="right fas fa-angle-left"></i>
+                        </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+                        <li class="nav-item" ng-show="sessions.signedIn() && sessions.accountAccess">
+                          <a href="#/audit/new" class="nav-link ">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Log Receipt Booklet</p>
+                          </a>
+                        </li>
+                        <li class="nav-item" ng-show="sessions.signedIn() && sessions.accountAccess">
+                          <a href="#/audit/edit" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Receipt Correction</p>
+                          </a>
+                        </li>
+                        <li ng-show="sessions.signedIn() && sessions.accountAccess" class="nav-item">
+                          <a href="#/audit/payments" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Make Payment</p>
+                          </a>
+                        </li>
+                        <li ng-show="sessions.signedIn() && sessions.accountAccess" class="nav-item">
+                          <a href="#/audit/All-Payments" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p> All Payments Transactions</p>
+                          </a>
+                       </li>
+                       <li ng-show="sessions.signedIn() && sessions.auditAccess" class="nav-item">
+                         <a href="#/audit/Audit_Payments_view" class="nav-link">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>All Payments Transactions(Audit)</p>
+                         </a>
+                       </li>
+                      </ul>
+                    </li>
+
+                    <li class="nav-item has-treeview menu-open" ng-show="sessions.signedIn() && sessions.examAccess">
+                      <a href="#/" class="nav-link active">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                         TAD(Exams) Profile
+                          <i class="right fas fa-angle-left"></i>
+                        </p>
+                      </a>
+
+                      <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                          <a a href="#/search" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Search Verifier</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="#/confirmations" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Confirmations List</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="#/verifer/payments" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>payments Search</p>
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                          Simple Link
+                          <span class="right badge badge-danger">New</span>
+                        </p>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+              </div>
+              <!-- /.sidebar -->
+            </aside>
+
+        <div class="content-wrapper">
+          <div class="content-header">
+            <div class="container-fluid">
+              <div class="row mb-2">
+                <div class="col-sm-6">
+                  <h1 class="m-0 text-dark">Confirmation Of Result</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                  <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#/">Home</a></li>
+                    <!-- <li class="breadcrumb-item active">Starter Page</li> -->
+                  </ol>
+                </div><!-- /.col -->
+              </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+          </div>
+
+          <div class="content container-fluid">
+            <div class="container-fluid">
+             <!--  <%#= yield %> -->
+             <div ng-view ></div>
+            </div>
+          </div>
+        </div>
+
+        <%#= render "base/footer" %>
+        <%#= render "base/control_sidebar" %>
+                <!-- Control Sidebar -->
+        <!-- <aside class="control-sidebar control-sidebar-dark"> -->
+          <!-- Control sidebar content goes here -->
+         <!--  <div class="p-3">
+            <h5>Title</h5>
+            <p>Sidebar content</p>
+          </div>
+        </aside> -->
+        <!-- /.control-sidebar -->
+
+        <!-- Main Footer -->
+        <footer class="main-footer">
+          <!-- To the right -->
+<!--           <div class="float-right d-none d-sm-inline">
+            Anything you want
+          </div> -->
+          <!-- Default to the left -->
+          <strong>Copyright &copy; 2021 <a href="https://waecnigeria.org">WAEC</a>.</strong> All rights reserved.
+        </footer>
+
+
+
+      <div>
   </body>
 </html>

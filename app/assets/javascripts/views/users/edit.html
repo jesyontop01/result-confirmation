@@ -59,16 +59,70 @@
 
             </div>
  </div> -->
+<hr>
+    <p><strong>SELECT STAFF ROLE </strong></p>
 
- 
+  <hr>
 
+          <div class="form-group">
+            <label for="exam_staff">TAD Staff</label><br>
+            <input type="radio"
+            id="exam_staff" 
+            name="exam_staff"  
+            ng-model="user.assignment"
+            value="tad"
+            class="form-control">
+            </div>
 
-            <div class="form-group">
+          <div class="form-group">
+            <label for="account_staff">ACCOUNT Staff</label><br>
+            <input type="radio" 
+            id="account_staff" 
+            name="account_staff"  
+             ng-model="user.assignment"
+            value="account" 
+            class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="audit_staff">AUDIT Staff</label><br>
+            <input type="radio" 
+            id="audit_staff" 
+            name="audit_staff"  
+             ng-model="user.assignment"
+            value="audit" 
+            class="form-control">
+          </div>
+
+        <hr>
+    <p><strong>SET ADMIN ROLE </strong></p>
+
+        <hr>
+
+          <div class="form-group">
+            <label for="admin">ADMIN Staff</label><br>
+            <input type="checkbox" 
+            id="admin" 
+            name="admin" 
+            ng-model="user.admin"
+            class="form-control">
+          </div>
+
+<!--           <div class="form-group">
+            <label for="audit_admin">Audit Admin</label><span><input type="checkbox"
+             name="audit_admin"
+             id="audit_admin"
+             ng-model="user.audit_admin"
+             class="form-control"></span>
+              
+            </div> -->
+         <hr>
+
+ <!--          <div class="form-group">
             <label for="exam_staff">TAD Staff</label><br>
             <input type="checkbox" 
             id="exam_staff" 
-            name="exam_staff" 
-            value="7" 
+            name="exam_staff"  
             ng-model="user.exam_staff"
             class="form-control">
             </div>
@@ -77,8 +131,7 @@
             <label for="account_staff">ACCOUNT Staff</label><br>
             <input type="checkbox" 
             id="account_staff" 
-            name="account_staff" 
-            value="8" 
+            name="account_staff"  
             ng-model="user.account_staff"
             class="form-control">
           </div>
@@ -87,8 +140,7 @@
             <label for="audit_staff">AUDIT Staff</label><br>
             <input type="checkbox" 
             id="audit_staff" 
-            name="audit_staff" 
-            value="4" 
+            name="audit_staff"  
             ng-model="user.audit_staff"
             class="form-control">
           </div>
@@ -98,7 +150,6 @@
             <input type="checkbox" 
             id="admin" 
             name="admin" 
-            value="2" 
             ng-model="user.admin"
             class="form-control">
           </div>
@@ -107,13 +158,12 @@
             <label for="audit_admin">Audit Admin</label><span><input type="checkbox"
              name="audit_admin"
              id="audit_admin"
-             value="3" 
              ng-model="user.audit_admin"
              class="form-control"></span>
               
-            </div>
+            </div> -->
 
-
+<hr>
            <div class="form-group">
              <label for="user_role">User Role</label><span><input type="checkbox"
              name="user_role"
@@ -122,21 +172,44 @@
              class="form-control"></span>
           </div>  
              
-          <div class="form-group">
+<!--           <div class="form-group">
              <label for="is_management">International Staff Only!</label><span><input type="checkbox"
              name="is_management"
              id="is_management"
              ng-model="user.is_management"
              class="form-control"></span>
-          </div>
+          </div> -->
+         <hr>
+    <p><strong>SELECT STAFF CATEGORY </strong></p>
+     <hr>
 
-          <div class="form-group">
+    <div class="form-group" >
+    <label for="is_management">International Staff </label>
+    <input type="radio"
+           name="is_management"
+           id="is_management"
+           ng-model="user.staffCategory"
+           value="management"
+           class="form-control">
+  </div>
+  <div class="form-group" >
+    <label for="is_national_Staff">National Staff </label>
+    <input type="radio"
+           name="is_national_Staff"
+           id="is_national_Staff"
+           ng-model="user.staffCategory"
+           value="national"
+           class="form-control">
+  </div>
+  <hr>
+
+<!--           <div class="form-group">
              <label for="admin">Admin User</label><span><input type="checkbox"
              name="admin"
              id="admin"
              ng-model="user.admin"
              class="form-control"></span>
-          </div>
+          </div> -->
 
            
         <button type="submit" class="btn btn-primary" ng-submit="updateUserPermission(user)">Update User's Permission</button><br/><br/><br/>

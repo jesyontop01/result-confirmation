@@ -289,26 +289,31 @@ $scope.result.amount = 0;
 
 			 	if (receipt_no != null) {
 
-
-			 	$http.get('/receipt_statuses.json', 
-			 		{"params": { "receiptNo": receipt_no}
-			 	}).then(function(response) {
-			 		// body...
-			 		$scope.receipt = response.data[0];
-			 		//console.log(response.data);
-			 		//debugger
-			 		if ($scope.receipt != null && $scope.receipt.status === "UNUSED") {
-			 		//debugger	
-			 		$scope.receiptConfirm = true;
-			 		$scope.result.receiptID = $scope.receipt.id;
-			 		//console.log($scope.result.receiptID);
-			 		//debugger
+			 		if (receipt_no == 0) {
+			 			alert("Receipt can not be blank");
 			 		}
 			 		else{
-			 			alert("Sorry, This receipt has being used");
-			 			$scope.receiptConfirm = false;
+
+						 	$http.get('/receipt_statuses.json', 
+						 		{"params": { "receiptNo": receipt_no}
+						 	}).then(function(response) {
+						 		// body...
+						 		$scope.receipt = response.data[0];
+						 		//console.log(response.data);
+						 		//debugger
+						 		if ($scope.receipt != null && $scope.receipt.status === "UNUSED") {
+						 		//debugger	
+						 		$scope.receiptConfirm = true;
+						 		$scope.result.receiptID = $scope.receipt.id;
+						 		//console.log($scope.result.receiptID);
+						 		//debugger
+						 		}
+						 		else{
+						 			alert("Sorry, This receipt has being used");
+						 			$scope.receiptConfirm = false;
+						 		}
+						 	});
 			 		}
-			 	});
 
 			} 	
 		};

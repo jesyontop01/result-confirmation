@@ -68,18 +68,18 @@ end
  def activate_user_or_timedout
     if self.is_signedIn == 3
    
-     if self.timedout?(Time.now.localtime)
+      if self.timedout?(Time.now.localtime)
          current_user.update(:is_signedIn => 0 )
          sign_out(current_user)
-       return false
-     else
-       return true
-     end
+        return false
+      else
+        return true
+      end
    
     else
-     false
+       false
     end
-   end
+end
 
    private
    def set_role_on_registration

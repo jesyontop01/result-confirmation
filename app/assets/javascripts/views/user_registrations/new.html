@@ -72,28 +72,7 @@
 
     <br>
 
-<!--     <label>Waec Division: <span>*</span></label>
-      <div  ng-controller="DivisionsController">
-        <div class="form-group" >
-          <select ng-model="WaecDivisionId" ng-options="y.id as y.name for y in divisions" ng-change="getFinDept()" class="form-control" ng-required="true">
-            <option value="">Select Division</option>
-          </select>
-        </div>
-   
-      </div>
-
-      <label ><strong>Finance Department: <span>*</span></strong></label>
-      <div>
-        <div class="form-group" >
-        <select ng-model="registrationForm.FinDeptId" data-ng-disabled="!finDepts" ng-options="y.id as y.name for y in finDepts" class="form-control" ng-required="true">
-          <option value="">-- Select Department --</option>   
-        </select>
-        </div>
-      </div> -->
-
-    <br>
-
-     <label>Waec Division: <span>*</span></label>
+<!--      <label>Waec Division: <span>*</span></label>
      <div class="form-group">
         <select ng-model="registrationForm.WaecDivisionId" ng-options="y.id as y.name for y in divisions" data-ng-change="getFinDept()" class="form-control" ng-required="true">
             <option value="">Select Division</option>
@@ -106,6 +85,15 @@
       <div>
         <div class="form-group" >
         <select ng-model="registrationForm.FinDeptId" data-ng-disabled="!finDepts" ng-options="y.id as y.name for y in finDepts" class="form-control" ng-required="true">
+          <option value="">-- Select Department --</option>   
+        </select>
+        </div>
+      </div> -->
+
+    <label ><strong>Department: <span>*</span></strong></label>
+      <div>
+        <div class="form-group" >
+        <select ng-model="registrationForm.FinDeptId" ng-options="y as y.name for y in finDepts" data-ng-change="getExamAttribute()" class="form-control" ng-required="true" ng-init="getFinDepartments()">
           <option value="">-- Select Department --</option>   
         </select>
         </div>
@@ -126,12 +114,12 @@
               <span style="color:Blue">
                   <div ng-if="emailIsValid === true">
                     <input type="checkbox" ng-model="registrationForm.IsValid" disabled="true">
-                    <label style="color:Blue"> Email is available</label><br>
+                    <label style="color:Blue"> {{emailMsg}}</label><br>
                   </div>
 
                   <div ng-if="emailIsValid === false">
                     <input type="checkbox" ng-model="registrationForm.IsValid" disabled="true">
-                    <label style="color:Red"> Email is taken</label><br>
+                    <label style="color:Red"> {{emailMsg}}</label><br>
                   </div>
 
               </span>
@@ -206,7 +194,7 @@
 
 <!--   <button type="submit" class="btn btn-primary btn-lg" >Register</button>
 </form>-->
-<br><br><br> 
+<br><br><br>
 
     <div class="card-footer">
         <button type="submit" class="btn btn-primary btn-lg" ng-disabled="!registrationForm.IsValid">Register</button>

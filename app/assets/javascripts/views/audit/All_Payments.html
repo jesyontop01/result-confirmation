@@ -1,6 +1,11 @@
 <div class="container" >
   <div class="row">
     <div class="col-sm-12">
+      <div class="card text-center">
+          <div class="card-header text-muted">
+           <h2>Payments View(Audit)</h2><br>
+          </div>
+      <div class="card-body">
 
 <div  ng-controller="ConfirmPaymentController" >
   <!-- <pre>Selected date is: <em>{{dt | date:'fullDate' }}</em></pre> -->
@@ -62,19 +67,20 @@
     </div>
     <div class="row">
       <div class="col-md-6">
-        <button ng-click="getDate(WaecOfficeId, dateFrom, dateTo)">Send</button>
+        <button ng-click="getDate(WaecOfficeId, dateFrom, dateTo)" class="btn btn-primary">Load payments</button>
       </div>
     </div>
 
-    <hr />
+<!--     <hr />
     <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
     <button type="button" class="btn btn-sm btn-default" ng-click="setDate()"></button>
     <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
-    <button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" uib-tooltip="After today restriction">Min date</button>
+    <button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" uib-tooltip="After today restriction">Min date</button> -->
 
-  <p><b>Search: </b><input type="text" name="" placeholder="Search by Receipt number" ng-model='searchText.receipt_no'></p>
+
     
     <hr>
+      <p class="text-left"><b>Search: </b><input type="text" name="" placeholder="Search by Receipt number" ng-model='searchText.receipt_no'></p>
     <div class="text-right">
         <button class="btn btn-default" ng-click="exportToCsv(gridOptions.data)">Export all data to CSV <i
                 class="fa fa-download"></i></button>
@@ -82,9 +88,8 @@
                 class="fa fa-download"></i></button>
         <button class="btn btn-default" ng-click="printPDFReport(confirms)">Print To PDF <i
                 class="fa fa-print"></i></button>
-
-        <button class="btn btn-default" ng-click="printPDFReport4(confirms)">Print To PDF2 <i
-                class="fa fa-print"></i></button>
+<!--         <button class="btn btn-default" ng-click="printPDFReport4(confirms)">Print To PDF2 <i
+                class="fa fa-print"></i></button> -->
     </div>
     <hr>
     <div class="row">
@@ -152,6 +157,11 @@
     </tr>
   </tbody>
 </table>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>

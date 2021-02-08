@@ -3,16 +3,19 @@
   <div class="row">
     <div class="col-sm-2"></div>
     <div class="col-sm-7">
-    <h2>Add Receipient Address Details</h2><br>
+    
 
       <div class="row">
 
-      <form name="createConfirmForm" ng-submit="createConfirm(result);" method="post" accept-charset="UTF-8" ng-controller="ConfirmationsController" ng-init="loadResultDetail(CandNo)">
+      <div class="card card-red">
+        <header class="card-header">
+           <h3>Add Recipient Address Details</h3><br>
+        </header>
+      
+        <div class="card-body">
 
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Destination Address</h4>
-        </div>
+
+      <form name="createConfirmForm" ng-submit="createConfirm(result);" method="post" accept-charset="UTF-8" ng-controller="ConfirmationsController" ng-init="loadResultDetail(CandNo)">     
 
 
         <div class="modal-body">             
@@ -135,7 +138,9 @@
             
           </div>
         </div>
-      </form> 
+      </form>
+      </div>
+      </div> 
 
 
 

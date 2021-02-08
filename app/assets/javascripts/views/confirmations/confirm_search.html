@@ -1,10 +1,14 @@
-<div class="container" ng-controller="ConfirmationsController">
+<div ng-controller="ConfirmationsController">
 
   <div class="row">
-    <div class="col-sm-2"></div>
-    <div class="col-sm-4">
-      <h2>Search Exam Result</h2><br>
-
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div class="card card-primary">
+        <header class="card-header">
+           <h2>Search Exam Result</h2>
+        </header>
+      
+        <div class="card-body">
     <label>Select Exam Diet <span>*</span></label>
       
         <div  ng-controller="DietController">
@@ -32,12 +36,12 @@
     <input type="text" 
            name="keywords" 
            class="form-control input-lg"
-           placeholder="Candidate Name or Serial No"
+           placeholder="Please Type In Candidate's Reg. Number "
            ng-change="search(keywords, ExamDietId, ExamYearId)"
            ng-model="keywords"><br>
 
     <span class="input-group-btn">
-      <button class="btn btn-primary " ng-click ="search(keywords, ExamDietId, ExamYearId)">"Find Candidate"</button>
+      <!-- <button class="btn btn-primary " ng-click ="search(keywords, ExamDietId, ExamYearId)">Find Candidate</button> -->
     </span>
   </form>
 
@@ -72,7 +76,7 @@
 </section>
  </div> 
 </div>
- <div class="col-sm-2"></div>  
+</div>
 </div>
 </div>
 

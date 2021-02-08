@@ -139,7 +139,7 @@ angular
           templateUrl: "views/audit/All_Payment_Transactions.html",
           controller: "AuditsController",
           authenticated: true,
-          permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff'],
+          permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff', 'exam_staff'],
         })
         
         .when('/audit/Audit_All-Payments',{
@@ -148,7 +148,7 @@ angular
           authenticated: true,
           permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff'],
         })
-                .when('/audit/Audit_Payments_view',{
+        .when('/audit/Audit_Payments_view',{
           templateUrl: "views/audit/All_Payments.html",
           controller: "AuditsController",
           authenticated: true,
@@ -157,17 +157,20 @@ angular
         .when('/verifer/payments',{
             templateUrl: "views/confirmPayment/payments.html",
             controller: "ConfirmPaymentController",
-          authenticated: true
+          authenticated: true,
+          permission: ['admin', 'exam_staff'],
           })
         .when('/verifer/:YearName/:exam_no',{
             templateUrl: "views/confirmPayment/result_view.html",       
             controller: "ConfirmPaymentController",
-          authenticated: true
+          authenticated: true,
+          permission: ['admin', 'exam_staff']
           })
         .when('/verifer/address/:ExamYear/:CandNo',{
             templateUrl: "views/confirmPayment/confirm_address.html",       
             controller: "ConfirmPaymentController",
-          authenticated: true
+          authenticated: true,
+          permission: ['admin', 'exam_staff']
           })
         .when('/management',{
             templateUrl: "views/management/management.html",       
@@ -189,104 +192,84 @@ angular
 
 angular
   .module('verifier')
-  .run(['$rootScope','Auth', '$location','User', function($rootScope, Auth, $location, User) {
+  .run(['$rootScope','Auth', '$location','User','$cookieStore', function($rootScope, Auth, $location, User, $cookieStore) {
     // body...
+    
       $rootScope.$on('$routeChangeStart', function (event, next, current){
         console.log(next.$$route);
+         
          // Only perform if user visited a route listed above
         if (next.$$route !== undefined) {
            // Check if authentication is required on route
           if (next.$$route.authenticated == true) {
             console.log("Needs authentication");
             // Check if authentication is required, then if permission is required
-            if (!Auth.isAuthenticated()) {
-              event.preventDefault(); // If not logged in, prevent accessing route
-              $location.path('/'); // Redirect to home instead
-            }
-            else if (next.$$route.permission) {
-
-              Auth.currentUser().then(function(user) {
-                // body...
-                $rootScope.user = user;
-
-                              if (user) {
-                  User.getPermission().then(function (response) {
-                // body...
-                //console.log(response.data);
-                var userPermissions = response.data;
-                //console.log(userPermissions);
-
-                function check(){
-                  var contains = false;
-                  for(var i = 0; i < userPermissions.length; i++){
-                     //console.log(userPermissions[i].name);
-
-                     if(next.$$route.permission.includes(userPermissions[i].name)){
-
-                       return true;
-                      }//else{
-                     //         event.preventDefault(); // If not logged in, prevent accessing route
-                     //         $location.path('/'); // Redirect to home instead
-                     // }
-                  }
-                  event.preventDefault(); // If not logged in, prevent accessing route
-                  $location.path('/'); // Redirect to home instead
-
-                 return false;
-                }
-
-                console.log(check());
-
-              });
+            debugger
+            //if (!Auth.isAuthenticated()) {
+              if($cookieStore.get('logged_in') == false){
+                event.preventDefault(); // If not logged in, prevent accessing route
+                $location.path('/'); // Redirect to home instead
               }
-              
-              })
+              else if (next.$$route.permission) {
 
-            }
+                Auth.currentUser().then(function(user) {
+                  // body...
+                  $rootScope.user = user;
+
+                    if (user) {
+                      
+                        User.getPermission().then(function (response) {
+                        // body...
+                        //console.log(response.data);
+                        var userPermissions = response.data;
+                        //console.log(userPermissions);
+
+                              function check(){
+                                var contains = false;
+                                    for(var i = 0; i < userPermissions.length; i++){
+                                       //console.log(userPermissions[i].name);
+
+                                       if(next.$$route.permission.includes(userPermissions[i].name)){
+
+                                         return true;
+                                        }//else{
+                                       //         event.preventDefault(); // If not logged in, prevent accessing route
+                                       //         $location.path('/'); // Redirect to home instead
+                                       // }
+                                    }
+                                event.preventDefault(); // If not logged in, prevent accessing route
+                                $location.path('/'); // Redirect to home instead
+
+                                return false;
+                              }
+
+                        console.log(check());
+
+                        });
+                    }
+                
+                })
+
+              }
           } else if(next.$$route.authenticated == false) {
             console.log("Doesn't need authentication");
 
-              if (Auth.isAuthenticated()) {
+              //if (Auth.isAuthenticated()) {
+              if($cookieStore.get('logged_in') == true){
                 event.preventDefault();
                 $location.path('#/users/{{user.id}}');
               }
           }
+
         }
+
+
+
+          // if (next.$$route.originalPath == '/') {
+
+          //     if (Auth.isAuthenticated()) {
+          //       $location.path(current.$$route.originalPath);
+          //     }
+          // }
       })
   }]);
-
-
-       // $rootScope.$on('$routeChangeStart', function () {
-       //      if (Auth.isAuthenticated()) {
-       //        console.log('Success: User is logged in');
-       //        Auth.currentUser().then(function (user){
-       //          $rootScope.user = user;
-       //          $rootScope.currentUser = user;
-       //              vm.isLoggedIn = true;
-       //              vm.username = user.surname;
-       //              vm.email = user.email;
-       //              vm.loadme = true;
-       //              console.log(user);
-
-       //        });
-
-       //      } else {
-       //          console.log('Failure: User is Not logged in');
-       //          vm.isLoggedIn = false;
-       //          vm.surname ='';
-       //      }
-       //    });
-
-
-              // User.getUserPermission().then(function(response) {
-              //   // body...
-              //   var userPermissions = response.data;
-              //   console.log(userPermissions);
-              //   //debugger
-              //   if (next.$$route.permission[0] !== userPermissions.permission) {
-              //       if (next.$$route.permission[1] !== userPermissions.permission) {
-              //                       event.preventDefault(); // If not logged in, prevent accessing route
-              //                       $location.path('/'); // Redirect to home instead
-              //       }
-              //   } 
-              // });

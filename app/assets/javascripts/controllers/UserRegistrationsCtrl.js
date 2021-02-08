@@ -31,16 +31,18 @@ angular.module('verifier')
           $http.get("/users/email_validity.json", 
                {"params": { "email": email}}
               ).then(function(response){ 
-                   debugger
+                   //debugger
                   console.log(response.data);
                   if (response.data.success == true) {
                     $scope.emailIsValid = false;
                     $scope.registrationForm.IsValid = false;
                     alert(response.data.message);
+                    $scope.emailMsg = response.data.message;
                   } else {
                     $scope.emailIsValid = true;
                     $scope.registrationForm.IsValid = true;
                     alert(response.data.message);
+                    $scope.emailMsg = response.data.message;
                     console.log(response);
                   }
                 
@@ -57,7 +59,8 @@ angular.module('verifier')
           "value": true
       };
 
-     //$scope.registerForm = {};
+//Creating a user registration Object
+
       $scope.registerForm = {
             title:               "",
             surname:             "",
@@ -74,7 +77,7 @@ angular.module('verifier')
 
           };
 
-
+//Registration of user on Button Click
     $scope.handleRegBtnClick = function() {
 //debugger
 console.log($scope.registrationForm.staffCategory);
@@ -103,8 +106,9 @@ console.log($scope.registrationForm.staffCategory);
       password_confirmation: $scope.registrationForm.password_confirmation,
       is_management:         $scope.registrationForm.is_management,
       is_national_Staff:      $scope.registrationForm.is_national_Staff,
-      division_id:            $scope.registrationForm.WaecDivisionId,
-      finance_dept_id:         $scope.registrationForm.FinDeptId  
+      //division_id:            $scope.registrationForm.WaecDivisionId,
+      division_id:           $scope.registrationForm.FinDeptId.division.id,
+      finance_dept_id:         $scope.registrationForm.FinDeptId.id  
 
       };
   
@@ -142,7 +146,7 @@ console.log($scope.registrationForm.staffCategory);
 
 
    
-
+//Load user Details for Accout Update.
     $scope.loadrecord = function () {
 
       Auth.currentUser().then(function(user) {
@@ -189,7 +193,35 @@ console.log($scope.registrationForm.staffCategory);
  $scope.finDepts = null;
  $scope.arPicker = false;
 
+// Get All departments (Actively in use)
+ $scope.getFinDepartments = function () {
+   // body...
+        $http.get("/finance_depts.json",
+          ).then(function(response){ 
+      // debugger
+            $scope.finDepts = response.data;
+                 console.log(response);
+             },function (response) {
+                 alert('Unexpected Error');
+             });
+ }
 
+//Get other attributes for Exam's staff(Actively in use)
+  $scope.getExamAttribute = function () {
+     var department = $scope.registrationForm.FinDeptId;
+console.log($scope.registrationForm.FinDeptId);
+
+  if(department.division.id == 1){
+          $scope.arPicker = true;
+     }
+     else {
+
+         $scope.arPicker = false;
+     }
+ }
+
+//Get Finance departments on Drop down select OR 
+//Get Exam's staff extra Attributes on drop down select on Divisions
    $scope.getFinDept = function () {
      var divisionId = $scope.registrationForm.WaecDivisionId;
 

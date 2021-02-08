@@ -2,7 +2,13 @@
   <div class="row">
     <div class="col-sm-2"></div>
     <div class="col-sm-7">
-    <h2>Searched result Details</h2><br>
+      <div class="card card-success">
+        <header class="card-header">
+           <h2>Searched result Details</h2>
+        </header>
+      
+        <div class="card-body">
+    
 
  			<div class="row">
  				<div class="col-sm-3">
@@ -26,39 +32,39 @@
  		<thead>
  			<tr>
  				<td>{{ result.Subject1 }}</td>
- 				<td>{{ result.Grade1 }}</td>
+ 				<td class="float-right">{{ result.Grade1 }}</td>
  			</tr>
  			<tr>
  				<td>{{ result.Subject2 }}</td>
- 				<td>{{ result.Grade2 }}</td>
+ 				<td class="float-right">{{ result.Grade2 }}</td>
  			</tr>
  			<tr>
  				<td>{{ result.Subject3 }}</td>
- 				<td>{{ result.Grade3 }}</td>
+ 				<td class="float-right">{{ result.Grade3 }}</td>
  			</tr>
  			<tr>
  				<td>{{ result.Subject4 }}</td>
- 				<td>{{ result.Grade4 }}</td>
+ 				<td class="float-right">{{ result.Grade4 }}</td>
  			</tr>
  			<tr>
  				<td>{{ result.Subject5 }}</td>
- 				<td>{{ result.Grade5 }}</td>
+ 				<td class="float-right">{{ result.Grade5 }}</td>
  			</tr>
  			<tr>
  				<td>{{ result.Subject6 }}</td>
- 				<td>{{ result.Grade6 }}</td>
+ 				<td class="float-right">{{ result.Grade6 }}</td>
  			</tr>
  			<tr>
  				<td>{{ result.Subject7 }}</td>
- 				<td>{{ result.Grade7 }}</td>
+ 				<td class="float-right">{{ result.Grade7 }}</td>
  			</tr>
  			<tr>
  				<td>{{ result.Subject8 }}</td>
- 				<td>{{ result.Grade8 }}</td>
+ 				<td class="float-right">{{ result.Grade8 }}</td>
  			</tr>
  			<tr>
  				<td>{{ result.Subject9 }}</td>
- 				<td>{{ result.Grade9 }}</td>
+ 				<td class="float-right">{{ result.Grade9 }}</td>
  			</tr> 			
  		</thead>
  	</table>
@@ -70,10 +76,13 @@
 		  Fill Address Form 1...
 		</button> -->
 
-    <button type="button" class="btn btn-primary" ng-click="addressDetails(result)">
+    <button type="button" class="btn btn-success" ng-click="addressDetails(result)">
       Fill Address Form ...
     </button>
  	</div>
+    </div>
+      </div>
+
  	<br>
  	<br>
 

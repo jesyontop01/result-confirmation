@@ -88,7 +88,7 @@ class UsersController < ApplicationController
     
      @user = User.find(params[:id]) 
       current_user.update(:signature => params[:signature])
-    binding.pry
+    #binding.pry
     render json: {user:   @user}
   end
 
@@ -121,6 +121,8 @@ class UsersController < ApplicationController
       else
         render json: {message: "Email is available", success: false }
       end
+    else
+      render json: {message: " Email can not be blank", success: true }
     end
 
   end
@@ -168,6 +170,12 @@ class UsersController < ApplicationController
                 elsif user.email == current_user.email
                   render json: {message: "Sorry! Signatories must be two(2) individuals", success: false }
 
+                elsif user.is_management == current_user.is_management
+                  render json: {message: "Sorry! Signatories must include two(2) individuals of National and Management Staff", success: false }
+                
+                elsif user.is_national_Staff == current_user.is_national_Staff
+                  render json: {message: "Sorry! Signatories must include two(2) individuals of National and Management Staff", success: false }
+               binding.pry 
                 else
                   render json: {logUser: user , success: true }
                 end

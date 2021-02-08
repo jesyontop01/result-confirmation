@@ -711,7 +711,8 @@ function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
 
 $scope.printPDFReport4 = function(confirms){
   // body...
-  debugger
+  var data = confirms;
+ 
   var externalDataRetrievedFromServer = [
     { name: 'Bartek', age: 34 },
     { name: 'John', age: 27 },
@@ -736,6 +737,7 @@ function buildTableBody(data, columns) {
     return body;
 }
 
+
 function table(data, columns) {
     return {
         table: {
@@ -753,77 +755,164 @@ var dd = {
     ]
 }
 
-pdfMake.createPdf(dd).open();
+   pdfMake.createPdf(dd).open();
 }
 
 
-$scope.getEducationObject = function(confirms) {
-  
-  return {
-    table: {
-      widths: ['*', '*', '*', '*', '*', '*', '*', '*', '*', '*'],
-      headerRows: 1,
-      body: [
-        [{
-          text: 'Candidate Name',
-          style: 'tableHeader'
-        },
-        {
-          text: 'Amount',
-          style: 'tableHeader'
-        },
-        {
-          text: 'Transaction Type',
-          style: 'tableHeader'
-        },
-        {
-          text: 'Receipt No',
-          style: 'tableHeader'
-        },
-        {
-          text: 'Transaction Date',
-          style: 'tableHeader'
-        },
-                {
-          text: 'Transaction Date',
-          style: 'tableHeader'
-        },
-                {
-          text: 'Transaction Date',
-          style: 'tableHeader'
-        },
-                {
-          text: 'Transaction Date',
-          style: 'tableHeader'
-        },
-                {
-          text: 'Transaction Date',
-          style: 'tableHeader'
-        },
-                {
-          text: 'Transaction Date',
-          style: 'tableHeader'
-        },
-                {
-          text: 'Transaction Date',
-          style: 'tableHeader'
-        },
-        
-      ],
-
-
-        confirms.forEach(confirm => {
-          return [confirm.id, confirm.CandName, confirm.PhoneNo, confirm.receipt_no, confirm.amount, confirm.transName, confirm.office_name, confirm.typeName, confirm.cand_email, confirm.created_at]
-          //return [confirm.CandName, confirm.amount, confirm.transName, confirm.receipt_no, $filter('date')(confirm.created_at, 'shortDate'),"","","","","",""];
-        })
-      ]
+$scope.formPDFTable = function (confirms) {
+  // body...
+var headers = {
+    fila_0:{
+        col_1:{ text: 'Office', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] },
+        col_2:{ text: 'Transaction Type', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] },
+        col_3:{ text: 'Amount', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] },
+        col_4:{ text: 'Receipt No', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] },
+        col_5:{ text: 'Candidate Name', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] },
+        col_6:{ text: 'Phone Contact', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] },
+        col_7:{ text: 'Trans Date', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] }
+        //col_6:{ text: 'Transaction Date', style: 'tableHeader',rowSpan: 2, alignment: 'center' 
+      }
     }
-  };
+
+
+    //var rows =JSON.parse(confirms);
+    var rows = confirms;
+    var body = [];
+    for (var key in headers) {
+      if (headers.hasOwnProperty(key)){
+        var header = headers[key];
+        var row = new Array();
+        row.push(header.col_1);
+        row.push(header.col_2);
+        row.push(header.col_3);
+        row.push(header.col_4);
+        row.push(header.col_5);
+        row.push(header.col_6);
+        row.push(header.col_7);
+        body.push(row);
+      }
+    }
+
+    // for (var i = 0; i < rows.length; i++){
+    //   var row = new Array();
+    //   row.push(i+1); 
+    //   row.push(rows[i].office_name.toString());
+    //   row.push(rows[i].typeName.toString());
+    //   row.push(rows[i].amount.toString());
+    //   row.push(rows[i].receipt_no.toString());
+    //   row.push(rows[i].CandName.toString());
+    //   row.push(rows[i].PhoneNo.toString());
+    //   row.push(rows[i].created_at.toString());
+    //   body.push(row);
+    
+    // }
+
+  for (var key in rows){
+
+    if (rows.hasOwnProperty(key))
+    {
+        var data = rows[key];
+        // var row = new Array();
+        // row.push( data.peaje.toString() );
+        // row.push( data.ruta.toString()  );
+        // row.push( data.fechaCruce.toString() );
+        // row.push( data.hora.toString()  );
+        // row.push( data.valor.toString() );
+        // body.push(row);
+
+      var row = new Array(); 
+      row.push(data.office_name.toString());
+      row.push(data.typeName.toString());
+      row.push(data.amount.toString());
+      row.push(data.receipt_no.toString());
+      row.push(data.CandName.toString());
+      row.push(data.PhoneNo.toString());
+      row.push($filter('date')(data.created_at, 'dd-MM-yyyy'));
+      body.push(row);
+    }
 }
+
+    console.log(body);
+}
+
+
+
+
 
 
   $scope.printPDFReport = function(confirms) {
     // body...
+
+    var headers = {
+    fila_0:{
+        col_1:{ text: 'Office', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] },
+        col_2:{ text: 'Transaction Type', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] },
+        col_3:{ text: 'Amount', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] },
+        col_4:{ text: 'Receipt No', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] },
+        col_5:{ text: 'Candidate Name', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] },
+        col_6:{ text: 'Phone Contact', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] },
+        col_7:{ text: 'Trans Date', style: 'tableHeader',alignment: 'left',margin: [0, 8, 0, 0] }
+        //col_6:{ text: 'Transaction Date', style: 'tableHeader',rowSpan: 2, alignment: 'center' 
+      }
+    }
+
+
+    //var rows =JSON.parse(confirms);
+    var rows = confirms;
+    var body = [];
+    for (var key in headers) {
+      if (headers.hasOwnProperty(key)){
+        var header = headers[key];
+        var row = new Array();
+        row.push(header.col_1);
+        row.push(header.col_2);
+        row.push(header.col_3);
+        row.push(header.col_4);
+        row.push(header.col_5);
+        row.push(header.col_6);
+        row.push(header.col_7);
+        body.push(row);
+      }
+    }
+
+    // for (var i = 0; i < rows.length; i++){
+    //   var row = new Array();
+    //   row.push(i+1); 
+    //   row.push(rows[i].office_name.toString());
+    //   row.push(rows[i].typeName.toString());
+    //   row.push(rows[i].amount.toString());
+    //   row.push(rows[i].receipt_no.toString());
+    //   row.push(rows[i].CandName.toString());
+    //   row.push(rows[i].PhoneNo.toString());
+    //   row.push(rows[i].created_at.toString());
+    //   body.push(row);
+    
+    // }
+
+  for (var key in rows){
+   
+    if (rows.hasOwnProperty(key))
+    {
+        var data = rows[key];
+        // var row = new Array();
+        // row.push( data.peaje.toString() );
+        // row.push( data.ruta.toString()  );
+        // row.push( data.fechaCruce.toString() );
+        // row.push( data.hora.toString()  );
+        // row.push( data.valor.toString() );
+        // body.push(row);
+
+      var row = new Array(); 
+      row.push(data.office_name.toString());
+      row.push(data.typeName.toString());
+      row.push(data.amount.toString());
+      row.push(data.receipt_no.toString());
+      row.push(data.CandName.toString());
+      row.push(data.PhoneNo.toString());
+       row.push($filter('date')(data.created_at, 'dd-MM-yyyy'));
+      body.push(row);
+    }
+}
 
 
 
@@ -934,30 +1023,21 @@ $scope.getEducationObject = function(confirms) {
                   },
             
                   {
-                    text:' CONFIRMATION OF RESULT\n',bold: true, alignment: 'center', fontSize:14, decoration: 'underline'
+                    text:' REPORT ON PAYMENT RECEIVED\n',bold: true, alignment: 'center', fontSize:14, decoration: 'underline'
                   },
-                  [
-                  this.getEducationObject(this.confirms),
-                      {
-      style: 'tableExample',
-      table: {
-        headerRows: 1,
-        // dontBreakRows: true,
-        // keepWithHeaderRows: 1,
-        body: [
-          [{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'}],
-          [
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-          ]
-        ]
-      }
-    },
-                  ],
-          ],
+            
 
-          footer : function(currentPage, pageCount) {
+          {
+            style:'tableExample',
+                  table:{
+                    headerRows: 1,
+                              widths: ['auto', 'auto','auto','auto', 'auto', 'auto','auto'],
+                              //widths: ['10%', '10%','10%','10%', '20%', '20%','10%'],
+                              body: body//this.formPDFTable(confirms),
+                  }
+          },
+          ],
+          footer: function(currentPage, pageCount) {
                 return {
                   margin : [ 20,-8, 20,20],
                   fontSize : 10,
@@ -1040,458 +1120,10 @@ $scope.getEducationObject = function(confirms) {
 
 
         };
-debugger
         pdfMake.createPdf(dd).download();
 
     
   }
-
-
-
-
-  // generateRows(payrolls){
-  //   var tempObj = {}
-  //   var tempArr = [];
-  //   for(var i=0; i<payrolls.length; i++){
-
-  //      tempArr.push(
-  //        { 
-  //          ID: payrolls[i].wageTypeId, 
-  //          description: payrolls[i].wageType.description,
-  //          amount: payrolls[i].amount,
-  //          unit: payrolls[i].unit,
-  //          total: payrolls[i].total
-  //         }
-  //     );
-  //   }
-  // return tempArr;
-  // }
-
-  // buildTableBody(data, columns) {
-  //   var body = [];
-
-  //   body.push(columns);
-
-  //   data.forEach(function(row) {
-  //     var dataRow = [];
-
-  //     columns.forEach(function(column) {
-  //       dataRow.push(row[column]);
-  //     })
-
-  //     body.push(dataRow);
-  //   });
-
-  //   return body;
-  // }
-
-  // table(data, columns) {
-  //   return {
-  //     table: {
-  //       headerRows: 1,
-  //       body: this.buildTableBody(data, columns)
-  //     }
-  //   };
-  // }
-
-        //   [{
-        //   text: 'Candidate Name',
-        //   style: 'tableHeader'
-        // },
-        // {
-        //   text: 'Amount',
-        //   style: 'tableHeader'
-        // },
-        // {
-        //   text: 'Transaction Date',
-        //   style: 'tableHeader'
-        // },
-        // {
-        //   text: 'Receipt No',
-        //   style: 'tableHeader'
-        // },
-        // {
-        //   text: 'Transaction Date',
-        //   style: 'tableHeader'
-        // },
-        // ],
-
-
-  $scope.printPDFReport1 = function (confirms) {
-  // body...
-
-        //   var sourceData = confirms;
-        // var bodyData = [];
-
-        // sourceData.forEach(function(sourceRow) {
-        //   var dataRow = [];
-
-        //   dataRow.push(sourceRow.CandName);
-        //   dataRow.push(sourceRow.amount);
-        //   dataRow.push(sourceRow.receipt_no);
-        //   dataRow.push(sourceRow.transName);
-        //   dataRow.push(sourceRow.$filter('date')(confirm.created_at, 'shortDate'));
-  
-
-        //   bodyData.push(dataRow)
-        // });
-
-        //   var bodyData = [];
-        //     confirms.forEach(function (confirm) {
-
-        //       var dataRow = [];
-
-        //         dataRow.push({
-        //             'Candidate Name': confirm.CandName,
-        //             'Amount': confirm.amount,
-        //             'Receipt No': confirm.receipt_no,
-        //             'Transactn Type': confirm.transName,
-        //             'Contact': confirm.PhoneNo,
-        //             'Office': confirm.office_name,
-        //             'Trans-Date': $filter('date')(confirm.created_at, 'shortDate')
-        //         });
-
-        //          bodyData.push(dataRow);
-        //  });
-
-  // playground requires you to assign document definition to a variable called dd
-
-var headers = {
-    fila_0:{
-        col_1:{ text: 'Candidate Name', style: 'tableHeader',rowSpan: 2, alignment: 'center',margin: [0, 8, 0, 0] },
-        col_2:{ text: 'Transaction Type', style: 'tableHeader',rowSpan: 2, alignment: 'center',margin: [0, 8, 0, 0] },
-        col_3:{ text: 'Amount', style: 'tableHeader',rowSpan: 2, alignment: 'center',margin: [0, 8, 0, 0] },
-        col_4:{ text: 'Amount', style: 'tableHeader',rowSpan: 2, alignment: 'center',margin: [0, 8, 0, 0] },
-        col_5:{ text: 'Amount', style: 'tableHeader',rowSpan: 2, alignment: 'center',margin: [0, 8, 0, 0] },
-        // col_4:{ text: 'Receipt No', style: 'tableHeader',rowSpan: 2, alignment: 'center' }
-    },
-    // fila_1:{
-    //     col_1:{ text: 'Header 1', style: 'tableHeader', alignment: 'center' },
-    //     col_2:{ text: 'Header 2', style: 'tableHeader', alignment: 'center' }, 
-    //     col_3:{ text: 'Header 3', style: 'tableHeader', alignment: 'center' },
-    //     col_4:{ text: 'Citación', style: 'tableHeader', alignment: 'center' },
-    //     col_5:{ text: 'Cumplimiento', style: 'tableHeader', alignment: 'center'}
-    // }
-}
-
-        var sourceData = confirms;
-        var bodyData = [];
-
-
-var rows = {
-    a: {
-        peaje: '1',
-        ruta: '2',
-        fechaCruce: '3',
-        hora: '4',
-        valor: '5'
-    },
-    b: {
-        peaje: '1',
-        ruta: '2',
-        fechaCruce: '3',
-        hora: '4',
-        valor: '5'
-    }
-}
-
-        var sourceData = confirms;
-        var bodyData = [];
-
-        confirms.forEach(function(sourceRow) {
-          var dataRow = [];
-
-          dataRow.push(sourceRow.CandName);
-          dataRow.push(sourceRow.amount);
-          dataRow.push(sourceRow.receipt_no);
-          dataRow.push(sourceRow.transName);
-          dataRow.push(sourceRow.$filter('date')(confirm.created_at, 'shortDate'));
-  
-
-          bodyData.push(dataRow)
-        });
-
-// var body = [];
-// for (var key in headers){
-//     if (headers.hasOwnProperty(key)){
-//         var header = headers[key];
-//         var row = new Array();
-//         row.push( header.col_1 );
-//         row.push( header.col_2 );
-//         row.push( header.col_3 );
-//         row.push( header.col_4 );
-//         row.push( header.col_5 );
-//         body.push(row);
-//     }
-// }
-// for (var key in rows) 
-// {
-//     if (rows.hasOwnProperty(key))
-//     {
-//         var data = rows[key];
-//         var row = new Array();
-//         row.push( data.peaje.toString() );
-//         row.push( data.ruta.toString()  );
-//         row.push( data.fechaCruce.toString() );
-//         row.push( data.hora.toString()  );
-//         row.push( data.valor.toString() );
-//         body.push(row);
-//     }
-// }
-
-var dd = {
-        pageMargins: [40,155,40,55],
-        pageOrientation: 'landscape',
-        header: function() {
-            return {
-                margin: 40,
-                columns: [
-                  {
-                    },
-                    { text:['Resumen disciplinario'], 
-                            alignment: 'left',bold:true,margin:[-405,80,0,0],fontSize: 24}
-                ]
-            }
-        },
-        footer: function(currentPage, pageCount) {
-            return { text:'Pagina '+ currentPage.toString() + ' de ' + pageCount, alignment: 'center',margin:[0,30,0,0] };
-        },
-        content: [
-            //{ text: 'Tables', style: 'header' },
-            '\nEl estudiante AGRESOTH NEGRETE JORYETH TATIANA - 901 - TARDE tiene 1 actas, con 1 faltas acomuladas y a manera de resumen descritas a continuación:\n\n',
-            //{ text: 'A simple table (no headers, no width specified, no spans, no styling)', style: 'sta' },
-            //'The following table has nothing more than a body array',
-            {
-                style: 'tableExample',
-                table: {
-                    widths: [ '*', '*', '*', '*', '*' ],
-                    headerRows: 2,
-                    // keepWithHeaderRows: 1,
-                    body: bodyData//body
-                }
-            }],
-        styles: {
-            header: {
-                fontSize: 28,
-                bold: true
-            },
-            subheader: {
-                fontSize: 15,
-                bold: true
-            },
-            quote: {
-                italics: true
-            },
-            small: {
-                fontSize: 8
-            },
-            sta: {
-                fontSize: 11,
-                bold: false,
-                alignment: 'justify'
-            }
-        }
-    }
-
-     pdfMake.createPdf(dd).download();
-}
-
-
-
-
-$scope.printPDFReport2 = function () {
-  // body...
-
-  // playground requires you to assign document definition to a variable called dd
-
-var headers = {
-    fila_0:{
-        col_1:{ text: 'Faltas', style: 'tableHeader',rowSpan: 2, alignment: 'center',margin: [0, 8, 0, 0] },
-        col_2:{ text: 'Fecha', style: 'tableHeader',rowSpan: 2, alignment: 'center',margin: [0, 8, 0, 0] },
-        col_3:{ text: 'Descripción', style: 'tableHeader',rowSpan: 2, alignment: 'center',margin: [0, 8, 0, 0] },
-        col_4:{ text: 'Cita con acudientes', style: 'tableHeader',colSpan: 2, alignment: 'center' }
-    },
-    fila_1:{
-        col_1:{ text: 'Header 1', style: 'tableHeader', alignment: 'center' },
-        col_2:{ text: 'Header 2', style: 'tableHeader', alignment: 'center' }, 
-        col_3:{ text: 'Header 3', style: 'tableHeader', alignment: 'center' },
-        col_4:{ text: 'Citación', style: 'tableHeader', alignment: 'center' },
-        col_5:{ text: 'Cumplimiento', style: 'tableHeader', alignment: 'center'}
-    }
-}
-var rows = {
-    a: {
-        peaje: '1',
-        ruta: '2',
-        fechaCruce: '3',
-        hora: '4',
-        valor: '5'
-    },
-    b: {
-        peaje: '1',
-        ruta: '2',
-        fechaCruce: '3',
-        hora: '4',
-        valor: '5'
-    }
-}
-
-var body = [];
-for (var key in headers){
-    if (headers.hasOwnProperty(key)){
-        var header = headers[key];
-        var row = new Array();
-        row.push( header.col_1 );
-        row.push( header.col_2 );
-        row.push( header.col_3 );
-        row.push( header.col_4 );
-        row.push( header.col_5 );
-        body.push(row);
-    }
-}
-for (var key in rows) 
-{
-    if (rows.hasOwnProperty(key))
-    {
-        var data = rows[key];
-        var row = new Array();
-        row.push( data.peaje.toString() );
-        row.push( data.ruta.toString()  );
-        row.push( data.fechaCruce.toString() );
-        row.push( data.hora.toString()  );
-        row.push( data.valor.toString() );
-        body.push(row);
-    }
-}
-
-var dd = {
-        pageMargins: [40,155,40,55],
-        pageOrientation: 'landscape',
-        header: function() {
-            return {
-                margin: 40,
-                columns: [
-                  {
-                    },
-                    { text:['Resumen disciplinario'], 
-                            alignment: 'left',bold:true,margin:[-405,80,0,0],fontSize: 24}
-                ]
-            }
-        },
-        footer: function(currentPage, pageCount) {
-            return { text:'Pagina '+ currentPage.toString() + ' de ' + pageCount, alignment: 'center',margin:[0,30,0,0] };
-        },
-        content: [
-            //{ text: 'Tables', style: 'header' },
-            '\nEl estudiante AGRESOTH NEGRETE JORYETH TATIANA - 901 - TARDE tiene 1 actas, con 1 faltas acomuladas y a manera de resumen descritas a continuación:\n\n',
-            //{ text: 'A simple table (no headers, no width specified, no spans, no styling)', style: 'sta' },
-            //'The following table has nothing more than a body array',
-            {
-                style: 'tableExample',
-                table: {
-                    widths: [ '*', '*', '*', '*', '*' ],
-                    headerRows: 2,
-                    // keepWithHeaderRows: 1,
-                    body: body
-                }
-            }],
-        styles: {
-            header: {
-                fontSize: 28,
-                bold: true
-            },
-            subheader: {
-                fontSize: 15,
-                bold: true
-            },
-            quote: {
-                italics: true
-            },
-            small: {
-                fontSize: 8
-            },
-            sta: {
-                fontSize: 11,
-                bold: false,
-                alignment: 'justify'
-            }
-        }
-    }
-
-     pdfMake.createPdf(dd).download();
-}
-
-//   getExperienceObject(experiences: Experience[]) {
-//   const exs = [];
-//   experiences.forEach(experience => {
-//     exs.push(
-//       [{
-//         columns: [
-//           [{
-//             text: experience.jobTitle,
-//             style: 'jobTitle'
-//           },
-//           {
-//             text: experience.employer,
-//           },
-//           {
-//             text: experience.jobDescription,
-//           }],
-//           {
-//             text: 'Experience : ' + experience.experience + ' Months',
-//             alignment: 'right'
-//           }
-//         ]
-//       }]
-//     );
-//   });
-//   return {
-//     table: {
-//       widths: ['*'],
-//       body: [
-//         exs
-//       ]
-//     }
-//   };
-// }
-// getEducationObject(educations: Education[]) {
-//   return {
-//     table: {
-//       widths: ['*', '*', '*', '*'],
-//       body: [
-//         [{
-//           text: 'Degree',
-//           style: 'tableHeader'
-//         },
-//         {
-//           text: 'College',
-//           style: 'tableHeader'
-//         },
-//         {
-//           text: 'Passing Year',
-//           style: 'tableHeader'
-//         },
-//         {
-//           text: 'Result',
-//           style: 'tableHeader'
-//         },
-//         ],
-//         educations.map(ed => {
-//           return [ed.degree, ed.college, ed.passingYear, ed.percentage];
-//         })
-//       ]
-//     }
-//   };
-// }
-
-
-
-
-
-  
- 
-			
-
 
 	
 }]);

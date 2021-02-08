@@ -11,8 +11,9 @@
  */
 angular.module('sessionsController', [])
   .controller('UserSessionsCtrl', ['$scope', 'Auth','$rootScope', 'User','$location',
-              '$http', '$window','userSession',
-         function ($scope, Auth, $rootScope, User, $location, $http, $window, userSession) {
+              '$http', '$window','userSession', '$route', '$cookies', '$cookieStore', 'SweetAlert',
+         function ($scope, Auth, $rootScope, User, $location, $http, $window, userSession, 
+                    $route, $cookies, $cookieStore, SweetAlert) {
 
            var vm = this;
 
@@ -45,6 +46,11 @@ angular.module('sessionsController', [])
                 var config = {
                     interceptAuth: false
                 };
+
+                var credentials = {
+                  email: "",
+                  password: ""
+                };
     
                 // Ask user for login credentials
                 Auth.login(credentials, config).then(function() {
@@ -58,7 +64,21 @@ angular.module('sessionsController', [])
                 }, function(error) {
                     // There was an error logging in.
                     // Reject the original request's promise.
+                    if (error.status == 401) {
+                        $rootScope.$broadcast('event:unauthorized');
+
+                          // Removing frontend static session
+                            if ($cookieStore.get('logged_in') == true ) {
+                               $cookieStore.remove('logged_in'); 
+                            }
+                          $rootScope.user.id = null;
+
+                        $location.path('/sign_in'); 
+                        return error;
+                    };
+
                     deferred.reject(error);
+
                 });
             });
 
@@ -211,12 +231,29 @@ angular.module('sessionsController', [])
         Auth.login($scope.loginForm, config).then(function(user) {
           vm.logging = false;
                   $rootScope.user = user
-                  alert("Welcome, " + user.surname);
+                  //alert("Welcome, " + user.surname);
+                  SweetAlert.swal("Successful!", "Welcome, " + user.surname, "success");
                 vm.successMsg = "Log in is Successful"; 
                   var userPermissions = [];
                  //$rootScope.userPermissions = userPermission.userPermission(user.id);
                  //console.log( $rootScope.userPermissions);
                       console.log(user.roles);
+// $cookieStore.put('logged_in',true);
+// $rootScope.logged_in = true;
+
+
+                      if (user) {
+                        //$cookies.put("_isLoggedIn", true); 
+                        $cookieStore.put('logged_in',true); 
+                        //$rootScope.logged_in = $cookieStore.get('logged_in');                    
+                      }
+                      else{
+                        //$rootScope.isLoggedIn = false;
+                        $rootScope.logged_in = false;
+                      }
+
+                  $rootScope.logged_in = $cookieStore.get('logged_in'); 
+                  console.log( $rootScope.logged_in);
 
             // Find if the array contains an object by comparing the property value
             // if(user.roles.some(role => role.name === "exam_staff")){
@@ -231,12 +268,12 @@ angular.module('sessionsController', [])
               alert("Please upload your Signature Before You Continue. \n Thanks.");
                   $location.path('/signature');
                  }
-                 else  {
+            else  {
                 $location.path('/');
                 
               }
                   
-            console.log(user); // => {id: 1, ect: '...'}
+            //console.log(user); // => {id: 1, ect: '...'}
           }, function(error) {
               // Authentication failed...
               vm.logging = false;
@@ -244,7 +281,7 @@ angular.module('sessionsController', [])
               console.log(error);
               //alert(error)
               if (error.status == 401) {
-                alert("Your Account Needs Authorisation. \nPlease Contact The Admin");
+                alert( " Or Your Account Needs Authorisation. \nPlease Contact The Admin");
               }
 
           });
@@ -289,8 +326,14 @@ angular.module('sessionsController', [])
     });
 
     $scope.$on('devise:logout', function (e, currentUser){
-      $window.localStorage.removeItem('signatory2');
-      $window.localStorage.removeItem('signatoryUser');
+      // $window.localStorage.removeItem('signatory2');
+      // $window.localStorage.removeItem('signatoryUser');
+
+      // Removing frontend static session
+      if ($cookieStore.get('logged_in') == true ) {
+         $cookieStore.remove('logged_in'); 
+      }
+     
       alert("You have been logged out.")
       $rootScope.user = undefined
       $location.path('/');
@@ -325,6 +368,7 @@ angular.module('sessionsController', [])
       if (userSession.getCookieData('usr') != null) {
             if (confirm("You are about log out signatory 2..?") == true) {
               userSession.clearCookieData();
+              //$route.reload(); // Reload the page 
               window.location.reload();
               $location.path('/');
             }
@@ -333,6 +377,7 @@ angular.module('sessionsController', [])
               //console.log(vm.usrSecond);
                   alert(" Operation was cancelled ");
                   window.location.reload();
+                  $route.reload(); // Reload the page
                  $location.path('/');
            
           
@@ -347,6 +392,7 @@ angular.module('sessionsController', [])
       $scope.closeModalSave = function(){
         var modal_popup = angular.element('#userLogIn');
         modal_popup.modal('hide');
+        //$route.reload();
       };
 
 
@@ -367,7 +413,9 @@ angular.module('sessionsController', [])
           //vm.second2 = JSON.stringify(response.data.signatory2);
           if (response.data.success == false) {
             alert(response.data.message)
+            //window.location.reload();
             window.location.reload();
+            //$route.reload();//Reload The page
           } 
           else {
 
@@ -386,7 +434,6 @@ angular.module('sessionsController', [])
               //console.log(vm.second2);
               var encodedStringBtoA = btoa(JSON.stringify(vm.second2));
               //console.log( encodedStringBtoA);
-
               //userSession.setCookieData(JSON.stringify(vm.second2));
               userSession.setCookieData(encodedStringBtoA);
                //$cookies.put("usr", user);
@@ -396,8 +443,10 @@ angular.module('sessionsController', [])
              alert("Welcome " + response.data.logUser.surname );
              //window.location.reload();
              $scope.closeModalSave();
-              window.location.reload();
-             //$location.path('#/confirmations');
+              //window.location.reload();
+             
+              //$location.path('#/confirmations');
+               $route.reload();
           }
 
 
@@ -419,7 +468,7 @@ angular.module('sessionsController', [])
         // Loads everytime a new route or view is loaded.....
                 vm.isLoggedIn = false;
                 vm.loadme = false;
-       $rootScope.$on('$routeChangeStart', function () {
+    $rootScope.$on('$routeChangeStart', function () {
 
       if (userSession.getCookieData() != null) {
         var encodedString = atob(userSession.getCookieData()); 
@@ -427,6 +476,19 @@ angular.module('sessionsController', [])
                   vm.usrSecond = JSON.parse(encodedString) ;
                   //console.log(vm.usrSecond);
           }
+
+        if ( $cookieStore.get('logged_in') == true) {
+        
+               $rootScope.logged_in = $cookieStore.get('logged_in');                   
+          }
+          else{
+              $rootScope.logged_in = false;
+        }
+
+console.log($rootScope.logged_in);
+
+
+       
 
         Auth.currentUser().then(function (user) {
           // body...
@@ -470,6 +532,8 @@ angular.module('sessionsController', [])
                   vm.accountAccess = false;
               } 
 
+
+
             if (Auth.isAuthenticated() == true) {
               console.log('Success: User is logged in');
               Auth.currentUser().then(function (user){
@@ -505,7 +569,7 @@ angular.module('sessionsController', [])
 
         })
  
-          });
+    });
 
        if ($window.localStorage.getItem('signatoryUser') != null) {
           //console.log($window.localStorage.getItem('signatory2'));

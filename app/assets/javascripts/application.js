@@ -58,3 +58,5 @@
 //= require angular-bootstrap
 //= require datatables.net
 //= require 'angularjs-datatables/dist/angular-datatables'
+//= require "angular-sweetalert/SweetAlert.min.js"
+//= require "sweetalert/dist/sweetalert.min.js"

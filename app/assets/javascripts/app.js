@@ -12,6 +12,7 @@
     'naif.base64',
     'ng-token-auth',
     'Devise',
+    'oitozero.ngSweetAlert',
     'sessionsController',
     'managementController',
     'userServices',
@@ -26,10 +27,10 @@
     'datatables',
     'userPersistenceService'
    ])
-    // .config(function(AuthInterceptProvider) {
-    //     // Intercept 401 Unauthorized everywhere
-    //     AuthInterceptProvider.interceptAuth(true);
-    // });
+    .config(function(AuthInterceptProvider) {
+        // Intercept 401 Unauthorized everywhere
+        AuthInterceptProvider.interceptAuth(true);
+    })
 
 //  .config(function($httpProvider){
 //   // Intercepts every http request.  If the response is success, pass it through.  If the response is an
@@ -47,32 +48,33 @@
 //     };
 //   };
 //   $httpProvider.interceptors.push(interceptor);
-// });
+// })
+//
 
+//     .config(['$httpProvider', function($httpProvider){
+//         $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
+// debugger
+//         var interceptor = ['$location', '$rootScope', '$q', function($location, $rootScope, $q) {
+//             function success(response) {
+//                 return response
+//             };
 
-  //   .config(['$httpProvider', function($httpProvider){
-  //       $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
+//             function error(response) {
+//                 if (response.status == 401) {
+//                     $rootScope.$broadcast('event:unauthorized');
+//                     //$location.path('/users/login');
+//                        $location.path('/sign_in'); 
+//                     return response;
+//                 };
+//                 return $q.reject(response);
+//             };
 
-  //       var interceptor = ['$location', '$rootScope', '$q', function($location, $rootScope, $q) {
-  //           function success(response) {
-  //               return response
-  //           };
-
-  //           function error(response) {
-  //               if (response.status == 401) {
-  //                   $rootScope.$broadcast('event:unauthorized');
-  //                   $location.path('/users/login');
-  //                   return response;
-  //               };
-  //               return $q.reject(response);
-  //           };
-
-  //           return function(promise) {
-  //               return promise.then(success, error);
-  //           };
-  //       }];
-  //         $httpProvider.interceptors.push(interceptor);
-  // }]);
+//             return function(promise) {
+//                 return promise.then(success, error);
+//             };
+//         }];
+//           $httpProvider.interceptors.push(interceptor);
+//   }])
 
      .filter('sumOfValue', function() {
         return function(data, key) {

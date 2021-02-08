@@ -19,8 +19,6 @@
     "angular-bootstrap": "latest",
     "angular-save-html-to-pdf": "latest",
     "pdfmake": "latest",
-    "jspdf": "1.4.1",
-    "jspdf-autotable": "2.3.5",
     "canvg": "https://github.com/canvg/canvg.git#v1.5.3",
     "html2canvas": "https://github.com/niklasvh/html2canvas.git",
     "cropperjs": "https://github.com/fengyuanchen/cropperjs.git",
@@ -35,7 +33,8 @@
     "Font-Awesome": "latest",
     "angularjs-datatables": "latest",
     "datatables.net": "latest",
-    "admin-lte": "3.0"
+    "admin-lte": "3.0",
+    "angular-sweetalert": "https://github.com/oitozero/ngSweetAlert.git#1.1.3"
   },
   "resolutions": {
     "angular": "1.5",

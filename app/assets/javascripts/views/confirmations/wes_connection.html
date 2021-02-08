@@ -2,13 +2,13 @@
 <form name="editConfirmForm" ng-submit="clickedEdit(editConfirm);" method="post" accept-charset="UTF-8">
   <div class="row">
     <div class="col-md-6">
-      <article class="panel panel-primary" ng-init="getConfirmByID(id)">
-        <header class="panel-heading">
+      <div class="card card-primary" ng-init="getConfirmByID(id)">
+        <header class="card-header">
           <h1 class="h3">
             Candidate's Details
           </h1>
         </header>
-        <section class="panel-body">
+        <section class="card-body">
                     <div class="form-group">
             <label class="" for="diet">Full Name</label>
             <input type="text" class="form-control" 
@@ -47,20 +47,20 @@
             Validate Candidate with Client's Server
           </button>
         </section>
-        <footer class="panel-footer">
-          <label for="joined">Created At: </label><b>{{confirm.updated_at | date:'medium'}}</b> 
+        <footer class="card-footer">
+          <label for="joined">Created At:</label> <b>{{confirm.updated_at | date:'medium'}}</b> 
         </footer>
-      </article>
+      </div>
       
     </div>
     <div class="col-md-6">
-      <article class="panel panel-success">
-    
-          <h2 class="h4">
-            Client's Response:
-          </h2>
-       
-        <section class="panel-body">
+      <article class="card card-success">
+        <header class="card-header">
+          <h1 class="h3">
+           Client's Response:
+          </h1>
+        </header>    
+        <section class="card-body">
           <article>
             <div class="row">
               <div class="col-md-7">
@@ -83,10 +83,10 @@
           </article>
           <hr>
 
-        <form name="form" ng-controller="ConfirmationsController" enctype="multipart/form-data"
+<!--         <form name="form" ng-controller="ConfirmationsController" enctype="multipart/form-data"
               method="post">
           <article class="well well-sm">
-            <header class="panel-heading">
+            <header class="card-heading">
               <h1 class="h4">
                 Client's File Submission
               </h1>
@@ -101,13 +101,14 @@
               <div ><iframe id="output"  style="width:500px; height:500px" class="img-responsive"></iframe> </div>
             </p>
             <input type="submit" value="Send" ng-click="SendToCarrier()">
-        </form>
+        </form> -->
 
 
           <hr>
 
-          <object id="output"  class="img-responsive"></object> 
-           <object id="iframeContainer"></object> 
+           <object id="iframeContainer" type="file" ></object> 
+
+           <button ng-show="frame" class="btn btn-success" ng-click="SendToCarrier()">Send To Client's Server</button>
 
         </section>
       </article>

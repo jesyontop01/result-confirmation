@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :waec_offices
   resources :finance_depts
   resources :departments
   resources :divisions
@@ -52,7 +53,11 @@ Rails.application.routes.draw do
   get 'confirm_countries/show'
   get 'confirm_types/index'
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  resources :packing_lists
+  resources :packing_lists do
+    collection do
+      get :download_file
+    end
+  end
   get 'api_users/new'
   get 'years/index'
 

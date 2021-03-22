@@ -10,20 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_18_204623) do
+ActiveRecord::Schema.define(version: 2021_03_08_131313) do
 
   create_table "Grade", primary_key: "GradeType", id: :string, limit: 1, default: nil, force: :cascade do |t|
     t.string "GradeValue", limit: 2, null: false
     t.string "GradeDesc", limit: 15, null: false
-  end
-
-  create_table "WaecOffices", force: :cascade do |t|
-    t.varchar "State_Name", limit: 255
-    t.varchar "State_Code", limit: 2, null: false
-    t.varchar "OfficeAddress", limit: 200
-    t.varchar "State_Head", limit: 50
-    t.decimal "GPSLong", precision: 9, scale: 6
-    t.decimal "GPSLat", precision: 9, scale: 6
   end
 
   create_table "assignments", force: :cascade do |t|
@@ -91,6 +82,14 @@ ActiveRecord::Schema.define(version: 2021_01_18_204623) do
     t.bigint "division_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["division_id"], name: "index_finance_depts_on_division_id"
+  end
+
+  create_table "departments1", force: :cascade do |t|
+    t.string "name"
+    t.bigint "division_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_departments_on_division_id"
   end
 
@@ -115,14 +114,6 @@ ActiveRecord::Schema.define(version: 2021_01_18_204623) do
     t.string "subjectYear", limit: 255
   end
 
-  create_table "finance_depts", force: :cascade do |t|
-    t.string "name"
-    t.bigint "division_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["division_id"], name: "index_finance_depts_on_division_id"
-  end
-
   create_table "offices", id: :bigint, default: nil, force: :cascade do |t|
     t.nchar "office_name", limit: 255
     t.nchar "office_state", limit: 255
@@ -131,10 +122,11 @@ ActiveRecord::Schema.define(version: 2021_01_18_204623) do
   end
 
   create_table "packing_lists", force: :cascade do |t|
-    t.string "office"
     t.string "attachment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "waec_office_id"
+    t.index ["waec_office_id"], name: "index_packing_lists_on_waec_office_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -333,25 +325,28 @@ ActiveRecord::Schema.define(version: 2021_01_18_204623) do
     t.string "othernames", limit: 255
     t.string "title", limit: 255
     t.integer "office_id"
-    t.boolean "is_management", default: false
     t.integer "lp_no"
-    t.boolean "admin", default: false
     t.boolean "activated", default: false
     t.datetime "activated_at"
     t.boolean "logged_in", default: false
     t.integer "is_signedIn", default: 0
-    t.boolean "superadmin_role", default: false
-    t.boolean "audit_role", default: false
-    t.boolean "user_role", default: true
-    t.string "permission", default: "user"
-    t.text "signature"
-    t.bigint "division_id"
-    t.bigint "finance_dept_id"
-    t.boolean "is_national_Staff", default: false
-    t.index ["division_id"], name: "index_users_on_division_id"
+    t.bigint "dept_id"
+    t.boolean "is_management", default: false
+    t.boolean "admin", default: false
+    t.bigint "role_id"
+    t.index ["dept_id"], name: "index_users_on_dept_id"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["finance_dept_id"], name: "index_users_on_finance_dept_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, where: "([reset_password_token] IS NOT NULL)"
+    t.index ["role_id"], name: "index_users_on_role_id"
+  end
+
+  create_table "waec_offices", force: :cascade do |t|
+    t.varchar "State_Name", limit: 255
+    t.varchar "State_Code", limit: 2, null: false
+    t.varchar "OfficeAddress", limit: 200
+    t.varchar "State_Head", limit: 50
+    t.decimal "GPSLong", precision: 9, scale: 6
+    t.decimal "GPSLat", precision: 9, scale: 6
   end
 
   create_table "waec_private_exams", force: :cascade do |t|
@@ -406,7 +401,8 @@ ActiveRecord::Schema.define(version: 2021_01_18_204623) do
   add_foreign_key "confirmations", "confirm_types"
   add_foreign_key "confirmations", "payments"
   add_foreign_key "departments", "divisions"
-  add_foreign_key "finance_depts", "divisions"
+  add_foreign_key "departments1", "divisions"
+  add_foreign_key "packing_lists", "waec_offices"
   add_foreign_key "payments", "confirm_types"
   add_foreign_key "payments", "diets"
   add_foreign_key "payments", "offices"
@@ -423,6 +419,6 @@ ActiveRecord::Schema.define(version: 2021_01_18_204623) do
   add_foreign_key "searches", "confirm_types"
   add_foreign_key "searches", "offices"
   add_foreign_key "signatures", "users"
-  add_foreign_key "users", "divisions"
-  add_foreign_key "users", "finance_depts"
+  add_foreign_key "users", "departments", column: "dept_id"
+  add_foreign_key "users", "roles"
 end

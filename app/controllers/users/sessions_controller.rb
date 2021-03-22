@@ -1,7 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
 # before_action :configure_sign_in_params, only: [:create]
 before_action :notify_pusher_logout, only: :destroy
-before_action :admin_login, only: :create
+##before_action :admin_login, only: :create
 
  respond_to :json
 
@@ -25,6 +25,7 @@ before_action :admin_login, only: :create
     ##respond_with resource, location: after_sign_in_path_for(resource)
     respond_to do |format|
       #format.html { redirect_to users_path, notice: 'User was successfully Removed.' }
+      #binding.pry
       format.json { render json: @user }
     end
 
@@ -58,9 +59,15 @@ private
     #@user = current_user
     #binding.pry
     #if @user && @user.is_management = "true"
+    ##u = User.where(email: params[:email])
+    
     if user && user.is_management == true
+    #if user && (user.role? :management_Staff)
+
     #unless @user.is_management = "false" 
-     activeUser =  User.where(:office_id => user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
+     #activeUser =  User.where(:office_id => user.office_id ).merge( User.where( :logged_in => true)).merge( User.find(user[0]["id"]).role? :management_Staff)
+    activeUser =  User.where(:office_id => user.office_id ).merge( User.where( :logged_in => true)).merge( User.where(:is_management => true))
+    #
     #binding.pry
      #activeUser.update(:logged_in=> 'false' )
     #sign_out :activeUser

@@ -2,23 +2,24 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   before_save { email.downcase! }
-  after_create :set_role_on_registration
+  after_create :set_user_role_on_registration
 
   devise :database_authenticatable, :registerable, :timeoutable,
          :recoverable, :rememberable, :trackable, :validatable
 
 
 VALID_EMAIL_REGEX = /\A[^@]+@waec\.org.ng\z/
-validates :email, presence: true, length: { maximum: 255 }, 
-          format: { with: VALID_EMAIL_REGEX }, uniqueness: true, case_sensitive: false
+validates :email, presence: true, length: { maximum: 255 }, uniqueness: true, case_sensitive: false
+          #format: { with: VALID_EMAIL_REGEX }, 
 validate :user_exists, on: :create    
 
           belongs_to :office
           has_many :confirmations, dependent: :destroy
           has_many :receipt_booklets
 
-          has_many :assignments , dependent: :delete_all
-          has_many :roles, through: :assignments
+          # has_many :assignments , dependent: :delete_all
+          # has_many :roles, through: :assignments
+          belongs_to :role
 
           has_one :signature
 
@@ -37,6 +38,10 @@ validate :user_exists, on: :create
         roles.any? { |r| r.name.underscore.to_sym == role }  
       end 
 
+  # def isAdmin
+  #   self.role.name == "admin"      
+  # end
+
 
          def active_for_authentication?
 	        # Uncomment the below debug statement to view the properties of the returned self model values.
@@ -53,16 +58,16 @@ validate :user_exists, on: :create
     end
 end
 
-# Devise overrides
-  def deactivate 
-    self.activated = false 
-  end 
-  def activate 
-    self.activated = true 
-  end 
-  def set_as_admin
-    self.admin = true
-  end
+# # Devise overrides
+#   def deactivate 
+#     self.activated = false 
+#   end 
+#   def activate 
+#     self.activated = true 
+#   end 
+#   def set_as_admin
+#     self.admin = true
+#   end
 
   # end Devise overrides
  def activate_user_or_timedout
@@ -81,22 +86,61 @@ end
     end
 end
 
+
+
    private
+
+
+
+  def set_user_role_on_registration
+        # if self.dept_id == 3
+        #  roleId = Role.find_by(:name => "exam_staff").id 
+        #  self.update(:role_id => roleId) 
+        # end
+        ##  If User is not
+        if self.dept_id == 3 && self.is_management == true
+         roleId = Role.find_by(:name => "exam_management").id 
+         self.update(:role_id => roleId) 
+
+       else
+
+         roleId = Role.find_by(:name => "exam_national").id 
+         self.update(:role_id => roleId) 
+
+        end
+
+        if self.dept_id == 1
+
+         roleId = Role.find_by(:name => "account_staff").id 
+         self.update(:role_id => roleId)
+
+        elsif self.dept_id == 2
+          
+         roleId = Role.find_by(:name => "audit_staff").id 
+         self.update(:role_id => roleId)
+            
+        end
+     
+   end
+
+
    def set_role_on_registration
-        if self.division_id == 1
+        if self.dept_id == 3
          self.role_ids = [7]  
         end
 
-        if self.division_id == 2 && self.finance_dept_id == 1
+        if self.dept_id == 1
 
             self.role_ids = [8]
-        elsif self.division_id == 2 && self.finance_dept_id == 2
+        elsif self.dept_id == 2
           
           self.role_ids = [4]
             
         end
      
    end
+
+
    
 
 end

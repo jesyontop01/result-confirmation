@@ -8,7 +8,7 @@ class ConfirmationsController < ApplicationController
 
 		params[:office_id] = current_user.office_id
 		
-		if current_user.audit_role?
+		if current_user.role == "audit_role"
 		#@confirms = Confirmation.all.paginate(:page => params[:page], :per_page => 10).order("created_at DESC")
 
 		             sql = <<-SQL 
@@ -226,10 +226,42 @@ class ConfirmationsController < ApplicationController
   # PATCH/PUT /documents/1
   # PATCH/PUT /documents/1.json
   def update
+
+
+
+
   	 @confirm = Confirmation.find(params[:id]) 
     respond_to do |format|
-      if @confirm.update(confirmation_params)
-       
+      if @confirm.update( :Cand_address => params[:Cand_address],:dest_title=>params[:dest_title], 
+			:dest_address1 =>params[:dest_address1],:dest_address2 =>params[:dest_address2],
+			:dest_location=>params[:dest_location],:dest_email=>params[:dest_email], :WES_Ref => params[:WES_Ref]
+			)
+
+      			sql = <<-SQL 
+
+				SELECT
+                              a.[id] ,a.[user_id] ,b.[DietName], c.[YearName], a.[ref_no],a.[exam_no]
+                              ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
+                              ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted]
+							  ,e.[CandName] ,e.[cand_email]
+                                  FROM [verifierApp].[dbo].[confirmations] a
+                                  inner join [verifierApp].[dbo].[Diets] b
+                                  on a.diet_id = b.id
+                                  inner join [verifierApp].[dbo].[Years] c
+                                  on a.year_id = c.id
+                                  inner join [verifierApp].[dbo].[offices] d
+                                  on a.office_id = d.id
+								  inner join [verifierApp].[dbo].[payments] e
+								  on a.payment_id = e.id
+				  where a.[id] = '#{params[:id]}'
+				  order by a.[created_at] DESC
+
+			  SQL
+
+            @confirm = ActiveRecord::Base.connection.exec_query(sql)
+       #binding.pry
+
+
         format.json { render json: @confirm }
       else
         

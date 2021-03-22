@@ -1,6 +1,7 @@
 class PackingList < ActiveRecord::Base
 	mount_uploader :attachment, AttachmentUploader # Tells rails to use this uploader for this model.   
-    validates :office, presence: true # Make sure the owner's name is present.
+    #validates :waec_office_id, presence: true # Make sure the owner's name is present.
+    belongs_to :waec_office
 
     STATES =  %w{ ABIA ABUJA ADAMAWA AKWA-IBOM ANAMBRA BAUCHI BAYELSA BENUE BORNO CROSS-RIVERS
 				  DELTA EBONYI EDO EKITI ENUGU GOMBE IMO JIGAWA KADUNA KANO KATSINA KEBBI KOGI

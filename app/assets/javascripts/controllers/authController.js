@@ -1,6 +1,6 @@
 angular
 .module('verifier')
-.controller('AuthCtrl', function ($scope, $rootScope, Auth, $location) {
+.controller('AuthCtrl',["$scope", "$rootScope", "Auth", "$location", function ($scope, $rootScope, Auth, $location) {
 	// body...
 	 var config = {
             headers: {
@@ -31,6 +31,6 @@ angular
       });
     };
 
-} );
+} ]);
 
 

@@ -17,7 +17,35 @@ angular.module('verifier')
         .error(function(){
         });
     }
-}]);
+
+    this.uploadPackList = function(file, officeID) {
+        // body...
+        var fd = new FormData();
+        fd.append('attachment', file.upload);
+        fd.append('waec_office_id', officeID);
+        return $http.post('/packing_lists.json', fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined }
+        });
+
+    };
+}])
+
+  //   .service("uploadFile", ['$http', function($http) {
+  //   // body...
+  //   this.upload = function(file, officeID) {
+  //       // body...
+  //       var fd = new FormData();
+  //       fd.append('attachment', file.upload);
+  //       fd.append('waec_office_id', officeID);
+  //       return $http.post('/packing_lists.json', fd, {
+  //           transformRequest: angular.identity,
+  //           headers: {'Content-Type': undefined }
+  //       });
+
+  //   };
+
+  // }]);
 
 
     // let token = window.sessionStorage.getItem('token');

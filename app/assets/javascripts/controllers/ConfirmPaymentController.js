@@ -299,12 +299,14 @@ $scope.results = {};
    // Return All Confirmations to  View...............
 
     	$scope.confirms = [];
+      $scope.loading = false;
 
 		$scope.getAllPayments = function(){
+      $scope.loading = true;
 		    		 myAppFactory.getData().then(function(response){
 					    		$scope.confirms = response.data;
 					    		console.log($scope.confirms);					  
-						    		
+						    	$scope.loading = false;	
 					    	}, function(response){
 					    		alert("There was an Error:");
 					    	});

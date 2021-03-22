@@ -422,7 +422,7 @@ DEPENDENCIES
   rolify
   sass-rails (~> 5.0)
   selenium-webdriver
-  tiny_tds (~> 2.1, >= 2.1.2)
+  tiny_tds
   toastr-rails
   turbolinks (~> 5)
   tzinfo-data
@@ -431,7 +431,7 @@ DEPENDENCIES
   will_paginate
 
 RUBY VERSION
-   ruby 2.5.8p224
+   ruby 2.6.6p146
 
 BUNDLED WITH
-   2.1.4
+   2.2.13

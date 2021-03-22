@@ -1,8 +1,8 @@
 source 'http://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-#ruby '2.6.6'
-ruby '2.5.8'
+ruby '2.6.6'
+#ruby '2.5.8'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.3'
@@ -14,7 +14,7 @@ gem 'devise_token_auth'
 gem 'devise'
 gem "devise_ldap_authenticatable"#, :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
 gem 'devise-guests', '~> 0.5.0'
-gem 'tiny_tds', '~> 2.1', '>= 2.1.2'
+gem 'tiny_tds'#, '~> 2.1', '>= 2.1.2'
 #gem 'fakeweb'
 gem 'pry'
 gem 'faraday-encoding'

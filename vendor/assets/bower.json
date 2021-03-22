@@ -34,7 +34,8 @@
     "angularjs-datatables": "latest",
     "datatables.net": "latest",
     "admin-lte": "3.0",
-    "angular-sweetalert": "https://github.com/oitozero/ngSweetAlert.git#1.1.3"
+    "angular-sweetalert": "https://github.com/oitozero/ngSweetAlert.git#1.1.3",
+    "angularjs-toaster": "latest"
   },
   "resolutions": {
     "angular": "1.5",

@@ -11,9 +11,9 @@
  */
 angular.module('sessionsController', [])
   .controller('UserSessionsCtrl', ['$scope', 'Auth','$rootScope', 'User','$location',
-              '$http', '$window','userSession', '$route', '$cookies', '$cookieStore', 'SweetAlert',
+              '$http', '$window','userSession', '$route', '$cookies', '$cookieStore', 'SweetAlert', "toaster",
          function ($scope, Auth, $rootScope, User, $location, $http, $window, userSession, 
-                    $route, $cookies, $cookieStore, SweetAlert) {
+                    $route, $cookies, $cookieStore, SweetAlert, toaster) {
 
            var vm = this;
 
@@ -23,6 +23,8 @@ angular.module('sessionsController', [])
                 vm.loading = true;
                 vm.errorMsg = false; 
                 vm.successMsg = false; 
+
+          vm.loading = false;
  
         var config = {
             headers: {
@@ -38,7 +40,7 @@ angular.module('sessionsController', [])
         //     $scope.signedIn = Auth.isAuthenticated();
         // };
 
-              // Catch unauthorized requests and recover.
+        // Interceptor to Catch unauthorized requests and recover.
           $rootScope.$on('devise:unauthorized', function(event, xhr, deferred) {
                 // Disable interceptor on _this_ login request,
                 // so that it too isn't caught by the interceptor
@@ -71,7 +73,7 @@ angular.module('sessionsController', [])
                             if ($cookieStore.get('logged_in') == true ) {
                                $cookieStore.remove('logged_in'); 
                             }
-                          $rootScope.user.id = null;
+                          $rootScope.user = null;
 
                         $location.path('/sign_in'); 
                         return error;
@@ -225,19 +227,23 @@ angular.module('sessionsController', [])
 
 
     
+// User Login function
 
-      this.submitLogin = function(loginForm) {
+    this.submitLogin = function(loginForm) {
         //vm.logging = true;
+      vm.loading = true;
         Auth.login($scope.loginForm, config).then(function(user) {
           vm.logging = false;
                   $rootScope.user = user
                   //alert("Welcome, " + user.surname);
-                  SweetAlert.swal("Successful!", "Welcome, " + user.surname, "success");
+                SweetAlert.swal("Successful!", "Welcome, " + user.surname, "success");
                 vm.successMsg = "Log in is Successful"; 
+                toaster.pop('success', "success", "Log in is Successful.");
+                vm.loading = false;
                   var userPermissions = [];
                  //$rootScope.userPermissions = userPermission.userPermission(user.id);
                  //console.log( $rootScope.userPermissions);
-                      console.log(user.roles);
+                      console.log(user);
 // $cookieStore.put('logged_in',true);
 // $rootScope.logged_in = true;
 
@@ -253,7 +259,7 @@ angular.module('sessionsController', [])
                       }
 
                   $rootScope.logged_in = $cookieStore.get('logged_in'); 
-                  console.log( $rootScope.logged_in);
+                  //console.log( $rootScope.logged_in);
 
             // Find if the array contains an object by comparing the property value
             // if(user.roles.some(role => role.name === "exam_staff")){
@@ -264,7 +270,10 @@ angular.module('sessionsController', [])
             //       vm.accountAccess = true;
             //   }
 
-            if (user.roles.some(role => role.name === "exam_staff") && (user.signature == null)) {
+
+            //Checking to ensure that User of Exam staff role has signature uploaded
+            //Before continuing with the application.
+            if (((user.role.name === "exam_management") || (user.role.name === "exam_national")) && (user.signature == null)) {
               alert("Please upload your Signature Before You Continue. \n Thanks.");
                   $location.path('/signature');
                  }
@@ -278,10 +287,13 @@ angular.module('sessionsController', [])
               // Authentication failed...
               vm.logging = false;
               vm.errorMsg = "Invalid username/password";
-              console.log(error);
+              //console.log(error.data.error);
+              //console.log(error);
+              toaster.pop('error', error.data.error);
               //alert(error)
               if (error.status == 401) {
-                alert( " Or Your Account Needs Authorisation. \nPlease Contact The Admin");
+                //alert( " Or Your Account Needs Authorisation. \nPlease Contact The Admin");
+                SweetAlert.swal("error", error.data.error , "error");
               }
 
           });
@@ -329,13 +341,19 @@ angular.module('sessionsController', [])
       // $window.localStorage.removeItem('signatory2');
       // $window.localStorage.removeItem('signatoryUser');
 
+      vm.loading = true;
+
       // Removing frontend static session
       if ($cookieStore.get('logged_in') == true ) {
          $cookieStore.remove('logged_in'); 
       }
      
       alert("You have been logged out.")
-      $rootScope.user = undefined
+      toaster.pop('note', "success", "You have been logged out.");
+      $rootScope.user = undefined;
+
+     vm.loading = false;
+
       $location.path('/');
     });
 
@@ -365,34 +383,80 @@ angular.module('sessionsController', [])
 
       this.signatoryLogout = function () {
       // body...
+
+
+
+
+
+
       if (userSession.getCookieData('usr') != null) {
-            if (confirm("You are about log out signatory 2..?") == true) {
-              userSession.clearCookieData();
-              //$route.reload(); // Reload the page 
-              window.location.reload();
-              $location.path('/');
-            }
-            else {
-              vm.usrSecond = userSession.getCookieData('usr');
-              //console.log(vm.usrSecond);
-                  alert(" Operation was cancelled ");
-                  window.location.reload();
-                  $route.reload(); // Reload the page
-                 $location.path('/');
+          //   if (confirm("You are about log out signatory 2..?") == true) {
+          //     vm.loading = true;
+          //     userSession.clearCookieData();
+          //     //$route.reload(); // Reload the page 
+          //   toaster.pop('success', "success", "You have been logged out.");
+          //     window.location.reload();
+          //     $location.path('/');
+          //   }
+          //   else {
+          //     vm.usrSecond = userSession.getCookieData('usr');
+          //     //console.log(vm.usrSecond);
+          //         alert(" Operation was cancelled ");
+          //         window.location.reload();
+          //         $route.reload(); // Reload the page
+          //        $location.path('/');
+          //        vm.loading = false;
            
           
-          }
+          // }
+              SweetAlert.swal({
+                 title: "Second signatory Log Out?",
+                 text: "You are about log out signatory 2..?",
+                 type: "warning",
+                 showCancelButton: true,
+                 confirmButtonColor: "#DD6B55",confirmButtonText: "Yes, Log Out!",
+                 cancelButtonText: "No, cancel plx!",
+                 closeOnConfirm: false,
+                 closeOnCancel: false }, 
+              function(isConfirm){ 
+                 if (isConfirm) {
+                   vm.loading = true;
+                   userSession.clearCookieData();
+                            //$route.reload(); // Reload the page 
+                   toaster.pop('success', "success", "You have been logged out.");
+                   window.location.reload();
+                   $location.path('/');
+
+                    SweetAlert.swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                    toaster.pop('success', "success", "You have been logged out.");
+                 } else {
+
+                                //alert(" Operation was cancelled ");
+                    SweetAlert.swal("Cancelled", "Your imaginary file is safe :)", "error");
+                    toaster.pop('info', "info", "You have been logged out.");
+                                window.location.reload();
+                                $route.reload(); // Reload the page
+                               $location.path('/');
+                               vm.loading = false;
+
+                 }
+              });
       }
       else{
-        userSession.getCookieData() = null;
+        //userSession.getCookieData('usr') = null;
+       //userSession.getCookieData() = null;
       
     }
+    vm.loading = false;
+
+    
   }
 
       $scope.closeModalSave = function(){
         var modal_popup = angular.element('#userLogIn');
         modal_popup.modal('hide');
         //$route.reload();
+        vm.loading = false;
       };
 
 
@@ -485,42 +549,44 @@ angular.module('sessionsController', [])
               $rootScope.logged_in = false;
         }
 
-console.log($rootScope.logged_in);
+//console.log($rootScope.logged_in);
 
 
        
 
         Auth.currentUser().then(function (user) {
           // body...
-          console.log(user.roles);
+          console.log(user.role);
 
             // Find if the array contains an object by comparing the property value
-              if(user.roles.some(role => role.name === "admin")){
-                  console.log(vm.adminAccess = true)
+              //if(user.role.some(role => role.name === "admin")){
+                if(user.role.name === "admin"){
+                  //console.log(vm.adminAccess = true)
                   vm.adminAccess = true;
                   vm.auditAccess = true;
                   vm.examAccess = true;
                   vm.accountAccess = true;
-              } else if(user.roles.some(role => role.name === "account_staff")){
-                  console.log(vm.auditAccess = true)
+              } else if(user.role.name === "account_staff"){
+                  //console.log(vm.auditAccess = true)
                   vm.adminAccess = false;
                   vm.auditAccess = false;
                   vm.examAccess = false;
                   vm.accountAccess = true;
-              } else if(user.roles.some(role => role.name === "audit_staff")){
-                  console.log(vm.auditAccess = true)
+              } else if(user.role.name === "audit_staff"){
+                  //console.log(vm.auditAccess = true)
                   vm.adminAccess = false;
                   vm.auditAccess = true;
                   vm.examAccess = false;
                   vm.accountAccess = false;
-              }  else if(user.roles.some(role => role.name === "audit_admin")){
-                  console.log(vm.auditAccess = true)
-                  vm.adminAccess = false;
-                  vm.auditAccess = true;
-                  vm.examAccess = false;
-                  vm.accountAccess = false;
-              } else if(user.roles.some(role => role.name === "exam_staff")){
-                  console.log(vm.examAccess = true)
+              }  //else if(user.roles.some(role => role.name === "audit_admin")){
+              //     console.log(vm.auditAccess = true)
+              //     vm.adminAccess = false;
+              //     vm.auditAccess = true;
+              //     vm.examAccess = false;
+              //     vm.accountAccess = false;
+               //} 
+               else if((user.role.name === "exam_management") || (user.role.name === "exam_national")){
+                  //console.log(vm.examAccess = true)
                   if (user.signature == null ) {
                     vm.examAccess = false;
                   } else {
@@ -544,10 +610,10 @@ console.log($rootScope.logged_in);
                     vm.email = user.email;
                User.getPermission().then(function (response) {
                 // body...
-                console.log(response.data);
+                //console.log(response.data);
               //debugger
                 for (var i = 0; i < response.data.length; i++) {
-      if ( response.data[i].name === 'admin' ||  response.data[i].name === 'Management_Staff' ||  response.data[i].name === 'audit_admin' || response.data[i].name === 'audit_staff'|| response.data[i].name === 'user') {
+                if ( response.data[i].name === 'admin' ) {
                     vm.authorized = true
                     vm.loadme = true;
 
@@ -575,7 +641,7 @@ console.log($rootScope.logged_in);
           //console.log($window.localStorage.getItem('signatory2'));
            vm.signatoryUser = {};
             vm.signatoryUser = JSON.parse($window.localStorage.getItem('signatoryUser'));
-             console.log(vm.signatoryUser);
+             //console.log(vm.signatoryUser);
                    
            //JSON.parse
          } else {

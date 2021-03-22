@@ -47,10 +47,10 @@ class ApplicationController < ActionController::Base
   protected
            #:email, :surname, :othernames, :title, :office_id, :lp_no
    def configure_permitted_parameters
-      added_attrs = [:is_national_Staff, :division_id, :finance_dept_id, :office_id, :lp_no, :username, :surname, :othernames, :title, :email, :password, :password_confirmation, :current_password, :is_management, :superadmin_role, :audit_role]
-      devise_parameter_sanitizer.permit :sign_in, keys: [:username, :email, :password, :is_management]
+      added_attrs = [:dept_id, :office_id, :lp_no, :username, :surname, :othernames, :title, :email, :password, :password_confirmation, :current_password]
+      devise_parameter_sanitizer.permit :sign_in, keys: [:username, :email, :password]
       devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
-      devise_parameter_sanitizer.permit :account_update, keys: [:is_national_Staff, :division_id, :finance_dept_id, :office_id, :lp_no, :username, :surname, :othernames, :title, :email, :password, :password_confirmation, :current_password, :is_management, :superadmin_role, :audit_role]
+      devise_parameter_sanitizer.permit :account_update, keys: [:dept_id, :office_id, :lp_no, :username, :surname, :othernames, :title, :email, :password, :password_confirmation, :current_password]
     end
 
   def after_sign_in_path_for(resource)

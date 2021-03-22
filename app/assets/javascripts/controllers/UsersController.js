@@ -55,6 +55,7 @@ angular.module('verifier')
 // Activating and Deactivating Users......
 	$scope.clickDeactivate = function(user) { 
     	var id = user.id; 
+    	$scope.cdate = new Date();
 
 			if (confirm("You are about to Activate/Deactivate a User, Are You Sure?") == true) {
 				if (user.activated==true) {
@@ -63,7 +64,8 @@ angular.module('verifier')
 		            method: 'PUT',
 		            data: angular.toJson(
 					{		
-						activated: false
+						activated: false,
+						activated_at: $scope.cdate 
 					}
 						) ,
 					header: {
@@ -84,7 +86,8 @@ angular.module('verifier')
 		            method: 'PUT',
 		            data: angular.toJson(
 					{		
-						activated: true
+						activated: true,
+						activated_at: $scope.cdate 
 					}
 						) ,
 					header: {
@@ -186,47 +189,58 @@ angular.module('verifier')
     			}).then(function(response){
     							//alert('Record successfully updated .');
 							   $scope.user = response.data;
+							   console.log($scope.user);
 
-							   if ($scope.user.is_management) {
+							   if ($scope.user.role.name === "exam_management") {
 							   	$scope.user.staffCategory = "management";
+
+							   	$scope.user.is_management = true;
+
 							   } else {
 							   	$scope.user.staffCategory = "national";
-							   }
 
-							    console.log($scope.user.roles)
-							    if ($scope.user) {
-							$scope.user.roles.forEach(role => {
-								console.log(role);
+							   		$scope.user.is_management = false;
+							   }
+							    //console.log($scope.user)
+
+							    if ($scope.user.role) {
+							// $scope.user.roles.forEach(role => {
+							// 	console.log(role);
+							var role = $scope.user.role;
 						//debugger
 									switch(role.name){
-							    			case "user": 
-								    		return	$scope.user.user = true;
-								    		break;
+
 								    		case "admin":
 								    		return $scope.user.admin = true;
 								    		//console.log($scope.user.admin = true)
 								    		break;
 								    		case "audit_staff":
 								    		//return $scope.user.audit_staff = true;
-								    		return $scope.user.assignment = "audit" ;
+								    		return $scope.user.assignment = "audit_staff" ;
 								    		break;
-								    		case "audit_admin":
-								    		return $scope.user.audit_admin = true;
-								    		//return $scope.user.assignment = true;
-								    		case "exam_staff":
+								    		// case "audit_admin":
+								    		// return $scope.user.audit_admin = true;
+								    		// //return $scope.user.assignment = true;
+								    		case "exam_management":
 								    		//return $scope.user.exam_staff = true;
-								    		return $scope.user.assignment = "tad";
+								    		return $scope.user.assignment = "exam_staff";
 								    		break;
+
+								    		case "exam_national":
+								    		//return $scope.user.exam_staff = true;
+								    		return $scope.user.assignment = "exam_staff";
+								    		break;
+
 								    		case "account_staff":
 								    		//return $scope.user.account_staff = true;
-								    		return $scope.user.assignment = "account";
+								    		return $scope.user.assignment = "account_staff";
 								    		break;
 								    		default:
 								    		return	$scope.user.user = true;
 								    		break;
 
 							    		}
-						});
+						// });
 				}
 
     			},function(response){
@@ -255,7 +269,7 @@ angular.module('verifier')
 	$scope.editUser = {};
     $scope.clickEdit = function(user){
     			$scope.editUser;
-    			 console.log($scope.editUser);
+    			// console.log($scope.editUser);
     			$location.path("/users/"+ user.id +"/edit");
     		};
 
@@ -270,64 +284,60 @@ $scope.user.assignment = "";
 		 var exam_staff = "";
 		 var audit_staff = "";
 		 var account_staff = "";
-		 console.log($scope.user.assignment);
+// 		 //console.log($scope.user.assignment);
 
-$scope.user.assignment == "";
-	var admin = null;
-    if (user.admin == true) {
-    	 admin = 2;
-    }
+// $scope.user.assignment == "";
+// 	var admin = null;
+//     if (user.admin == true) {
+//     	 admin = 2;
+//     }
 
-    var audit_admin = null;
-    if (user.audit_admin == true) {
-    	 audit_admin = 3;
-    }
+//     // var audit_admin = null;
+//     // if (user.audit_admin == true) {
+//     // 	 audit_admin = 3;
+//     // }
 
-    var audit_staff = null;
-    // if (user.audit_staff == true) {
-    // 	audit_staff = 4;
-    // }
-    if ($scope.user.assignment == "audit") {
-    	audit_staff = 4;
-    }
+//     var audit_staff = null;
+//     // if (user.audit_staff == true) {
+//     // 	audit_staff = 4;
+//     // }
+//     if ($scope.user.assignment == "audit") {
+//     	audit_staff = 4;
+//     }
 
-    var exam_staff = null;
-    // if (user.exam_staff == true) {
-    // 	exam_staff = 7;
-    // }
-    if ($scope.user.assignment == "tad") {
-     	exam_staff = 7;
-    }
+//     var exam_staff = null;
+//     // if (user.exam_staff == true) {
+//     // 	exam_staff = 7;
+//     // }
+//     if ($scope.user.assignment == "tad") {
+//      	exam_staff = 7;
+//     }
 
     var account_staff = null;
     // if (user.account_staff == true) {
     // 	 account_staff = 8;
     // }
-    if ($scope.user.assignment == "account") {
-    	 account_staff = 8;
+    // if ($scope.user.assignment == "account") {
+    // 	 account_staff = 8;
+    // }
+    var management = false;
+    var national = false;
+
+    if ($scope.user.staffCategory =="management") {
+    	//console.log("it is management");
+    	management = true;
+    } else {
+    	//console.log("it is national");
+    	management = false;
     }
 
-    var Management_Staff = null;
-    if (user.is_management == true) {
-    	is_management = 5;
-    }
 
-    var National_Staff = null;
-    if ($scope.user.assignment == "national") {
-    	is_national_Staff = true;
-    }
-
-
-
-
-	var Role_data = {
-		admin: admin,
-		audit_staff: audit_staff,
-		audit_admin: audit_admin,
-		exam_staff: exam_staff,
-		account_staff: account_staff,
-		Management_Staff: is_management
+	var userUpdate = {
+		roleName: $scope.user.assignment,
+		is_management: management
 	}
+
+	console.log(userUpdate);
 
 // 	var data2 = {
 // 		admin, is_management: user.is_management,
@@ -335,7 +345,7 @@ $scope.user.assignment == "";
 // 		account_staff
 // 	}
 
-// console.log(data2);
+ // console.log(Role_data);
 
 
  
@@ -345,7 +355,7 @@ $scope.user.assignment == "";
     			$http({
     				method: 'PATCH',
 					url: " /users/set_user_role/"+ $scope.user.id +".json",
-					data: Role_data,
+					data: userUpdate,
 
 					header: {
 						'Content_Type' : 'application/json'
@@ -429,27 +439,6 @@ $scope.clickDelete = function(record) {
     			});
  		};
 
- 		//console.log($scope.selectedCountry_id);
-    	$scope.clickDelete = function(order_item) { 
-    	var id = order_item.id; 
-
-			if (confirm("You are about to delete an item from Cart, Are You Sure?") == true) {
-			    $http({
-		            url: 'line_items/'+id+'.json', 
-		            method: 'DELETE'
-		        }).then(function(response){
-		    							alert('Item successfully deleted .');
-		    							$scope.getAllOrder_items();
-									},function(response){
-		    				alert('There was a problem:' + response.status);
-
-		    			});
-				} else {
-				    alert(" DELETE operation was cancelled ");
-				   $scope.getAllOrder_items();
-				}
-
-    		};
 
 
 

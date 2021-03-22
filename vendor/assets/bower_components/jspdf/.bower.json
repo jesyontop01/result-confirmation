@@ -97,6 +97,6 @@
     "commit": "63f89d47d1cd60091e62d6d51570f78f27d01a23"
   },
   "_source": "git://github.com/MrRio/jsPDF.git",
-  "_target": "*",
-  "_originalSource": "git://github.com/MrRio/jsPDF.git"
+  "_target": "^1.2.61",
+  "_originalSource": "jspdf"
 }

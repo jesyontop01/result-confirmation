@@ -52,36 +52,48 @@ angular
         .when('/search',{
             templateUrl:"views/confirmations/confirm_search.html",
           controller: "ConfirmationsController",
-          authenticated: true
+          authenticated: true,
+          permission: ['admin', "exam_management","exam_national"]
           })
 
         .when('/search/:CandNo',{
             templateUrl:"views/confirmations/result_view.html",
           controller: "ConfirmationsController",
-          authenticated: true
+          authenticated: true,
+          permission: ['admin', "exam_management","exam_national"]
           })
         .when('/address/:CandNo',{
             templateUrl:"views/confirmations/confirm_address.html",
           controller: "ConfirmationsController",
-          authenticated: true
+          authenticated: true,
+          permission: ['admin', "exam_management","exam_national"]
           })
 
         .when('/confirmations',{
             templateUrl:"views/confirmations/confirmations.html",
           controller: "ConfirmationsController",
-          authenticated: true
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
+          })
+        .when('/confirmations/Details/:id',{
+            templateUrl:"views/confirmations/confirmations_details.html",
+          controller: "ConfirmationsController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
           })
 
         .when('/webServices/:id',{
             templateUrl:"views/confirmations/webServices.html",
           controller: "ConfirmationsController",
-          authenticated: true
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
           })
 
         .when('/wes_upload/:id',{
             templateUrl:"views/confirmations/wes_connection.html",
           controller: "ConfirmationsController",
-          authenticated: true
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
           })
        
         .when('/users',{
@@ -139,45 +151,51 @@ angular
           templateUrl: "views/audit/All_Payment_Transactions.html",
           controller: "AuditsController",
           authenticated: true,
-          permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff', 'exam_staff'],
+          permission: ['admin', 'audit_staff', 'account_staff', 'exam_management','exam_national'],
         })
         
         .when('/audit/Audit_All-Payments',{
           templateUrl: "views/audit/audit_all_payment_trans.html",
           controller: "AuditsController",
           authenticated: true,
-          permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff'],
+          permission: ['admin', 'audit_staff', 'account_staff'],
         })
         .when('/audit/Audit_Payments_view',{
           templateUrl: "views/audit/All_Payments.html",
           controller: "AuditsController",
           authenticated: true,
-          permission: ['admin', 'audit_admin', 'audit_staff', 'account_staff'],
+          permission: ['admin', 'audit_staff', 'account_staff'],
         })
         .when('/verifer/payments',{
             templateUrl: "views/confirmPayment/payments.html",
             controller: "ConfirmPaymentController",
           authenticated: true,
-          permission: ['admin', 'exam_staff'],
+          permission: ['admin', 'exam_management','exam_national'],
           })
         .when('/verifer/:YearName/:exam_no',{
             templateUrl: "views/confirmPayment/result_view.html",       
             controller: "ConfirmPaymentController",
           authenticated: true,
-          permission: ['admin', 'exam_staff']
+          permission: ['admin', 'exam_management','exam_national']
           })
         .when('/verifer/address/:ExamYear/:CandNo',{
             templateUrl: "views/confirmPayment/confirm_address.html",       
             controller: "ConfirmPaymentController",
           authenticated: true,
-          permission: ['admin', 'exam_staff']
+          permission: ['admin', 'exam_management','exam_national']
+          })
+        .when('/packingList',{
+            templateUrl: "views/packingList/packList.html",       
+            controller: "PackingListController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
           })
         .when('/management',{
             templateUrl: "views/management/management.html",       
             controller: "managementCtrl",
             controllerAs: "management",
             authenticated: true,
-            permission: ['admin', 'Management_Staff', 'audit_admin']
+            permission: ['admin']
             //permission: ['moderator', 'account_staff']
           })
 
@@ -197,14 +215,14 @@ angular
     
       $rootScope.$on('$routeChangeStart', function (event, next, current){
         console.log(next.$$route);
-         
+        
          // Only perform if user visited a route listed above
         if (next.$$route !== undefined) {
            // Check if authentication is required on route
           if (next.$$route.authenticated == true) {
             console.log("Needs authentication");
             // Check if authentication is required, then if permission is required
-            debugger
+            //debugger
             //if (!Auth.isAuthenticated()) {
               if($cookieStore.get('logged_in') == false){
                 event.preventDefault(); // If not logged in, prevent accessing route
@@ -220,9 +238,10 @@ angular
                       
                         User.getPermission().then(function (response) {
                         // body...
-                        //console.log(response.data);
+                         debugger
+                        console.log(response.data);
                         var userPermissions = response.data;
-                        //console.log(userPermissions);
+                        console.log(userPermissions);
 
                               function check(){
                                 var contains = false;

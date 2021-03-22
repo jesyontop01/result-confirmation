@@ -2,7 +2,7 @@ class ReceiptBookletsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_receipt_booklet, only: [:show, :edit, :update, :destroy]
   before_action :check_duplicate_entry
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:check_duplicate_entry]
 
   # GET /receipt_booklets
   # GET /receipt_booklets.json
@@ -23,6 +23,7 @@ class ReceiptBookletsController < ApplicationController
           INNER JOIN [verifierApp].[dbo].[offices] b
           on a.office_id  = b.id 
           where office_id = '#{params[:officeID]}'
+          ORDER BY a.[created_at] DESC;
 
       SQL
 

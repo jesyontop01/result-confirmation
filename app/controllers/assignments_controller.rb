@@ -84,20 +84,19 @@ load_and_authorize_resource :except => :user_permissions
 
        params[:user_id] = current_user.id
 
-              sql = <<-SQL 
+            # sql = <<-SQL 
       
-              SELECT 
-                   b.name
-            FROM [verifierApp].[dbo].[assignments] as a
-            inner join roles as b
-            on a.role_id = b.id
-            where a.[user_id] =  '#{params[:user_id]}'
+            #   SELECT 
+            #        b.name
+            # FROM [verifierApp].[dbo].[assignments] as a
+            # inner join roles as b
+            # on a.role_id = b.id
+            # where a.[user_id] =  '#{params[:user_id]}'
 
-            SQL
+            # SQL
 
-                @assignments = ActiveRecord::Base.connection.exec_query(sql)
-
-       
+            #     @assignments = ActiveRecord::Base.connection.exec_query(sql)
+    @assignments = current_user.role.name       
         #@assignments = Assignment.all
         render json: @assignments
   end

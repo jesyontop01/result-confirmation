@@ -1,0 +1,88 @@
+<!-- <div class="container" >
+  <div class="row">
+    <div class="col-sm-12">
+
+<div  ng-controller="ConfirmPaymentController" >
+  <p><b>Search: </b><input type="text" name="" placeholder="Search by Receipt number" ng-model='searchText.receipt_no'></p>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-responsive" ng-init="getAllPayments()">
+  <thead>
+     <tr>
+      <th>Index</th>
+      <th>Exam Diet</th>
+      <th>Candidate No</th>
+      <th>Receipt No</th>
+      <th>Candidate Email</th>
+      <th>Office</th>
+      <th>Print Status</th>
+      <th>Date created</th>
+      <th colspan="2">Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr ng-repeat="confirm in confirms | filter:searchText "> 
+      <td>{{$index+1}}</td>
+      <td >{{confirm.DietName}} {{confirm.YearName}}</td>
+      <td>{{confirm.exam_no}}</td>
+      <td>{{confirm.receipt_no}}</td>
+      <td>{{confirm.cand_email}}</td>
+      <td>{{confirm.office_name}}</td>
+      <td>{{confirm.printed}}</td>
+      <td>{{confirm.created_at}}</td>
+      <td ng-show="sessions.examAccess"><button ng-click="viewDetails(confirm)" type="button" class="btn btn-info">View Detail</button></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div> -->
+
+
+<div class="container" >
+  <div class="row">
+    <div class="col-sm-12">
+
+<div  ng-controller="ConfirmPaymentController" >
+  <p><b>Search: </b><input type="text" name="" placeholder="Search by Receipt number" ng-model='searchText.receipt_no'></p>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-responsive" ng-init="getAllPayments()">
+  <thead>
+     <tr>
+      <th>Index</th>
+      <th>Candidate Name</th>
+      <th>Amount</th>
+      <th>Receipt No</th>
+      <th>Transaction Purpose</th>
+      <th>Cand.Contact</th>
+      <th>Office</th>
+      <th>Date created</th>
+<!--       <th colspan="2">Action</th> -->
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr ng-repeat="confirm in confirms | filter:searchText "> 
+      <td>{{$index+1}}</td>
+      <td >{{confirm.CandName}}</td>
+      <td>{{confirm.amount}}</td>
+      <td>{{confirm.receipt_no}}</td>
+      <td>{{confirm.transName}}</td>
+      <td>{{confirm.PhoneNo}}</td>
+      <td>{{confirm.office_name}}</td>
+      <td>{{confirm.created_at | date:'dd/MM/yyyy'}}</td>
+<!--       <td ng-show="sessions.examAccess"><button ng-click="viewDetails(confirm)" type="button" class="btn btn-info">View Detail</button></td> -->
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+

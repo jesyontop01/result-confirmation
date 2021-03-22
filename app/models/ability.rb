@@ -18,30 +18,36 @@ class Ability
       # else
       #   can :read, :all
       # end
-      if user.role? :admin
+      #if ((user.role.name === "exam_management") || (user.role.name === "exam_national"))
+      if  user.role.name == "admin"
         can :manage, :all
-      elsif user.role? :exam_staff
+      #elsif  user.role.name == "exam_staff"
+    elsif ((user.role.name === "exam_management") || (user.role.name === "exam_national"))
+        
         can :manage, User, :id => user.id 
         can :manage, Confirmation#, user_id: user.id
         cannot :destroy, Confirmation
         can :manage, Payment
+        can :manage, :receipt_payment_details, Payment
          # can :manage, PaymentSearch
         can :manage, Exam 
         can :manage, TestResult
 
-      elsif user.role? :account_staff
+      elsif  user.role.name == "account_staff"
         can :read, :all
         can :manage, :User
         can :read, Confirmation
         can :manage, Payment
         can :manage, TestResult
         can :manage, ReceiptBooklet
+        can :create, ReceiptBooklet
+        can :create, ReceiptStatus
         can :manage, ReceiptStatus
         can :read, Diet
         can :read, Year
         can :read, :user_permissions, Assignment
 
-      elsif user.role? :audit_staff
+      elsif  user.role.name == "audit_staff"
         can :read, :all
         can :manage, :User
         can :read, Confirmation

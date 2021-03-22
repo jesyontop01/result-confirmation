@@ -1,7 +1,7 @@
 class PaymentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_payment, only: [:show, :edit, :update, :destroy]
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:receipt_payment_details]
 
   # GET /payments
   # GET /payments.json
@@ -12,7 +12,8 @@ class PaymentsController < ApplicationController
         params[:office_id] = current_user.office_id
 
     
-    if ((current_user.role? :admin) || (current_user.role? :audit_admin)) #:audit_staff
+    # if ((current_user.role? :admin) || (current_user.role? :audit_admin))
+    if ((current_user.role == "admin") || (current_user.role == "audit_admin")) #:audit_staff
     #@confirms = Confirmation.all.paginate(:page => params[:page], :per_page => 10).order("created_at DESC")
 
                 if params[:WaecOfficeId] == "undefined" 
@@ -80,8 +81,8 @@ class PaymentsController < ApplicationController
 
                   end
 
-      elsif  current_user.role? :audit_staff
-
+      # elsif  current_user.role? :audit_staff
+    elsif  current_user.role == "audit_staff"
             if params[:dateFrom] && params[:dateTo] && params[:WaecOfficeId]
 
               sql = <<-SQL
@@ -123,7 +124,8 @@ class PaymentsController < ApplicationController
               end 
 
 
-      elsif current_user.role? :account_staff
+      # elsif current_user.role? :account_staff
+    elsif current_user.role == "account_staff"
         
 
              sql = <<-SQL 
@@ -265,7 +267,7 @@ class PaymentsController < ApplicationController
 
               @payment = ActiveRecord::Base.connection.exec_query(sql)
       end
-
+      
       if @payment.length == 0
 
          render json: {success: false, message: " Receipt's Not Valid" }

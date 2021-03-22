@@ -6,7 +6,7 @@ class UserMailer < ApplicationMailer
   #
   def activation_request(user)
     @user = user
-
+# User.find(user[0]["id"]).role? :admin
     mail(to: User.where(admin: true).pluck(:email), subject: "Activation Request ")
 
   end

@@ -4,16 +4,18 @@
   },
   "source": {
     "include": ["./src"],
-    "includePattern": ".js$"
+    "includePattern": "(.js|README.md)$"
   },
-  "plugins": ["node_modules/jsdoc/plugins/markdown"],
+  "plugins": [
+    "node_modules/jsdoc/plugins/markdown"
+  ],
   "markdown": {
     "tags": ["param", "deprecated", "description"]
   },
   "opts": {
     "template": "node_modules/docdash/",
     "encoding": "utf8",
-    "destination": "./docs/",
+    "destination": "docs/",
     "recurse": true,
     "verbose": true
   },

@@ -28,22 +28,23 @@ angular.module('verifier')
 
         $scope.validEmail = function(email) {
           // body...email_validity
+          //console.log(email);
           $http.get("/users/email_validity.json", 
                {"params": { "email": email}}
               ).then(function(response){ 
                    //debugger
-                  console.log(response.data);
+                  //console.log(response.data);
                   if (response.data.success == true) {
                     $scope.emailIsValid = false;
                     $scope.registrationForm.IsValid = false;
-                    alert(response.data.message);
+                    //alert(response.data.message);
                     $scope.emailMsg = response.data.message;
                   } else {
                     $scope.emailIsValid = true;
                     $scope.registrationForm.IsValid = true;
-                    alert(response.data.message);
+                    //alert(response.data.message);
                     $scope.emailMsg = response.data.message;
-                    console.log(response);
+                    //console.log(response);
                   }
                 
                 
@@ -55,9 +56,9 @@ angular.module('verifier')
     $scope.management = {
         "value": true
       };
-      $scope.national = {
-          "value": true
-      };
+      // $scope.national = {
+      //     "value": true
+      // };
 
 //Creating a user registration Object
 
@@ -71,29 +72,27 @@ angular.module('verifier')
           password:              "",
           password_confirmation: "",
           is_management:         false,
-          is_national_Staff:      false,
-          division_id:            "",
-          finance_dept_id:         ""  
+          dept_id:            ""
 
           };
 
 //Registration of user on Button Click
     $scope.handleRegBtnClick = function() {
 //debugger
-console.log($scope.registrationForm.staffCategory);
-      if ($scope.registrationForm.staffCategory == "management") {
-        $scope.registrationForm.is_management = true;
-        $scope.registrationForm.is_national_Staff = false;
-      }
-      else{
-                $scope.registrationForm.is_management = false;
-                $scope.registrationForm.is_national_Staff = true;
-      }
+// //console.log($scope.registrationForm.staffCategory);
+//       if ($scope.registrationForm.staffCategory == "management") {
+//         $scope.registrationForm.is_management = true;
+//         // $scope.registrationForm.is_national_Staff = false;
+//       }
+//       else{
+//                 $scope.registrationForm.is_management = false;
+//                 // $scope.registrationForm.is_national_Staff = true;
+//       }
 
-      //  if($scope.registrationForm.staffCategory.value == $scope.national.value) {
-      //           $scope.registrationForm.is_management = false;
-      //           $scope.registrationForm.is_national_Staff = true;
-      // }
+//       //  if($scope.registrationForm.staffCategory.value == $scope.national.value) {
+//       //           $scope.registrationForm.is_management = false;
+//       //           $scope.registrationForm.is_national_Staff = true;
+//       // }
      
       $scope.registerForm = {
         title:               $scope.registrationForm.title,
@@ -104,20 +103,17 @@ console.log($scope.registrationForm.staffCategory);
       email:                 $scope.registrationForm.email,
       password:              $scope.registrationForm.password,
       password_confirmation: $scope.registrationForm.password_confirmation,
-      is_management:         $scope.registrationForm.is_management,
-      is_national_Staff:      $scope.registrationForm.is_national_Staff,
-      //division_id:            $scope.registrationForm.WaecDivisionId,
-      division_id:           $scope.registrationForm.FinDeptId.division.id,
-      finance_dept_id:         $scope.registrationForm.FinDeptId.id  
+      is_management:         $scope.registrationForm.staffCategory,
+      dept_id:               $scope.registrationForm.deptId.id  
 
       };
   
 
       console.log($scope.registerForm);
 
-      
+      if ($scope.registrationForm.password == $scope.registrationForm.password_confirmation) {
 
-          Auth.register($scope.registerForm, config).then(function(user){
+        Auth.register($scope.registerForm, config).then(function(user){
         //$rootScope.user = user;
         
         Auth.logout();
@@ -134,14 +130,22 @@ console.log($scope.registrationForm.staffCategory);
 
           );
    
+      } else {
+        
+        alert("Password do not match");
+      }
+
+      
+
+
    
 
 
 
-          $scope.$on('auth:registration-email-error', function(ev, reason) {
-            $scope.error = reason.errors[0];
-        });
-     }
+        //   $scope.$on('auth:registration-email-error', function(ev, reason) {
+        //     $scope.error = reason.errors[0];
+        // });
+  }
 
 
 
@@ -194,12 +198,12 @@ console.log($scope.registrationForm.staffCategory);
  $scope.arPicker = false;
 
 // Get All departments (Actively in use)
- $scope.getFinDepartments = function () {
+ $scope.getDepartments = function () {
    // body...
-        $http.get("/finance_depts.json",
+        $http.get("/departments.json",
           ).then(function(response){ 
       // debugger
-            $scope.finDepts = response.data;
+            $scope.depts = response.data;
                  console.log(response);
              },function (response) {
                  alert('Unexpected Error');
@@ -208,10 +212,10 @@ console.log($scope.registrationForm.staffCategory);
 
 //Get other attributes for Exam's staff(Actively in use)
   $scope.getExamAttribute = function () {
-     var department = $scope.registrationForm.FinDeptId;
-console.log($scope.registrationForm.FinDeptId);
+     var department = $scope.registrationForm.deptId;
+console.log($scope.registrationForm.deptId);
 
-  if(department.division.id == 1){
+  if(department.division_id == 1){
           $scope.arPicker = true;
      }
      else {
@@ -222,34 +226,34 @@ console.log($scope.registrationForm.FinDeptId);
 
 //Get Finance departments on Drop down select OR 
 //Get Exam's staff extra Attributes on drop down select on Divisions
-   $scope.getFinDept = function () {
-     var divisionId = $scope.registrationForm.WaecDivisionId;
+ //   $scope.getFinDept = function () {
+ //     var divisionId = $scope.registrationForm.WaecDivisionId;
 
 
  
-     if (divisionId == 2) {
+ //     if (divisionId == 2) {
 
-      $scope.arPicker = false;
+ //      $scope.arPicker = false;
 
-          $http.get("/finance_depts.json", 
-           {"params": { "division_id": divisionId}}
-          ).then(function(response){ 
-      // debugger
-            $scope.finDepts = response.data;
-                 console.log(response);
-             },function (response) {
-                 alert('Unexpected Error');
-             });
-     }
-     else if(divisionId == 1){
-          $scope.arPicker = true;
-          $scope.finDepts = null;
-     }
-     else {
-         $scope.finDepts = null;
-         $scope.arPicker = true;
-     }
- }
+ //          $http.get("/finance_depts.json", 
+ //           {"params": { "division_id": divisionId}}
+ //          ).then(function(response){ 
+ //      // debugger
+ //            $scope.finDepts = response.data;
+ //                 console.log(response);
+ //             },function (response) {
+ //                 alert('Unexpected Error');
+ //             });
+ //     }
+ //     else if(divisionId == 1){
+ //          $scope.arPicker = true;
+ //          $scope.depts = null;
+ //     }
+ //     else {
+ //         $scope.depts = null;
+ //         $scope.arPicker = true;
+ //     }
+ // }
 
 
 
@@ -307,4 +311,45 @@ $scope.updateAccountForm = {};
             });
     }
 
-    ]);
+    ])
+
+
+
+// Custom directive to check matching passwords 
+.directive('match', function() {
+    return {
+        restrict: 'A', // Restrict to HTML Attribute
+        controller: function($scope) {
+            $scope.confirmed = false; // Set matching password to false by default
+
+            // Custom function that checks both inputs against each other               
+            $scope.doConfirm = function(values) {
+                // Run as a loop to continue check for each value each time key is pressed
+                values.forEach(function(ele) {
+                    // Check if inputs match and set variable in $scope
+                    if ($scope.confirm == ele) {
+                        $scope.confirmed = true; // If inputs match
+                    } else {
+                        $scope.confirmed = false; // If inputs do not match
+                    }
+                });
+
+            };
+        },
+
+        link: function(scope, element, attrs) {
+
+            // Grab the attribute and observe it            
+            attrs.$observe('match', function() {
+                scope.matches = JSON.parse(attrs.match); // Parse to JSON
+                scope.doConfirm(scope.matches); // Run custom function that checks both inputs against each other   
+            });
+
+            // Grab confirm ng-model and watch it           
+            scope.$watch('confirm', function() {
+                scope.matches = JSON.parse(attrs.match); // Parse to JSON
+                scope.doConfirm(scope.matches); // Run custom function that checks both inputs against each other   
+            });
+        }
+    };
+});

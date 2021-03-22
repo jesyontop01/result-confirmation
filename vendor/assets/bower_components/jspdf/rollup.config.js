@@ -1,170 +1,76 @@
-import { terser } from "rollup-plugin-terser";
-import RollupPluginPreprocess from "rollup-plugin-preprocess";
-import resolve from "rollup-plugin-node-resolve";
-import commonjs from "rollup-plugin-commonjs";
-import replace from "@rollup/plugin-replace";
-import license from "rollup-plugin-license";
-import pkg from "./package.json";
+const rollupResolve = require('rollup-plugin-node-resolve');
+const rollupBabel = require('rollup-plugin-babel');
 
-function replaceVersion() {
-  return replace({
-    delimiters: ["", ""],
-    "0.0.0": pkg.version
-  });
-}
 
-function licenseBanner() {
-  let commit = "00000000";
-  try {
-    commit = execSync("git rev-parse --short=10 HEAD")
-      .toString()
-      .trim();
-  } catch (e) {}
-  return license({
-    banner: {
-      content: { file: "./src/license.js" },
-      data: {
-        versionID: pkg.version,
-        builtOn: new Date().toISOString(),
-        commitID: commit
+// Monkey patching filesaver and html2canvas
+function monkeyPatch() {
+  return {
+    transform: (code, id) => {
+      var file = id.split('/').pop()
+
+      // Only one define call per module is allowed by requirejs so
+      // we have to remove calls that other libraries make
+      if (file === 'FileSaver.js') {
+        code = code.replace(/define !== null\) && \(define.amd != null/g, '0')
+      } else if (file === 'html2canvas.js') {
+        code = code.replace(/&&\s+define.amd/g, '&& define.amd && false')
       }
+
+      return code
     }
-  });
+  }
 }
 
-const umdExternals = matchSubmodules([
-  ...Object.keys(pkg.peerDependencies || {}),
-  ...Object.keys(pkg.optionalDependencies || {})
-]);
-const externals = matchSubmodules([
-  ...Object.keys(pkg.dependencies || {}),
-  ...Object.keys(pkg.peerDependencies || {}),
-  ...Object.keys(pkg.optionalDependencies || {})
-]);
+// Rollup removes local variables unless used within a module.
+// This plugin makes sure specified local variables are preserved
+// and kept local. This plugin wouldn't be necessary if es2015
+// modules would be used.
+function rawjs(opts) {
+  opts = opts || {}
+  return {
+    transform: (code, id) => {
+      var variable = opts[id.split('/').pop()]
+      if (!variable) return code
 
-const umd = {
-  input: "src/index.js",
-  output: [
-    {
-      file: "dist/jspdf.umd.js",
-      format: "umd",
-      name: "jspdf",
-      exports: "named",
-      sourcemap: true
+      var keepStr = '/*rollup-keeper-start*/window.tmp=' + variable +
+        ';/*rollup-keeper-end*/'
+      return code + keepStr
     },
-    {
-      file: "dist/jspdf.umd.min.js",
-      format: "umd",
-      name: "jspdf",
-      plugins: [terser({})],
-      exports: "named",
-      sourcemap: true
-    }
-  ],
-  external: umdExternals,
-  plugins: [
-    resolve(),
-    commonjs(),
-    RollupPluginPreprocess({ context: { MODULE_FORMAT: "umd" } }),
-    replaceVersion(),
-    licenseBanner()
-  ]
-};
-
-const es = {
-  input: "src/index.js",
-  output: [
-    {
-      file: pkg.module.replace(".min", ""),
-      format: "es",
-      name: "jspdf",
-      sourcemap: true,
-      plugins: []
-    },
-    {
-      file: pkg.module,
-      format: "es",
-      name: "jspdf",
-      sourcemap: true,
-      plugins: [terser({})]
-    }
-  ],
-  external: externals,
-  plugins: [
-    resolve(),
-    RollupPluginPreprocess({ context: { MODULE_FORMAT: "es" } }),
-    replaceVersion(),
-    licenseBanner()
-  ]
-};
-const node = {
-  input: "src/index.js",
-  output: [
-    {
-      file: pkg.main.replace(".min", ""),
-      format: "cjs",
-      name: "jspdf",
-      exports: "named",
-      sourcemap: true,
-      plugins: []
-    },
-    {
-      file: pkg.main,
-      format: "cjs",
-      name: "jspdf",
-      exports: "named",
-      sourcemap: true,
-      plugins: [terser({})]
-    }
-  ],
-  external: externals,
-  plugins: [
-    resolve(),
-    RollupPluginPreprocess({ context: { MODULE_FORMAT: "cjs" } }),
-    replaceVersion(),
-    licenseBanner()
-  ]
-};
-
-const umdPolyfills = {
-  input: "src/polyfills.js",
-  output: [
-    {
-      file: "dist/polyfills.umd.js",
-      format: "umd",
-      name: "jspdf-polyfills",
-      plugins: [terser({})]
-    }
-  ],
-  external: [],
-  plugins: [
-    resolve(),
-    commonjs(),
-    license({
-      banner: {
-        content: { file: "./node_modules/core-js/LICENSE" }
+    transformBundle: (code) => {
+      for (var file in opts) {
+        var r = new RegExp(opts[file] + '\\$\\d+', 'g')
+        code = code.replace(r, opts[file])
       }
-    }),
-    licenseBanner()
-  ]
-};
-
-const esPolyfills = {
-  input: "src/polyfills.js",
-  output: [
-    {
-      file: "dist/polyfills.es.js",
-      format: "es",
-      name: "jspdf-polyfills",
-      plugins: [terser({})]
+      var re = /\/\*rollup-keeper-start\*\/.*\/\*rollup-keeper-end\*\//g
+      return code.replace(re, '')
     }
-  ],
-  external: externals,
-  plugins: [licenseBanner()]
-};
-
-function matchSubmodules(externals) {
-  return externals.map(e => new RegExp(`^${e}(?:[/\\\\]|$)`));
+  }
 }
 
-export default [umd, es, node, umdPolyfills, esPolyfills];
+module.exports = {
+	input: './main.js',
+	plugins: [
+		rollupResolve(),
+		monkeyPatch(),
+		rawjs({
+		'jspdf.js': 'jsPDF',
+		'filesaver.tmp.js': 'saveAs',
+		'filesaver.js': 'saveAs',
+		'deflate.js': 'Deflater',
+		'zlib.js': 'FlateStream',
+		'BMPDecoder.js': 'BmpDecoder',
+		'omggif.js': 'GifReader',
+		'JPEGEncoder.js': 'JPEGEncoder',
+		'html2pdf.js': 'html2pdf'
+		}),
+		rollupBabel()
+	],
+	output: [
+		{
+			name: 'namebndl',
+			format: 'iife',
+			file: './lib/index.js',
+			sourcemap: false
+		}
+	],
+}

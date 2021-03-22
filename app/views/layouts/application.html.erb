@@ -174,7 +174,8 @@
                     <img src="" class="img-circle elevation-2" alt="User Image">
                   </div> -->
                   <div class="info">
-                    <a href="#/users/{{user.id}}" class="d-block"> {{"Welcome ! " +user.surname + " "+ user.othernames}}</a>
+                    <a href="#/users/{{user.id}}" class="d-block"> {{"Welcome ! " +user.surname + " "+ user.othernames}}</a> / 
+                    <a ng-click="sessions.signatoryLogout()" ng-show="sessions.usrSecond">Logged In {{sessions.usrSecond.surname + " "+ sessions.usrSecond.othernames}}(LogOut)</a>
                   <!--   <a href="#" class="d-block">Alexander Pierce</a> -->
                   </div>
                 </div>
@@ -280,12 +281,11 @@
                       </ul>
                     </li>
                     <li class="nav-item">
-                      <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                          Simple Link
-                          <span class="right badge badge-danger">New</span>
-                        </p>
+                        <a href="#/packingList" class="nav-link">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Packing List File Download</p>
+                        </a>
+                        
                       </a>
                     </li>
                   </ul>
@@ -300,7 +300,7 @@
             <div class="container-fluid">
               <div class="row mb-2">
                 <div class="col-sm-6">
-                  <h1 class="m-0 text-dark">Confirmation Of Result</h1>
+                  <!-- <h1 class="m-0 text-dark">Confirmation Of Result</h1> -->
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                   <ol class="breadcrumb float-sm-right">
@@ -315,6 +315,9 @@
           <div class="content container-fluid">
             <div class="container-fluid">
              <!--  <%#= yield %> -->
+            <!--  <toaster-container></toaster-container> -->
+            <toaster-container toaster-options="{'close-html':'<button>Close</button>', 'showCloseButton':true}">
+            </toaster-container>
              <div ng-view ></div>
             </div>
           </div>

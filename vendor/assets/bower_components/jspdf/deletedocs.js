@@ -1,5 +1,6 @@
-const deleteFolder = require("folder-delete");
+const deleteFolder = require('folder-delete');
 
 try {
-  deleteFolder("docs", { debugLog: false });
-} catch (e) {}
+deleteFolder('docs', {debugLog: false});
+} catch (e) {
+}

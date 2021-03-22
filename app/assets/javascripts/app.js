@@ -3,6 +3,7 @@
   .module('verifier', [
     'templates',
   	'ipCookie',
+    'toaster',
     'ngAnimate',
     'ngCookies',
     'ngResource',

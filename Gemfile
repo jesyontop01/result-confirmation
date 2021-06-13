@@ -16,6 +16,7 @@ gem "devise_ldap_authenticatable"#, :git => "git://github.com/cschiewek/devise_l
 gem 'devise-guests', '~> 0.5.0'
 gem 'tiny_tds'#, '~> 2.1', '>= 2.1.2'
 #gem 'fakeweb'
+gem 'httparty'
 gem 'pry'
 gem 'faraday-encoding'
 #gem 'faraday_middleware'
@@ -27,6 +28,8 @@ gem 'cancancan'
 gem 'rolify'
 gem 'rails_admin', '~> 2.0'
 gem "pundit" 
+gem 'delayed_job_active_record'
+gem "daemons"
 #gem 'therubyracer', '0.12.1'
 #gem 'less-rails-bootstrap'
 

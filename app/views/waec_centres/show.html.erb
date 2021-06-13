@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Centre no:</strong>
+  <%= @waec_centre.centre_no %>
+</p>
+
+<p>
+  <strong>Centre type:</strong>
+  <%= @waec_centre.centre_type %>
+</p>
+
+<p>
+  <strong>Centre name:</strong>
+  <%= @waec_centre.centre_name %>
+</p>
+
+<%= link_to 'Edit', edit_waec_centre_path(@waec_centre) %> |
+<%= link_to 'Back', waec_centres_path %>

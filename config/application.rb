@@ -27,7 +27,42 @@ module Verifier
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-   
+          #config/application.rb
+    config.assets.paths << Rails.root.join(* %w(vendor assets bower_components))
+
+    config.assets.paths << Rails.root.join("public", "Images", "Pix", "mjall")
+    config.assets.paths << Rails.root.join("public", "Images", "Pix", "ndall")
+
+        config.assets.paths << Rails.root.join('node_modules')
+    config.serve_static_files = true
+    config.assets.paths << Rails.root.join('app', 'assets', 'bower_components')
+
+    # config/application.rb
+config.assets.paths << Rails.root.join(* %w(vendor assets bower_components))
+    config.assets.precompile << %w( *.scss *.js )
+    config.assets.initialize_on_precompile = true
+    config.assets.precompile = ['*.js', '*.scss', '*.png',' *.gif', '*.jpg', '*.eot', '*.svg', '*.ttf', '*.woff', '*.woff2']
+
+# We don't want the default of everything that isn't js or css, because it pulls too many things in
+#config.assets.precompile.shift
+
+# Explicitly register the extensions we are interested in compiling
+config.assets.precompile.push(Proc.new do |path|
+  File.extname(path).in? [
+    '.html', '.erb', '.haml', '.js',                # Templates
+    '.png',  '.gif', '.jpg', '.jpeg', '.svg', # Images
+    '.eot',  '.otf', '.svc', '.woff', '.woff2', '.ttf', # Fonts
+  ]
+end)
+
+ config.active_job.queue_adapter = :delayed_job
+
+Rails.application.config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components')
+Rails.application.config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components', 'admin-lte')
+Rails.application.config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components', 'admin-lte', 'skins')
+Rails.application.config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
+
+
 
 
 

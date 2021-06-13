@@ -1,0 +1,95 @@
+
+<div class="container" ng-controller="PackingListController">
+<!-- <form> -->
+<form name="packListUploadForm" method="post" accept-charset="UTF-8" ng-controller="PackingListController" >
+  
+
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-9">
+      <div class="card">
+        <div class="card-header card-success">
+          <h2>Packing List File Uploader</h2>
+        </div>
+        <div class="card-body">
+
+    <label>Waec Office: <span>*</span></label>
+      <div  ng-controller="StatesController">
+        <div class="form-group" >
+          <select ng-model="WaecOfficeId" ng-options="y.id as y.State_Name for y in states" ng-change="GetValue(y)" class="form-control" ng-required="true" >
+            <option value="">Select Office</option>
+          </select>
+        </div>
+       <!--  Selected: <p ng-bind="WaecOfficeId"></p> -->
+      </div>
+
+  <div class="form-group">
+    <label for=" attachment"> File <span>*</span></label>
+
+      <input type="file" file-model="file.upload" class="form-control"  placeholder="attachment" ng-disabled="loading"  ng-required="true" /><br>
+
+  </div>
+
+  <div>
+
+      <div>
+        <button ng-click="packListUploader(packListUpload)">Submit</button><br><br>
+      </div>
+    </div>
+
+<!-- ng-disabled="packListUploadForm.$invalid" -->
+  <div ng-show="allPackLists">
+
+
+        <table class="table table-striped table-bordered" ng-init="getAllUploadPackLists()" ng-controller="PackingListController">
+                <tbody>     
+                    <tr>
+                      <th>Index</th>
+                      <th>State</th>
+                      <th>Action</th>
+                    </tr>
+
+                    <tr ng-repeat="packList in allPackLists"> 
+                      <td>{{$index+1}}</td>
+                      <td>{{packList.State_Name}}</td> 
+                      <td ><a href="#/{{packList.attachment.url}}">Download File</a></td>
+                      <td ><a ng-click="packListDownload(packList.id)">Download2 File2</a></td>
+                    
+                    </tr>
+                              
+                  </tbody>
+              </table>
+    </div>
+
+
+<div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+</div>
+</div>
+</div>
+ <div class="col-sm-1"></div>  
+</div>
+  <br>
+  <br>
+  </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

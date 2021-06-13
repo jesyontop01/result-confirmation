@@ -1,0 +1,95 @@
+<div class="container" ng-controller="ResultConfirmationsController" ng-init="loadResultDetail(CandNo)">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+      <div class="card card-success">
+        <header class="card-header">
+           <h2>Searched result Details</h2>
+        </header>
+      
+        <div class="card-body">
+    
+
+ 			<div class="row">
+ 				<div class="col-sm-3">
+ 					
+<img ng-src="data:image/jpeg;base64,{{result[0].Picture2}}" id="photo-id" style="width: 150px; height: 150px"/>
+          <img src="../{{result[0].Picture}}" id="photo-id" alt="" style="width: 150px; height: 150px">
+ 				</div>
+ 				<div class="col-sm-1"></div>
+ 				<div class="col-sm-8">
+ 					<p><b>Exam : </b> {{ result[0].examType}} {{result[0].examYear}}</p>
+ 					<p><b>Exam No: </b> {{result[0].candNo}}</p>
+				 	<p><b>Full Name:</b> {{result[0].candName}}</p>
+				 	<p><b> Sex:</b> {{ result[0].sex}}</p>
+<!-- 				 	<p><b>Date of Birth:</b> {{(result.dob).substr(0,2)}}-{{(result.dob).substr(2,2)}}-{{(result.dob).substr(4,4)}} -->
+          <p><b>Date of Birth:</b> {{result[0].dob2}}</p>
+				 	<p><b>Centre Name:</b> {{result[0].CentreName}}</p>	
+ 				</div>
+ 			</div>
+ 	
+<div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+ 	<p><b>Subjects :</b></p>
+ 	<table class="table table-striped">
+ 		<thead>
+ 			<tr>
+ 				<td>{{ result[0].Subject }}</td>
+ 				<td class="float-right">{{ result[0].Grade}}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result[1].Subject }}</td>
+ 				<td class="float-right">{{ result[1].Grade }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result[2].Subject }}</td>
+ 				<td class="float-right">{{ result[2].Grade }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result[3].Subject }}</td>
+ 				<td class="float-right">{{ result[3].Grade }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result[4].Subject }}</td>
+ 				<td class="float-right">{{ result[4].Grade }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result[5].Subject }}</td>
+ 				<td class="float-right">{{ result[5].Grade }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result[6].Subject }}</td>
+ 				<td class="float-right">{{ result[6].Grade }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result[7].Subject }}</td>
+ 				<td class="float-right">{{ result[7].Grade }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result[8].Subject }}</td>
+ 				<td class="float-right">{{ result[8].Grade }}</td>
+ 			</tr> 			
+ 		</thead>
+ 	</table>
+</article>
+
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+	<div class="pull-left">
+ 		 	<!-- Button trigger modal -->
+<!-- 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalSave" ng-click="loadResultDetail(result)">
+		  Fill Address Form 1...
+		</button> -->
+
+    <button type="button" class="btn btn-success" ng-click="addressDetails(result[0])">
+     Create Confirmation ...
+    </button>
+ 	</div>
+    </div>
+      </div>
+
+ 	<br>
+ 	<br>
+
+

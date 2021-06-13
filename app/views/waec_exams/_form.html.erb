@@ -1,0 +1,42 @@
+<%= form_with(model: waec_exam, local: true) do |form| %>
+  <% if waec_exam.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(waec_exam.errors.count, "error") %> prohibited this waec_exam from being saved:</h2>
+
+      <ul>
+      <% waec_exam.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :exam_name %>
+    <%= form.text_field :exam_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :exam_diet %>
+    <%= form.text_field :exam_diet %>
+  </div>
+
+  <div class="field">
+    <%= form.label :table_name %>
+    <%= form.text_field :table_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :centre_table_name %>
+    <%= form.text_field :centre_table_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :pix_folder %>
+    <%= form.text_field :pix_folder %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

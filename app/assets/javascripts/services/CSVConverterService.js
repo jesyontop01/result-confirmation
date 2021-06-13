@@ -3,8 +3,11 @@ angular.module('verifier')
 
     var csvFac = {};
 
+
     csvFac.downloadFile = function(data, filename='data'){
-        let csvData = this.ConvertToCSV(data, ['Candidate Name', 'Receipt No', 'Transactn Type', 'Contact', 'Office', 'Trans-Date']);
+        //let csvData = this.ConvertToCSV(data, ['Candidate Name', 'Receipt No', 'Transactn Type', 'Contact', 'Office', 'Trans-Date']);
+        let csvData = this.ConvertToCSV(data, ['Candidate Name','Contact', 'Transaction'
+            ,'Transactn Type','Amount','Receipt No', 'Staff Name', 'Office', 'Trans-Date']);
         console.log(csvData)
         let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
         let dwldLink = document.createElement("a");

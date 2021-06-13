@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
   
+  resources :waec_zonal_offices
+  #resources :api_results
+  resources :waec_exams
+  resources :waec_centres
   resources :waec_offices
   resources :finance_depts
   resources :departments
   resources :divisions
+  resources :searches
   get 'leaflets/index'
   resources :leaflets
   resources :signatures do 
@@ -105,6 +110,7 @@ Rails.application.routes.draw do
       post :set_user_role  
       get :get_SecondUser
       get :email_validity
+      get :username_validity
       patch 'set_user_role/:id', :to => 'users#set_user_role'
       patch 'upload_user_signature/:id', :to => 'users#upload_user_signature'
     end
@@ -113,6 +119,17 @@ Rails.application.routes.draw do
     resources :exams do
          collection do
           get :confirmations
+          get :getResultStatus
+          get :getResultByCandidate
+        end
+    end
+
+  resources :api_results do
+         collection do
+          get :getSearchedResultDetails
+          get :confirmations
+          get :getResultStatus
+          get :getResultByCandidate
         end
     end
   #get "*unmatched_route" => "exams#index"

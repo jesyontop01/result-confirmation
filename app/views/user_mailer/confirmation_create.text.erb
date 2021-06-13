@@ -1,0 +1,17 @@
+<h2>WAEC Online Confirmation</h2>
+
+<div>
+    <p><%= @confirm.dest_title %> </p>
+    <p><%= @confirm.dest_address1 %> </p>
+    <p><%= @confirm.dest_address2 %> </p>
+    <p><%= @confirm.dest_location %> </p>
+
+    <p>This is to inform you that WAEC Confirmation of Result has being generated for one of your applicants <% if @confirm.WES_Ref.present? %> 
+        with Reference No: <%= @confirm.WES_Ref %>
+        <% end %>, and same is being dispatched to your office.</p>
+    <br>
+    <br>
+    <p>Thank you.</p>
+    <p>Result Confirmation Team</p>
+
+</div>

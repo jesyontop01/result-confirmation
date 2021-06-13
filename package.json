@@ -1,0 +1,28 @@
+{
+  "name": "result-confirmation",
+  "version": "1.0.0",
+  "description": "== README",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "angular-datatables": "^0.6.2",
+    "jspdf": "^2.3.1",
+    "pdfmake-client": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesyontop01/result-confirmation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jesyontop01/result-confirmation/issues"
+  },
+  "homepage": "https://github.com/jesyontop01/result-confirmation#readme"
+}

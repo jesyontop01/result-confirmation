@@ -13,15 +13,18 @@ respond_to :json
   # POST /resource
   def create
   build_resource(sign_up_params)
-
+  #binding.pry
   resource.save
+
+  #binding.pry
   yield resource if block_given?
   if resource.persisted?
-     UserMailer.activation_request(@user).deliver_now
+     # UserMailer.activation_request(@user).deliver_now
+      SendEmailJob.set(wait: 20.seconds).perform_later(@user)
      # flash[:alert] = "Your account Requires Admin Authorisation"
     if resource.active_for_authentication?
        set_flash_message! :notice, :signed_up 
-
+        expire_data_after_sign_in!
       sign_up(resource_name, resource)
 
       #UserMailer.activation_request(@user).deliver_now
@@ -32,17 +35,24 @@ respond_to :json
       expire_data_after_sign_in!
       #respond_with resource, location: after_inactive_sign_up_path_for(resource)
     end
+
+    render json: {success: true, user: @user }
+
+
   else
     clean_up_passwords resource
     set_minimum_password_length
+    
+    render json: {success: false, user: @user.errors }
     #respond_with resource
+    #   respond_to do |format|
+    #   #format.html { redirect_to users_path, notice: 'User was successfully Removed.' }
+    #   format.json { render json: @user }
+    #   format.json { render json: @user.errors, status: :unprocessable_entity }
+    # end
   end
 
-    respond_to do |format|
-      #format.html { redirect_to users_path, notice: 'User was successfully Removed.' }
-      format.json { render json: @user }
-      format.json { render json: @user.errors, status: :unprocessable_entity }
-    end
+
 end
 
 

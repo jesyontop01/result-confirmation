@@ -296,6 +296,8 @@ angular.module('sessionsController', [])
                 SweetAlert.swal("error", error.data.error , "error");
               }
 
+               vm.logging = false;
+
           });
 
          };
@@ -329,6 +331,7 @@ angular.module('sessionsController', [])
      
        $scope.logout = Auth.logout;
         $location.path("/sign_in");
+        //$location.path("/");
     });
 
     $scope.$on('devise:login', function (e, currentUser){
@@ -467,7 +470,7 @@ angular.module('sessionsController', [])
       // body...
       vm.loading = true;
       console.log(logUserForm);
-      $http.get('/users/second_signatory.json',{"params": { "email": logUserForm.email, "password": logUserForm.password}})
+      $http.get('/users/second_signatory.json',{"params": { "login": logUserForm.login, "password": logUserForm.password}})
         .then(function(response) {
           // body...
            vm.loading = false;

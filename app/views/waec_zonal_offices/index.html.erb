@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Waec Zonal Offices</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Zonename</th>
+      <th>Offices</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @waec_zonal_offices.each do |waec_zonal_office| %>
+      <tr>
+        <td><%= waec_zonal_office.ZoneName %></td>
+        <td><%= waec_zonal_office.offices %></td>
+        <td><%= link_to 'Show', waec_zonal_office %></td>
+        <td><%= link_to 'Edit', edit_waec_zonal_office_path(waec_zonal_office) %></td>
+        <td><%= link_to 'Destroy', waec_zonal_office, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Waec Zonal Office', new_waec_zonal_office_path %>

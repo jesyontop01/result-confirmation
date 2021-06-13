@@ -1,0 +1,27 @@
+<%= form_with(model: waec_zonal_office, local: true) do |form| %>
+  <% if waec_zonal_office.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(waec_zonal_office.errors.count, "error") %> prohibited this waec_zonal_office from being saved:</h2>
+
+      <ul>
+      <% waec_zonal_office.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :ZoneName %>
+    <%= form.text_field :ZoneName %>
+  </div>
+
+  <div class="field">
+    <%= form.label :offices_id %>
+    <%= form.text_field :offices_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

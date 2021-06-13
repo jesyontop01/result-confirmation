@@ -13,8 +13,8 @@ class PaymentsController < ApplicationController
 
     
     # if ((current_user.role? :admin) || (current_user.role? :audit_admin))
-    if ((current_user.role == "admin") || (current_user.role == "audit_admin")) #:audit_staff
-    #@confirms = Confirmation.all.paginate(:page => params[:page], :per_page => 10).order("created_at DESC")
+    if ((current_user.role.name == "admin")) #:audit_staff
+    # @confirms = Confirmation.all.paginate(:page => params[:page], :per_page => 10).order("created_at DESC")
 
                 if params[:WaecOfficeId] == "undefined" 
 
@@ -24,6 +24,7 @@ class PaymentsController < ApplicationController
                         SELECT
                         a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], 
                         a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
+                        , e.surname + ' ' +e.othernames as 'fullname'
                         FROM [verifierApp].[dbo].[payments] a
                         inner join [verifierApp].[dbo].[transaction_types] b
                         on a.transaction_type_id = b.id
@@ -31,6 +32,8 @@ class PaymentsController < ApplicationController
                         on a.office_id = c.id
                         inner join [verifierApp].[dbo].[confirm_types] d
                         on a.confirm_type_id = d.id
+                        inner join [verifierApp].[dbo].users e
+                        on a.user_id = e.id
                        WHERE cast(a.created_at as date) between '#{params[:dateFrom]}' and '#{params[:dateTo]}';
 
                             SQL
@@ -47,6 +50,7 @@ class PaymentsController < ApplicationController
                       SELECT
                         a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], 
                         a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
+                        , e.surname + ' ' +e.othernames as 'fullname'
                         FROM [verifierApp].[dbo].[payments] a
                         inner join [verifierApp].[dbo].[transaction_types] b
                         on a.transaction_type_id = b.id
@@ -54,7 +58,9 @@ class PaymentsController < ApplicationController
                         on a.office_id = c.id
                         inner join [verifierApp].[dbo].[confirm_types] d
                         on a.confirm_type_id = d.id
-                       WHERE cast(a.created_at as date) between '#{params[:dateFrom]}' and '#{params[:dateTo]}' AND office_id = '#{params[:WaecOfficeId]}';
+                        inner join [verifierApp].[dbo].users e
+                        on a.user_id = e.id
+                       WHERE cast(a.created_at as date) between '#{params[:dateFrom]}' and '#{params[:dateTo]}' AND a.office_id = '#{params[:WaecOfficeId]}';
                       SQL
 
                     @confirms = ActiveRecord::Base.connection.exec_query(sql)
@@ -65,7 +71,9 @@ class PaymentsController < ApplicationController
                              sql = <<-SQL 
 
                       SELECT
-                      a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
+                      a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email]
+                      , a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
+                       , e.surname + ' ' +e.othernames as 'fullname'
                       FROM [verifierApp].[dbo].[payments] a
                       inner join [verifierApp].[dbo].[transaction_types] b
                       on a.transaction_type_id = b.id
@@ -73,6 +81,8 @@ class PaymentsController < ApplicationController
                       on a.office_id = c.id
                       inner join [verifierApp].[dbo].[confirm_types] d
                       on a.confirm_type_id = d.id
+                      inner join [verifierApp].[dbo].users e
+                      on a.user_id = e.id
                     
 
                     SQL
@@ -82,13 +92,14 @@ class PaymentsController < ApplicationController
                   end
 
       # elsif  current_user.role? :audit_staff
-    elsif  current_user.role == "audit_staff"
+    elsif  current_user.role.name == "audit_staff"
             if params[:dateFrom] && params[:dateTo] && params[:WaecOfficeId]
 
               sql = <<-SQL
                 SELECT
                 a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], 
                 a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
+                , e.surname + ' ' +e.othernames as 'fullname'
                 FROM [verifierApp].[dbo].[payments] a
                 inner join [verifierApp].[dbo].[transaction_types] b
                 on a.transaction_type_id = b.id
@@ -96,25 +107,32 @@ class PaymentsController < ApplicationController
                 on a.office_id = c.id
                 inner join [verifierApp].[dbo].[confirm_types] d
                 on a.confirm_type_id = d.id
-                WHERE cast(a.created_at as date) between '#{params[:dateFrom]}' and '#{params[:dateTo]}' AND office_id = '#{params[:WaecOfficeId]}';
+                inner join [verifierApp].[dbo].users e
+                on a.user_id = e.id
+                WHERE cast(a.created_at as date) between '#{params[:dateFrom]}' and '#{params[:dateTo]}' AND a.office_id = '#{params[:WaecOfficeId]}';
             SQL
 
               @confirms = ActiveRecord::Base.connection.exec_query(sql)
-                
+              # binding.pry
           else
                 
 
                 sql = <<-SQL 
 
                   SELECT
-                     a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
+                     a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName]
+                     , a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no]
+                     , d.[typeName], e.surname + ' ' +e.othernames as 'fullname'
                      FROM [verifierApp].[dbo].[payments] a
                      inner join [verifierApp].[dbo].[transaction_types] b
                      on a.transaction_type_id = b.id
                      inner join [verifierApp].[dbo].[offices] c
                      on a.office_id = c.id
                      inner join [verifierApp].[dbo].[confirm_types] d
-                     on a.confirm_type_id = d.id AND office_id = '#{params[:office_id]}';
+                     on a.confirm_type_id = d.id 
+                     inner join [verifierApp].[dbo].users e
+                     on a.user_id = e.id
+                     where a.office_id = '#{params[:office_id]}';
                     
 
                 SQL
@@ -125,13 +143,15 @@ class PaymentsController < ApplicationController
 
 
       # elsif current_user.role? :account_staff
-    elsif current_user.role == "account_staff"
+    elsif current_user.role.name == "account_staff"
         
 
              sql = <<-SQL 
 
           SELECT
-          a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
+          a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email]
+          , a.[created_at], c.[office_name], a.[receipt_no], d.[typeName] 
+          , e.surname + ' ' +e.othernames as 'fullname'
           FROM [verifierApp].[dbo].[payments] a
           inner join [verifierApp].[dbo].[transaction_types] b
           on a.transaction_type_id = b.id
@@ -139,6 +159,8 @@ class PaymentsController < ApplicationController
           on a.office_id = c.id
           inner join [verifierApp].[dbo].[confirm_types] d
           on a.confirm_type_id = d.id
+          inner join [verifierApp].[dbo].users e
+          on a.user_id = e.id
           where a.office_id = '#{params[:office_id]}'
 
         SQL
@@ -151,7 +173,8 @@ class PaymentsController < ApplicationController
              sql = <<-SQL 
 
           SELECT
-          a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
+          a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email], a.[created_at]
+          , c.[office_name], a.[receipt_no], d.[typeName] , e.surname + ' ' +e.othernames as 'fullname'
           FROM [verifierApp].[dbo].[payments] a
           inner join [verifierApp].[dbo].[transaction_types] b
           on a.transaction_type_id = b.id
@@ -159,6 +182,8 @@ class PaymentsController < ApplicationController
           on a.office_id = c.id
           inner join [verifierApp].[dbo].[confirm_types] d
           on a.confirm_type_id = d.id
+          inner join [verifierApp].[dbo].users e
+          on a.user_id = e.id
           where a.office_id = '#{params[:office_id]}' and a.printed = 'false' and a.transaction_type_id = '1'
 
         SQL
@@ -173,8 +198,8 @@ class PaymentsController < ApplicationController
       format.html {}
       format.json { render json: @confirms }
     end
-    #@payments = Payment.all
-    #render json: @payments 
+    # @payments = Payment.all
+    # render json: @payments
   end
 
   # GET /payments/1
@@ -203,14 +228,15 @@ class PaymentsController < ApplicationController
         @payment.update(:office_id => current_user.office_id)
 
                  if params[:receipt_status_id] 
-#binding.pry
-                  #params[:office_id] = current_user.office_id
+# binding.pry
+                  # params[:office_id] = current_user.office_id
 
                   @receipt_status = ReceiptStatus.find_by(:id => params[:receipt_status_id])
 
                   @receipt_status.update(:status => 'USED')
-                  #@receipt_status.update(confirmation_id: @confirm.id )
-                 end
+                  # @receipt_status.update(confirmation_id: @confirm.id )
+                   PaymentReceiptEmailJob.set(wait: 20.seconds).perform_later(@payment)
+      end
 
         format.html { redirect_to @payment, notice: 'Payment was successfully created.' }
         format.json { render :show, status: :created, location: @payment }

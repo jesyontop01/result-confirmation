@@ -1,0 +1,17 @@
+<%= form_with(model: api_result, local: true) do |form| %>
+  <% if api_result.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(api_result.errors.count, "error") %> prohibited this api_result from being saved:</h2>
+
+      <ul>
+      <% api_result.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

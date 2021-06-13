@@ -28,10 +28,10 @@
     'datatables',
     'userPersistenceService'
    ])
-    .config(function(AuthInterceptProvider) {
-        // Intercept 401 Unauthorized everywhere
-        AuthInterceptProvider.interceptAuth(true);
-    })
+    // .config(function(AuthInterceptProvider) {
+    //     // Intercept 401 Unauthorized everywhere
+    //     AuthInterceptProvider.interceptAuth(true);
+    // })
 
 //  .config(function($httpProvider){
 //   // Intercepts every http request.  If the response is success, pass it through.  If the response is an
@@ -49,7 +49,41 @@
 //     };
 //   };
 //   $httpProvider.interceptors.push(interceptor);
-// })
+
+.provider('AuthIntercept', function AuthInterceptProvider() {
+    /**
+     * Set to true to intercept 401 Unauthorized responses
+     */
+    var interceptAuth = true;
+
+    // The interceptAuth config function
+    this.interceptAuth = function(value) {
+        interceptAuth = !!value || value === void 0;
+        return this;
+    };
+
+    this.$get = ['$rootScope', '$q', function($rootScope, $q) {
+        // Only for intercepting 401 requests.
+        return {
+            responseError: function(response) {
+                // Determine if the response is specifically disabling the interceptor.
+                var intercept = response.config.interceptAuth;
+                intercept = !!intercept || (interceptAuth && intercept === void 0);
+
+                if (intercept && response.status === 401) {
+                    var deferred = $q.defer();
+                    $rootScope.$broadcast('devise:unauthorized', response, deferred);
+                    deferred.reject(response);
+                    return deferred.promise;
+                }
+
+                return $q.reject(response);
+            }
+        };
+    }];
+}).config(['$httpProvider', function($httpProvider) {
+    $httpProvider.interceptors.push('AuthIntercept');
+}])
 //
 
 //     .config(['$httpProvider', function($httpProvider){
@@ -91,6 +125,13 @@
           return sum;
         }
       })
+     
+
+    .filter('capitalizeWord', function() {
+    return function(text) {
+      return (!!text) ? text.charAt(0).toUpperCase() + text.substr(1).toLowerCase() : '';
+    }
+  })
   
 
 

@@ -43,14 +43,22 @@ class ApplicationController < ActionController::Base
     end
 
 
+  # def configure_permitted_parameters
+  #   added_attrs = [:username, :email, :password, :password_confirmation, :remember_me]
+  #   devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
+  #   devise_parameter_sanitizer.permit :sign_in, keys: [:login, :password]
+  #   devise_parameter_sanitizer.permit :account_update, keys: added_attrs
+  # end
+
+
 
   protected
-           #:email, :surname, :othernames, :title, :office_id, :lp_no
+          
    def configure_permitted_parameters
-      added_attrs = [:dept_id, :office_id, :lp_no, :username, :surname, :othernames, :title, :email, :password, :password_confirmation, :current_password]
-      devise_parameter_sanitizer.permit :sign_in, keys: [:username, :email, :password]
+      added_attrs = [:is_management, :dept_id, :office_id, :lp_no, :username, :surname, :othernames, :title, :email, :password, :password_confirmation, :current_password]
+      devise_parameter_sanitizer.permit :sign_in, keys: [:login, :password]# [:username, :email, :password]
       devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
-      devise_parameter_sanitizer.permit :account_update, keys: [:dept_id, :office_id, :lp_no, :username, :surname, :othernames, :title, :email, :password, :password_confirmation, :current_password]
+      devise_parameter_sanitizer.permit :account_update, keys: [:is_management, :dept_id, :office_id, :lp_no, :username, :surname, :othernames, :title, :email, :password, :password_confirmation, :current_password]
     end
 
   def after_sign_in_path_for(resource)

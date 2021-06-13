@@ -29,14 +29,19 @@ class Users::PasswordsController < Devise::PasswordsController
         @user = self.resource
         @user.update(:activated => false)
         resource.after_database_authentication
-        sign_in(resource_name, resource)
+        ##sign_in(resource_name, resource)
       else
         set_flash_message!(:notice, :updated_not_active)
       end
       #respond_with resource, location: after_resetting_password_path_for(resource)
+
+      binding.pry
+
+      render json: {success: true, user: @user }
     else
       set_minimum_password_length
       #respond_with resource
+       render json: {success: false, user: @user.errors , message: @user.errors}
     end
   end
 

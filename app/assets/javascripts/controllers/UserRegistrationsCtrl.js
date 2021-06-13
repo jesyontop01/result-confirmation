@@ -53,6 +53,34 @@ angular.module('verifier')
                  });
     } 
 
+
+            $scope.validUsername = function(username) {
+          // body...email_validity
+          console.log(username);
+          $http.get("/users/username_validity.json", 
+               {"params": { "username": username}}
+              ).then(function(response){ 
+                   //debugger
+                  //console.log(response.data);
+                  if (response.data.success == true) {
+                    $scope.usernameIsValid = false;
+                    $scope.registrationForm.IsValid = false;
+                    //alert(response.data.message);
+                    $scope.emailMsg = response.data.message;
+                  } else {
+                    $scope.usernameIsValid = true;
+                    $scope.registrationForm.IsValid = true;
+                    //alert(response.data.message);
+                    $scope.emailMsg = response.data.message;
+                    //console.log(response);
+                  }
+                
+                
+          },function (response) {
+                     alert('Unexpected Error');
+                 });
+    }
+
     $scope.management = {
         "value": true
       };
@@ -66,7 +94,7 @@ angular.module('verifier')
             title:               "",
             surname:             "",
           othernames:            "", 
-          lp_no:                  "",
+          lp_no:                 "",
           office_id:             "", 
           email:                 "",
           password:              "",
@@ -74,26 +102,28 @@ angular.module('verifier')
           is_management:         false,
           dept_id:            ""
 
-          };
+        };
 
+        //$scope.registrationForm.staffCategory = false;
+    var management = false;
+    //var national = false;
 //Registration of user on Button Click
     $scope.handleRegBtnClick = function() {
 //debugger
-// //console.log($scope.registrationForm.staffCategory);
-//       if ($scope.registrationForm.staffCategory == "management") {
-//         $scope.registrationForm.is_management = true;
-//         // $scope.registrationForm.is_national_Staff = false;
-//       }
-//       else{
-//                 $scope.registrationForm.is_management = false;
-//                 // $scope.registrationForm.is_national_Staff = true;
-//       }
+console.log( $scope.registrationForm.staffCategory);
 
-//       //  if($scope.registrationForm.staffCategory.value == $scope.national.value) {
-//       //           $scope.registrationForm.is_management = false;
-//       //           $scope.registrationForm.is_national_Staff = true;
-//       // }
-     
+
+    if ($scope.registrationForm.staffCategory == true) {
+      //console.log("it is management");
+      management = true;
+    } else {
+      //console.log("it is national");
+      management = false;
+    }
+
+
+
+    console.log( $scope.registrationForm.staffCategory);
       $scope.registerForm = {
         title:               $scope.registrationForm.title,
         surname:             $scope.registrationForm.surname,
@@ -101,6 +131,7 @@ angular.module('verifier')
       lp_no:                  $scope.registrationForm.lp_no,
       office_id:             window.sessionStorage.getItem('officeID'), 
       email:                 $scope.registrationForm.email,
+      username:              $scope.registrationForm.Username,
       password:              $scope.registrationForm.password,
       password_confirmation: $scope.registrationForm.password_confirmation,
       is_management:         $scope.registrationForm.staffCategory,
@@ -115,10 +146,17 @@ angular.module('verifier')
 
         Auth.register($scope.registerForm, config).then(function(user){
         //$rootScope.user = user;
+        console.log(user);
+        if (user.success === true) {
+            debugger
+            alert("Thanks for signing up, " + user.user.surname + "\n Your Account Requires Admin Authentication");
+            Auth.logout();
+
+            $location.path("/sign_in");
+        } else {
+            alert(user.user);
+        }
         
-        Auth.logout();
-        alert("Thanks for signing up, " + user.surname + "\n Your Account Requires Admin Authentication");
-        $location.path("/sign_in");
               // Auth.login({
               //     email: $scope.registrationForm.email,
               //     password: $scope.registrationForm.password
@@ -268,6 +306,7 @@ $scope.updateAccountForm = {};
       //  lp_no:                $scope.updateAccountForm.lp_no, 
       // office_id:             window.sessionStorage.getItem('officeID'), 
       // email:                 $scope.updateAccountForm.email,
+      // username:              $scope.updateAccountForm.Username,
       // current_password:      $scope.updateAccountForm.current_password,
       // password:              $scope.updateAccountForm.password,
       // password_confirmation: $scope.updateAccountForm.password_confirmation,

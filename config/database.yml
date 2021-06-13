@@ -76,6 +76,7 @@ test:
 #
 production:
   <<: *default
-  database: verifier_production
-  username: verifier
-  password: <%= ENV['VERIFIER_DATABASE_PASSWORD'] %>
+  database: VerifierApp
+  # database: verifier_production
+  # username: verifier
+  # password: <%= ENV['VERIFIER_DATABASE_PASSWORD'] %>

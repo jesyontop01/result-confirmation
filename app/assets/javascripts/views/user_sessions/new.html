@@ -13,12 +13,27 @@
       <p class="login-box-msg">Sign in to start your session</p>
 
       <form ng-submit="sessions.submitLogin(loginForm)" role="form" ng-init="loginForm = {}">
-        <div class="input-group mb-3">
+<!--         <div class="input-group mb-3">
         <input type="email"
            name="email"
            id="email"
            ng-model="loginForm.email"
            required="required"
+           placeholder="Enter Username or Email" 
+           class="form-control">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div> -->
+        <div class="input-group mb-3">
+        <input type="text"
+           name="login"
+           id="login"
+           ng-model="loginForm.login"
+           required="required"
+           placeholder="Enter Username or Email" 
            class="form-control">
           <div class="input-group-append">
             <div class="input-group-text">
@@ -32,6 +47,7 @@
            id="password"
            ng-model="loginForm.password"
            required="required"
+           placeholder="Password" 
            class="form-control">
           <div class="input-group-append">
             <div class="input-group-text">
@@ -58,9 +74,11 @@
         <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
     </div>
       </form>
-
       <p class="mb-1">
         <a href="#/passwords/new/">I forgot my password</a>
+      </p>
+      <p class="mb-1">
+        <a href="#/passwords/edit/"><small style="color: darkred;">You have a token?</small> Create New passord</a>
       </p>
       <p class="mb-0">
         <a href="#/sign_Up/" class="text-center">Register a new membership</a>

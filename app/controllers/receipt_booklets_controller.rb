@@ -19,8 +19,8 @@ class ReceiptBookletsController < ApplicationController
               ,a.[status]
               ,a.[created_at]
               ,a.[updated_at]
-          FROM [verifierApp].[dbo].[receipt_booklets] a
-          INNER JOIN [verifierApp].[dbo].[offices] b
+          FROM [dbo].[receipt_booklets] a
+          INNER JOIN [dbo].[offices] b
           on a.office_id  = b.id 
           where office_id = '#{params[:officeID]}'
           ORDER BY a.[created_at] DESC;

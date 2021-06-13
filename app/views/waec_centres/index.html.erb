@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Waec Centres</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Centre no</th>
+      <th>Centre type</th>
+      <th>Centre name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @waec_centres.each do |waec_centre| %>
+      <tr>
+        <td><%= waec_centre.centre_no %></td>
+        <td><%= waec_centre.centre_type %></td>
+        <td><%= waec_centre.centre_name %></td>
+        <td><%= link_to 'Show', waec_centre %></td>
+        <td><%= link_to 'Edit', edit_waec_centre_path(waec_centre) %></td>
+        <td><%= link_to 'Destroy', waec_centre, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Waec Centre', new_waec_centre_path %>

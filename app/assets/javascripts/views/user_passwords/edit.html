@@ -8,12 +8,17 @@
 
 <form ng-submit="submitNewPwdBtnClick()" role="form" ng-init="passwordEditForm = {}">
   <div class="form-group">
-    <input type="hidden" 
+    <label for="password">Received Token</label>
+    <input type="text" 
+           autocomplete="off"
+           autofocus="true"
            name="reset_password_token"
            id="reset_password_token"
-           ng-model="passwordEditForm.reset_password_token">
-           
-    <label for="password">Password</label>
+           ng-model="passwordEditForm.reset_password_token"
+           class="form-control">           
+  </div>
+  <div class="form-group">      
+    <label for="password">New Password</label>
     <input type="password"
            name="password"
            id="password"
@@ -25,7 +30,7 @@
   </div>
 
   <div class="form-group">
-    <label for="password_confirmation">Password confirmation</label>
+    <label for="password_confirmation">New Password confirmation</label>
     <input type="password"
            name="password_confirmation"
            id="password_confirmation"

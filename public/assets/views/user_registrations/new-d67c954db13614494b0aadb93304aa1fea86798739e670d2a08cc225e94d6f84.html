@@ -1,0 +1,318 @@
+<!-- client/app/views/user_registrations/new.html -->
+
+
+<div class="container" ng-controller="UserRegistrationsCtrl">
+  <div class="row">
+     <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">User's Registration</h3>
+      </div>
+              <!-- /.card-header -->
+    <div class="card-body">
+
+
+  <!--     <h3></h3> -->
+<form name="userForm" ng-submit="handleRegBtnClick()"  role="form" ng-init="registrationForm = {}" ng-controller="UserRegistrationsCtrl" >
+  
+<div class="form-group">
+  <label for="title">Title</label>
+    <select id="title" name="title" ng-model="registrationForm.title" required="true">
+      <option value="Mr.">Mr</option>
+      <option value="Mrs.">Mrs</option>
+      <option value="Miss.">Miss</option>
+      <option value="Dr.">Dr</option>
+      <option value="Alhaji.">Alhaji</option>
+      <option value="Rev.">Rev</option>
+    </select>
+  </div>
+
+  <div class="form-group" ng-class="{ 'has-success':(userForm.surname.$valid && !userForm.surname.$pristine), 'has-error':(!userForm.surname.$valid && !userForm.surname.$pristine) || (!userForm.surname.$valid && userForm.$submitted) }">
+
+  <!-- <div ng-class="{'has-success':(userForm.surname.$valid && !userForm.surname.$pristine ) , 'has-error':(!userForm.surname.$valid && !userForm.surname.$pristine ) }"> -->
+  <label for="surname">Surname</label>
+    <input type="text"
+           name="surname"
+           id="surname"
+           ng-model="registrationForm.surname"
+            ng-required="true"
+            ng-pattern="/^[a-zA-Z]+$/" ng-minlength="3" ng-maxlength="20"
+           class="form-control">
+           <p ng-show="(!userForm.surname.$pristine && userForm.surname.$error.required) || (userForm.$submitted && userForm.surname.$error.required)" class="help-block">This fieild is required.</p>
+           <ul ng-show="(!userForm.surname.$pristine && userForm.surname.$error.pattern) || (!userForm.surname.$pristine && userForm.surname.$error.minlength) || (!userForm.surname.$pristine && userForm.surname.$error.maxlength)" class="help-block">
+                          <li  style="color:Red">Must not contain any special characters</li>
+                          <li  style="color:Red">Must not contain any numbers</li>
+                          <li  style="color:Red">Must be at least 3 characters but no more than 20</li>
+          </ul>
+  </div>
+
+ <!--  ng-pattern="/^(([a-zA-Z])+[ ]+([a-zA-Z])+)$/" ng-minlength="3"  -->
+  
+   <div class="form-group" ng-class="{ 'has-success':(userForm.othernames.$valid && !userForm.othernames.$pristine), 'has-error':(!userForm.othernames.$valid && !userForm.othernames.$pristine) || (!userForm.othernames.$valid && userForm.$submitted) }">
+  <label for="othernames">Othernames</label>
+    <input type="text"
+           name="othernames"
+           id="othernames"
+           ng-model="registrationForm.othernames"
+            ng-required="true"
+            ng-maxlength="20"
+           class="form-control">
+           <p ng-show="(!userForm.othernames.$pristine && userForm.othernames.$error.required) || (userForm.$submitted && userForm.othernames.$error.required)" class="help-block">This fieild is required.</p>
+           <ul ng-show="(!userForm.othernames.$pristine && userForm.othernames.$error.pattern) || (!userForm.othernames.$pristine && userForm.othernames.$error.minlength) || (!userForm.othernames.$pristine && userForm.othernames.$error.maxlength)" class="help-block">
+                          <li style="color:Red">Must be two(2) words separated with space</li>
+                          <li style="color:Red">Must not contain any special characters</li>
+                          <li style="color:Red">Must not contain any numbers</li>
+                          <li style="color:Red">Must be at least 3 characters but no more than 20</li>
+  </div>
+
+  <div class="form-group" ng-class="{ 'has-success':(userForm.lp_no.$valid && !userForm.lp_no.$pristine), 'has-error':(!userForm.lp_no.$valid && !userForm.lp_no.$pristine) || (!userForm.lp_no.$valid && userForm.$submitted) }" >
+  <label for="lp_no">L/P No.</label>
+    <input type="text"
+           name="lp_no"
+           id="lp_no"
+           ng-model="registrationForm.lp_no"
+            ng-required="true"
+            ng-pattern="/^[0-9]+$/" ng-minlength="4" ng-maxlength="5"
+           class="form-control">
+           <p ng-show="(!userForm.lp_no.$pristine && userForm.lp_no.$error.required) || (userForm.$submitted && userForm.lp_no.$error.required)" class="help-block">This fieild is required.</p>
+           <ul ng-show="(!userForm.lp_no.$pristine && userForm.lp_no.$error.pattern) || (!userForm.lp_no.$pristine && userForm.lp_no.$error.minlength) || (!userForm.lp_no.$pristine && userForm.lp_no.$error.maxlength)" class="help-block">
+                          <li style="color:Red">Can only be numbers</li>
+                          <li style="color:Red">Must not contain any special characters</li>
+                          <li style="color:Red">Must be at least 4 characters but no more than 5</li>
+  </div>
+
+  <br> 
+    <label>Waec Office: <span>*</span></label>
+      <div  ng-controller="OfficesController">
+        <div class="form-group" >
+          <select ng-model="WaecOfficeId" ng-options="y.id as y.office_name for y in offices" ng-change="GetValue(y)" class="form-control" ng-required="true">
+            <option value="">Select Office</option>
+          </select>
+        </div>
+        <!-- Selected: <p ng-bind="WaecOfficeId"></p> -->
+      </div>
+
+    <br>
+
+<!--      <label>Waec Division: <span>*</span></label>
+     <div class="form-group">
+        <select ng-model="registrationForm.WaecDivisionId" ng-options="y.id as y.name for y in divisions" data-ng-change="getFinDept()" class="form-control" ng-required="true">
+            <option value="">Select Division</option>
+          </select>
+     </div>
+
+
+
+      <label ><strong>Finance Department: <span>*</span></strong></label>
+      <div>
+        <div class="form-group" >
+        <select ng-model="registrationForm.FinDeptId" data-ng-disabled="!finDepts" ng-options="y.id as y.name for y in finDepts" class="form-control" ng-required="true">
+          <option value="">-- Select Department --</option>   
+        </select>
+        </div>
+      </div> -->
+
+    <label ><strong>Department: <span>*</span></strong></label>
+      <div>
+        <div class="form-group" >
+        <select ng-model="registrationForm.deptId" ng-options="y as y.name for y in depts" data-ng-change="getExamAttribute()" class="form-control" ng-required="true" ng-init="getDepartments()">
+          <option value="">-- Select Department --</option>   
+        </select>
+        </div>
+      </div>
+
+
+  <div class="form-group" ng-class="{ 'has-success':(userForm.Username.$valid && !userForm.Username.$pristine), 'has-error':(!userForm.Username.$valid && !userForm.Username.$pristine) || (!userForm.Username.$valid && userForm.$submitted) }">
+
+  <!-- <div ng-class="{'has-success':(userForm.Username.$valid && !userForm.Username.$pristine ) , 'has-error':(!userForm.Username.$valid && !userForm.Username.$pristine ) }"> -->
+  <label for="Username">Username</label>
+    <input type="text"
+           name="Username"
+           id="Username"
+           ng-model="registrationForm.Username"
+            ng-required="true"
+            ng-pattern="/^[a-zA-Z0-9_\.]*$/" ng-minlength="3" ng-maxlength="20"
+             ng-blur="validUsername(registrationForm.Username)"
+           class="form-control">
+
+              <span style="color:Blue">
+                  <div ng-if="usernameIsValid === true">
+                    <input type="checkbox" ng-model="registrationForm.IsValid" disabled="true">
+                    <label style="color:Blue"> {{emailMsg}}</label><br>
+                  </div>
+
+                  <div ng-if="usernameIsValid === false">
+                    <input type="checkbox" ng-model="registrationForm.IsValid" disabled="true">
+                    <label style="color:Red"> {{emailMsg}}</label><br>
+                  </div>
+
+              </span>
+
+
+           <p ng-show="(!userForm.Username.$pristine && userForm.Username.$error.required) || (userForm.$submitted && userForm.Username.$error.required)" class="help-block">This fieild is required.</p>
+           <ul ng-show="(!userForm.Username.$pristine && userForm.Username.$error.pattern) || (!userForm.Username.$pristine && userForm.Username.$error.minlength) || (!userForm.Username.$pristine && userForm.Username.$error.maxlength)" class="help-block">
+              <li  style="color:Red">Must be at least 3 characters but no more than 20</li>
+              <li style="color:Red">Must not contain @ special characters</li>
+          </ul>
+  </div>
+
+
+
+  <div class="form-group" ng-controller="UserRegistrationsCtrl" ng-class="{ 'has-success':(userForm.email.$valid && !userForm.email.$pristine), 'has-error':(!userForm.email.$valid && !userForm.email.$pristine) || (!userForm.email.$valid && userForm.$submitted) }">
+    <label for="email">Email</label>
+    <input type="email"
+           name="email"
+           id="email"
+           ng-model="registrationForm.email"
+           class="form-control"
+           ng-minlength="3" ng-maxlength="40" ng-pattern="/^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$/"
+           ng-blur="validEmail(registrationForm.email)"
+           ng-required="true">
+
+              <span style="color:Blue">
+                  <div ng-if="emailIsValid === true">
+                    <input type="checkbox" ng-model="registrationForm.IsValid" disabled="true">
+                    <label style="color:Blue"> {{emailMsg}}</label><br>
+                  </div>
+
+                  <div ng-if="emailIsValid === false">
+                    <input type="checkbox" ng-model="registrationForm.IsValid" disabled="true">
+                    <label style="color:Red"> {{emailMsg}}</label><br>
+                  </div>
+
+              </span>
+
+              <!-- Email Validation -->
+              <p class="help-block" ng-show="(!userForm.email.$pristine && userForm.email.$error.required) || (userForm.$submitted && userForm.email.$error.required)">This field is required</p>
+              <span ng-show="register.checkingEmail && userForm.email.$valid" class="glyphicon glyphicon-repeat"></span>
+              <p class="help-block" ng-show="register.emailMsg && !userForm.email.$error.required && userForm.email.$valid">{{ emailMsg }}</p>
+              <ul ng-show="(!userForm.email.$pristine && userForm.email.$error.pattern) || (!userForm.email.$pristine && userForm.email.$error.minlength) || (!userForm.email.$pristine && userForm.email.$error.maxlength)" class="help-block">
+                          <li style="color:Red">Must contain "@"</li>
+                          <li style="color:Red">Must not contain any special characters</li>
+                          <li style="color:Red">Must be at least 3 characters but no more than 25</li>
+              </ul>
+  </div>
+
+
+<!--     <div class="form-group" ng-controller="UserRegistrationsCtrl">
+    <label for="email">Email</label>
+    <input type="email"
+           name="email"
+           id="email"
+           ng-model="registrationForm.email"
+           ng-required="true"
+           class="form-control"
+           ng-blur="validEmail(registrationForm.email)">
+
+              <span style="color:Blue">
+                  <div ng-if="emailIsValid === true">
+                    <input type="checkbox" ng-model="registrationForm.IsValid" disabled="true">
+                    <label style="color:Blue"> {{emailMsg}}</label><br>
+                  </div>
+
+                  <div ng-if="emailIsValid === false">
+                    <input type="checkbox" ng-model="registrationForm.IsValid" disabled="true">
+                    <label style="color:Red"> {{emailMsg}}</label><br>
+                  </div>
+
+              </span>
+  </div> -->
+
+
+
+
+
+
+<!--   <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password"
+           name="password"
+           id="password"
+           ng-model="registrationForm.password"
+           ng-required="true"
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="password_confirmation">Password confirmation</label>
+    <input type="password"
+           name="password_confirmation"
+           id="password_confirmation"
+           ng-model="registrationForm.password_confirmation"
+           ng-required="true"
+           class="form-control">
+        <p class="help-block" ng-show="!confirmed">Passwords do not match </p>
+  </div> -->
+
+    <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password"
+           name="password"
+           id="password"
+           ng-model="firstPassword"
+           ng-change="registrationForm.password = firstPassword" 
+           ng-required="true"
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="password_confirmation">Password confirmation</label>
+    <input type="password"
+           name="password_confirmation"
+           id="password_confirmation"
+           match="{{[firstPassword]}}" 
+           ng-change="registrationForm.password_confirmation = confirm" 
+           ng-model="confirm"
+           ng-required="true"
+           class="form-control">
+        <p class="help-block" style="color:Red" ng-show="!confirmed">Passwords do not match </p>
+         <!-- Confirm Password Validation -->
+<!--         <p class="help-block" ng-show="(!userForm.confirmPassword.$pristine && userForm.confirmPassword.$error.required) || (userForm.$submitted && userForm.confirmPassword.$error.required)">This field is required</p>
+        <p class="help-block" ng-show="!confirmed && !userForm.confirmPassword.$pristine && userForm.firstPassword.$valid">Passwords do not match</p> -->
+                                
+  </div>
+ 
+
+  <div class="form-group" ng-show="arPicker">
+
+      <div class="form-group">          
+          <input type="checkbox" 
+            name="is_management"
+            id="is_management"
+            ng-model="registrationForm.staffCategory"
+            value="management"
+            checked=""
+            class="custom-checkbox">
+            <label for="is_management">International Staff </label> (Check If AR.)
+    </div>
+    
+   </div>
+
+
+
+<!--   <button type="submit" class="btn btn-primary btn-lg" >Register</button>
+</form>-->
+<br>
+
+    <div class="card-footer">
+        <button type="submit" class="btn btn-primary btn-lg" ng-disabled="!registrationForm.IsValid">Register</button>
+    </div>
+
+  </form>
+</div>
+</div>
+    
+    
+</div>
+     <div class="col-sm-2"></div>
+  </div>
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Waec Exams</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Exam name</th>
+      <th>Exam diet</th>
+      <th>Table name</th>
+      <th>Centre table name</th>
+      <th>Pix folder</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @waec_exams.each do |waec_exam| %>
+      <tr>
+        <td><%= waec_exam.exam_name %></td>
+        <td><%= waec_exam.exam_diet %></td>
+        <td><%= waec_exam.table_name %></td>
+        <td><%= waec_exam.centre_table_name %></td>
+        <td><%= waec_exam.pix_folder %></td>
+        <td><%= link_to 'Show', waec_exam %></td>
+        <td><%= link_to 'Edit', edit_waec_exam_path(waec_exam) %></td>
+        <td><%= link_to 'Destroy', waec_exam, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Waec Exam', new_waec_exam_path %>

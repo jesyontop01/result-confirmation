@@ -5,12 +5,16 @@ class User < ActiveRecord::Base
   after_create :set_user_role_on_registration
 
   devise :database_authenticatable, :registerable, :timeoutable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [:login]
 
 
-VALID_EMAIL_REGEX = /\A[^@]+@waec\.org.ng\z/
+#VALID_EMAIL_REGEX = /\A[^@]+@waec\.org.ng\z/
 validates :email, presence: true, length: { maximum: 255 }, uniqueness: true, case_sensitive: false
           #format: { with: VALID_EMAIL_REGEX }, 
+validates :username, presence: true, uniqueness: { case_sensitive: false }
+validate :validate_username
+# only allow letter, number, underscore and punctuation.
+validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
 validate :user_exists, on: :create    
 
           belongs_to :office
@@ -24,6 +28,39 @@ validate :user_exists, on: :create
           has_one :signature
 
 #before_save :activate_user_or_timedout
+
+  attr_writer :login
+
+  def login
+    @login || self.username || self.email
+  end
+
+
+    def self.find_for_database_authentication(warden_conditions)
+      conditions = warden_conditions.dup
+      if login = conditions.delete(:login)
+        where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+      elsif conditions.has_key?(:username) || conditions.has_key?(:email)
+        where(conditions.to_h).first
+      end
+    end
+
+  # def self.find_for_database_authentication warden_condition
+  #   conditions = warden_condition.dup
+  #   login = conditions.delete(:login)
+  #   where(conditions).where(
+  #     ["lower(username) = :value OR lower(email) = :value",
+  #     { value: login.strip.downcase}]).first
+  # end
+
+
+
+    def validate_username
+      if self.class.exists?(:email => username)
+        errors.add(:username, :invalid)
+      end
+    end
+
 
 
   def user_exists
@@ -102,14 +139,13 @@ end
          roleId = Role.find_by(:name => "exam_management").id 
          self.update(:role_id => roleId) 
 
-       else
+       elsif self.dept_id == 3 && self.is_management == false
 
          roleId = Role.find_by(:name => "exam_national").id 
          self.update(:role_id => roleId) 
 
-        end
 
-        if self.dept_id == 1
+        elsif self.dept_id == 1
 
          roleId = Role.find_by(:name => "account_staff").id 
          self.update(:role_id => roleId)

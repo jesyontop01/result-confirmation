@@ -32,6 +32,7 @@ Devise.setup do |config|
   # You can also supply a hash where the value is a boolean determining whether
   # or not authentication should be aborted when the value is not present.
   # config.authentication_keys = [:email]
+    config.authentication_keys = [ :login ]
 
   # Configure parameters from the request object used for authentication. Each entry
   # given should be a request method and it will automatically be passed to the
@@ -152,7 +153,7 @@ Devise.setup do |config|
   # to give user feedback and not to assert the e-mail validity.
   # config.email_regexp = /\A[^@]+@[^@]+\z/
    #config.email_regexp = /\A[^@]+@example\.com\z/
-  config.email_regexp = /\A[^@]+@waec\.org.ng\z/
+  #config.email_regexp = /\A[^@]+@waec\.org.ng\z/
 
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this

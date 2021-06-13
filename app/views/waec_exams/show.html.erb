@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Exam name:</strong>
+  <%= @waec_exam.exam_name %>
+</p>
+
+<p>
+  <strong>Exam diet:</strong>
+  <%= @waec_exam.exam_diet %>
+</p>
+
+<p>
+  <strong>Table name:</strong>
+  <%= @waec_exam.table_name %>
+</p>
+
+<p>
+  <strong>Centre table name:</strong>
+  <%= @waec_exam.centre_table_name %>
+</p>
+
+<p>
+  <strong>Pix folder:</strong>
+  <%= @waec_exam.pix_folder %>
+</p>
+
+<%= link_to 'Edit', edit_waec_exam_path(@waec_exam) %> |
+<%= link_to 'Back', waec_exams_path %>

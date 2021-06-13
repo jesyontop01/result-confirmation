@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Zonename:</strong>
+  <%= @waec_zonal_office.ZoneName %>
+</p>
+
+<p>
+  <strong>Offices:</strong>
+  <%= @waec_zonal_office.offices %>
+</p>
+
+<%= link_to 'Edit', edit_waec_zonal_office_path(@waec_zonal_office) %> |
+<%= link_to 'Back', waec_zonal_offices_path %>

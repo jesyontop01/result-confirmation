@@ -6,12 +6,14 @@ angular
 	$routeProvider
     		.when('/home',{
     			templateUrl: "views/home.html",
-    			controller: "DashboardController"
+    			controller: "DashboardController",
+          authenticated: false
     		})
 
     		.when('/', {
     			templateUrl: "views/home.html",
-    			controller: "DashboardController"
+    			controller: "DashboardController",
+          authenticated: false
     		})
 
   		.when('/sign_in', {
@@ -43,10 +45,9 @@ angular
           authenticated: false
           })
         .when('/passwords/edit',{
-            templateUrl:"views/user_passwords/edit.html",
+          templateUrl:"views/user_passwords/edit.html",
           controller: "UserPasswordsController",
-          authenticated: false,
-           permission: ['admin']
+          authenticated: false
           })
 
         .when('/search',{
@@ -95,6 +96,64 @@ angular
           authenticated: true,
           permission: ['admin', 'exam_management','exam_national']
           })
+
+        //Using ResultConfirationController
+
+        .when('/result/search',{
+          templateUrl:"views/resultConfirmations/confirm_search.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', "exam_management","exam_national"]
+          })
+         .when('/result/name_search',{
+          templateUrl:"views/resultConfirmations/confirm_name_search.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', "exam_management","exam_national"]
+          })
+
+        .when('/result/search/:examYear/:examNo',{
+            templateUrl:"views/resultConfirmations/result_view.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', "exam_management","exam_national"]
+          })
+        .when('/result/address/:examYear/:examNo',{
+            templateUrl:"views/resultConfirmations/confirm_address.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', "exam_management","exam_national"]
+          })
+
+        .when('/result/confirmations',{
+            templateUrl:"views/resultConfirmations/confirmations.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
+          })
+        .when('/result/confirmations/Details/:id',{
+            templateUrl:"views/resultConfirmations/confirmations_details.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
+          })
+
+        .when('/result/webServices/:id',{
+            templateUrl:"views/resultConfirmations/webServices.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
+          })
+
+        .when('/result/wes_upload/:id',{
+            templateUrl:"views/resultConfirmations/wes_connection.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
+          })
+
+        //End of ResultConfirmation..............
+
        
         .when('/users',{
           templateUrl:"views/users/index.html",
@@ -172,8 +231,14 @@ angular
           authenticated: true,
           permission: ['admin', 'exam_management','exam_national'],
           })
-        .when('/verifer/:YearName/:exam_no',{
-            templateUrl: "views/confirmPayment/result_view.html",       
+        .when('/verifer/search',{
+            templateUrl: "views/confirmPayment/confirm_search.html",       
+            controller: "ConfirmPaymentController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
+          })
+        .when('/verifer/search/:examYear/:candNo',{
+            templateUrl: "views/confirmPayment/result_detailed_view.html",       
             controller: "ConfirmPaymentController",
           authenticated: true,
           permission: ['admin', 'exam_management','exam_national']
@@ -213,9 +278,16 @@ angular
   .run(['$rootScope','Auth', '$location','User','$cookieStore', function($rootScope, Auth, $location, User, $cookieStore) {
     // body...
     
-      $rootScope.$on('$routeChangeStart', function (event, next, current){
+      $rootScope.$on('$routeChangeStart', function (event, next, current, xhr){
         console.log(next.$$route);
-        
+
+            // Disable interceptor on _this_ login request,
+            // so that it too isn't caught by the interceptor
+            // on a failed login.
+            var config = {
+                interceptAuth: false
+            };
+      
          // Only perform if user visited a route listed above
         if (next.$$route !== undefined) {
            // Check if authentication is required on route
@@ -238,10 +310,10 @@ angular
                       
                         User.getPermission().then(function (response) {
                         // body...
-                         debugger
-                        console.log(response.data);
+                         
+                        //console.log(response.data);
                         var userPermissions = response.data;
-                        console.log(userPermissions);
+                        //console.log(userPermissions);
 
                               function check(){
                                 var contains = false;
@@ -270,13 +342,23 @@ angular
                 })
 
               }
-          } else if(next.$$route.authenticated == false) {
+          } 
+          else 
+            if(next.$$route.authenticated == false) {
             console.log("Doesn't need authentication");
-
+            //debugger
               //if (Auth.isAuthenticated()) {
-              if($cookieStore.get('logged_in') == true){
-                event.preventDefault();
+              if($cookieStore.get('logged_in') != true){
+              
+                $location.path(next.$$route.originalPath);
+             
+                interceptAuth =  false;
+              }
+              else{
+                //return true;
+                 event.preventDefault();
                 $location.path('#/users/{{user.id}}');
+               
               }
           }
 
@@ -290,5 +372,5 @@ angular
           //       $location.path(current.$$route.originalPath);
           //     }
           // }
-      })
+      });
   }]);

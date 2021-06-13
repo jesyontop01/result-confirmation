@@ -32,7 +32,7 @@ angular.module('verifier')
 
         $scope.$on('devise:send-reset-password-instructions-successfully', function(event) {
             // ...
-            alert("Password Reset Instruction Has being Sent to your"+ 
+            alert("Password Reset Instruction Has being Sent to your "+ 
                   "supplied email, kindly visit for action");
             $location.path("/");
         });
@@ -45,22 +45,31 @@ angular.module('verifier')
         var parameters = {
             password: $scope.passwordEditForm.password,
             password_confirmation: $scope.passwordEditForm.password_confirmation,
-            reset_password_token: $routeParams.resetToken
+            reset_password_token: $scope.passwordEditForm.reset_password_token
         };
 
         console.log(parameters);
 
         Auth.resetPassword(parameters).then(function(new_data) {
+            //debugger
             console.log(new_data); // => {id: 1, ect: '...'}
+            if (new_data.success == false) {
+                alert("reset_password_token: "+ new_data.message.reset_password_token + "\n"+"Password: "+new_data.message.password );
+                $location.path("/password/edit");
+            } else {
+                alert("Password Changed Successfully");
+                $location.path("/sign_in");
+            }
+
         }, function(error) {
             // Reset password failed...
         });
 
-        $scope.$on('devise:reset-password-successfully', function(event) {
-            // ...
-            alert("Password Changed Successfully");
-            $location.path("/sign_in");
-        });
+            // $scope.$on('devise:reset-password-successfully', function(event) {
+            //     // ...
+            //     alert("Password Changed Successfully");
+            //     $location.path("/sign_in");
+            // });
         }
  
   }]);

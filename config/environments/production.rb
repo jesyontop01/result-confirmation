@@ -10,6 +10,11 @@ Rails.application.configure do
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
 
+  # Compress JavaScripts and CSS.
+  #config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = Uglifier.new(:harmony => true)
+  # config.assets.css_compressor = :sass
+
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
@@ -20,14 +25,14 @@ Rails.application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  config.serve_static_assets = false
+  config.serve_static_assets = true
 
-  # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
-  # config.assets.css_compressor = :sass
+  config.assets.precompile[0] =  Proc.new { |path| !File.extname(path).in?(['.js', '.css', '.map', '.md']) }
+
+   config.active_job.queue_adapter = :delayed_job
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  config.assets.compile = true
 
   # Generate digests for assets URLs.
   config.assets.digest = true
@@ -82,5 +87,28 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_mailer.default_url_options = {host: 'http://172.21.13.25:82'}
+  #config.action_mailer.default_url_options = {host: 'localhost:3000'}
+
+  config.assets.raise_runtime_errors = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries = true
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  address:              'smtp.gmail.com',
+  port:                 587,
+  domain:               'gmail.com',
+  user_name:            'adelajaanuoluwagbemiga@gmail.com', #<username>
+  password:             'fikmzxyziirbkxos',  #'adelaja1951', #<password>
+  authentication:       'plain',
+  enable_starttls_auto: true 
+  # address:              'mail.waec.org.ng',
+  # port:                 25,
+  # domain:               'waec.org.ng',
+  # user_name:            'confirmation@waec.org.ng', #<username>
+  # password:             'welcome',  #'adelaja1951', #<password>
+  # authentication:       'plain',
+  # enable_starttls_auto: true 
+}
 
 end

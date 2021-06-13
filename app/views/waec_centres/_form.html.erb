@@ -1,0 +1,32 @@
+<%= form_with(model: waec_centre, local: true) do |form| %>
+  <% if waec_centre.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(waec_centre.errors.count, "error") %> prohibited this waec_centre from being saved:</h2>
+
+      <ul>
+      <% waec_centre.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :centre_no %>
+    <%= form.text_field :centre_no %>
+  </div>
+
+  <div class="field">
+    <%= form.label :centre_type %>
+    <%= form.text_field :centre_type %>
+  </div>
+
+  <div class="field">
+    <%= form.label :centre_name %>
+    <%= form.text_field :centre_name %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

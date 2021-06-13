@@ -10,11 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_08_131313) do
+ActiveRecord::Schema.define(version: 2021_06_10_125129) do
 
   create_table "Grade", primary_key: "GradeType", id: :string, limit: 1, default: nil, force: :cascade do |t|
     t.string "GradeValue", limit: 2, null: false
     t.string "GradeDesc", limit: 15, null: false
+  end
+
+  create_table "api_results", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "assignments", force: :cascade do |t|
@@ -52,6 +57,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_131313) do
     t.integer "user_id"
     t.integer "diet_id"
     t.integer "year_id"
+    t.string "examYear", limit: 50
     t.string "ref_no", limit: 255
     t.string "exam_no", limit: 255
     t.string "Cand_address", limit: 255
@@ -75,6 +81,21 @@ ActiveRecord::Schema.define(version: 2021_03_08_131313) do
     t.index ["payment_id"], name: "index_confirmations_on_payment_id"
     t.index ["user_id"], name: "index_confirmations_on_user_id"
     t.index ["year_id"], name: "index_confirmations_on_yearTbl_id"
+  end
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
   create_table "departments", force: :cascade do |t|
@@ -119,6 +140,8 @@ ActiveRecord::Schema.define(version: 2021_03_08_131313) do
     t.nchar "office_state", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.bigint "waec_zonal_office_id"
+    t.index ["waec_zonal_office_id"], name: "index_offices_on_waec_zonal_office_id"
   end
 
   create_table "packing_lists", force: :cascade do |t|
@@ -331,13 +354,47 @@ ActiveRecord::Schema.define(version: 2021_03_08_131313) do
     t.boolean "logged_in", default: false
     t.integer "is_signedIn", default: 0
     t.bigint "dept_id"
-    t.boolean "is_management", default: false
-    t.boolean "admin", default: false
     t.bigint "role_id"
+    t.boolean "admin"
+    t.boolean "is_management", default: false
     t.index ["dept_id"], name: "index_users_on_dept_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, where: "([reset_password_token] IS NOT NULL)"
     t.index ["role_id"], name: "index_users_on_role_id"
+  end
+
+  create_table "waec_centres", id: :integer, force: :cascade do |t|
+    t.varchar "centre_no", limit: 7
+    t.char "centre_type", limit: 1
+    t.varchar "centre_name", limit: 255
+  end
+
+  create_table "waec_centres2", force: :cascade do |t|
+    t.string "centre_no"
+    t.string "centre_type"
+    t.string "centre_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "waec_exams", id: :integer, force: :cascade do |t|
+    t.varchar "exam_name", limit: 25
+    t.varchar "exam_diet", limit: 100, null: false
+    t.varchar "table_name", limit: 25, null: false
+    t.varchar "centre_table_name", limit: 25, null: false
+    t.varchar "pix_folder", limit: 25
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "waec_exams2", force: :cascade do |t|
+    t.string "exam_name"
+    t.string "exam_diet"
+    t.string "table_name"
+    t.string "centre_table_name"
+    t.string "pix_folder"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "waec_offices", force: :cascade do |t|
@@ -363,6 +420,31 @@ ActiveRecord::Schema.define(version: 2021_03_08_131313) do
     t.index ["confirmation_id"], name: "index_waec_school_exams_on_confirmation_id"
   end
 
+  create_table "waec_subjects", id: false, force: :cascade do |t|
+    t.char "SubjectCode", limit: 3, null: false
+    t.char "ExamYear", limit: 4
+    t.varchar "ShortName", limit: 15, null: false
+    t.varchar "LongName", limit: 50, null: false
+    t.varchar "ResultName", limit: 10
+  end
+
+  create_table "waec_subjects_1970s", id: false, force: :cascade do |t|
+    t.char "SubjectCode", limit: 3, null: false
+    t.char "SubjectCodeOld", limit: 3
+    t.char "ExamYear", limit: 4
+    t.varchar "ShortName", limit: 15, null: false
+    t.varchar "LongName", limit: 50, null: false
+    t.varchar "ResultName", limit: 10
+  end
+
+  create_table "waec_zonal_offices", force: :cascade do |t|
+    t.string "ZoneName"
+    t.bigint "office_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["office_id"], name: "index_waec_zonal_offices_on_office_id"
+  end
+
   create_table "wassce_d2008s", force: :cascade do |t|
     t.string "record_type", limit: 255
     t.string "exam_no", limit: 255
@@ -378,6 +460,20 @@ ActiveRecord::Schema.define(version: 2021_03_08_131313) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["exam_no"], name: "index_wassce_d2008s_on_exam_no", unique: true
+  end
+
+  create_table "wassce_pc1_2020s", id: :integer, force: :cascade do |t|
+    t.varchar "record_type", limit: 2
+    t.varchar "exam_no", limit: 10
+    t.varchar "sex", limit: 1
+    t.varchar "disability", limit: 1
+    t.varchar "date_of_birth", limit: 8
+    t.varchar "full_name", limit: 40
+    t.varchar "results", limit: 36
+    t.varchar "form_no", limit: 10
+    t.varchar "security_digit", limit: 2
+    t.varchar "release_batch", limit: 2
+    t.varchar "award", limit: 1
   end
 
   create_table "web_services", force: :cascade do |t|
@@ -402,6 +498,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_131313) do
   add_foreign_key "confirmations", "payments"
   add_foreign_key "departments", "divisions"
   add_foreign_key "departments1", "divisions"
+  add_foreign_key "offices", "waec_zonal_offices"
   add_foreign_key "packing_lists", "waec_offices"
   add_foreign_key "payments", "confirm_types"
   add_foreign_key "payments", "diets"
@@ -421,4 +518,5 @@ ActiveRecord::Schema.define(version: 2021_03_08_131313) do
   add_foreign_key "signatures", "users"
   add_foreign_key "users", "departments", column: "dept_id"
   add_foreign_key "users", "roles"
+  add_foreign_key "waec_zonal_offices", "offices"
 end

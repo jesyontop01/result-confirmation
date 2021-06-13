@@ -1,0 +1,130 @@
+<div ng-controller="ConfirmPaymentController">
+
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div class="card card-primary">
+        <header class="card-header">
+           <h2>Search Exam Result</h2>
+        </header>
+      
+        <div class="card-body">
+    <label>Select Exam Diet <span>*</span></label>
+      
+        <div  ng-controller="DietController">
+          <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+        <div class="form-group">
+          <select ng-model="ExamDietId" ng-options="d.id as d.DietName for d in diets" ng-change="GetValue(d)" class="form-control" ng-required="true">
+            <option value="">Select Exam Diet</option>
+          </select>
+        </div>
+        <!-- Selected: <p ng-bind="ExamDietId"></p> -->
+        </div> <br> 
+    <label>Select Year <span>*</span></label>
+      <div  ng-controller="YearController">
+        <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+        <div class="form-group" >
+          <select ng-model="ExamYearId" ng-options="y.id as y.YearName for y in years" ng-change="GetValue(y)" class="form-control" ng-required="true">
+            <option value="">Select Exam Year</option>
+          </select>
+        </div>
+        <!-- Selected: <p ng-bind="ExamYearId"></p> -->
+
+      </div>
+
+  <div ng-controller="ConfirmPaymentController">
+    <form >
+    <label>Candidate's Exam No. <span>*</span></label>
+    <label for="search.keywords" class="sr-only">Keywords</label>
+    <input type="text" 
+           name="keywords" 
+           class="form-control input-lg"
+           placeholder="Please Type In Candidate's Reg. Number "
+           ng-model="keywords"><br>
+
+    <span class="input-group-btn">
+      <button class="btn btn-primary " ng-click ="search(keywords, ExamDietId, ExamYearId)">Find Candidate</button>
+    </span>
+  </form>
+
+<!-- <section class="search-results" ng-if="results.length > 0"> -->
+
+<section class="search-results" ng-show="resultBoolArray">
+
+  <header>
+    <h1 class="h3">Results</h1>
+  </header>
+
+<table class="table table-striped table-bordered">
+  <thead>
+     <tr>
+      <th>Index</th>
+      <th>Exam Diet</th>
+      <th>Candidate Name</th>
+      <th>Candidate No.</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+   <!--  <tr ng-repeat="result in results">  
+ -->
+ <tr ng-repeat="result in results">
+      <td>{{$index+1}}</td>
+      <td>{{result.diet}} {{result.year}}</td>
+      <td>{{result.candName}} </td>
+      <td>{{result.candNo}}</td>
+      <td><button type="button" class="btn btn-primary" ng-click="viewDetails(result)">Details…</button>
+     </td>
+    </tr>
+  </tbody>
+</table>
+
+</section>
+
+<section class="search-results" ng-show="resultBool">
+
+  <header>
+    <h1 class="h3">Results</h1>
+  </header>
+
+<table class="table table-striped table-bordered">
+  <thead>
+     <tr>
+      <th>Index</th>
+      <th>Exam Diet</th>
+      <th>Candidate Name</th>
+      <th>Candidate No.</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+   <!--  <tr ng-repeat="result in results">  
+ -->
+ <tr>
+      <td>{{$index+1}}</td>
+      <td>{{result.Diet}} {{result.Year}}</td>
+      <td>{{result.CandName}} </td>
+      <td>{{result.CandNo}}</td>
+      <td><button type="button" class="btn btn-primary" ng-click="viewDetails(result)">Details…</button>
+     </td>
+    </tr>
+  </tbody>
+</table>
+
+</section>
+
+    <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+ </div> 
+</div>
+</div>
+</div>
+</div>
+   <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+</div>
+
+
+<br>
+<br>
+

@@ -16,14 +16,14 @@
       <div class="col-md-4">
       <h4>Waec Office: <span>*</span></h4>
       <div  ng-controller="OfficesController">
-        <div class="form-group"  ng-show="sessions.signedIn() && sessions.adminAccess">
+<!--         <div class="form-group"  ng-show="sessions.signedIn() && sessions.adminAccess">
           <select ng-model="WaecOfficeId" ng-options="y.id as y.office_name for y in offices" ng-change="GetValue(y)" class="form-control" ng-required="true">
             <option value="">Select Office</option>
           </select>
-        </div>
+        </div> -->
 
         <div class="form-group"  ng-show="sessions.signedIn() && sessions.auditAccess">
-          <select ng-model="WaecOfficeId" ng-options="y.id as y.office_name for y in offices" ng-change="GetValue(y)" class="form-control" ng-required="true" ng-disabled = "true">
+          <select ng-model="WaecOfficeId" ng-options="y.id as y.office_name for y in offices" ng-change="GetValue(y)" class="form-control" ng-required="true" ng-disabled = "false">
             <option value="">Select Office</option>
           </select>
         </div>
@@ -82,9 +82,9 @@
     <hr>
       <p class="text-left"><b>Search: </b><input type="text" name="" placeholder="Search by Receipt number" ng-model='searchText.receipt_no'></p>
     <div class="text-right">
-        <button class="btn btn-default" ng-click="exportToCsv(gridOptions.data)">Export all data to CSV <i
-                class="fa fa-download"></i></button>
-        <button class="btn btn-default" ng-click="exportJSONToCsv(confirms)">Export filtered data to CSV2 <i
+<!--         <button class="btn btn-default" ng-click="exportToCsv(gridOptions.data)">Export all data to CSV <i
+                class="fa fa-download"></i></button> -->
+        <button class="btn btn-default" ng-click="exportJSONToCsv(confirms)">Export data to CSV <i
                 class="fa fa-download"></i></button>
         <button class="btn btn-default" ng-click="printPDFReport(confirms)">Print To PDF <i
                 class="fa fa-print"></i></button>
@@ -100,12 +100,13 @@
             <div grid-data id='test' grid-options="gridOptions" grid-actions="gridActions">
                 <div class="row">
                     <div class="col-md-3">
-                        <span class="items">{{filtered.length}} items total</span>
+                       <strong> <p> Total Items: <span class="items">{{confirms.length}} Items </span></p></strong>
                     </div>
                     <div class="col-md-3">
                       Total Amount: <b><span class="items" ng-bind="confirms | sumOfValue:'amount'"></span> Naira</b> 
                     </div>
-                    <div class="col-md-9 text-right">
+
+<!--                     <div class="col-md-9 text-right">
                         <form class="form-inline pull-right margin-bottom-basic">
                             <div class="form-group">
                                 <grid-pagination max-size="5"
@@ -128,7 +129,7 @@
                                 </select>
                             </div>
                         </form>
-                    </div>
+                    </div> -->
                 </div>
 
 <div class="table-responsive">
@@ -137,10 +138,11 @@
      <tr>
       <th>Index</th>
       <th>Candidate Name</th>
+      <th>Transaction</th>
+      <th>Trans.Type</th>
       <th>Amount</th>
       <th>Receipt No</th>
-      <th>Transaction Purpose</th>
-      <th>Cand.Contact</th>
+      <th>Staff Name</th>
       <th>Office</th>
       <th>Date created</th>
     </tr>
@@ -149,10 +151,11 @@
     <tr ng-repeat="confirm in confirms | filter:searchText "> 
       <td>{{$index+1}}</td>
       <td >{{confirm.CandName}}</td>
+      <td>{{confirm.transName}}</td>
+       <td>{{confirm.typeName}}</td>
       <td>{{confirm.amount}}</td>
       <td>{{confirm.receipt_no}}</td>
-      <td>{{confirm.transName}}</td>
-      <td>{{confirm.PhoneNo}}</td>
+      <td>{{confirm.fullname}}</td>
       <td>{{confirm.office_name}}</td>
       <td>{{confirm.created_at | date:'dd/MM/yyyy'}}</td>
       <!-- <td><b ng-model="TotalOrders" ng-bind="order_items | sumOfValue:'amount'" ></b></td> -->

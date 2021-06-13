@@ -13,25 +13,49 @@ angular.module('verifier').factory('ResultService', ['$http','$q',function($http
 		// 	return	$http.get("/confirmations.json", {params:{id: id}});
 		//};
 
+
+
+		// fac.ResultDetailsFromDB = function(examno, examyear,examdiet){
+
+		// 	return $http.get("/exams.json", 
+		// 	//return $http.get("/test_results.json",
+		// 		   {"params": { "CandNo": examno, "YearName": examyear, "DietName": examdiet}}
+		// 	);
+		
+
+		// };
+
 		fac.ResultDetailsFromDB = function(examno, examyear,examdiet){
 
-			return $http.get("/exams.json", 
-			//return $http.get("/test_results.json",
-				   {"params": { "CandNo": examno, "YearName": examyear, "DietName": examdiet}}
+			//return $http.get("/exams.json", 
+			return $http.get("/api_results/getSearchedResultDetails.json", 
+				   {"params": { "CandNo": examno, "examYear": examyear, "DietName": examdiet}}
 			);
 		
 
 		};
 
-		fac.ResultDetailsWithIDs = function(examno, examyear,examdiet){
 
-			return $http.get("/exams.json", 
-			//return $http.get("/test_results.json",
+	    fac.ResultDetailsWithIDs = function(examno, examyear,examdiet){
+
+			//return $http.get("/exams.json", 
+			return $http.get("/api_results.json",
 				   {"params": { "CandNo": examno, "yearId": examyear, "dietId": examdiet}}
 			);
 		
 
 		};
+
+
+		// fac.ResultDetailsWithIDs = function(examno, examyear,examdiet){
+
+		// 	return $http.get("/exams.json", 
+		// 	//return $http.get("/test_results.json",
+		// 		   {"params": { "CandNo": examno, "yearId": examyear, "dietId": examdiet}}
+		// 	);
+		
+
+		// };
 
 		fac.UpdateConfirmationToDB = function(id){
 

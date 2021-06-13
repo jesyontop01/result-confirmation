@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, :except => [:email_validity]
-  load_and_authorize_resource :except => [:user_permissions, :second_signatory, :permitted_users ,:permitted_users1 , :email_validity, :confirm_IsPrint]
+  before_action :authenticate_user!, :except => [:email_validity, :username_validity]
+  load_and_authorize_resource :except => [:user_permissions, :second_signatory, :permitted_users ,:permitted_users1 , :username_validity, :email_validity, :confirm_IsPrint]
 
   def index
   	if params[:activated] == "false"
@@ -53,25 +53,59 @@ class UsersController < ApplicationController
 
   def update
   	@user = User.find(params[:id])
-  	  @user.update_attributes(activation_params) 
-       if @user.activated =="true"
+
+    if params[:activated] == true
+      
+       @user.update_attributes(activation_params) 
+
+       SendActivationEmailJob.set(wait: 20.seconds).perform_later(@user)
+
+       if @user.save
         @user.update(:activated_at => DateTime.now)
    
-      UserMailer.welcome(@user).deliver_now!
-  		 flash[:notice] = "User account Successfully activated."
-        redirect_to users_path
-      elsif @user.activated =="false"
+      
+       flash[:notice] = "User account Successfully activated."
+    
+      end
+        
+    else
+
+       @user.update_attributes(activation_params) 
+
+       if @user.save
         @user.update(:activated_at => DateTime.now)
 
           flash[:notice] = "User account Successfully Deactivated."
         #redirect_to users_path
-        render json: @users
-    
-    else
-      #render :action => 'edit'
+        end
+
+
     end
 
-    #render json: @users
+
+  	 #  @user.update_attributes(activation_params) 
+
+    #    UserMailer.welcome(@user).deliver_now!
+    #    SendActivationEmailJob.set(wait: 20.seconds).perform_later(@user)
+
+    #    if @user.activated =="true"
+    #     @user.update(:activated_at => DateTime.now)
+   
+      
+  		#  flash[:notice] = "User account Successfully activated."
+    #     redirect_to users_path
+    #   elsif @user.activated =="false"
+    #     @user.update(:activated_at => DateTime.now)
+
+    #       flash[:notice] = "User account Successfully Deactivated."
+    #     #redirect_to users_path
+    #     render json: @users
+    
+    #   else
+    #   #render :action => 'edit'
+    #   end
+
+    render json: @users
   end
 
    def destroy
@@ -122,7 +156,7 @@ class UsersController < ApplicationController
        end
 
       @user.update(:role_id => @roleId.id )
-      
+      #binding.pry
       @user.save
  
 
@@ -173,11 +207,39 @@ class UsersController < ApplicationController
 
   end
 
+
+  def username_validity
+    if params[:username]
+      user = User.find_by(:username => params[:username])
+      #binding.pry
+      if user.present?
+         render json: {message: "Sorry! Username has being taken", success: true }
+      else
+        render json: {message: "Username is available", success: false }
+      end
+    else
+      render json: {message: " Username can not be blank", success: true }
+    end
+
+  end
+
+
+  REGEX_PATTERN = /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$/ 
+  def is_email_valid? email
+      email =~REGEX_PATTERN
+  end
+
+
   def second_signatory
 
-    if params[:email] && params[:password]
-    user = User.find_for_authentication(:email => params[:email])
-    user&.valid_password?(params[:password]) ? user : nil
+    if params[:login] && params[:password]
+
+      if is_email_valid? params[:login]
+        user = User.find_for_authentication(:email => params[:login])
+      else
+        user = User.find_for_authentication(:username => params[:login])
+      end
+      user&.valid_password?(params[:password]) ? user : nil
 
       # if user.is_management == true
       #   user2 = User.where(id: user).pluck(:title, :surname, :othernames, :is_management)
@@ -201,7 +263,7 @@ class UsersController < ApplicationController
       #   else
             if user.nil?
 
-                  render json: {message: "User not authenticated"}  
+                  render json: {message: "User not authenticated", success: false}  
               else
 
                 if user.office_id != current_user.office_id

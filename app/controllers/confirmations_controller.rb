@@ -133,13 +133,17 @@ class ConfirmationsController < ApplicationController
 				        	 officeID
 				        end
 
-				        @my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1].to_s + officeID.to_s + @serial_no.to_s[1,8]
+				        unless @confirm.Local_Ref_no.present?
+					         @my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1].to_s + officeID.to_s + @serial_no.to_s[1,8]
 
-				         #@my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1].to_s + @confirm.user.office.id.to_s + @serial_no.to_s[1,8]
-				        
-				        # @my_reference = "L/CR/CONF/" + "#{@confirm.exam_no[0,1]}" + "#{@confirm.user.office.id}" +  "#{@serial_no[1,8]} "
-				        #@my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1] + @confirm.user.office.id + @serial_no[1,8]
-				        @confirm.update(:ref_no => @my_reference)
+					         #@my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1].to_s + @confirm.user.office.id.to_s + @serial_no.to_s[1,8]
+					        
+					        # @my_reference = "L/CR/CONF/" + "#{@confirm.exam_no[0,1]}" + "#{@confirm.user.office.id}" +  "#{@serial_no[1,8]} "
+					        #@my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1] + @confirm.user.office.id + @serial_no[1,8]
+					        @confirm.update(:ref_no => @my_reference)
+				        end
+
+
 				        @confirm.update(:office_id => @confirm.user.office_id)
 
 				    end
@@ -303,7 +307,7 @@ class ConfirmationsController < ApplicationController
 
 	def confirmation_params
 		params.require(:confirmation).permit(:user_id,:diet_id,:year_id, :examYear, :ref_no,:exam_no,:Cand_address,:dest_title,
-						:dest_address1,:dest_address2,:dest_location,:dest_email, :confirm_type_id, :confirm_country_id,
+						:dest_address1,:dest_address2,:dest_location,:dest_email, :confirm_type_id, :confirm_country_id, :Local_Ref_no,
 						:receipt_no, :WES_Ref, :payment_id, :isPrinted)
 	end
 

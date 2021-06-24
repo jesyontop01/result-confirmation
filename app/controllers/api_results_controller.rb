@@ -374,30 +374,28 @@ subjectindex0 = {
      
       
 
-      if params[:CandNo].present? && params[:examYear].present? && params[:dietId].present?
+    if params[:CandNo].present? && params[:examYear].present? && params[:dietId].present?
 
              @results = ApiResult.getDetailedResults(params[:CandNo], params[:examYear], params[:dietId])
-              
 
-       subjectsContainer = Array.wrap([ @results[0]["subject1"], @results[0]["subject2"], @results[0]["subject3"],
+             if @results 
+               @picture = ApiResult.getCertificateStatusPicture(params[:CandNo], params[:examYear])
+             end
+
+            subjectsContainer = Array.wrap([ @results[0]["subject1"], @results[0]["subject2"], @results[0]["subject3"],
                                      @results[0]["subject4"],  @results[0]["subject5"], @results[0]["subject6"],
                                     @results[0]["subject7"], @results[0]["subject8"], @results[0]["subject9"]])
 
-    resultsContainer = Array.wrap([ @results[0]["result1"], @results[0]["result2"], @results[0]["result3"],
+            resultsContainer = Array.wrap([ @results[0]["result1"], @results[0]["result2"], @results[0]["result3"],
                                      @results[0]["result4"],  @results[0]["result5"], @results[0]["result6"],
                                     @results[0]["result7"], @results[0]["result8"], @results[0]["result9"]])
    
-  gradeindex[resultsContainer[0]]
-  subjectindex[subjectsContainer[0]]
-  resultObjects = Hash.new
-  finalResult = []
-  resultsArray = []
-          # if @entry.form_no.nil?
-          #   pix_filename='public/images/pix/'+ @waec_confirmation.waec_exam.pix_folder+'/pict/'+ @entry.exam_no[0..6] +'/' +  @entry.exam_no + '.jpg'
-          # else
-          #   pix_filename='public/images/pix/'+ @waec_confirmation.waec_exam.pix_folder+'/pict/'+ @entry.exam_no[0..6] +'/' +  @entry.form_no + '.jpg'
-            
-          # end
+        gradeindex[resultsContainer[0]]
+        subjectindex[subjectsContainer[0]]
+        resultObjects = Hash.new
+        finalResult = []
+        resultsArray = []
+
 
           ## Result Interpretation For Exam years from 1999 to This day.
 
@@ -405,7 +403,9 @@ subjectindex0 = {
 
 
 
-        @centre = WaecCentre.where("centre_no = ?", @results[0]["candNo"][0,7])
+        ##@centre = WaecCentre.where("centre_no = ? and ", @results[0]["candNo"][0,7])
+        @centre = WaecCentre.where(["CentreCode = ? and ExamYear = ?", @results[0]["candNo"][0,7], params[:examYear]])
+   
     ## Setting Centre Name to it's value otherwise to return empty.
 
               if  @centre == [] || @centre == [""]
@@ -433,25 +433,21 @@ subjectindex0 = {
               end
 
 
-
-    # unless @results[0]["formNo"].nil?
-    #   pix_filename='public/images/pix/'+ @pix_folder+'/pict/'+@results[0]["candNo"][0..6]+'/'+@results[0]["formNo"].strip!+ '.jpg'
-    # else
-    #   pix_filename='public/images/pix/'+ @pix_folder+'/pict/'+@results[0]["candNo"][0..6]+'/'+@results[0]["candNo"].strip!+ '.jpg'
-    # end
-
     unless @results[0]["formNo"].nil?
       pix_filename='../images/pix/'+@pix_folder+'/pict/'+@results[0]["candNo"][0..6]+'/'+@results[0]["formNo"].strip!+ '.jpg'
-        #pix_filename = 'public/images/pix/'+@pix_folder+'/pict/'+@results[0]["candNo"][0..6]+'/'+@results[0]["formNo"].strip!+'.jpg'
+       
     else
       pix_filename = '../images/pix/'+@pix_folder+'/pict/'+@results[0]["candNo"][0..6]+'/'+@results[0]["candNo"].strip!+ '.jpg'
     end
 
-   #ayo = Rails.root.join("public", "Images", "Pix", "mjall", "pict", @results[0]["candNo"][0..6]+'/'+@results[0]["formNo"].strip!+'.jpg').to_s
-   #ayo2 =  Rails.root.join("public", "Images", "Pix", "ndall" ,"pict")+'/'+@results[0]["candNo"][0..6]+'/'+@results[0]["formNo"].strip!+'.jpg'
- 
-      resultObjects['Picture'] = pix_filename
-      #pix_filename = "#{Rails.root}/"+pix_filename
+      # resultObjects['Picture2'] = pix_filename
+      # resultObjects['Picture'] = @picture.Pix
+
+             if @picture.present? 
+               resultObjects['Picture'] = @picture["Pix"]
+             else
+               resultObjects['Picture'] = nil
+             end
 
 
      
@@ -483,7 +479,7 @@ subjectindex0 = {
               resultObjects['sex'] =  @results[0]["sex"] =='1'? 'MALE' : 'FEMALE'
               resultObjects['dob'] = @results[0]["date_of_Birth"] 
               resultObjects['dob2'] = @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4] #@results[0]["dob"]
-              resultObjects['CentreName'] = @centre == nil ? "N/A" : @centre[0]['centre_name']
+              resultObjects['CentreName'] = @centre == nil ? "N/A" : @centre[0]['Centre']
 
               resultObjects["Subject1"] = subjectindex[subjectsContainer[0]]
               resultObjects["Subject2"] = subjectindex[subjectsContainer[1]]
@@ -539,7 +535,7 @@ subjectindex0 = {
                           :sex2 => @results[0]["sex"],
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'], 
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['Centre'], 
                           :Picture => resultObjects['Picture'],  
                           :Picture2 => resultObjects['Picture2'],             
                 }
@@ -560,7 +556,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'], 
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['Centre'], 
                         }
                     resultsArray << hash1
               end
@@ -578,7 +574,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'],
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['Centre'],
                        }
                     resultsArray << hash2
               end
@@ -595,7 +591,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'],
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['Centre'],
                        }
                     resultsArray << hash3
               end
@@ -612,7 +608,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'],
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['Centre'],
                       }
                     resultsArray << hash4
               end
@@ -629,7 +625,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'], 
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['Centre'], 
                  }
                       resultsArray << hash5
               end
@@ -646,7 +642,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'],
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['Centre'],
                        }
 
                     resultsArray << hash6
@@ -663,7 +659,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'], 
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['Centre'], 
                         }
                   resultsArray << hash7
           end
@@ -680,7 +676,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'],
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['Centre'],
                        }
                   resultsArray << hash8
 
@@ -698,10 +694,28 @@ subjectindex0 = {
 
 
     else
+                
                 ##Result Interpretation for Years Below 1999 (That is 1998 downward)
                               ## Interpret all subjects
 
-              @centre = WaecCentre.where("centre_no = ?", @results[0]["candNo"][0,5])
+
+            @centre = WaecCentre.where(["CentreCode = ? and ExamYear = ?", @results[0]["candNo"][0,5], params[:examYear]])
+   
+
+
+             if @results.present? 
+               @picture = ApiResult.getCertificateStatusPicture(params[:CandNo], params[:examYear])
+             end
+
+            ##binding.pry
+
+             if @picture.present? 
+               resultObjects['Picture'] = @picture["Pix"]
+             else
+               resultObjects['Picture'] = nil
+             end
+
+            ##  @centre = WaecCentre.where("centre_no = ?", @results[0]["candNo"][0,5])
 
               if  @centre == [] || @centre == [""]
                 @centre = nil
@@ -775,7 +789,8 @@ subjectindex0 = {
                           :sex2 => @results[0]["sex"],
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'],               
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['CentreCentre'],
+                          :Picture => resultObjects['Picture'],                 
                 }
 
                 resultsArray << hash0
@@ -794,7 +809,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'], 
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['CentreCentre'], 
                         }
                     resultsArray << hash1
               end
@@ -812,7 +827,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'],
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['CentreCentre'],
                        }
                     resultsArray << hash2
               end
@@ -829,7 +844,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'],
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['CentreCentre'],
                        }
                     resultsArray << hash3
               end
@@ -846,7 +861,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'],
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['CentreCentre'],
                       }
                     resultsArray << hash4
               end
@@ -863,7 +878,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'], 
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['CentreCentre'], 
                  }
                       resultsArray << hash5
               end
@@ -880,7 +895,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'],
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['CentreCentre'],
                        }
 
                     resultsArray << hash6
@@ -897,7 +912,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'], 
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['CentreCentre'], 
                         }
                   resultsArray << hash7
           end
@@ -914,7 +929,7 @@ subjectindex0 = {
                           :sex => @results[0]["sex"] =='1'? 'MALE' : 'FEMALE',
                           :dob => @results[0]["date_of_Birth"],
                           :dob2 => @results[0]["date_of_Birth"] == nil ? "N/A" : @results[0]["date_of_Birth"][0,2] +"/"+ @results[0]["date_of_Birth"][2,2]+"/"+ @results[0]["date_of_Birth"][-4,4],
-                          :CentreName => @centre == nil ? "N/A" : @centre[0]['centre_name'],
+                          :CentreName => @centre == nil ? "N/A" : @centre[0]['CentreCentre'],
                        }
                   resultsArray << hash8
 

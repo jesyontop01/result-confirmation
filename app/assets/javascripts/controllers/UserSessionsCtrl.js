@@ -233,8 +233,9 @@ angular.module('sessionsController', [])
         //vm.logging = true;
       vm.loading = true;
         Auth.login($scope.loginForm, config).then(function(user) {
-          vm.logging = false;
-                  $rootScope.user = user
+              vm.logging = false;
+          debugger
+              $rootScope.user = user
                   //alert("Welcome, " + user.surname);
                 SweetAlert.swal("Successful!", "Welcome, " + user.surname, "success");
                 vm.successMsg = "Log in is Successful"; 
@@ -243,7 +244,7 @@ angular.module('sessionsController', [])
                   var userPermissions = [];
                  //$rootScope.userPermissions = userPermission.userPermission(user.id);
                  //console.log( $rootScope.userPermissions);
-                      console.log(user);
+                      //console.log(user);
 // $cookieStore.put('logged_in',true);
 // $rootScope.logged_in = true;
 
@@ -393,25 +394,7 @@ angular.module('sessionsController', [])
 
 
       if (userSession.getCookieData('usr') != null) {
-          //   if (confirm("You are about log out signatory 2..?") == true) {
-          //     vm.loading = true;
-          //     userSession.clearCookieData();
-          //     //$route.reload(); // Reload the page 
-          //   toaster.pop('success', "success", "You have been logged out.");
-          //     window.location.reload();
-          //     $location.path('/');
-          //   }
-          //   else {
-          //     vm.usrSecond = userSession.getCookieData('usr');
-          //     //console.log(vm.usrSecond);
-          //         alert(" Operation was cancelled ");
-          //         window.location.reload();
-          //         $route.reload(); // Reload the page
-          //        $location.path('/');
-          //        vm.loading = false;
-           
-          
-          // }
+
               SweetAlert.swal({
                  title: "Second signatory Log Out?",
                  text: "You are about log out signatory 2..?",

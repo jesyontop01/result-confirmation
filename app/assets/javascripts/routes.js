@@ -105,6 +105,12 @@ angular
           authenticated: true,
           permission: ['admin', "exam_management","exam_national"]
           })
+        .when('/result/local_confirmation',{
+          templateUrl:"views/resultConfirmations/confirm_local_address.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', "exam_management","exam_national"]
+          })
          .when('/result/name_search',{
           templateUrl:"views/resultConfirmations/confirm_name_search.html",
           controller: "ResultConfirmationsController",

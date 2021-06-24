@@ -73,11 +73,37 @@ class ApiResult < ActiveRecord::Base
          JSON.parse(response.body)
     end
 
+    
+    ## Returns Candidate's Picture from certificate API 
+    def self.getCertificateStatusPicture(candNo, yearName)
+          response = Faraday.get do |req|
+            req.url "https://ictdapps.waec.org.ng/WaecCertConfirmation/Services/GetCertificateStatusPicture?"
+            req.params['CandidateNo'] = "#{candNo}"
+            req.params['ExamYear'] = "#{yearName}"
+            #req.headers['Content-Type'] = 'application/json'
+          end
+
+         JSON.parse(response.body)
+    end
+    ## Returns Candidate's Picture from certificate API 
+    def self.getCertificateStatusWithReason(candNo, yearName)
+          response = Faraday.get do |req|
+            req.url "https://ictdapps.waec.org.ng/WaecCertConfirmation/Services/GetCertificateStatusWithReason?"
+            req.params['CandidateNo'] = "#{candNo}"
+            req.params['ExamYear'] = "#{yearName}"
+            #req.headers['Content-Type'] = 'application/json'
+          end
+
+         JSON.parse(response.body)
+    end
+
+    ## Returns Complete result for confirmation certificate Enquiry
+
     def self.getResultStatuses(candNo, yearName)
           response = Faraday.get do |req|
             req.url "https://ictdapps.waec.org.ng/WaecCert/Services/GetCertificateDetailStatus?"
-            req.params['CandidateNo'] = '#{candNo}'
-            req.params['ExamYear'] = '{yearName}'
+            req.params['CandidateNo'] = "#{candNo}"
+            req.params['ExamYear'] = "#{yearName}"
             #req.headers['Content-Type'] = 'application/json'
           end
 

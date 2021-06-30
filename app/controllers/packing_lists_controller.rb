@@ -146,6 +146,6 @@ class PackingListsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def packing_list_params
       ##params.require(:packing_list).permit( :attachment, :waec_office_id)
-      params.permit( :attachment, :waec_office_id)
+      params.permit( :attachment, :waec_office_id, :format)
     end
 end

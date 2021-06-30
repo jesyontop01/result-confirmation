@@ -12,7 +12,7 @@ class LeafletsController < ApplicationController
                                 ,a.[created_at]
                                 ,a.[updated_at]
                                , b.office_id
-                            FROM [verifierApp].[dbo].[receipt_statuses] a
+                            FROM [dbo].[receipt_statuses] a
                             inner join receipt_booklets b
                             on a.receipt_booklet_id = b.id
                            where b.status = 'open' AND b.office_id = '#{params[:office_id]}' AND a.status='unused'

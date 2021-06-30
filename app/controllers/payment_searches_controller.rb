@@ -23,14 +23,14 @@ class PaymentSearchesController < ApplicationController
 
           SELECT  
           a.[id], b.[DietName], c.[YearName], a.[exam_no], a.[cand_email], a.[created_at], d.[office_name], a.[receipt_no]
-          FROM [verifierApp].[dbo].[payments] a
-          inner join [verifierApp].[dbo].[Diets] b
+          FROM [dbo].[payments] a
+          inner join [dbo].[Diets] b
           on a.diet_id = b.id
-          inner join [verifierApp].[dbo].[Years] c
-          on a.year_id = c.id
-          inner join [verifierApp].[dbo].[offices] d
-          on a.office_id = d.id
-           where year_id = '#{params[:year_id]}' and diet_id = '#{params[:diet_id]}'  and exam_no='#{params[:CandNo]}' 
+            inner join [dbo].[Years] c
+            on a.year_id = c.id
+            inner join [dbo].[offices] d
+            on a.office_id = d.id
+            where year_id = '#{params[:year_id]}' and diet_id = '#{params[:diet_id]}'  and exam_no='#{params[:CandNo]}' 
                  and office_id = '#{params[:office_id]}'
 
         SQL
@@ -44,14 +44,14 @@ class PaymentSearchesController < ApplicationController
 
           SELECT  
            a.[id], b.[DietName], c.[YearName], a.[exam_no], a.[cand_email], a.[created_at], d.[office_name], a.[receipt_no], a.[printed]
-          FROM [verifierApp].[dbo].[payments] a
-          inner join [verifierApp].[dbo].[Diets] b
+          FROM [dbo].[payments] a
+          inner join [dbo].[Diets] b
           on a.diet_id = b.id
-          inner join [verifierApp].[dbo].[Years] c
+          inner join [dbo].[Years] c
           on a.year_id = c.id
-          inner join [verifierApp].[dbo].[offices] d
+          inner join [dbo].[offices] d
           on a.office_id = d.id
-          inner join [verifierApp].[dbo].[confirm_types] e
+          inner join [dbo].[confirm_types] e
           on a.confirm_type_id = e.id
           where a.id = '#{params[:id]}'
         

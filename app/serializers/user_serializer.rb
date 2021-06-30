@@ -4,7 +4,8 @@ class UserSerializer < ActiveModel::Serializer
   					:password, :password_confirmation, :remember_me, :role_id, :is_management, :title
   					
 
-  		# has_many :roles
+  		#has_many :roles
   		belongs_to :role
   		has_one :signature
+      has_one :office
 end

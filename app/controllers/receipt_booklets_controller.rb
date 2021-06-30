@@ -65,7 +65,7 @@ class ReceiptBookletsController < ApplicationController
               ,[created_at]
               ,[updated_at]
               ,[confirmation_id]
-          FROM [verifierApp].[dbo].[receipt_statuses]
+          FROM [dbo].[receipt_statuses]
           where [receiptNo] between '#{params[:rangeFrom]}' and '#{params[:rangeTo]}'
 
           SQL

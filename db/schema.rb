@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_10_125129) do
+ActiveRecord::Schema.define(version: 2021_06_29_151649) do
 
   create_table "Grade", primary_key: "GradeType", id: :string, limit: 1, default: nil, force: :cascade do |t|
     t.string "GradeValue", limit: 2, null: false
@@ -75,6 +75,8 @@ ActiveRecord::Schema.define(version: 2021_06_10_125129) do
     t.string "WES_Ref"
     t.bigint "payment_id"
     t.boolean "isPrinted", default: false
+    t.string "Local_Ref_no"
+    t.datetime "DatePrinted"
     t.index ["confirm_country_id"], name: "index_confirmations_on_confirm_countries_id"
     t.index ["confirm_type_id"], name: "index_confirmations_on_confirm_type_id"
     t.index ["diet_id"], name: "index_confirmations_on_dietTbl_id"
@@ -152,7 +154,7 @@ ActiveRecord::Schema.define(version: 2021_06_10_125129) do
     t.index ["waec_office_id"], name: "index_packing_lists_on_waec_office_id"
   end
 
-  create_table "payments", force: :cascade do |t|
+  create_table "payments", id: :bigint, force: :cascade do |t|
     t.bigint "diet_id"
     t.bigint "year_id"
     t.string "exam_no"
@@ -169,13 +171,11 @@ ActiveRecord::Schema.define(version: 2021_06_10_125129) do
     t.string "PhoneNo"
     t.bigint "transaction_type_id"
     t.bigint "receipt_status_id"
-    t.index ["confirm_type_id"], name: "index_payments_on_confirm_type_id"
-    t.index ["diet_id"], name: "index_payments_on_diet_id"
-    t.index ["office_id"], name: "index_payments_on_office_id"
-    t.index ["receipt_status_id"], name: "index_payments_on_receipt_status_id"
-    t.index ["transaction_type_id"], name: "index_payments_on_transaction_type_id"
-    t.index ["user_id"], name: "index_payments_on_user_id"
-    t.index ["year_id"], name: "index_payments_on_year_id"
+    t.index ["receipt_no"], name: "index_payments_on_receipt_no", unique: true
+  end
+
+  create_table "payments2", id: false, force: :cascade do |t|
+    t.nchar "j", limit: 10
   end
 
   create_table "receipt_booklets", force: :cascade do |t|
@@ -363,7 +363,16 @@ ActiveRecord::Schema.define(version: 2021_06_10_125129) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
-  create_table "waec_centres", id: :integer, force: :cascade do |t|
+  create_table "waec_centres", id: false, force: :cascade do |t|
+    t.bigint "ID", null: false
+    t.varchar "CentreCode", limit: 15, null: false
+    t.varchar "Centre", limit: 255, null: false
+    t.integer "ExamType", limit: 1, null: false
+    t.integer "ExamYear", null: false
+    t.datetime "DateModified", null: false
+  end
+
+  create_table "waec_centres1", id: :integer, force: :cascade do |t|
     t.varchar "centre_no", limit: 7
     t.char "centre_type", limit: 1
     t.varchar "centre_name", limit: 255
@@ -495,18 +504,10 @@ ActiveRecord::Schema.define(version: 2021_06_10_125129) do
   add_foreign_key "confirm_countries", "confirm_types"
   add_foreign_key "confirmations", "confirm_countries"
   add_foreign_key "confirmations", "confirm_types"
-  add_foreign_key "confirmations", "payments"
   add_foreign_key "departments", "divisions"
   add_foreign_key "departments1", "divisions"
   add_foreign_key "offices", "waec_zonal_offices"
   add_foreign_key "packing_lists", "waec_offices"
-  add_foreign_key "payments", "confirm_types"
-  add_foreign_key "payments", "diets"
-  add_foreign_key "payments", "offices"
-  add_foreign_key "payments", "receipt_statuses"
-  add_foreign_key "payments", "transaction_types"
-  add_foreign_key "payments", "users"
-  add_foreign_key "payments", "years"
   add_foreign_key "receipt_booklets", "offices"
   add_foreign_key "receipt_booklets", "users"
   add_foreign_key "receipt_corrections", "receipt_statuses"

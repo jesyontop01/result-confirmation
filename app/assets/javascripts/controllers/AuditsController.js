@@ -458,17 +458,37 @@ $scope.result.amount = 0;
 		    
 		};
 
-		              SweetAlert.swal({
+		// Swal.fire({
+		//   title: 'Ajax request example',
+		//   text: 'Submit to run ajax request',
+		//   icon: 'info',
+		//   showCancelButton: true,
+		//   showLoaderOnConfirm: true,
+		//   preConfirm: function() {
+		//     return new Promise(function(resolve, reject) {
+		//       // here should be AJAX request
+		//       setTimeout(function() {
+		//         resolve();
+		//       }, 1000);
+		//     });
+		//   },
+		// }).then(function() {
+		//   Swal.fire('Ajax request finished!');
+		// });
+
+
+		SweetAlert.swal({
                  title: "Payment Transaction",
                  text: "Confirm Payment Please..?",
                  type: "warning",
                  showCancelButton: true,
+                 showLoaderOnConfirm: true,
                  confirmButtonColor: "#DD6B55",confirmButtonText: "Yes",
                  cancelButtonText: "No, cancel pls!",
                  closeOnConfirm: false,
-                 closeOnCancel: false }, 
+                 closeOnCancel: false , 
                  
-              function(isConfirm){ 
+              function(isConfirm, e){ 
                  if (isConfirm) {
 
                  	$scope.loading = true;
@@ -486,7 +506,7 @@ $scope.result.amount = 0;
 										$scope.loading = false;
 										//alert('Payment was successful.');
 
-                       SweetAlert.swal("Success!", "Payment was successful.", "success");
+                             SweetAlert.swal("Success!", "Payment was successful.", "success");
 									toaster.pop('success', "success", 'Payment was successful.');
 										$location.path('/audit/All-Payments');
 										}, function(response) {
@@ -495,6 +515,8 @@ $scope.result.amount = 0;
                             toaster.pop('error', "error", "An Error occurred.");
 
 								})
+
+								e.preventDefault()
 
                  } else {
 
@@ -508,6 +530,7 @@ $scope.result.amount = 0;
                               $scope.loading = false;
 
                  }
+             }
               });
 
 

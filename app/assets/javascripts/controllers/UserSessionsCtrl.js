@@ -542,7 +542,7 @@ angular.module('sessionsController', [])
 
         Auth.currentUser().then(function (user) {
           // body...
-          console.log(user.role);
+          console.log(user);
 
             // Find if the array contains an object by comparing the property value
               //if(user.role.some(role => role.name === "admin")){
@@ -573,11 +573,24 @@ angular.module('sessionsController', [])
                //} 
                else if((user.role.name === "exam_management") || (user.role.name === "exam_national")){
                   //console.log(vm.examAccess = true)
+                  console.log(user.office.office_name.trim())
+                  debugger
                   if (user.signature == null ) {
                     vm.examAccess = false;
-                  } else {
+                  }else {
                     vm.examAccess = true;
+                    vm.headOfficeAccess = true;
                   }
+
+
+
+                  // if (user.office.office_name.trim() === 'Yaba') {
+                  //   vm.headOfficeAccess = true;
+                  // }
+                  // else{
+                  //   vm.headOfficeAccess = false;
+                  // }
+
                   vm.adminAccess = false;
                   vm.auditAccess = false;
                   //vm.examAccess = true;

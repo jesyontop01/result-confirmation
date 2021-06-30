@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   before_save { email.downcase! }
+   before_save :formatValues 
   after_create :set_user_role_on_registration
 
   devise :database_authenticatable, :registerable, :timeoutable,
@@ -24,8 +25,16 @@ validate :user_exists, on: :create
           # has_many :assignments , dependent: :delete_all
           # has_many :roles, through: :assignments
           belongs_to :role
+          belongs_to :dept
 
           has_one :signature
+
+
+          def formatValues
+            self.surname = self.surname.upcase
+            self.othernames = self.othernames.upcase
+            self.title = self.title.upcase
+          end
 
 #before_save :activate_user_or_timedout
 
@@ -134,12 +143,15 @@ end
         #  roleId = Role.find_by(:name => "exam_staff").id 
         #  self.update(:role_id => roleId) 
         # end
-        ##  If User is not
-        if self.dept_id == 3 && self.is_management == true
+
+        userDept = Dept.find_by(:id => self.dept_id)
+        
+          
+        if userDept.name == 'Examinations Dept' && self.is_management == true
          roleId = Role.find_by(:name => "exam_management").id 
          self.update(:role_id => roleId) 
 
-       elsif self.dept_id == 3 && self.is_management == false
+       elsif userDept.name == 'Examinations Dept' && self.is_management == false
 
          roleId = Role.find_by(:name => "exam_national").id 
          self.update(:role_id => roleId) 
@@ -150,17 +162,44 @@ end
          roleId = Role.find_by(:name => "account_staff").id 
          self.update(:role_id => roleId)
 
-        elsif self.dept_id == 2
-          
+        elsif userDept.name == 'Audit Dept'
          roleId = Role.find_by(:name => "audit_staff").id 
          self.update(:role_id => roleId)
             
         end
+
+
+
+       #  ##  If User is not
+       #  if self.dept_id == 3 && self.is_management == true
+       #   roleId = Role.find_by(:name => "exam_management").id 
+       #   self.update(:role_id => roleId) 
+
+       # elsif self.dept_id == 3 && self.is_management == false
+
+       #   roleId = Role.find_by(:name => "exam_national").id 
+       #   self.update(:role_id => roleId) 
+
+
+       #  elsif self.dept_id == 1
+
+       #   roleId = Role.find_by(:name => "account_staff").id 
+       #   self.update(:role_id => roleId)
+
+       #  elsif self.dept_id == 2
+          
+       #   roleId = Role.find_by(:name => "audit_staff").id 
+       #   self.update(:role_id => roleId)
+            
+       #  end
      
    end
 
 
    def set_role_on_registration
+
+      userDept = Dept.find_by(:id => self.dept_id)
+
         if self.dept_id == 3
          self.role_ids = [7]  
         end

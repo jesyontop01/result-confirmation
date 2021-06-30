@@ -250,7 +250,7 @@
                       </ul>
                     </li>
 
-                    <li class="nav-item has-treeview menu-open" ng-show="user.id && sessions.examAccess">
+<!--                     <li class="nav-item has-treeview menu-open" ng-show="user.id && sessions.examAccess">
                       <a href="#/" class="nav-link active">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
@@ -285,13 +285,13 @@
                           </a>
                         </li>
                       </ul>
-                    </li>
+                    </li> -->
 
                   <li class="nav-item has-treeview menu-open" ng-show="user.id && sessions.examAccess">
                       <a href="#/" class="nav-link active">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                         TAD(Exams) Profile 2
+                         TAD(Exams) Profile 
                           <i class="right fas fa-angle-left"></i>
                         </p>
                       </a>
@@ -321,13 +321,7 @@
                             <i class="far fa-circle nav-icon"></i>
                             <p>payments Search</p>
                           </a>
-                        </li>
-                        <li class="nav-item">
-                          <a href="#/verifer/search" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p> Result Certificate Enquiry</p>
-                          </a>
-                        </li>
+                        </li> 
                         <li class="nav-item">
                           <a href="#/result/name_search" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
@@ -336,10 +330,16 @@
                         </li>
                       </ul>
                     </li>
+                    <li class="nav-item" ng-show="sessions.signedIn() && sessions.headOfficeAccess">
+                          <a href="#/verifer/search" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p> Result Certificate Enquiry</p>
+                          </a>
+                    </li>
 
 
                     
-                    <li class="nav-item">
+                    <li class="nav-item" ng-show="sessions.signedIn()">
                         <a href="#/packingList" class="nav-link">
                           <i class="far fa-circle nav-icon"></i>
                           <p>Packing List File Download</p>

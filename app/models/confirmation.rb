@@ -6,6 +6,7 @@ class Confirmation < ActiveRecord::Base
   belongs_to :confirm_type
   belongs_to :confirm_country
   belongs_to :receipt_status, optional: true
+  belongs_to :payment
 
   validates_presence_of  :exam_no, :Cand_address
   validates_presence_of  :dest_title, :dest_address1, :dest_location

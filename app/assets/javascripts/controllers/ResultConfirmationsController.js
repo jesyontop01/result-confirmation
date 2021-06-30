@@ -1606,7 +1606,7 @@ console.log(resultDetail);
 													  width: 200
 													//image: 'image/waec.jpeg'
 												},
-											{text: $scope.signatory[0][0][1] + " "+ $scope.signatory[0][0][2]+ " " + "(" + $scope.signatory[0][0][0] +")" , bold:true},
+											{text: $scope.signatory[0][0][1].toUpperCase() + " "+ $scope.signatory[0][0][2].toUpperCase()+ " " + "(" + $scope.signatory[0][0][0].toUpperCase() +")" , bold:true},
 											//{text:'ADEKUNLE R.O. (MRS)', bold:true},
 											{text: 'RESULTS OFFICER'},
 										]
@@ -1622,7 +1622,7 @@ console.log(resultDetail);
 													  width: 200
 													//image: 'image/waec.jpeg'
 												},
-											{text: $scope.signatory[1][0][1] + " "+ $scope.signatory[1][0][2]+ " " + "(" + $scope.signatory[1][0][0] +")" , bold:true},
+											{text: $scope.signatory[1][0][1].toUpperCase() + " "+ $scope.signatory[1][0][2].toUpperCase()+ " " + "(" + $scope.signatory[1][0][0].toUpperCase() +")" , bold:true},
 											//{text:'JOHN-NWAFA H.A. (MRS)', bold:true},
 											{text: 'For: HEAD OF NATIONAL OFFICE'},
 										]
@@ -1643,7 +1643,7 @@ console.log(resultDetail);
 									//   }
 							
 							
-									],
+							],
 							
 							
 								// 	footer : function(currentPage, pageCount) {
@@ -2003,7 +2003,7 @@ console.log(resultDetail);
 
 					if ($scope.resultDetail[0].Picture == null ) {
 						//$scope.resultDetail[0].Picture = 'iVBORw0KGgoAAAANSUhEUgAAAP8AAADFCAMAAACsN9QzAAAADFBMVEX39/f////8/Pz5+fkyiACtAAADhklEQVR4nO2c0XajMAxEAf//P+86bnNIlm6KLWlmbN3nPuRKIzkQyrYlSZIkSZIkSZL4Uspx7E+Oo6A/UCTlpH4qwho1KFfuq5TguvNnZq7A/1p/CgH6Y3rxsfdTZ+DX9nNW4Jb+dEPwu8l/Af2RLbnZ/MY8M9ClP08B+uz3WZZAt/4cBRjQn6EAQ/r6O6Bz9c1SgI5z/x20wggG+tIFsNAX3oHDw99QXQEm6a+gRTqx0hedAKP0V9AqPZilf9cMgGH7FVegZfsVA2DafsEA2OrLBcC4/XJHgLW+2ADYbr8HaKVbmMdfLAD2+lIb0CH+UgPgEP/0F1oAHvpCC8Bl/IUGYHV/l/FPf5kF6KO/vL/MAZD+6Z/+6Z/+6Z/+6Z/+6Z/+w6x+/SPjn/c/1vZf/f7f6ve/ffxl1l/+/rP675+r//69/PMPqz//Yj8AUvF3GACp+G/LP/9o7a/WfusNiNa5j6m+XPuNA4CW6cHwCBBs/7b8/z/ZBQAt0ouRvmb6N7MViNboZ/X/f7ZYAbLpfzCsL7r7nyyuP7gC5PUHC4D+8Bb0F2CC7ld6CzCJ/ta5BOfR7/oeoH3uv3N3BmZqfmNp/c/vvX0vwEzx77sKmCQDt1s/VQhGr4C1K2Bx/a9bAas74JoVsLz/L1gBQ/sKWucm9s9/KJ2GPs8/ygyB0+OfKgVwevp315gBr+Y36CPgq09fAL/sf0M9A/761AUIsK+gNX8iSJ+1AGH6nAUI1GcsQKg+XwGC9dkKEHHwvUJ1DMbrUxXA+0vvNTRfhTH6PAUA6bPsQMTwNyhWAE6fogCo4W/gVwBUH78CkOmvgCcAm/4KdgLQ9jt2AtDpryAnAO3+AKfP0H5kANDmX6D0OdqPCwDa+wlGn6X9qACgrU8g9HnajwkA2vmFeH2m9iMCgDZ+I1off+H3SvRlIFf84wcA7fsPsfps8Y8eALb4Rw8A2vaCSH2++McOAF/8YwcA7XpJ+kfBOP6RC4Bx/CMXwOr+aNMfSP8YONdf3AJc3Z9z/cUtwNX9WfMfdwBQJiDyAmjgpQZORL8rgasCiDdF8FQA9p4Mik0IfQQOHQL8K1IKMAR4+weYEJDIN6JLQCXfiCsBoXwjogS08o3iWYOjcMt/4VIDEfcn5TArwqHm/k0ZLoKs+pmeMlRxffMXSq3Dh0L8/YMZOv6JcgX6QyVJkiRJkiTJ7PwBwg5CTwIHoakAAAAASUVORK5CYII='
-				         //$scope.resultDetail[0].Picture = 'iVBORw0KGgoAAAANSUhEUgAAAP8AAADFCAMAAACsN9QzAAAADFBMVEX39/f////8/Pz5+fkyiACtAAADhklEQVR4nO2c0XajMAxEAf//P+86bnNIlm6KLWlmbN3nPuRKIzkQyrYlSZIkSZIkSZL4Uspx7E+Oo6A/UCTlpH4qwho1KFfuq5TguvNnZq7A/1p/CgH6Y3rxsfdTZ+DX9nNW4Jb+dEPwu8l/Af2RLbnZ/MY8M9ClP08B+uz3WZZAt/4cBRjQn6EAQ/r6O6Bz9c1SgI5z/x20wggG+tIFsNAX3oHDw99QXQEm6a+gRTqx0hedAKP0V9AqPZilf9cMgGH7FVegZfsVA2DafsEA2OrLBcC4/XJHgLW+2ADYbr8HaKVbmMdfLAD2+lIb0CH+UgPgEP/0F1oAHvpCC8Bl/IUGYHV/l/FPf5kF6KO/vL/MAZD+6Z/+6Z/+6Z/+6Z/+6Z/+w6x+/SPjn/c/1vZf/f7f6ve/ffxl1l/+/rP675+r//69/PMPqz//Yj8AUvF3GACp+G/LP/9o7a/WfusNiNa5j6m+XPuNA4CW6cHwCBBs/7b8/z/ZBQAt0ouRvmb6N7MViNboZ/X/f7ZYAbLpfzCsL7r7nyyuP7gC5PUHC4D+8Bb0F2CC7ld6CzCJ/ta5BOfR7/oeoH3uv3N3BmZqfmNp/c/vvX0vwEzx77sKmCQDt1s/VQhGr4C1K2Bx/a9bAas74JoVsLz/L1gBQ/sKWucm9s9/KJ2GPs8/ygyB0+OfKgVwevp315gBr+Y36CPgq09fAL/sf0M9A/761AUIsK+gNX8iSJ+1AGH6nAUI1GcsQKg+XwGC9dkKEHHwvUJ1DMbrUxXA+0vvNTRfhTH6PAUA6bPsQMTwNyhWAE6fogCo4W/gVwBUH78CkOmvgCcAm/4KdgLQ9jt2AtDpryAnAO3+AKfP0H5kANDmX6D0OdqPCwDa+wlGn6X9qACgrU8g9HnajwkA2vmFeH2m9iMCgDZ+I1off+H3SvRlIFf84wcA7fsPsfps8Y8eALb4Rw8A2vaCSH2++McOAF/8YwcA7XpJ+kfBOP6RC4Bx/CMXwOr+aNMfSP8YONdf3AJc3Z9z/cUtwNX9WfMfdwBQJiDyAmjgpQZORL8rgasCiDdF8FQA9p4Mik0IfQQOHQL8K1IKMAR4+weYEJDIN6JLQCXfiCsBoXwjogS08o3iWYOjcMt/4VIDEfcn5TArwqHm/k0ZLoKs+pmeMlRxffMXSq3Dh0L8/YMZOv6JcgX6QyVJkiRJkiTJ7PwBwg5CTwIHoakAAAAASUVORK5CYII='
+				         $scope.resultDetail[0].Picture = 'iVBORw0KGgoAAAANSUhEUgAAAP8AAADFCAMAAACsN9QzAAAADFBMVEX39/f////8/Pz5+fkyiACtAAADhklEQVR4nO2c0XajMAxEAf//P+86bnNIlm6KLWlmbN3nPuRKIzkQyrYlSZIkSZIkSZL4Uspx7E+Oo6A/UCTlpH4qwho1KFfuq5TguvNnZq7A/1p/CgH6Y3rxsfdTZ+DX9nNW4Jb+dEPwu8l/Af2RLbnZ/MY8M9ClP08B+uz3WZZAt/4cBRjQn6EAQ/r6O6Bz9c1SgI5z/x20wggG+tIFsNAX3oHDw99QXQEm6a+gRTqx0hedAKP0V9AqPZilf9cMgGH7FVegZfsVA2DafsEA2OrLBcC4/XJHgLW+2ADYbr8HaKVbmMdfLAD2+lIb0CH+UgPgEP/0F1oAHvpCC8Bl/IUGYHV/l/FPf5kF6KO/vL/MAZD+6Z/+6Z/+6Z/+6Z/+6Z/+w6x+/SPjn/c/1vZf/f7f6ve/ffxl1l/+/rP675+r//69/PMPqz//Yj8AUvF3GACp+G/LP/9o7a/WfusNiNa5j6m+XPuNA4CW6cHwCBBs/7b8/z/ZBQAt0ouRvmb6N7MViNboZ/X/f7ZYAbLpfzCsL7r7nyyuP7gC5PUHC4D+8Bb0F2CC7ld6CzCJ/ta5BOfR7/oeoH3uv3N3BmZqfmNp/c/vvX0vwEzx77sKmCQDt1s/VQhGr4C1K2Bx/a9bAas74JoVsLz/L1gBQ/sKWucm9s9/KJ2GPs8/ygyB0+OfKgVwevp315gBr+Y36CPgq09fAL/sf0M9A/761AUIsK+gNX8iSJ+1AGH6nAUI1GcsQKg+XwGC9dkKEHHwvUJ1DMbrUxXA+0vvNTRfhTH6PAUA6bPsQMTwNyhWAE6fogCo4W/gVwBUH78CkOmvgCcAm/4KdgLQ9jt2AtDpryAnAO3+AKfP0H5kANDmX6D0OdqPCwDa+wlGn6X9qACgrU8g9HnajwkA2vmFeH2m9iMCgDZ+I1off+H3SvRlIFf84wcA7fsPsfps8Y8eALb4Rw8A2vaCSH2++McOAF/8YwcA7XpJ+kfBOP6RC4Bx/CMXwOr+aNMfSP8YONdf3AJc3Z9z/cUtwNX9WfMfdwBQJiDyAmjgpQZORL8rgasCiDdF8FQA9p4Mik0IfQQOHQL8K1IKMAR4+weYEJDIN6JLQCXfiCsBoXwjogS08o3iWYOjcMt/4VIDEfcn5TArwqHm/k0ZLoKs+pmeMlRxffMXSq3Dh0L8/YMZOv6JcgX6QyVJkiRJkiTJ7PwBwg5CTwIHoakAAAAASUVORK5CYII='
 						}
 
 
@@ -2226,7 +2226,7 @@ console.log(resultDetail);
 													  width: 200
 													//image: 'image/waec.jpeg'
 												},
-											{text: $scope.signatory[0][0][1] + " "+ $scope.signatory[0][0][2]+ " " + "(" + $scope.signatory[0][0][0] +")" , bold:true},
+											{text: $scope.signatory[0][0][1].toUpperCase() + " "+ $scope.signatory[0][0][2].toUpperCase()+ " " + "(" + $scope.signatory[0][0][0].toUpperCase() +")" , bold:true},
 											//{text:'ADEKUNLE R.O. (MRS)', bold:true},
 											{text: 'RESULTS OFFICER'},
 										]
@@ -2242,7 +2242,7 @@ console.log(resultDetail);
 													  width: 200
 													//image: 'image/waec.jpeg'
 												},
-											{text: $scope.signatory[1][0][1] + " "+ $scope.signatory[1][0][2]+ " " + "(" + $scope.signatory[1][0][0] +")" , bold:true},
+											{text: $scope.signatory[1][0][1].toUpperCase() + " "+ $scope.signatory[1][0][2].toUpperCase()+ " " + "(" + $scope.signatory[1][0][0].toUpperCase() +")" , bold:true},
 											//{text:'JOHN-NWAFA H.A. (MRS)', bold:true},
 											{text: 'For: HEAD OF NATIONAL OFFICE'},
 										]
@@ -2853,7 +2853,7 @@ $scope.selectConfirm = selectConfirm;
 								  {
 									margin:[0,33,0,33],
 									stack:[
-										{text: $scope.signatory[0][0][1] + " "+ $scope.signatory[0][0][2]+ " " + "(" + $scope.signatory[0][0][0] +")" , bold:true},
+										{text: $scope.signatory[0][0][1].toUpperCase() + " "+ $scope.signatory[0][0][2].toUpperCase()+ " " + "(" + $scope.signatory[0][0][0].toUpperCase() +")" , bold:true},
 										//{text:'ADEKUNLE R.O. (MRS)', bold:true},
 										{text: 'RESULTS OFFICER'},
 									]
@@ -2862,7 +2862,7 @@ $scope.selectConfirm = selectConfirm;
 								  {
 									margin:[0,2,0,17],
 									stack:[
-										{text: $scope.signatory[1][0][1] + " "+ $scope.signatory[1][0][2]+ " " + "(" + $scope.signatory[1][0][0] +")" , bold:true},
+										{text: $scope.signatory[1][0][1].toUpperCase() + " "+ $scope.signatory[1][0][2].toUpperCase()+ " " + "(" + $scope.signatory[1][0][0].toUpperCase() +")" , bold:true},
 										//{text:'JOHN-NWAFA H.A. (MRS)', bold:true},
 										{text: 'For: HEAD OF NATIONAL OFFICE'},
 									]
@@ -3194,7 +3194,7 @@ $scope.selectConfirm = selectConfirm;
 
 				if ($scope.resultDetail[0].Picture == null ) {
 					//$scope.resultDetail[0].Picture = 'iVBORw0KGgoAAAANSUhEUgAAAP8AAADFCAMAAACsN9QzAAAADFBMVEX39/f////8/Pz5+fkyiACtAAADhklEQVR4nO2c0XajMAxEAf//P+86bnNIlm6KLWlmbN3nPuRKIzkQyrYlSZIkSZIkSZL4Uspx7E+Oo6A/UCTlpH4qwho1KFfuq5TguvNnZq7A/1p/CgH6Y3rxsfdTZ+DX9nNW4Jb+dEPwu8l/Af2RLbnZ/MY8M9ClP08B+uz3WZZAt/4cBRjQn6EAQ/r6O6Bz9c1SgI5z/x20wggG+tIFsNAX3oHDw99QXQEm6a+gRTqx0hedAKP0V9AqPZilf9cMgGH7FVegZfsVA2DafsEA2OrLBcC4/XJHgLW+2ADYbr8HaKVbmMdfLAD2+lIb0CH+UgPgEP/0F1oAHvpCC8Bl/IUGYHV/l/FPf5kF6KO/vL/MAZD+6Z/+6Z/+6Z/+6Z/+6Z/+w6x+/SPjn/c/1vZf/f7f6ve/ffxl1l/+/rP675+r//69/PMPqz//Yj8AUvF3GACp+G/LP/9o7a/WfusNiNa5j6m+XPuNA4CW6cHwCBBs/7b8/z/ZBQAt0ouRvmb6N7MViNboZ/X/f7ZYAbLpfzCsL7r7nyyuP7gC5PUHC4D+8Bb0F2CC7ld6CzCJ/ta5BOfR7/oeoH3uv3N3BmZqfmNp/c/vvX0vwEzx77sKmCQDt1s/VQhGr4C1K2Bx/a9bAas74JoVsLz/L1gBQ/sKWucm9s9/KJ2GPs8/ygyB0+OfKgVwevp315gBr+Y36CPgq09fAL/sf0M9A/761AUIsK+gNX8iSJ+1AGH6nAUI1GcsQKg+XwGC9dkKEHHwvUJ1DMbrUxXA+0vvNTRfhTH6PAUA6bPsQMTwNyhWAE6fogCo4W/gVwBUH78CkOmvgCcAm/4KdgLQ9jt2AtDpryAnAO3+AKfP0H5kANDmX6D0OdqPCwDa+wlGn6X9qACgrU8g9HnajwkA2vmFeH2m9iMCgDZ+I1off+H3SvRlIFf84wcA7fsPsfps8Y8eALb4Rw8A2vaCSH2++McOAF/8YwcA7XpJ+kfBOP6RC4Bx/CMXwOr+aNMfSP8YONdf3AJc3Z9z/cUtwNX9WfMfdwBQJiDyAmjgpQZORL8rgasCiDdF8FQA9p4Mik0IfQQOHQL8K1IKMAR4+weYEJDIN6JLQCXfiCsBoXwjogS08o3iWYOjcMt/4VIDEfcn5TArwqHm/k0ZLoKs+pmeMlRxffMXSq3Dh0L8/YMZOv6JcgX6QyVJkiRJkiTJ7PwBwg5CTwIHoakAAAAASUVORK5CYII='
-			         //$scope.resultDetail[0].Picture = 'iVBORw0KGgoAAAANSUhEUgAAAP8AAADFCAMAAACsN9QzAAAADFBMVEX39/f////8/Pz5+fkyiACtAAADhklEQVR4nO2c0XajMAxEAf//P+86bnNIlm6KLWlmbN3nPuRKIzkQyrYlSZIkSZIkSZL4Uspx7E+Oo6A/UCTlpH4qwho1KFfuq5TguvNnZq7A/1p/CgH6Y3rxsfdTZ+DX9nNW4Jb+dEPwu8l/Af2RLbnZ/MY8M9ClP08B+uz3WZZAt/4cBRjQn6EAQ/r6O6Bz9c1SgI5z/x20wggG+tIFsNAX3oHDw99QXQEm6a+gRTqx0hedAKP0V9AqPZilf9cMgGH7FVegZfsVA2DafsEA2OrLBcC4/XJHgLW+2ADYbr8HaKVbmMdfLAD2+lIb0CH+UgPgEP/0F1oAHvpCC8Bl/IUGYHV/l/FPf5kF6KO/vL/MAZD+6Z/+6Z/+6Z/+6Z/+6Z/+w6x+/SPjn/c/1vZf/f7f6ve/ffxl1l/+/rP675+r//69/PMPqz//Yj8AUvF3GACp+G/LP/9o7a/WfusNiNa5j6m+XPuNA4CW6cHwCBBs/7b8/z/ZBQAt0ouRvmb6N7MViNboZ/X/f7ZYAbLpfzCsL7r7nyyuP7gC5PUHC4D+8Bb0F2CC7ld6CzCJ/ta5BOfR7/oeoH3uv3N3BmZqfmNp/c/vvX0vwEzx77sKmCQDt1s/VQhGr4C1K2Bx/a9bAas74JoVsLz/L1gBQ/sKWucm9s9/KJ2GPs8/ygyB0+OfKgVwevp315gBr+Y36CPgq09fAL/sf0M9A/761AUIsK+gNX8iSJ+1AGH6nAUI1GcsQKg+XwGC9dkKEHHwvUJ1DMbrUxXA+0vvNTRfhTH6PAUA6bPsQMTwNyhWAE6fogCo4W/gVwBUH78CkOmvgCcAm/4KdgLQ9jt2AtDpryAnAO3+AKfP0H5kANDmX6D0OdqPCwDa+wlGn6X9qACgrU8g9HnajwkA2vmFeH2m9iMCgDZ+I1off+H3SvRlIFf84wcA7fsPsfps8Y8eALb4Rw8A2vaCSH2++McOAF/8YwcA7XpJ+kfBOP6RC4Bx/CMXwOr+aNMfSP8YONdf3AJc3Z9z/cUtwNX9WfMfdwBQJiDyAmjgpQZORL8rgasCiDdF8FQA9p4Mik0IfQQOHQL8K1IKMAR4+weYEJDIN6JLQCXfiCsBoXwjogS08o3iWYOjcMt/4VIDEfcn5TArwqHm/k0ZLoKs+pmeMlRxffMXSq3Dh0L8/YMZOv6JcgX6QyVJkiRJkiTJ7PwBwg5CTwIHoakAAAAASUVORK5CYII='
+			         $scope.resultDetail[0].Picture = 'iVBORw0KGgoAAAANSUhEUgAAAP8AAADFCAMAAACsN9QzAAAADFBMVEX39/f////8/Pz5+fkyiACtAAADhklEQVR4nO2c0XajMAxEAf//P+86bnNIlm6KLWlmbN3nPuRKIzkQyrYlSZIkSZIkSZL4Uspx7E+Oo6A/UCTlpH4qwho1KFfuq5TguvNnZq7A/1p/CgH6Y3rxsfdTZ+DX9nNW4Jb+dEPwu8l/Af2RLbnZ/MY8M9ClP08B+uz3WZZAt/4cBRjQn6EAQ/r6O6Bz9c1SgI5z/x20wggG+tIFsNAX3oHDw99QXQEm6a+gRTqx0hedAKP0V9AqPZilf9cMgGH7FVegZfsVA2DafsEA2OrLBcC4/XJHgLW+2ADYbr8HaKVbmMdfLAD2+lIb0CH+UgPgEP/0F1oAHvpCC8Bl/IUGYHV/l/FPf5kF6KO/vL/MAZD+6Z/+6Z/+6Z/+6Z/+6Z/+w6x+/SPjn/c/1vZf/f7f6ve/ffxl1l/+/rP675+r//69/PMPqz//Yj8AUvF3GACp+G/LP/9o7a/WfusNiNa5j6m+XPuNA4CW6cHwCBBs/7b8/z/ZBQAt0ouRvmb6N7MViNboZ/X/f7ZYAbLpfzCsL7r7nyyuP7gC5PUHC4D+8Bb0F2CC7ld6CzCJ/ta5BOfR7/oeoH3uv3N3BmZqfmNp/c/vvX0vwEzx77sKmCQDt1s/VQhGr4C1K2Bx/a9bAas74JoVsLz/L1gBQ/sKWucm9s9/KJ2GPs8/ygyB0+OfKgVwevp315gBr+Y36CPgq09fAL/sf0M9A/761AUIsK+gNX8iSJ+1AGH6nAUI1GcsQKg+XwGC9dkKEHHwvUJ1DMbrUxXA+0vvNTRfhTH6PAUA6bPsQMTwNyhWAE6fogCo4W/gVwBUH78CkOmvgCcAm/4KdgLQ9jt2AtDpryAnAO3+AKfP0H5kANDmX6D0OdqPCwDa+wlGn6X9qACgrU8g9HnajwkA2vmFeH2m9iMCgDZ+I1off+H3SvRlIFf84wcA7fsPsfps8Y8eALb4Rw8A2vaCSH2++McOAF/8YwcA7XpJ+kfBOP6RC4Bx/CMXwOr+aNMfSP8YONdf3AJc3Z9z/cUtwNX9WfMfdwBQJiDyAmjgpQZORL8rgasCiDdF8FQA9p4Mik0IfQQOHQL8K1IKMAR4+weYEJDIN6JLQCXfiCsBoXwjogS08o3iWYOjcMt/4VIDEfcn5TArwqHm/k0ZLoKs+pmeMlRxffMXSq3Dh0L8/YMZOv6JcgX6QyVJkiRJkiTJ7PwBwg5CTwIHoakAAAAASUVORK5CYII='
 					}
 
 
@@ -3415,7 +3415,7 @@ $scope.selectConfirm = selectConfirm;
 								  {
 									margin:[0,33,0,33],
 									stack:[
-										{text: $scope.signatory[0][0][1] + " "+ $scope.signatory[0][0][2]+ " " + "(" + $scope.signatory[0][0][0] +")" , bold:true},
+										{text: $scope.signatory[0][0][1].toUpperCase() + " "+ $scope.signatory[0][0][2].toUpperCase()+ " " + "(" + $scope.signatory[0][0][0].toUpperCase() +")" , bold:true},
 										//{text:'ADEKUNLE R.O. (MRS)', bold:true},
 										{text: 'RESULTS OFFICER'},
 									]
@@ -3424,7 +3424,7 @@ $scope.selectConfirm = selectConfirm;
 								  {
 									margin:[0,2,0,17],
 									stack:[
-										{text: $scope.signatory[1][0][1] + " "+ $scope.signatory[1][0][2]+ " " + "(" + $scope.signatory[1][0][0] +")" , bold:true},
+										{text: $scope.signatory[1][0][1].toUpperCase() + " "+ $scope.signatory[1][0][2].toUpperCase()+ " " + "(" + $scope.signatory[1][0][0].toUpperCase() +")" , bold:true},
 										//{text:'JOHN-NWAFA H.A. (MRS)', bold:true},
 										{text: 'For: HEAD OF NATIONAL OFFICE'},
 									]

@@ -10,8 +10,8 @@ class FinanceDeptsController < ApplicationController
 
           SELECT
           a.[id], a.[name], b.[name] as division
-          FROM [verifierApp].[dbo].[finance_depts] a
-          inner join [verifierApp].[dbo].[divisions] b
+          FROM [dbo].[finance_depts] a
+          inner join [dbo].[divisions] b
           on a.division_id = b.id
           where a.division_id = '#{params[:division_id]}' 
 

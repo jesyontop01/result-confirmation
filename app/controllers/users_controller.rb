@@ -10,22 +10,37 @@ class UsersController < ApplicationController
         @users = User.where(activated: true)
 
     else
-      @users = User.all
+      # @users = User.all
+
+            sql= <<-SQL
+                SELECT
+                  a.[id], a.[email], a.[username] ,a.[surname] ,a.[othernames]
+                  ,a.[title] ,a.[office_id] ,a.[lp_no] ,a.[activated]
+                  ,a.[activated_at] ,a.[logged_in] ,a.[is_signedIn] ,a.[dept_id]
+                  ,a.[role_id] ,a.[admin] ,a.[is_management] ,b.[office_name]
+                  FROM [dbo].[users] a
+                  inner join [dbo].Offices b
+                  on a.office_id = b.ID
+                  ORDER BY b.[office_name];
+
+      SQL
+
+       @users = ActiveRecord::Base.connection.exec_query(sql)
       
              params[:user_id] = current_user.id
 
-              sql = <<-SQL 
+              sql2 = <<-SQL 
       
        SELECT 
                    b.name
-            FROM [verifierApp].[dbo].[users] as a
+            FROM [dbo].[users] as a
             inner join roles as b
             on a.role_id = b.id
             where a.[id] =  '#{params[:user_id]}'
 
             SQL
 
-                @assignments = ActiveRecord::Base.connection.exec_query(sql)
+                @assignments = ActiveRecord::Base.connection.exec_query(sql2)
     end
    # render json: @users
 

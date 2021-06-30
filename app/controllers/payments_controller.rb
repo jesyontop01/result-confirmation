@@ -25,14 +25,14 @@ class PaymentsController < ApplicationController
                         a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], 
                         a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
                         , e.surname + ' ' +e.othernames as 'fullname'
-                        FROM [verifierApp].[dbo].[payments] a
-                        inner join [verifierApp].[dbo].[transaction_types] b
+                        FROM [dbo].[payments] a
+                        inner join [dbo].[transaction_types] b
                         on a.transaction_type_id = b.id
-                        inner join [verifierApp].[dbo].[offices] c
+                        inner join [dbo].[offices] c
                         on a.office_id = c.id
-                        inner join [verifierApp].[dbo].[confirm_types] d
+                        inner join [dbo].[confirm_types] d
                         on a.confirm_type_id = d.id
-                        inner join [verifierApp].[dbo].users e
+                        inner join [dbo].users e
                         on a.user_id = e.id
                        WHERE cast(a.created_at as date) between '#{params[:dateFrom]}' and '#{params[:dateTo]}';
 
@@ -51,14 +51,14 @@ class PaymentsController < ApplicationController
                         a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], 
                         a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
                         , e.surname + ' ' +e.othernames as 'fullname'
-                        FROM [verifierApp].[dbo].[payments] a
-                        inner join [verifierApp].[dbo].[transaction_types] b
+                        FROM [dbo].[payments] a
+                        inner join [dbo].[transaction_types] b
                         on a.transaction_type_id = b.id
-                        inner join [verifierApp].[dbo].[offices] c
+                        inner join [dbo].[offices] c
                         on a.office_id = c.id
-                        inner join [verifierApp].[dbo].[confirm_types] d
+                        inner join [dbo].[confirm_types] d
                         on a.confirm_type_id = d.id
-                        inner join [verifierApp].[dbo].users e
+                        inner join [dbo].users e
                         on a.user_id = e.id
                        WHERE cast(a.created_at as date) between '#{params[:dateFrom]}' and '#{params[:dateTo]}' AND a.office_id = '#{params[:WaecOfficeId]}';
                       SQL
@@ -74,14 +74,14 @@ class PaymentsController < ApplicationController
                       a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email]
                       , a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
                        , e.surname + ' ' +e.othernames as 'fullname'
-                      FROM [verifierApp].[dbo].[payments] a
-                      inner join [verifierApp].[dbo].[transaction_types] b
+                      FROM [dbo].[payments] a
+                      inner join [dbo].[transaction_types] b
                       on a.transaction_type_id = b.id
-                      inner join [verifierApp].[dbo].[offices] c
+                      inner join [dbo].[offices] c
                       on a.office_id = c.id
-                      inner join [verifierApp].[dbo].[confirm_types] d
+                      inner join [dbo].[confirm_types] d
                       on a.confirm_type_id = d.id
-                      inner join [verifierApp].[dbo].users e
+                      inner join [dbo].users e
                       on a.user_id = e.id
                     
 
@@ -100,14 +100,14 @@ class PaymentsController < ApplicationController
                 a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], 
                 a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
                 , e.surname + ' ' +e.othernames as 'fullname'
-                FROM [verifierApp].[dbo].[payments] a
-                inner join [verifierApp].[dbo].[transaction_types] b
+                FROM [dbo].[payments] a
+                inner join [dbo].[transaction_types] b
                 on a.transaction_type_id = b.id
-                inner join [verifierApp].[dbo].[offices] c
+                inner join [dbo].[offices] c
                 on a.office_id = c.id
-                inner join [verifierApp].[dbo].[confirm_types] d
+                inner join [dbo].[confirm_types] d
                 on a.confirm_type_id = d.id
-                inner join [verifierApp].[dbo].users e
+                inner join [dbo].users e
                 on a.user_id = e.id
                 WHERE cast(a.created_at as date) between '#{params[:dateFrom]}' and '#{params[:dateTo]}' AND a.office_id = '#{params[:WaecOfficeId]}';
             SQL
@@ -123,14 +123,14 @@ class PaymentsController < ApplicationController
                      a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName]
                      , a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no]
                      , d.[typeName], e.surname + ' ' +e.othernames as 'fullname'
-                     FROM [verifierApp].[dbo].[payments] a
-                     inner join [verifierApp].[dbo].[transaction_types] b
+                     FROM [dbo].[payments] a
+                     inner join [dbo].[transaction_types] b
                      on a.transaction_type_id = b.id
-                     inner join [verifierApp].[dbo].[offices] c
+                     inner join [dbo].[offices] c
                      on a.office_id = c.id
-                     inner join [verifierApp].[dbo].[confirm_types] d
+                     inner join [dbo].[confirm_types] d
                      on a.confirm_type_id = d.id 
-                     inner join [verifierApp].[dbo].users e
+                     inner join [dbo].users e
                      on a.user_id = e.id
                      where a.office_id = '#{params[:office_id]}';
                     
@@ -152,14 +152,14 @@ class PaymentsController < ApplicationController
           a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email]
           , a.[created_at], c.[office_name], a.[receipt_no], d.[typeName] 
           , e.surname + ' ' +e.othernames as 'fullname'
-          FROM [verifierApp].[dbo].[payments] a
-          inner join [verifierApp].[dbo].[transaction_types] b
+          FROM [dbo].[payments] a
+          inner join [dbo].[transaction_types] b
           on a.transaction_type_id = b.id
-          inner join [verifierApp].[dbo].[offices] c
+          inner join [dbo].[offices] c
           on a.office_id = c.id
-          inner join [verifierApp].[dbo].[confirm_types] d
+          inner join [dbo].[confirm_types] d
           on a.confirm_type_id = d.id
-          inner join [verifierApp].[dbo].users e
+          inner join [dbo].users e
           on a.user_id = e.id
           where a.office_id = '#{params[:office_id]}'
 
@@ -175,14 +175,14 @@ class PaymentsController < ApplicationController
           SELECT
           a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email], a.[created_at]
           , c.[office_name], a.[receipt_no], d.[typeName] , e.surname + ' ' +e.othernames as 'fullname'
-          FROM [verifierApp].[dbo].[payments] a
-          inner join [verifierApp].[dbo].[transaction_types] b
+          FROM [dbo].[payments] a
+          inner join [dbo].[transaction_types] b
           on a.transaction_type_id = b.id
-          inner join [verifierApp].[dbo].[offices] c
+          inner join [dbo].[offices] c
           on a.office_id = c.id
-          inner join [verifierApp].[dbo].[confirm_types] d
+          inner join [dbo].[confirm_types] d
           on a.confirm_type_id = d.id
-          inner join [verifierApp].[dbo].users e
+          inner join [dbo].users e
           on a.user_id = e.id
           where a.office_id = '#{params[:office_id]}' and a.printed = 'false' and a.transaction_type_id = '1'
 
@@ -280,12 +280,12 @@ class PaymentsController < ApplicationController
 
             SELECT
             a.[id], a.[CandName], a.[PhoneNo], a.[amount], b.[transName], a.[cand_email], a.[created_at], c.[office_name], a.[receipt_no], d.[typeName]
-            FROM [verifierApp].[dbo].[payments] a
-            inner join [verifierApp].[dbo].[transaction_types] b
+            FROM [dbo].[payments] a
+            inner join [dbo].[transaction_types] b
             on a.transaction_type_id = b.id
-            inner join [verifierApp].[dbo].[offices] c
+            inner join [dbo].[offices] c
             on a.office_id = c.id
-            inner join [verifierApp].[dbo].[confirm_types] d
+            inner join [dbo].[confirm_types] d
             on a.confirm_type_id = d.id
             where a.office_id = '#{params[:office_id]}' and a.[receipt_no] = '#{params[:receiptNo]}' and a.printed = 'false' and a.transaction_type_id = '1'
 
@@ -317,7 +317,7 @@ class PaymentsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def payment_params
       params.require(:payment).permit(:diet_id, :year_id, :exam_no, :confirm_type_id, :amount, :receipt_no,
-                       :cand_email, :printed, :user_id, :office_id, :CandName, :PhoneNo, :transaction_type_id, :receipt_status_id)
+                       :cand_email, :user_id, :office_id, :CandName, :PhoneNo, :transaction_type_id, :receipt_status_id, :printed => false,)
     end
 end
 

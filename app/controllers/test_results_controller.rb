@@ -22,7 +22,7 @@ class TestResultsController < ApplicationController
           
                   SELECT 
                      TOP(1) *
-                  FROM [verifierApp].[dbo].[test_results]
+                  FROM [dbo].[test_results]
                   where yearId = '#{params[:yearId]}' and dietId = '#{params[:dietId]}'  and CandNo='#{params[:CandNo]}'
 
                 SQL
@@ -40,7 +40,7 @@ class TestResultsController < ApplicationController
           
                   SELECT 
                       TOP(1) *
-                  FROM [verifierApp].[dbo].[test_results]
+                  FROM [dbo].[test_results]
                   where yearId = '#{params[:yearId]}' and dietId = '#{params[:dietId]}'  and CandNo='#{params[:CandNo]}'
 
                 SQL

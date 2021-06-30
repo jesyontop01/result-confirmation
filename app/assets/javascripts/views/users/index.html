@@ -26,7 +26,8 @@
                       <td>{{$index+1}}</td>
                       <td>{{user.surname}} {{user.othernames}}</td> 
                        <td>{{user.email}}</td>
-                       <td>{{getOfficeName(user.office_id)}}</td>
+                      <!--  <td>{{getOfficeName(user.office_id)}}</td> -->
+                      <td>{{user.office_name}}</td>
                        <td><b>{{user.activated}}</b></td>
 
               <div ng-hide="!currentUser.admin">

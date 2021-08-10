@@ -1,0 +1,99 @@
+<div class="container" ng-controller="ConfirmPaymentController" ng-init="loadResultDetail(CandNo)">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+      <div class="card card-success">
+        <header class="card-header">
+           <h2>Searched result Details</h2>
+        </header>
+      
+        <div class="card-body">
+    
+
+      <div class="row">
+        <div class="col-sm-3">
+          
+          <img ng-src="data:image/jpeg;base64,{{result.Picture}}" id="photo-id" style="width: 150px; height: 150px"/>
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-8">
+          <p><b>Exam : </b> {{ result.examType}} {{result.examYear}}</p>
+          <p><b>Exam No: </b> {{result.candNo}}</p>
+          <p><b>Full Name:</b> {{result.candName}}</p>
+          <p><b> Sex:</b> {{ result.sex}}</p>
+<!--          <p><b>Date of Birth:</b> {{(result.dob).substr(0,2)}}-{{(result.dob).substr(2,2)}}-{{(result.dob).substr(4,4)}} -->
+          <p><b>Date of Birth:</b> {{result.dob}}</p>
+          <p><b>Centre Name:</b> {{result.CentreName}}</p>  
+        </div>
+      </div>
+  
+<div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+  <p><b>Subjects :</b></p>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <td>{{ result.Subject1 }}</td>
+        <td class="float-right">{{ result.Grade1 }}</td>
+      </tr>
+      <tr>
+        <td>{{ result.Subject2 }}</td>
+        <td class="float-right">{{ result.Grade2 }}</td>
+      </tr>
+      <tr>
+        <td>{{ result.Subject3 }}</td>
+        <td class="float-right">{{ result.Grade3 }}</td>
+      </tr>
+      <tr>
+        <td>{{ result.Subject4 }}</td>
+        <td class="float-right">{{ result.Grade4 }}</td>
+      </tr>
+      <tr>
+        <td>{{ result.Subject5 }}</td>
+        <td class="float-right">{{ result.Grade5 }}</td>
+      </tr>
+      <tr>
+        <td>{{ result.Subject6 }}</td>
+        <td class="float-right">{{ result.Grade6 }}</td>
+      </tr>
+      <tr>
+        <td>{{ result.Subject7 }}</td>
+        <td class="float-right">{{ result.Grade7 }}</td>
+      </tr>
+      <tr>
+        <td>{{ result.Subject8 }}</td>
+        <td class="float-right">{{ result.Grade8 }}</td>
+      </tr>
+      <tr>
+        <td>{{ result.Subject9 }}</td>
+        <td class="float-right">{{ result.Grade9 }}</td>
+      </tr>       
+    </thead>
+  </table>
+</article>
+
+<div>
+  Certificate Printed Status : <strong>{{ result.CertificateStatus }}</strong>
+</div>
+<div>
+  Date Printed : <strong>{{ result.DatePrinted }}</strong>
+</div>
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+  <div class="pull-left">
+
+<!--     <button type="button" class="btn btn-success" ng-click="addressDetails(result)">
+     Create Confirmation ...
+    </button> -->
+  </div>
+    </div>
+      </div>
+
+  <br>
+  <br>
+
+
+
+
+

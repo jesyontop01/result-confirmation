@@ -88,5 +88,18 @@ class Exam < ActiveRecord::Base
          JSON.parse(response.body)
     end
 
+    ##Returns Complete Result From Certificate server.
+
+    def self.getCompleteResultStatus(candNo, yearName)
+          response = Faraday.get do |req|
+            req.url "https://ictdapps.waec.org.ng/WaecCert/Services/GetCertificateDetailStatus?"
+            req.params['CandidateNo'] = "#{candNo}"
+            req.params['ExamYear'] = "#{yearName}"
+            #req.headers['Content-Type'] = 'application/json'
+          end
+
+         JSON.parse(response.body)
+    end
+
 
 end

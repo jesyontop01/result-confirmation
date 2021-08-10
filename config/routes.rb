@@ -130,6 +130,7 @@ Rails.application.routes.draw do
           get :confirmations
           get :getResultStatus
           get :getResultByCandidate
+          get :getCertficateEnquiryAndResultDetails
         end
     end
   #get "*unmatched_route" => "exams#index"

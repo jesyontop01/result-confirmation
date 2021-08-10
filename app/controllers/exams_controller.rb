@@ -428,7 +428,8 @@ subjectindex0 = {
 
 if params[:CandidateNo].present? && params[:ExamYear].present?
       
-        @resultVals = Exam.getData(params[:CandidateNo], params[:ExamYear])
+        #@resultVals = Exam.getData(params[:CandidateNo], params[:ExamYear])
+         @resultVals = Exam.getCompleteResultStatus(params[:CandidateNo], params[:ExamYear])
 # binding.pry
   subjectsContainer = Hash.new
   resultsContainer = Hash.new
@@ -479,7 +480,9 @@ if params[:CandidateNo].present? && params[:ExamYear].present?
           if @resultVals["CandNo"].length == 10
 
 
-              @centre = WaecCentre.where("centre_no = ?", @resultVals["CandNo"][0,7])
+              # @centre = WaecCentre.where("centre_no = ?", @resultVals["CandNo"][0,7])
+          @centre = WaecCentre.where(["CentreCode = ? and ExamYear = ?", @resultVals["CandNo"][0,7], params[:ExamYear]])
+   
               #centres['centre'] = @centre
               resultObjects['Picture'] = @resultVals["Pix"]
               resultObjects['centre'] = @centre
@@ -536,10 +539,13 @@ if params[:CandidateNo].present? && params[:ExamYear].present?
 
       else
 
+        ## For Exam Years below 1999 (1998 to 1960's)
                               ## Interpret all subjects
 
               #grades["Bob"] = 82
-              @centre = WaecCentre.where("centre_no = ?", @resultVals[0]["candNo"][0,5])
+              #@centre = WaecCentre.where("centre_no = ?", @resultVals[0]["candNo"][0,5])
+            @centre = WaecCentre.where(["CentreCode = ? and ExamYear = ?", @resultVals["CandNo"][0,5], params[:ExamYear]])
+   
 
               resultObjects['Picture'] = @resultVals["Pix"]
               resultObjects['centre'] = @centre

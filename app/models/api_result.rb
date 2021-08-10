@@ -31,7 +31,7 @@ class ApiResult < ActiveRecord::Base
         def self.getDetailedResults(candNo, examYear, dietId)
   		 response = Faraday.get do |req|
               req.url "http://172.21.13.25/resultapi/result/Candidate_No?"
-              req.params['CandNo'] = "#{candNo}" #params[:CandNo]
+              req.params['candNo'] = "#{candNo}" #params[:CandNo]
               req.params['examYear'] =  "#{examYear}"#params[:yearId]
               req.params['examType'] = "#{dietId}"#params[:dietId]
               req.headers['Content-Type'] = 'application/JSON'

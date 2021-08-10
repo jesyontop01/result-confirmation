@@ -18,6 +18,64 @@ $scope.examYear = null;
 		$scope.loading = false;
 
 	$scope.search = function(searchTerm, examYear , dietId){ 
+		if (searchTerm.length < 7){
+			return;
+		}
+
+		$scope.loading = true;
+
+		 diet_id = window.sessionStorage.getItem('examID');
+		ExamDietService.setDiet( diet_id);
+
+			$scope.examYear = examYear;
+
+		console.log($scope.examYear);
+			ExamDietService.setYear( $scope.examYear);
+
+		$http.get("/api_results.json", 
+				   {"params": { "CandNo": searchTerm, "examYear": examYear, "dietId": diet_id}}
+			).then(function(response){ 
+				
+				//$scope.results = response.data;
+				
+
+				if (response.data.length == 0){
+					//alert("Candidate result is not available !");
+					$scope.confirmMessage = true;
+				
+					$scope.resultConfirm = "Candidate result is not available !";
+					$scope.loading = false;
+				}
+				else if (response.data.success == false) {
+					//alert("Candidate result is not available !");
+					$scope.confirmMessage = true;
+					$scope.resultConfirm = "Candidate result is not available !";
+					$scope.loading = false;
+				} else {
+					$scope.resultBool = true;
+					$scope.confirmMessage = false;
+					$scope.loading = false;
+					$scope.result = response.data.results[0];
+					//$scope.results = response.data;
+				console.log(response.data);
+
+				$scope.loading = false;
+				}
+
+
+			}
+			, function(response){ 
+				alert("There was a problem: " + response.status); 
+				$scope.confirmMessage = true;
+				$scope.resultConfirm = "There was a problem: " + response.status;
+				$scope.loading = false;
+			});
+		}
+
+		// Function for Certficate Enquiry.........
+		// getCertficateEnquiryAndResultDetails
+
+ $scope.searchCertificate = function(searchTerm, examYear , dietId){ 
 		if (searchTerm.length < 10){
 			return;
 		}
@@ -63,6 +121,8 @@ $scope.examYear = null;
 				$scope.loading = false;
 			});
 		}
+
+
 
 
     $scope.loading = false;
@@ -186,7 +246,9 @@ debugger
 			$location.path("result/address/"+ result.examYear +"/"+ result.candNo );
 			
 		}
-//loadResultDetail(result)
+
+// Load Searched Result For Detailed View and PDF Printing.
+
 		$scope.result = [];
 	$scope.loadResultDetail = function (examNo) {
 		$scope.loading = true;
@@ -234,7 +296,54 @@ debugger
     			});
     };
 
-    //$scope.loadResultDetail(CandNo);
+   
+// Load Searched Detail for Confirmation Address.
+    	$scope.result = [];
+	$scope.loadResultDetail2 = function (examNo) {
+		$scope.loading = true;
+
+        let searchTerm = $routeParams.examNo;
+        let examYear = $routeParams.examYear;
+     //let diet_id = ExamDietService.getDiet();
+    
+       	let  diet_id = window.sessionStorage.getItem('examID');
+	 //let year_id = ExamDietService.getYear();
+			
+
+		$http.get("/api_results.json", 
+
+				   {"params": { "CandNo": $routeParams.examNo, "examYear": examYear, "dietId": diet_id}}
+			).then(function(response){ 
+    							//alert('Record successfully updated .');
+    							console.log(response);
+    							$scope.resultObject = response.data.results;
+    	
+							    //$scope.result = response.data[0];
+							    $scope.result = response.data.results[0];
+							    $scope.resultAddress = response.data.results[0];
+
+						$scope.pictureEmpty = false;
+
+						if ($scope.result[0].Picture == null ) {
+							$scope.result[0].Picture = '/9j/4AAQSkZJRgABAQEAAAAAAAD/4QAuRXhpZgAATU0AKgAAAAgAAkAAAAMAAAABAAAAAEABAAEAAAABAAAAAAAAAAD/2wBDAAoHBwkHBgoJCAkLCwoMDxkQDw4ODx4WFxIZJCAmJSMgIyIoLTkwKCo2KyIjMkQyNjs9QEBAJjBGS0U+Sjk/QD3/2wBDAQsLCw8NDx0QEB09KSMpPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT3/wAARCAC0ALQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDrqT/P+f8AP/1z/P8An/P/ANc/z/n/AD/9dAH+f8/5/wDrn+f8/wCf/rn+f8/5/wDrn+f8/wCf/rgB/n/P+f8A65/n/P8An/65/n/P+f8A65/n/P8An/64Af5/z/n/AOuf5/z/AJ/+uf5/z/n/AOuf5/z/AJ/+uAH+f8/5/wDrn+f8/wCf/rn+f8/5/wDrn+f8/wCf/rgB/n/P+f8A65/n/P8An/65/n/P+f8A65/n/P8An/64Af5/z/n/AOuf5/z/AJ/+uf5/z/n/AOuf5/z/AJ/+uAH+f8/5/wDrn+f8/wCf/rn+f8/5/wDrn+f8/wCf/rgB/n/P+f8A65/n/P8An/65/n/P+f8A65/n/P8An/64Af5/z/n/AOuf5/z/AJ/+uf5/z/n/AOuf5/z/AJ/+uAH+f8/5/wDrn+f8/wCf/rn+f8/5/wDrn+f8/wCf/rgBge1FGff9aKAD/P8An/P/ANc/z/n/AD/9c/z/AJ/z/wDXP8/5/wA//XAD/P8An/P/ANc/z/n/AD/9c/z/AJ/z/wDXP8/5/wA//XAD/P8An/P/ANc/z/n/AD/9c/z/AJ/z/wDXP8/5/wA//XAD/P8An/P/ANc/z/n/AD/9c/z/AJ/z/wDXP8/5/wA//XAD/P8An/P/ANc/z/n/AD/9c/z/AJ/z/wDXP8/5/wA//XAD/P8An/P/ANc/z/n/AD/9c/z/AJ/z/wDXP8/5/wA//XAD/P8An/P/ANc/z/n/AD/9c/z/AJ/z/wDXP8/5/wA//XAD/P8An/P/ANc/z/n/AD/9c/z/AJ/z/wDXP8/5/wA//XAD/P8An/P/ANc/z/n/AD/9c/z/AJ/z/wDXP8/5/wA//XAD/P8An/P/ANc/z/n/AD/9c/z/AJ/z/wDXP8/5/wA//XAD/P8An/P/ANc/z/n/AD/9c/z/AJ/z/wDXP8/5/wA//XADPv8ArRRn3/WigA/z/n/P/wBc/wA/5/z/APXP8/5/z/8AXP8AP+f8/wD1wA/z/n/P/wBc/wA/5/z/APXP8/5/z/8AXP8AP+f8/wD1wA/z/n/P/wBc/wA/5/z/APXP8/5/z/8AXP8AP+f8/wD1wA/z/n/P/wBc/wA/5/z/APXP8/5/z/8AXP8AP+f8/wD1wA/z/n/P/wBc/wA/5/z/APXP8/5/z/8AXP8AP+f8/wD1wA/z/n/P/wBc/wA/5/z/APXP8/5/z/8AXP8AP+f8/wD1wA/z/n/P/wBc/wA/5/z/APXP8/5/z/8AXP8AP+f8/wD1wA/z/n/P/wBc/wA/5/z/APXP8/5/z/8AXP8AP+f8/wD1wA/z/n/P/wBc/wA/5/z/APXP8/5/z/8AXP8AP+f8/wD1wA/z/n/P/wBc/wA/5/z/APXP8/5/z/8AXP8AP+f8/wD1wA/z/n/P/wBc/wA/5/z/APXP8/5/z/8AXP8AP+f8/wD1wAz7/rRRn3/WigA/z/n/AD/9c/z/AJ/z/wDXP8/5/wA//XP8/wCf8/8A1wA/z/n/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';
+							//$scope.result[0].Picture = 'iVBORw0KGgoAAAANSUhEUgAAAP8AAADFCAMAAACsN9QzAAAADFBMVEX39/f////8/Pz5+fkyiACtAAADhklEQVR4nO2c0XajMAxEAf//P+86bnNIlm6KLWlmbN3nPuRKIzkQyrYlSZIkSZIkSZL4Uspx7E+Oo6A/UCTlpH4qwho1KFfuq5TguvNnZq7A/1p/CgH6Y3rxsfdTZ+DX9nNW4Jb+dEPwu8l/Af2RLbnZ/MY8M9ClP08B+uz3WZZAt/4cBRjQn6EAQ/r6O6Bz9c1SgI5z/x20wggG+tIFsNAX3oHDw99QXQEm6a+gRTqx0hedAKP0V9AqPZilf9cMgGH7FVegZfsVA2DafsEA2OrLBcC4/XJHgLW+2ADYbr8HaKVbmMdfLAD2+lIb0CH+UgPgEP/0F1oAHvpCC8Bl/IUGYHV/l/FPf5kF6KO/vL/MAZD+6Z/+6Z/+6Z/+6Z/+6Z/+w6x+/SPjn/c/1vZf/f7f6ve/ffxl1l/+/rP675+r//69/PMPqz//Yj8AUvF3GACp+G/LP/9o7a/WfusNiNa5j6m+XPuNA4CW6cHwCBBs/7b8/z/ZBQAt0ouRvmb6N7MViNboZ/X/f7ZYAbLpfzCsL7r7nyyuP7gC5PUHC4D+8Bb0F2CC7ld6CzCJ/ta5BOfR7/oeoH3uv3N3BmZqfmNp/c/vvX0vwEzx77sKmCQDt1s/VQhGr4C1K2Bx/a9bAas74JoVsLz/L1gBQ/sKWucm9s9/KJ2GPs8/ygyB0+OfKgVwevp315gBr+Y36CPgq09fAL/sf0M9A/761AUIsK+gNX8iSJ+1AGH6nAUI1GcsQKg+XwGC9dkKEHHwvUJ1DMbrUxXA+0vvNTRfhTH6PAUA6bPsQMTwNyhWAE6fogCo4W/gVwBUH78CkOmvgCcAm/4KdgLQ9jt2AtDpryAnAO3+AKfP0H5kANDmX6D0OdqPCwDa+wlGn6X9qACgrU8g9HnajwkA2vmFeH2m9iMCgDZ+I1off+H3SvRlIFf84wcA7fsPsfps8Y8eALb4Rw8A2vaCSH2++McOAF/8YwcA7XpJ+kfBOP6RC4Bx/CMXwOr+aNMfSP8YONdf3AJc3Z9z/cUtwNX9WfMfdwBQJiDyAmjgpQZORL8rgasCiDdF8FQA9p4Mik0IfQQOHQL8K1IKMAR4+weYEJDIN6JLQCXfiCsBoXwjogS08o3iWYOjcMt/4VIDEfcn5TArwqHm/k0ZLoKs+pmeMlRxffMXSq3Dh0L8/YMZOv6JcgX6QyVJkiRJkiTJ7PwBwg5CTwIHoakAAAAASUVORK5CYII='
+							$scope.pictureEmpty = true;
+						}
+
+						// $scope.result[0].Picture2 = this.getBase64ImageFromURL($scope.result[0].Picture);
+						// console.log($scope.result[0].Picture2)
+						// debugger
+
+
+
+							    //console.log($scope.result);
+		
+							    $scope.loading = false;
+    			},function(response){
+    				alert('There was a problem:' + response.status);
+
+    			});
+    };
 
       	// Functions to Close Modal Pop-Up (Creation)...........
 

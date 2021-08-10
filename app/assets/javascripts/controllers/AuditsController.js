@@ -458,80 +458,96 @@ $scope.result.amount = 0;
 		    
 		};
 
-		// Swal.fire({
-		//   title: 'Ajax request example',
-		//   text: 'Submit to run ajax request',
-		//   icon: 'info',
-		//   showCancelButton: true,
-		//   showLoaderOnConfirm: true,
-		//   preConfirm: function() {
-		//     return new Promise(function(resolve, reject) {
-		//       // here should be AJAX request
-		//       setTimeout(function() {
-		//         resolve();
-		//       }, 1000);
-		//     });
-		//   },
-		// }).then(function() {
-		//   Swal.fire('Ajax request finished!');
-		// });
+				//console.log( $scope.applicantResult);
 
+		if (confirm("Confirm Payment Please..?") == true) {
 
-		SweetAlert.swal({
-                 title: "Payment Transaction",
-                 text: "Confirm Payment Please..?",
-                 type: "warning",
-                 showCancelButton: true,
-                 showLoaderOnConfirm: true,
-                 confirmButtonColor: "#DD6B55",confirmButtonText: "Yes",
-                 cancelButtonText: "No, cancel pls!",
-                 closeOnConfirm: false,
-                 closeOnCancel: false , 
-                 
-              function(isConfirm, e){ 
-                 if (isConfirm) {
+		$http({
+			method: 'POST',
+			url: "/payments.json",
+			data: angular.toJson($scope.applicantResult) ,
+			header: {
+						'Content_Type' :  'application/json'
+						}
+				})
+				.then(function(response){
+							// body...
+				$scope.loading = false;
+				SweetAlert.swal("Success!", "Payment was successful.", "success");
+				toaster.pop('success', "success", 'Payment was successful.');
+				$location.path('/audit/All-Payments');
 
-                 	$scope.loading = true;
+				}, function(response) {
+							// body...
+				toaster.pop('error', "error", "An Error occurred.");
+				 $scope.loading = false;
+			})
 
-                 			$http({
-									method: 'POST',
-									url: "/payments.json",
-									data: angular.toJson($scope.applicantResult) ,
-									header: {
-												'Content_Type' :  'application/json'
-												}
-										})
-										.then(function(response){
-													// body...
-										$scope.loading = false;
-										//alert('Payment was successful.');
-
-                             SweetAlert.swal("Success!", "Payment was successful.", "success");
-									toaster.pop('success', "success", 'Payment was successful.');
-										$location.path('/audit/All-Payments');
-										}, function(response) {
-													// body...
-											//alert("An Error occurred");
-                            toaster.pop('error', "error", "An Error occurred.");
-
-								})
-
-								e.preventDefault()
-
-                 } else {
-
-                                //alert(" Operation was cancelled ");
-                    //alert(" Payment was cancelled ");
-				  
+		}
+		else {
                     SweetAlert.swal("Cancelled", " Payment was cancelled :)", "error");
                     toaster.pop('info', "info", " Payment was cancelled ");
                      $location.path("/audit/payments");
 
                               $scope.loading = false;
+		}
 
-                 }
-             }
-              });
+
+		// SweetAlert.swal({
+  //                title: "Payment Transaction",
+  //                text: "Confirm Payment Please..?",
+  //                type: "warning",
+  //                showCancelButton: true,
+  //                showLoaderOnConfirm: true,
+  //                confirmButtonColor: "#DD6B55",confirmButtonText: "Yes",
+  //                cancelButtonText: "No, cancel pls!",
+  //                closeOnConfirm: false,
+  //                closeOnCancel: false , 
+                 
+  //             function(isConfirm, e){ 
+  //                if (isConfirm) {
+
+  //                	$scope.loading = true;
+
+  //                			$http({
+		// 							method: 'POST',
+		// 							url: "/payments.json",
+		// 							data: angular.toJson($scope.applicantResult) ,
+		// 							header: {
+		// 										'Content_Type' :  'application/json'
+		// 										}
+		// 								})
+		// 								.then(function(response){
+		// 											// body...
+		// 								$scope.loading = false;
+		// 								//alert('Payment was successful.');
+
+  //                            SweetAlert.swal("Success!", "Payment was successful.", "success");
+		// 							toaster.pop('success', "success", 'Payment was successful.');
+		// 								$location.path('/audit/All-Payments');
+		// 								}, function(response) {
+		// 											// body...
+		// 									//alert("An Error occurred");
+  //                           toaster.pop('error', "error", "An Error occurred.");
+
+		// 						})
+
+		// 						e.preventDefault()
+
+  //                } else {
+
+  //                               //alert(" Operation was cancelled ");
+  //                   //alert(" Payment was cancelled ");
+				  
+  //                   SweetAlert.swal("Cancelled", " Payment was cancelled :)", "error");
+  //                   toaster.pop('info', "info", " Payment was cancelled ");
+  //                    $location.path("/audit/payments");
+
+  //                             $scope.loading = false;
+
+  //                }
+  //            }
+  //             });
 
 
 		//console.log( $scope.applicantResult);

@@ -11,7 +11,6 @@
     'ngSanitize',
     'ngTouch',
     'naif.base64',
-    'ng-token-auth',
     'Devise',
     'oitozero.ngSweetAlert',
     'sessionsController',

@@ -354,9 +354,16 @@ $scope.loading = true;
 
 		WebClient.getWebServices().then(function(response){
 			$scope.loading = false;
-			$scope.webClients  = response.data.data;
-			console.log($scope.webClients );
+
+			if (response.data.success == true) {
+					$scope.webClients  = response.data.data;
+				//console.log($scope.webClients );
+			}else{
+				alert(response.data.message);
+			}
+	
 		},function(response){
+			$scope.loading = false;
 			alert("There was a problem: " + response.status);
 		});
 
@@ -425,8 +432,11 @@ $scope.ConnecttoWES = function(confirmID) {
   
 
 		  }, function(response) {
+
+		  		
 		  	// body...
 		  	alert("WES Server not available , please try later " + response.status);
+		  	 $scope.loading = false;
 		  })
 
 

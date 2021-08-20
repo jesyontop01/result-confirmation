@@ -54,6 +54,22 @@
                       </td><td><input  size="30" type="text" ng-model="resultAddress.Cand_address" placeholder="Candidate Address" required/>
                       </td></tr><hr>
 
+                      <tr>
+                        <td>
+                        <label><strong>Select payment office</strong></label>&nbsp;</td>
+                          <td>
+                              <div  ng-controller="MainOfficesController">
+                                <div >
+                                  <select ng-model="WaecOfficeId" ng-options="y.id as y.office_name for y in offices" ng-change="GetValue(y)" class="form-control" ng-required="true">
+                                    <option value="">Select Office</option>
+                                  </select>
+                                </div>
+                                <!-- Selected: <p ng-bind="WaecOfficeId"></p> -->
+                              </div>
+                          </td>
+                      </tr>
+
+
                     <tr>   <td> <label ><strong>Payment Receipt No:</strong></label>&nbsp;</td>
                          <td><input  size="30" type="text" ng-model="resultAddress.receipt_no" placeholder="Receipt No"  ng-blur="confirmPayment(resultAddress.receipt_no)" required/>
                             <span style="color:Blue">

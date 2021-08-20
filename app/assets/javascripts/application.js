@@ -47,7 +47,7 @@
 //= require angular-cookies
 //= require angular-touch
 //= require angular-resource
-//= require ng-token-auth
+// require ng-token-auth
 //= require angular-cookie
 //= require angular-base64-upload
 //= require angular-devise

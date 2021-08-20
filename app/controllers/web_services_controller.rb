@@ -1,11 +1,23 @@
 class WebServicesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_web_service, only: [:show, :edit, :update, :destroy]
 
   # GET /web_services
   # GET /web_services.json
   def index
-    @web_services = WebService.all
-     render json: {success: true, data: @web_services  }
+    user = current_user
+    
+    if user.office.office_name.strip! == "Yaba"
+       
+        @web_services = WebService.all
+        #binding.pry
+      render json: {success: true, data: @web_services, message:"You are authorized"}
+     else
+      render json: {success: false, message:"Sorry!, access is denied for your office"}
+
+     end
+    #@web_services = WebService.all
+    #render json: {success: true, data: @web_services, message:"You are authorized"  }
   end
 
   # GET /web_services/1

@@ -454,14 +454,17 @@ $scope.loading = true;
 			$scope.confirmPayment = function(receipt_no) {
 			 	// body...
 			 	//$scope.result.receipt_no = receipt_no;
-			 	$scope.loading = true;
+			 	
+			$scope.loading = false;
 
 			 	if (receipt_no != null) {
 
+			$scope.loading = true;
 
+	let  PaymentOffice = window.sessionStorage.getItem('MainOfficeID');
 			 	
 			 	$http.get('/payments/receipt_payment_details.json', 
-			 		{"params": { "receiptNo": receipt_no}
+			 		{"params": { "receiptNo": receipt_no, "PaymentOffice": PaymentOffice}
 			 	}).then(function(response) {
 			 		// body...
 			 		$scope.loading = false;
@@ -579,10 +582,18 @@ $scope.loading = true;
 
 		WebClient.getWebServices().then(function(response){
 			$scope.loading = false;
-			$scope.webClients  = response.data.data;
-			console.log($scope.webClients );
+			// $scope.webClients  = response.data.data;
+			// console.log($scope.webClients );
+			if (response.data.success == true) {
+					$scope.webClients  = response.data.data;
+				//console.log($scope.webClients );
+			}else{
+				alert(response.data.message);
+			}
+			
 		},function(response){
 			alert("There was a problem: " + response.status);
+			$scope.loading = false;
 		});
 
 	}

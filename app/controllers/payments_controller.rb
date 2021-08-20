@@ -272,7 +272,14 @@ class PaymentsController < ApplicationController
   end
 
   def receipt_payment_details
-     params[:office_id] = current_user.office_id
+    if params[:PaymentOffice]
+      
+       params[:office_id] = params[:PaymentOffice]
+
+     else
+      params[:office_id] = current_user.office_id
+    end
+     
 
       if params[:receiptNo]
           
@@ -290,6 +297,9 @@ class PaymentsController < ApplicationController
             where a.office_id = '#{params[:office_id]}' and a.[receipt_no] = '#{params[:receiptNo]}' and a.printed = 'false' and a.transaction_type_id = '1'
 
           SQL
+
+          #where a.office_id = '#{params[:office_id]}' and a.[receipt_no] = '#{params[:receiptNo]}' and a.printed = 'false' and a.transaction_type_id = '1'
+
 
               @payment = ActiveRecord::Base.connection.exec_query(sql)
       end

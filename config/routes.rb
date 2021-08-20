@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  get 'main_offices/index'
+  resources :main_offices
   resources :waec_zonal_offices
   #resources :api_results
   resources :waec_exams

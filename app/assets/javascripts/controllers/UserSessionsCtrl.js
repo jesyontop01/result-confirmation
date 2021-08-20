@@ -234,7 +234,7 @@ angular.module('sessionsController', [])
       vm.loading = true;
         Auth.login($scope.loginForm, config).then(function(user) {
               vm.logging = false;
-          debugger
+          //debugger
               $rootScope.user = user
                   //alert("Welcome, " + user.surname);
                 SweetAlert.swal("Successful!", "Welcome, " + user.surname, "success");
@@ -452,7 +452,7 @@ angular.module('sessionsController', [])
      this.submitLogUser  = function(logUserForm) {
       // body...
       vm.loading = true;
-      console.log(logUserForm);
+      //console.log(logUserForm);
       $http.get('/users/second_signatory.json',{"params": { "login": logUserForm.login, "password": logUserForm.password}})
         .then(function(response) {
           // body...
@@ -542,7 +542,7 @@ angular.module('sessionsController', [])
 
         Auth.currentUser().then(function (user) {
           // body...
-          console.log(user);
+          //console.log(user);
 
             // Find if the array contains an object by comparing the property value
               //if(user.role.some(role => role.name === "admin")){
@@ -574,7 +574,7 @@ angular.module('sessionsController', [])
                else if((user.role.name === "exam_management") || (user.role.name === "exam_national")){
                   //console.log(vm.examAccess = true)
                   console.log(user.office.office_name.trim())
-                  debugger
+                  //debugger
                   if (user.signature == null ) {
                     vm.examAccess = false;
                   }else {

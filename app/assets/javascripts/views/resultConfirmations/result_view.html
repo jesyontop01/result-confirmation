@@ -33,8 +33,9 @@
  	
 <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
  	<p><b>Subjects :</b></p>
- 	<table class="table table-striped">
- 		<thead>
+
+ 	<table class="table table-striped " >
+ 		<tbody class="style="text-align:center;"">
  			<tr>
  				<td>{{ result[0].Subject }}</td>
  				<td class="float-right">{{ result[0].Grade}}</td>
@@ -71,8 +72,9 @@
  				<td>{{ result[8].Subject }}</td>
  				<td class="float-right">{{ result[8].Grade }}</td>
  			</tr> 			
- 		</thead>
+ 		</tbody>
  	</table>
+
 </article>
 <div ng-if="result[0].status">
   Certificate Printed Status : <strong>{{ result[0].status }}</strong>

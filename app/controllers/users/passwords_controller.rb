@@ -10,6 +10,26 @@ class Users::PasswordsController < Devise::PasswordsController
   #   super
   # end
 
+    # POST /resource/password
+  def create
+    @user = User.find_by_email(params[:user][:email])
+    if @user.present?
+          self.resource = resource_class.send_reset_password_instructions(resource_params)
+          yield resource if block_given?
+
+          if successfully_sent?(resource)
+            #respond_with({}, location: after_sending_reset_password_instructions_path_for(resource_name))
+            render json: {success: true, user: @user}
+          else
+            #respond_with(resource)
+            render json: {success: false, message: "Reset password instructions could not be sent"}
+          end
+    else
+      render json: {success: false,  message: "Account does not exist"}
+    end
+
+  end
+
   # GET /resource/password/edit?reset_password_token=abcdef
   # def edit
   #   super
@@ -35,7 +55,7 @@ class Users::PasswordsController < Devise::PasswordsController
       end
       #respond_with resource, location: after_resetting_password_path_for(resource)
 
-      binding.pry
+      #binding.pry
 
       render json: {success: true, user: @user }
     else

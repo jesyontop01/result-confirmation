@@ -39,8 +39,8 @@ Rails.application.configure do
   address:              'smtp.gmail.com',
   port:                 587,
   domain:               'gmail.com',
-  user_name:            'adelajaanuoluwagbemiga@gmail.com', #<username>
-  password:             'fikmzxyziirbkxos',  #'adelaja1951', #<password>
+  user_name:           'waecconfirmation@gmail.com', #'adelajaanuoluwagbemiga@gmail.com', #<username>
+  password:            'bwhqbdkpnpxqtzfd', #'fikmzxyziirbkxos',  #'adelaja1951', #<password>
   authentication:       'plain',
   enable_starttls_auto: true 
   # address:              'mail.waec.org.ng',

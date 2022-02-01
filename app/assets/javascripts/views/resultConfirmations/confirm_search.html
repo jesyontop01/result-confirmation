@@ -11,15 +11,16 @@
         <div class="card-body">
     <label>Select Exam Diet <span>*</span></label>
       
-        <div  ng-controller="DietController">
+<!--         <div  ng-controller="DietController">
           <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
         <div class="form-group">
           <select ng-model="ExamDietId" ng-options="d.id as d.DietName for d in diets" ng-change="GetValue(d)" class="form-control" ng-required="true">
             <option value="">Select Exam Diet</option>
           </select>
-        </div>
+        </div> -->
         <!-- Selected: <p ng-bind="ExamDietId"></p> -->
-        </div> <br> 
+       <!--  </div> <br>  -->
+
 <!--     <label>Select Year <span>*</span></label>
       <div  ng-controller="YearController">
         <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
@@ -41,6 +42,15 @@
            ng-model="examYear"><br>
       </div>
 
+      <div  ng-controller="DietController">
+          <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+        <div class="form-group">
+          <select ng-model="ExamDietId" ng-options="d.id as d.DietName for d in diets" ng-change="GetValue(d)" class="form-control" ng-required="true">
+            <option value="">Select Exam Diet</option>
+          </select>
+        </div>
+        <!-- Selected: <p ng-bind="ExamDietId"></p> -->
+        </div> <br> 
 
 
  
@@ -79,7 +89,7 @@
   <thead>
      <tr>
       <th>Index</th>
-      <th>Exam Diet</th>
+    <!--   <th>Exam Diet</th> -->
       <th>Candidate Name</th>
       <th>Candidate No.</th>
       <th>Action</th>
@@ -90,7 +100,7 @@
   <!--   <tr ng-repeat="result in results">  -->
     <tr>
       <td>{{$index+1}}</td>
-      <td>{{result.examType}} {{result.examYear}}</td>
+     <!--  <td>{{result.examType}} {{result.examYear}}</td> -->
       <td>{{result.candName}} </td>
       <td>{{result.candNo}}</td>
       <td><button type="button" class="btn btn-primary" ng-click="viewDetails(result)">Details…</button>

@@ -31,7 +31,7 @@ class Exam < ActiveRecord::Base
 
     def self.getSearchedCandidate(candNo, examYear, dietId)
       response = Faraday.get do |req|
-              req.url "http://172.21.13.25/resultapi/result/ResultByCandNo?"
+              req.url "http://172.21.13.25:82/result/ResultByCandNo?"
               req.params['CandNo'] = "#{candNo}" #params[:CandNo]
               req.params['examYear'] =  "#{examYear}"#params[:yearId]
               req.params['examType'] = "#{dietId}"#params[:dietId]
@@ -44,7 +44,7 @@ class Exam < ActiveRecord::Base
 
         def self.getSearchedResults(candNo, examYear, dietId)
       response = Faraday.get do |req|
-              req.url "http://172.21.13.25/resultapi/result/Candidate_No?"
+              req.url "http://172.21.13.25:82/result/Candidate_No?"
               req.params['CandNo'] = "#{candNo}" #params[:CandNo]
               req.params['examYear'] =  "#{examYear}"#params[:yearId]
               req.params['examType'] = "#{dietId}"#params[:dietId]
@@ -57,7 +57,7 @@ class Exam < ActiveRecord::Base
 #candName=john&examYear=2020&examType=2
     def self.getDataByCandName(candName, year, dietId)
           response = Faraday.get do |req|
-              req.url "http://172.21.13.25/resultapi/result/Candidate_Name?"
+              req.url "http://172.21.13.25:82/result/Candidate_Name?"
               req.params['candName'] = "#{candName}"
               req.params['examYear'] =  "#{year}"
               req.params['examType'] =  "#{dietId}"

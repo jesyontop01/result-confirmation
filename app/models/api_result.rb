@@ -17,20 +17,23 @@ class ApiResult < ActiveRecord::Base
 
 		def self.getSearchedCandidate(candNo, examYear, dietId)
   		response = Faraday.get do |req|
-              req.url "http://172.21.13.25/resultapi/result/ResultByCandNo?"
+              req.url "http://172.21.13.25/result/ResultByCandNo?"
               req.params['CandNo'] = "#{candNo}" #params[:CandNo]
               req.params['examYear'] =  "#{examYear}"#params[:yearId]
               req.params['examType'] = "#{dietId}"#params[:dietId]
               req.headers['Content-Type'] = 'application/JSON'
 
             end
+
+            #binding.pry
             JSON.parse(response.body)
+            #binding.pry
         end
 
 
         def self.getDetailedResults(candNo, examYear, dietId)
   		 response = Faraday.get do |req|
-              req.url "http://172.21.13.25/resultapi/result/Candidate_No?"
+              req.url "http://172.21.13.25/result/Candidate_No?"
               req.params['candNo'] = "#{candNo}" #params[:CandNo]
               req.params['examYear'] =  "#{examYear}"#params[:yearId]
               req.params['examType'] = "#{dietId}"#params[:dietId]
@@ -43,7 +46,7 @@ class ApiResult < ActiveRecord::Base
 
     def self.getDataByCandName(candName, examYear, dietId)
           response = Faraday.get do |req|
-              req.url "http://172.21.13.25/resultapi/result/Candidate_Name?"
+              req.url "http://172.21.13.25/result/Candidate_Name?"
               req.params['candName'] = params[:candName]
               req.params['yearId'] =  params[:yearId]
               req.params['dietId'] = params[:dietId]

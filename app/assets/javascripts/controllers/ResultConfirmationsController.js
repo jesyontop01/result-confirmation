@@ -153,7 +153,7 @@ $scope.searchName = function(searchTerm, examYear , dietId){
 
     year_id = window.sessionStorage.getItem('yearID');
       ExamDietService.setYear( year_id);
-debugger
+//debugger
     var c = TryParseInt(searchTerm, null);
     //alert(c);
 
@@ -757,7 +757,7 @@ $scope.getConfirmByID = function(confirmId) {
 
 			var ref_no  = WES_Ref;
 			let token = window.sessionStorage.getItem('token');
-			console.log($scope.clientSelected);
+			//console.log($scope.clientSelected);
 //url: "http://localhost:5000/applicants.json",
 		$http({
 			method: 'GET',
@@ -792,6 +792,8 @@ $scope.getConfirmByID = function(confirmId) {
 	 $scope.selectConfirm  = {};
 	// $scope.wesApplicantID = 0;
 	// $scope.wesApplicant.ref_no = 0;
+
+	//Generating Confirmation of Results With Emborsed Signature
 		$scope.generateConfirmation = function(confirm) {
 			// body...
 
@@ -836,8 +838,14 @@ $scope.getConfirmByID = function(confirmId) {
 
 								
 										if ($scope.selectConfirm.exam_no.startsWith('4')) {
+
+											//For For School Candidate Examinations
+
 											$scope.printConfirmation3($scope.selectConfirm, $scope.wesApplicantID );
 										} else {
+
+											//For For Private Candidate Examinations
+
 											$scope.printConfirmation4($scope.selectConfirm, $scope.wesApplicantID );
 										}
 									
@@ -874,7 +882,7 @@ $scope.getConfirmByID = function(confirmId) {
 		}
 
 
-
+  //Generating Confirmation of Results Without Emborsed Signature
 
 		$scope.generateConfirmation2 = function(confirm) {
 			// body...
@@ -887,14 +895,14 @@ $scope.getConfirmByID = function(confirmId) {
 
 			$scope.selectConfirm = confirm;
 
-
+							//For School Candidates Results
 						if ($scope.selectConfirm.exam_no.startsWith('4')) {
 						    	$scope.printConfirmation10($scope.selectConfirm );
 								//$route.reload(); 
 					            
 							} 
 						else {
-						
+						//For Private Candidates Results
 								$scope.printConfirmation11($scope.selectConfirm );
 								//$route.reload(); 
 					            
@@ -3279,7 +3287,7 @@ $scope.selectConfirm = selectConfirm;
 								// console.log($scope.resultDetail);
 								// console.log(response.data);
 		
-						debugger
+						//debugger
 							$scope.$broadcast('print',{
 							retResult: $scope.resultDetail
 						});
@@ -3287,6 +3295,11 @@ $scope.selectConfirm = selectConfirm;
 								
 							}, function(response){
 								alert('There was an error from reading Result for Printing');
+													
+
+						// Reload the page
+						$route.reload();
+						$location.path('/result/confirmations');
 							});
 		
 													  
@@ -3456,7 +3469,7 @@ $scope.selectConfirm = selectConfirm;
 						
 											   text: [
 												  {text: 'NAME OF EXAM:\n'},
-												  {text: 'NAME OF SCHOOL:\n'},
+												  // {text: 'NAME OF SCHOOL:\n'},
 												  {text: 'CANDIDATE\'S NUMBER:\n'},
 												  {text: 'CANDIDATE\'S NAME:\n'},
 												  {text: 'ADDRESS:\n'},
@@ -3468,7 +3481,7 @@ $scope.selectConfirm = selectConfirm;
 						//`${subHeading}\n\n`
 												  text:[
 																		  {text: $scope.resultDetail[0].examType+' '+ $scope.resultDetail[0].examYear+'\n'},
-																		  {text: $scope.resultDetail[0].CentreName+'\n'},
+																		  // {text: $scope.resultDetail[0].CentreName+'\n'},
 																		  {text: centre+' / '+candNo +'\n'},
 																		  //{text: $scope.resultDetail[0].CandNo+'\n'},
 																		  {text: $scope.resultDetail[0].candName+'\n'},

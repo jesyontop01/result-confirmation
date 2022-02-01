@@ -19,23 +19,41 @@ angular.module('verifier')
             }
         };
 
+
+$scope.loading = false;
   $scope.passwordRequestForm = {};
  $scope.submitPwdBtnClick= function() {
+    $scope.loading = true;
        var parameters = {
             email: $scope.passwordRequestForm.email
         };
           // body...
-          Auth.sendResetPasswordInstructions(parameters).then(function() {
+          Auth.sendResetPasswordInstructions(parameters).then(function(response) {
+
+            $scope.loading = false;
+
+            //console.log(response);
+
             // Sended email if user found otherwise email not sended...
+            if (response.success == false) {
+                alert(response.message)
+                $scope.loading = false;
+            }else{
+                    $scope.loading = false;
+                alert("Password Reset Instruction Has being Sent to your "+ 
+                                       "supplied email, kindly visit for action");
+                $location.path("/");
+            }
           });
         };        
 
-        $scope.$on('devise:send-reset-password-instructions-successfully', function(event) {
-            // ...
-            alert("Password Reset Instruction Has being Sent to your "+ 
-                  "supplied email, kindly visit for action");
-            $location.path("/");
-        });
+        // $scope.$on('devise:send-reset-password-instructions-successfully', function(event) {
+        //     // ...
+        //     $scope.loading = false;
+        //     alert("Password Reset Instruction Has being Sent to your "+ 
+        //           "supplied email, kindly visit for action");
+        //     $location.path("/");
+        // });
 
 
         $scope.passwordEditForm = {};
@@ -52,7 +70,7 @@ angular.module('verifier')
 
         Auth.resetPassword(parameters).then(function(new_data) {
             //debugger
-            console.log(new_data); // => {id: 1, ect: '...'}
+            //sconsole.log(new_data); // => {id: 1, ect: '...'}
             if (new_data.success == false) {
                 alert("reset_password_token: "+ new_data.message.reset_password_token + "\n"+"Password: "+new_data.message.password );
                 $location.path("/password/edit");

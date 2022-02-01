@@ -11,15 +11,17 @@
         <div class="card-body">
     <label>Select Exam Diet <span>*</span></label>
       
-        <div  ng-controller="DietController">
+<!--    <div  ng-controller="DietController">
           <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
         <div class="form-group">
           <select ng-model="ExamDietId" ng-options="d.id as d.DietName for d in diets" ng-change="GetValue(d)" class="form-control" ng-required="true">
             <option value="">Select Exam Diet</option>
           </select>
-        </div>
+        </div> -->
         <!-- Selected: <p ng-bind="ExamDietId"></p> -->
-        </div> <br> 
+       <!--  </div> <br> --> 
+
+
 <!--     <label>Select Year <span>*</span></label>
       <div  ng-controller="YearController">
         <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
@@ -42,6 +44,15 @@
       </div>
 
 
+      <div  ng-controller="DietController">
+          <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+        <div class="form-group">
+          <select ng-model="ExamDietId" ng-options="d.id as d.DietName for d in diets" ng-change="GetValue(d)" class="form-control" ng-required="true">
+            <option value="">Select Exam Diet</option>
+          </select>
+        </div>
+        <!-- Selected: <p ng-bind="ExamDietId"></p> -->
+        </div> <br> 
 
  
     <label>Candidate's Exam No. <span>*</span></label>

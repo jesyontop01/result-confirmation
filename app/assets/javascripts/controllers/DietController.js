@@ -15,8 +15,9 @@ angular.module('verifier')
 	});
 
 		var dietSelected = $scope.ExamDietId;
-		
+
 		$scope.$watch('ExamDietId', function(newValue, oldValue){
+		
 		window.sessionStorage.setItem('examID', newValue);
 		//window.localStorage.setItem('currentMData', newValue);
 	})

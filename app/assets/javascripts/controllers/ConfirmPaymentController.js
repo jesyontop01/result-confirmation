@@ -519,13 +519,13 @@ $scope.search = function(searchTerm, ExamYear){
 			 	}).then(function(response) {
 			 		// body...
 			 		$scope.receipt = response.data[0];
-			 		console.log($scope.receipt);
+			 		//console.log($scope.receipt);
 			 		//debugger
 			 		if ($scope.receipt != null && $scope.receipt.status === "UNUSED") {
 			 		//debugger	
 			 		$scope.receiptConfirm = true;
 			 		$scope.result.receiptID = $scope.receipt.id;
-			 		console.log($scope.result.receiptID);
+			 		//console.log($scope.result.receiptID);
 			 		//debugger
 			 		}
 			 		else{

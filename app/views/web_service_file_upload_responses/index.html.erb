@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Web Service File Upload Responses</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Confirmation</th>
+      <th>Clientuploadid</th>
+      <th>Referencenumber</th>
+      <th>Status</th>
+      <th>Uploadid</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @web_service_file_upload_responses.each do |web_service_file_upload_response| %>
+      <tr>
+        <td><%= web_service_file_upload_response.confirmation %></td>
+        <td><%= web_service_file_upload_response.clientUploadId %></td>
+        <td><%= web_service_file_upload_response.referenceNumber %></td>
+        <td><%= web_service_file_upload_response.status %></td>
+        <td><%= web_service_file_upload_response.uploadId %></td>
+        <td><%= link_to 'Show', web_service_file_upload_response %></td>
+        <td><%= link_to 'Edit', edit_web_service_file_upload_response_path(web_service_file_upload_response) %></td>
+        <td><%= link_to 'Destroy', web_service_file_upload_response, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Web Service File Upload Response', new_web_service_file_upload_response_path %>

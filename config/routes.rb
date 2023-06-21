@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  resources :confirm_backup_data
+  resources :web_service_file_upload_responses
   get 'main_offices/index'
   resources :main_offices
   resources :waec_zonal_offices
@@ -75,6 +77,7 @@ Rails.application.routes.draw do
   resources :confirmations do
     collection do
       get :confirm_IsPrint
+      get :search_confirmation
     end
     resources :confirm_types
   end
@@ -123,6 +126,11 @@ Rails.application.routes.draw do
           get :confirmations
           get :getResultStatus
           get :getResultByCandidate
+          get :getSearchedResultDetails
+          get :connectToWesAPI
+          get :retrieveWESApplicantInfo
+          get :getSearchedResultDetailsForConfirmation
+          post :transferFileToWesAPI
         end
     end
 

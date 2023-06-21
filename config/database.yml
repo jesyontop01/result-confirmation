@@ -27,10 +27,9 @@ default: &default
   adapter: sqlserver
   encoding: utf8
   username: "jeremiah"
-  #password: "jasaag01"
   password: "jeremiah"
   mode:     dblib
-  dataserver: jesyontop #JESYONTOP-PC\MSSQLSERVER2014
+  dataserver: 127.0.0.1 #DESKTOP-RHLLH1D #JESYONTOP-PC\MSSQLSERVER2014
   port: 1433
   # adapter: sqlserver
   # encoding: utf8

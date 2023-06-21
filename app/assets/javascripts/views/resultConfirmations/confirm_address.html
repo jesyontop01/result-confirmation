@@ -14,14 +14,14 @@
         <div class="card-body">
 
 
-      <form name="createConfirmForm" ng-submit="createConfirm(resultAddress);" method="post" accept-charset="UTF-8" ng-controller="ResultConfirmationsController" ng-init="loadResultDetail2(CandNo)">     
+      <form name="createConfirmForm" ng-submit="createConfirm(resultAddress);" method="post" accept-charset="UTF-8" ng-controller="ResultConfirmationsController" ng-init="loadResultDetail(CandNo)">     
 
 
         <div class="modal-body">             
         
         <span class="current-exam">
                  
-          Working Exam: <span style="font-size:120%; color:green;"> <strong>{{resultAddress.examType}} {{resultAddress.examYear}} </strong></span> 
+          Working Exam: <span style="font-size:120%; color:green;"> <strong>{{resultAddress.ExamTitle}} </strong></span> 
                 
                  
         </span>
@@ -98,11 +98,11 @@
                       <td><input  size="30" type="text" value="NULL" ng-model="resultAddress.Cand_payment_Name" placeholder="Candidate Name" ng-disabled="true">
                       </td></tr>
 
-                      <tr><td><label ><strong>Candidate's Email (Payment):</strong></label>&nbsp;&nbsp;</td>
+                      <tr><td><label ><strong>Email Address (Payment):</strong></label>&nbsp;&nbsp;</td>
                       <td><input  size="30" type="text" value="NULL" ng-model="resultAddress.cand_email" placeholder="Candidate Email Address" ng-disabled="true">
                       </td></tr>
 
-                      <tr><td><label ><strong>Candidate's Email (Payment):</strong></label>&nbsp;&nbsp;</td>
+                      <tr><td><label ><strong>Amount Paid (Payment):</strong></label>&nbsp;&nbsp;</td>
                       <td><input  size="30" type="text" value="NULL" ng-model="resultAddress.amount" placeholder="Amount Paid" ng-disabled="true">
                       </td></tr><hr>
 

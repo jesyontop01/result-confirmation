@@ -27,9 +27,19 @@ angular.module('verifier').factory('ResultService', ['$http','$q',function($http
 
 		fac.ResultDetailsFromDB = function(examno, examyear,examdiet){
 
-			//return $http.get("/exams.json", 
-			return $http.get("/api_results/getSearchedResultDetails.json", 
+			//return $http.get("/api_results.json",  //$http.get("/exams/getSearchedResultDetails.json",
+			return $http.get("/exams/getSearchedResultDetailsForConfirmation.json", 
 				   {"params": { "CandNo": examno, "examYear": examyear, "DietName": examdiet}}
+			);
+		
+
+		};
+
+		fac.ResultDetailsFromDBForConfirmation = function(examno, examyear,examdiet, confirmID, isPrinted){
+debugger
+			//return $http.get("/api_results.json",  //$http.get("/exams/getSearchedResultDetails.json",
+			return $http.get("/exams/getSearchedResultDetailsForConfirmation.json", 
+				   {"params": { "CandNo": examno, "examYear": examyear, "DietName": examdiet, "confirmID": confirmID, "isPrinted": isPrinted}}
 			);
 		
 
@@ -39,7 +49,7 @@ angular.module('verifier').factory('ResultService', ['$http','$q',function($http
 	    fac.ResultDetailsWithIDs = function(examno, examyear,examdiet){
 
 			//return $http.get("/exams.json", 
-			return $http.get("/api_results.json",
+			return $http.get("/exams.json",
 				   {"params": { "CandNo": examno, "yearId": examyear, "dietId": examdiet}}
 			);
 		

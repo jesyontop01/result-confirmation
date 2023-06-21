@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_29_151649) do
+ActiveRecord::Schema.define(version: 2023_06_20_152514) do
 
   create_table "Grade", primary_key: "GradeType", id: :string, limit: 1, default: nil, force: :cascade do |t|
     t.string "GradeValue", limit: 2, null: false
@@ -37,6 +37,29 @@ ActiveRecord::Schema.define(version: 2021_06_29_151649) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["confirm_type_id"], name: "index_confirm_amounts_on_confirm_type_id"
+  end
+
+  create_table "confirm_backup_data", force: :cascade do |t|
+    t.bigint "confirmation_id"
+    t.string "CandNo"
+    t.string "Results"
+    t.string "FormNo"
+    t.string "Surname"
+    t.string "FirstName"
+    t.string "OtherNames"
+    t.string "DOB"
+    t.string "Sex"
+    t.text "Pix"
+    t.string "CentreName"
+    t.string "CertificateNo"
+    t.string "SecurityDigit"
+    t.string "Award"
+    t.string "CertificateStatus"
+    t.string "DatePrinted"
+    t.string "ExamTitle"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["confirmation_id"], name: "index_confirm_backup_data_on_confirmation_id"
   end
 
   create_table "confirm_countries", force: :cascade do |t|
@@ -114,6 +137,13 @@ ActiveRecord::Schema.define(version: 2021_06_29_151649) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_departments_on_division_id"
+  end
+
+  create_table "depts", id: :bigint, force: :cascade do |t|
+    t.string "name"
+    t.bigint "division_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "diets", force: :cascade do |t|
@@ -393,7 +423,9 @@ ActiveRecord::Schema.define(version: 2021_06_29_151649) do
     t.varchar "centre_table_name", limit: 25, null: false
     t.varchar "pix_folder", limit: 25
     t.datetime "created_at"
-    t.datetime "updated_at"
+    t.boolean "consolidated"
+    t.integer "waec_user_id"
+    t.integer "exam_year"
   end
 
   create_table "waec_exams2", force: :cascade do |t|
@@ -404,6 +436,16 @@ ActiveRecord::Schema.define(version: 2021_06_29_151649) do
     t.string "pix_folder"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "waec_exams3", id: :integer, force: :cascade do |t|
+    t.varchar "exam_name", limit: 25
+    t.varchar "exam_diet", limit: 100, null: false
+    t.varchar "table_name", limit: 25, null: false
+    t.varchar "centre_table_name", limit: 25, null: false
+    t.varchar "pix_folder", limit: 25
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "waec_offices", force: :cascade do |t|
@@ -485,6 +527,17 @@ ActiveRecord::Schema.define(version: 2021_06_29_151649) do
     t.varchar "award", limit: 1
   end
 
+  create_table "web_service_file_upload_responses", force: :cascade do |t|
+    t.bigint "confirmation_id"
+    t.string "clientUploadId"
+    t.integer "referenceNumber"
+    t.string "status"
+    t.integer "uploadId"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["confirmation_id"], name: "index_web_service_file_upload_responses_on_confirmation_id"
+  end
+
   create_table "web_services", force: :cascade do |t|
     t.string "clientName"
     t.string "clientURL"
@@ -492,6 +545,8 @@ ActiveRecord::Schema.define(version: 2021_06_29_151649) do
     t.datetime "updated_at", null: false
     t.string "authURL"
     t.string "submitURL"
+    t.string "username"
+    t.string "password"
   end
 
   create_table "years", force: :cascade do |t|
@@ -501,6 +556,7 @@ ActiveRecord::Schema.define(version: 2021_06_29_151649) do
   add_foreign_key "assignments", "roles"
   add_foreign_key "assignments", "users"
   add_foreign_key "confirm_amounts", "confirm_types"
+  add_foreign_key "confirm_backup_data", "confirmations"
   add_foreign_key "confirm_countries", "confirm_types"
   add_foreign_key "confirmations", "confirm_countries"
   add_foreign_key "confirmations", "confirm_types"
@@ -520,4 +576,5 @@ ActiveRecord::Schema.define(version: 2021_06_29_151649) do
   add_foreign_key "users", "departments", column: "dept_id"
   add_foreign_key "users", "roles"
   add_foreign_key "waec_zonal_offices", "offices"
+  add_foreign_key "web_service_file_upload_responses", "confirmations"
 end

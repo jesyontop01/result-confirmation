@@ -1,0 +1,102 @@
+<%= form_with(model: confirm_backup_datum, local: true) do |form| %>
+  <% if confirm_backup_datum.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(confirm_backup_datum.errors.count, "error") %> prohibited this confirm_backup_datum from being saved:</h2>
+
+      <ul>
+      <% confirm_backup_datum.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :confirmation_id %>
+    <%= form.text_field :confirmation_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :CandNo %>
+    <%= form.text_field :CandNo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Results %>
+    <%= form.text_field :Results %>
+  </div>
+
+  <div class="field">
+    <%= form.label :FormNo %>
+    <%= form.text_field :FormNo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Surname %>
+    <%= form.text_field :Surname %>
+  </div>
+
+  <div class="field">
+    <%= form.label :FirstName %>
+    <%= form.text_field :FirstName %>
+  </div>
+
+  <div class="field">
+    <%= form.label :OtherNames %>
+    <%= form.text_field :OtherNames %>
+  </div>
+
+  <div class="field">
+    <%= form.label :DOB %>
+    <%= form.text_field :DOB %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Sex %>
+    <%= form.text_field :Sex %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Pix %>
+    <%= form.text_field :Pix %>
+  </div>
+
+  <div class="field">
+    <%= form.label :CentreName %>
+    <%= form.text_field :CentreName %>
+  </div>
+
+  <div class="field">
+    <%= form.label :CertificateNo %>
+    <%= form.text_field :CertificateNo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :SecurityDigit %>
+    <%= form.text_field :SecurityDigit %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Award %>
+    <%= form.text_field :Award %>
+  </div>
+
+  <div class="field">
+    <%= form.label :CertificateStatus %>
+    <%= form.text_field :CertificateStatus %>
+  </div>
+
+  <div class="field">
+    <%= form.label :DatePrinted %>
+    <%= form.text_field :DatePrinted %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ExamTitle %>
+    <%= form.text_field :ExamTitle %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

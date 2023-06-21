@@ -1,0 +1,42 @@
+<%= form_with(model: web_service_file_upload_response, local: true) do |form| %>
+  <% if web_service_file_upload_response.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(web_service_file_upload_response.errors.count, "error") %> prohibited this web_service_file_upload_response from being saved:</h2>
+
+      <ul>
+      <% web_service_file_upload_response.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :confirmation_id %>
+    <%= form.text_field :confirmation_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :clientUploadId %>
+    <%= form.text_field :clientUploadId %>
+  </div>
+
+  <div class="field">
+    <%= form.label :referenceNumber %>
+    <%= form.number_field :referenceNumber %>
+  </div>
+
+  <div class="field">
+    <%= form.label :status %>
+    <%= form.text_field :status %>
+  </div>
+
+  <div class="field">
+    <%= form.label :uploadId %>
+    <%= form.number_field :uploadId %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

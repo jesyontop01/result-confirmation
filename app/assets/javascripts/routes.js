@@ -291,7 +291,7 @@ angular
     // body...
     
       $rootScope.$on('$routeChangeStart', function (event, next, current, xhr){
-        console.log(next.$$route);
+        //console.log(next.$$route);
 
             // Disable interceptor on _this_ login request,
             // so that it too isn't caught by the interceptor
@@ -304,7 +304,8 @@ angular
         if (next.$$route !== undefined) {
            // Check if authentication is required on route
           if (next.$$route.authenticated == true) {
-            console.log("Needs authentication");
+            //console.log("Needs authentication");
+
             // Check if authentication is required, then if permission is required
             //debugger
             //if (!Auth.isAuthenticated()) {
@@ -346,7 +347,7 @@ angular
                                 return false;
                               }
 
-                        console.log(check());
+                        //console.log(check());
 
                         });
                     }
@@ -357,7 +358,7 @@ angular
           } 
           else 
             if(next.$$route.authenticated == false) {
-            console.log("Doesn't need authentication");
+           // console.log("Doesn't need authentication");
             //debugger
               //if (Auth.isAuthenticated()) {
               if($cookieStore.get('logged_in') != true){

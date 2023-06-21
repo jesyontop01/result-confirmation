@@ -1,9 +1,9 @@
 angular.module('verifier')
 	.controller("ResultConfirmationsController", [ "$scope", "$http", "$location", "crudService",'$window', "$routeParams",
 		'ExamDietService',"ConfirmationService", "fileUpload", "ResultService", "$route", "WebClient", "userSession",
-		"SweetAlert", "toaster","Auth",
+		"SweetAlert", "toaster","Auth", '$filter','uibDateParser',
 		function ( $scope, $http, $location, crudService,$window, $routeParams, ExamDietService, ConfirmationService, 
-			fileUpload, ResultService, $route, WebClient, userSession,SweetAlert, toaster, Auth) {
+			fileUpload, ResultService, $route, WebClient, userSession,SweetAlert, toaster, Auth, $filter,uibDateParser) {
 var vm = this ;
 
 
@@ -29,12 +29,15 @@ $scope.examYear = null;
 
 			$scope.examYear = examYear;
 
-		console.log($scope.examYear);
+		//console.log($scope.examYear);
 			ExamDietService.setYear( $scope.examYear);
 
-		$http.get("/api_results.json", 
-				   {"params": { "CandNo": searchTerm, "examYear": examYear, "dietId": diet_id}}
-			).then(function(response){ 
+		// $http.get("/api_results.json", 
+		// 		   {"params": { "CandNo": searchTerm, "examYear": examYear, "dietId": diet_id}}
+		// 	).then(function(response){ 
+		$http.get("/exams.json", 
+			{"params": { "CandNo": searchTerm, "yearId": year_id, "dietId": diet_id}}
+	 		).then(function(response){ 
 				
 				//$scope.results = response.data;
 				
@@ -57,7 +60,7 @@ $scope.examYear = null;
 					$scope.loading = false;
 					$scope.result = response.data.results[0];
 					//$scope.results = response.data;
-				console.log(response.data);
+				//console.log(response.data);
 
 				$scope.loading = false;
 				}
@@ -87,7 +90,7 @@ $scope.examYear = null;
 
 			$scope.examYear = examYear;
 
-		console.log($scope.examYear);
+		//console.log($scope.examYear);
 			ExamDietService.setYear( $scope.examYear);
 
 		$http.get("/api_results.json", 
@@ -109,7 +112,7 @@ $scope.examYear = null;
 					$scope.loading = false;
 					$scope.result = response.data.results[0];
 					//$scope.results = response.data;
-				console.log(response.data);
+				//console.log(response.data);
 
 				$scope.loading = false;
 				}
@@ -153,6 +156,8 @@ $scope.searchName = function(searchTerm, examYear , dietId){
 
     year_id = window.sessionStorage.getItem('yearID');
       ExamDietService.setYear( year_id);
+	  ExamDietService.setYearName(examYear);
+	  window.sessionStorage.setItem('examYear', examYear);
 //debugger
     var c = TryParseInt(searchTerm, null);
     //alert(c);
@@ -162,31 +167,38 @@ $scope.searchName = function(searchTerm, examYear , dietId){
 
 			$scope.examYear = examYear;
 
-		console.log($scope.examYear);
+		//console.log($scope.examYear);
 			ExamDietService.setYear( $scope.examYear);
 
     if (c === null) {
 
-          $http.get("/exams/getResultByCandidate.json", 
-           {"params": { "candName": searchTerm, "examYear": $scope.examYear, "dietId": diet_id}}
-                   ).then(function(response){ 
+        //   $http.get("/exams/getResultByCandidate.json", 
+        //    {"params": { "candName": searchTerm, "examYear": $scope.examYear, "dietId": diet_id}}
+        //            ).then(function(response){ 
+		$http.get("/exams.json", 
+			{"params": { "CandNo": searchTerm, "examYear": $scope.examYear, "dietId": diet_id}}
+	 		).then(function(response){ 
 
-          console.log(response.data);
+          //console.log(response.data);
  
               	if (response.data.length == 0){
 					alert("Candidate result is not available !");
 					$scope.loading = false;
+					$scope.resultBoolArray = false;
+					$scope.resultBool = false;
 				}
 				else if (response.data.success == false) {
-					alert("Candidate result is not available !");
+					alert(response.data.message);
 					$scope.loading = false;
+					$scope.resultBoolArray = false;
+					$scope.resultBool = false;
 				} else {
 					$scope.resultBoolArray = true;
 					$scope.resultBool = true;
 					$scope.loading = false;
 					$scope.results = response.data.results;
 					//$scope.results = response.data;
-				console.log(response.data);
+				//console.log(response.data);
 
 				$scope.loading = false;
 				}         
@@ -200,28 +212,32 @@ $scope.searchName = function(searchTerm, examYear , dietId){
 
     } else {
 
- 		 $http.get("/api_results.json", 
+ 		 $http.get("/exams.json", 
 		 		   {"params": { "CandNo": searchTerm, "examYear": examYear, "dietId": diet_id}}
       		).then(function(response){ 
 
           //console.log(response.data);
 
-				if (response.data.length == 0){
-					alert("Candidate result is not available !");
-					$scope.loading = false;
-				}
-				else if (response.data.success == false) {
-					alert("Candidate result is not available !");
-					$scope.loading = false;
-				} else {
-					$scope.resultBool = true;
-					$scope.loading = false;
-					$scope.results = response.data.results;
-					//$scope.results = response.data;
-				console.log(response.data);
-
+		  if (response.data.length == 0){
+			alert("Candidate result is not available !");
+			$scope.loading = false;
+			$scope.resultBoolArray = false;
+			$scope.resultBool = false;
+		}
+		else if (response.data.success == false) {
+			alert(response.data.message);
+			$scope.loading = false;
+			$scope.resultBoolArray = false;
+			$scope.resultBool = false;
+		} else {
+			$scope.resultBoolArray = true;
+			$scope.resultBool = true;
+			$scope.loading = false;
+			$scope.results = response.data.results;
+				//console.log(response.data);
+// debugger
 				$scope.loading = false;
-				}
+		}
 
 
 			}
@@ -233,11 +249,14 @@ $scope.searchName = function(searchTerm, examYear , dietId){
 };
 
 	$scope.viewDetails = function(result){
-			if (result.candNo) {
-				result.examNo = result.candNo;
+		let examYear = window.sessionStorage.getItem('examYear');
+
+		//console.log(examYear, result)
+			if (result.CandNo) {
+				result.examNo = result.CandNo;
 			} 
 		
-			$location.path("result/search/" + result.examYear +"/"+ result.examNo  );
+			$location.path("result/search/" + examYear +"/"+ result.examNo  );
 		}
 
 
@@ -250,28 +269,37 @@ $scope.searchName = function(searchTerm, examYear , dietId){
 // Load Searched Result For Detailed View and PDF Printing.
 
 		$scope.result = [];
+
 	$scope.loadResultDetail = function (examNo) {
+//debugger
 		$scope.loading = true;
 
         let searchTerm = $routeParams.examNo;
         let examYear = $routeParams.examYear;
+
+		if (examYear === "null") {
+			examYear = window.sessionStorage.getItem('examYear');
+		}
      //let diet_id = ExamDietService.getDiet();
     
        	let  diet_id = window.sessionStorage.getItem('examID');
 	 //let year_id = ExamDietService.getYear();
 			
 
-		$http.get("/api_results/getSearchedResultDetails.json", 
+		$http.get("/exams/getSearchedResultDetails.json", 
 
 				   {"params": { "CandNo": $routeParams.examNo, "examYear": examYear, "dietId": diet_id}}
 			).then(function(response){ 
-    							//alert('Record successfully updated .');
-    							console.log(response);
+
+    							//console.log(response);
     							$scope.resultObject = response.data.results;
     	
 							    //$scope.result = response.data[0];
 							    $scope.result = response.data.results[0];
-							    $scope.resultAddress = response.data.results[0][0];
+							    $scope.resultAddress = response.data.results[0];
+								$scope.examYear = window.sessionStorage.getItem('examYear');
+
+								//console.log($scope.result);
 
 						$scope.pictureEmpty = false;
 
@@ -295,6 +323,181 @@ $scope.searchName = function(searchTerm, examYear , dietId){
 
     			});
     };
+
+
+//Confirmation List Search Pane
+$scope.today = function() {
+    $scope.dateFrom = new Date();
+    $scope.dateTo = new Date();
+  };
+
+  $scope.today();
+
+  $scope.clear = function() {
+    $scope.dt = null;
+    $scope.dateFrom = null;
+    $scope.dateTo = null;
+  };
+
+  $scope.inlineOptions = {
+    customClass: getDayClass,
+    minDate: new Date(),
+    showWeeks: true
+  };
+
+  $scope.dateOptions = {
+    dateDisabled: disabled,
+    formatYear: 'yy',
+    maxDate: new Date(),
+    minDate: new Date(),
+    startingDay: 1
+  };
+
+  // Disable weekend selection
+  function disabled(data) {
+    var date = data.date,
+      mode = data.mode;
+    return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+  }
+
+  $scope.toggleMin = function() {
+    $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+    $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+  };
+
+  $scope.toggleMin();
+
+  $scope.open1 = function() {
+    $scope.popup1.opened = true;
+  };
+
+  $scope.open2 = function() {
+    $scope.popup2.opened = true;
+  };
+
+  $scope.setDate = function(year, month, day) {
+    //$scope.dt = new Date(year, month, day);
+   $scope.dateFrom = new Date(year, month, day);
+   $scope.dateTo = new Date(year, month, day);
+
+  };
+
+  $scope.formats = ['dd-MMMM-yyyy', 'yyyy-MM-dd', 'dd-MM-yyyy', 'shortDate'];
+  $scope.format = $scope.formats[0];
+  $scope.altInputFormats = ['M!/d!/yyyy'];
+
+  $scope.popup1 = {
+    opened: false
+  };
+
+  $scope.popup2 = {
+    opened: false
+  };
+
+  var tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  var afterTomorrow = new Date();
+  afterTomorrow.setDate(tomorrow.getDate() + 1);
+  $scope.events = [
+    {
+      date: tomorrow,
+      status: 'full'
+    },
+    {
+      date: afterTomorrow,
+      status: 'partially'
+    }
+  ];
+
+  function getDayClass(data) {
+    var date = data.date,
+      mode = data.mode;
+    if (mode === 'day') {
+      var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+      for (var i = 0; i < $scope.events.length; i++) {
+        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+        if (dayToCheck === currentDay) {
+          return $scope.events[i].status;
+        }
+      }
+    }
+
+    return '';
+  }
+
+  // $scope.format = 'yyyy/MM/dd';
+  // $scope.date = new Date();
+  $scope.confirms = [];
+  $scope.getDate = function(ExamDietId, datePrinted) {
+  	// body...
+  	$scope.ExamDietId = window.sessionStorage.getItem('examID'); 
+	   //$scope.date = $filter('date')(Date.now(),'yyyy-MM-dd')
+	$scope.datePrinted = $filter('date')(datePrinted, 'yyyy-MM-dd'); //dateFrom;
+
+
+  	console.log( $scope.ExamDietId, $scope.datePrinted );
+  			    		 //myAppFactory.getFilteredData($scope.WaecOfficeId, $scope.dateFrom , $scope.dateTo)
+
+  			if ($scope.ExamDietId == undefined) {
+  				$http({
+                    method: 'GET',
+                    url: '/confirmations/search_confirmation.json',
+                     params: {
+						datePrinted: $scope.datePrinted,
+                        }
+                }).then(function(response){
+					    		$scope.confirms = response.data;
+
+  $scope.datePrinted = $filter('date')(dateFrom, 'yyyy-MM-dd'); //dateFrom;
+    //$scope.dateTo = $filter('date')(dateTo, 'yyyy-MM-dd');// dateTo;
+					    		console.log($scope.confirms);					  
+						    		
+					    	}, function(response){
+					    		alert("There was an Error:");
+					    	});
+  			} else if ($scope.datePrinted == undefined) {
+				$http({
+				  method: 'GET',
+				  url: '/confirmations/search_confirmation.json',
+				   params: {
+					ExamDietId: $scope.ExamDietId,
+					  }
+			  }).then(function(response){
+							  $scope.confirms = response.data;
+
+$scope.datePrinted = $filter('date')(dateFrom, 'yyyy-MM-dd'); //dateFrom;
+  //$scope.dateTo = $filter('date')(dateTo, 'yyyy-MM-dd');// dateTo;
+							  console.log($scope.confirms);					  
+								  
+						  }, function(response){
+							  alert("There was an Error:");
+						  });
+			} else{
+  				$http({
+                    method: 'GET',
+                    url: '/confirmations/search_confirmation.json',
+                     params: {
+							ExamDietId : $scope.ExamDietId,
+                            datePrinted: $scope.datePrinted,
+                        }
+                }).then(function(response){
+					    		$scope.confirms = response.data;
+
+    $scope.dateFrom = $filter('date')(dateFrom, 'yyyy-MM-dd'); //dateFrom;
+    $scope.dateTo = $filter('date')(dateTo, 'yyyy-MM-dd');// dateTo;
+
+					    		console.log($scope.confirms);					  
+						    		
+					    	}, function(response){
+					    		alert("There was an Error:");
+					    	});
+  			}
+  			
+
+
+  }
 
    
 // Load Searched Detail for Confirmation Address.
@@ -390,7 +593,7 @@ $scope.loading = true;
    	$scope.applicantResult = {
    			diet_id:  window.sessionStorage.getItem('examID'),
 	  	    year_id: window.sessionStorage.getItem('yearID'),
-	  	    examYear: $scope.resultAddress.examYear,
+	  	    examYear: window.sessionStorage.getItem('examYear'),//$scope.resultAddress.examYear,
 		    exam_no:  $scope.resultAddress.candNo,
 		    receipt_no: $scope.resultAddress.receipt_no,
 		    Cand_address: $scope.resultAddress.Cand_address,
@@ -408,7 +611,7 @@ $scope.loading = true;
 		    Local_Ref_no: $scope.resultAddress.Local_Ref_no
 		};
 
-		console.log( $scope.applicantResult);
+		//console.log( $scope.applicantResult);
 
 		$http({
 			method: 'POST',
@@ -416,7 +619,7 @@ $scope.loading = true;
 			data: angular.toJson($scope.applicantResult) ,
 			header: {
 						'Content_Type' :  'application/json'
-						}
+					}
 				})
 				.then(function(response){
 							// body...
@@ -451,7 +654,7 @@ $scope.loading = true;
 				$scope.result.receiptConfirm = false;
 				$scope.result.receiptID = 0;
 
-			$scope.confirmPayment = function(receipt_no) {
+	$scope.confirmPayment = function(receipt_no) {
 			 	// body...
 			 	//$scope.result.receipt_no = receipt_no;
 			 	
@@ -552,9 +755,11 @@ $scope.loading = true;
     $log.log('Page changed to: ' + $scope.currentPage);
   };
 
-  $scope.maxSize = 5;
+  $scope.maxSize = 10;
   $scope.bigTotalItems = 175;
   $scope.bigCurrentPage = 1;
+  $scope.confirms = [];
+  
 
 		$scope.getAllConfirmation = function(){
 			 $scope.loading = true;
@@ -563,12 +768,30 @@ $scope.loading = true;
 		    		url: '/confirmations.json',
 					}).then(function(response){
 					    		$scope.confirms = response.data;
-					    		console.log($scope.confirms);
-					   $scope.loading = false;
+					    		//console.log($scope.confirms);
+
+								//debugger
+								for (let index = 0; index < $scope.confirms.length; index++) {
+									const element =  $scope.confirms[index];
+									//console.log(element);
+									if (element.isPrinted === true) {
+										element.printStatus = "Printed"; 
+									} else {
+										element.printStatus = "Fresh"; 
+									}
+									
+								}
+								
+
+							//console.log($scope.confirms);
+
+						   $scope.loading = false;
 						    		
 					    	}, function(response){
+								$scope.loading = false;
 					    		alert("There was an Error:");
 					    	});
+
 			};
 
 // Establish Connection To WES and Upload File
@@ -625,80 +848,145 @@ $scope.loading = true;
 		//window.localStorage.setItem('currentMData', newValue);
 	})
 
-
-	}
+}
 
 $scope.webClientURL = {};
 
 $scope.clientURL = null;
 
-$scope.ConnecttoWES = function(confirmID) {
-	// body...
-	$scope.loading = true;
+// $scope.ConnecttoWES = function(confirmID) {
+// 	// body...
+// 	$scope.loading = true;
 
-	$scope.confirmID = $routeParams.id;
-	$scope.clientSelected.clientURL
+// 	$scope.confirmID = $routeParams.id;
+// 	$scope.clientSelected.clientURL
 	
-	//console.log($scope.clientSelected.clientURL);
-		//$http.post('http://localhost:5000/auth_user?email=waec@waec.org.ng&password=waecyaba')
-		$http.post($scope.clientSelected.clientURL)
-		  .then(function(response) {
-		  	// body...
-		  	$scope.loading = false;
-		  	 response.data;
-		  	if (response.status == 200) {
-
-		  		alert("Login to WES was successful");
-		  		$location.path('/result/wes_upload/'+ $scope.confirmID);
-		  	}
-		  	//console.log(response.data);
-//debugger
-		  	 if(response.data.auth_token) {
-			    window.sessionStorage.setItem('token', JSON.stringify(response.data.auth_token));
-
-			    //console.log(window.sessionStorage.getItem('token'));
-			  }
-  
-
-		  }, function(response) {
-		  	// body...
-		  	alert("WES Server not available , please try later " + response.status);
-		  })
-
-
-
-	//http://localhost:3000//auth/sign_in?email=waec@waec.org.ng&password=waecyaba
-// 		$http.post('http://localhost:5000//auth/sign_in?email=waec@waec.org.ng&password=waecyaba')
+// 	//console.log($scope.clientSelected.clientURL);
+// 		//$http.post('http://localhost:5000/auth_user?email=waec@waec.org.ng&password=waecyaba')
+// 		$http.post($scope.clientSelected.clientURL)
 // 		  .then(function(response) {
 // 		  	// body...
-// 		  	response.data;
+// 		  	$scope.loading = false;
+// 		  	 response.data;
 // 		  	if (response.status == 200) {
-// 		  		$location.path('/wes_upload/'+ confirm.id);
-// 		  	}
-// 		  	console.log(response.data);
-// 		  	console.log(response.headers());
-// 		  	console.log(response.headers("access-token"));
-// debugger
-// 		  	 if(response.headers("access-token")) {
-// 			    let authHeaders = {
-// 			      'access-token': response.headers('access-token'),
-// 			      'client': response.headers('client'),
-// 			      'uid': response.headers('uid'),
-// 			      'expiry': response.headers('expiry'),
-// 			      'token-type': response.headers('token-type')
-// 			    }
-// 			    window.sessionStorage.setItem('authHeaders', JSON.stringify(authHeaders));
 
-// 			    console.log(window.sessionStorage.getItem('authHeaders'));
+// 		  		alert("Login to WES was successful");
+// 		  		$location.path('/result/wes_upload/'+ $scope.confirmID);
+// 		  	}
+// 		  	//console.log(response.data);
+// //debugger
+// 		  	 if(response.data.auth_token) {
+// 			    window.sessionStorage.setItem('token', JSON.stringify(response.data.auth_token));
+
+// 			    //console.log(window.sessionStorage.getItem('token'));
 // 			  }
   
 
 // 		  }, function(response) {
 // 		  	// body...
-// 		  	alert(response.status);
-// 		  });
+// 		  	alert("WES Server not available , please try later " + response.status);
+// 		  })
 
-	//$location.path('/wes_upload/'+ confirm.id);
+// }
+
+$scope.ConnecttoWES1 = function(id) {
+	// body...
+	$scope.loading = true;
+//debugger
+	$scope.confirmID = $routeParams.id;
+	$scope.clientSelected.clientURL
+
+	let usernameWES = $scope.clientSelected.username;//  "WAECNGA";
+	let passwordWES =  $scope.clientSelected.password;// "2rDYxvSh6VW2";
+
+	let credential = {
+		username: usernameWES, 
+		password: passwordWES
+	};
+
+	$http({
+		method: 'POST',
+		// url: "https://testeuploads.wes.org/api/v2/authenticate/",
+		url: $scope.clientSelected.clientURL,
+		data: angular.toJson(credential) ,
+		header: {
+					'Content_Type' :  'application/json'
+				}
+			})
+			.then(function(response){
+						// body...
+	
+			//console.log(response);
+			//debugger
+			$scope.loading = false;
+			
+			  	if (response.status == 200) {
+					SweetAlert.swal("Successful!", "Login to WES was successful");
+					
+					window.sessionStorage.setItem('webClient_key', JSON.stringify(response.data.token));
+
+					console.log(window.sessionStorage.getItem('webClient_key'));
+
+					window.sessionStorage.setItem('confirmID', JSON.stringify($scope.confirmID));
+					console.log(window.sessionStorage.getItem('confirmID'));
+
+					$location.path('/result/wes_upload/'+ $scope.confirmID);
+		  		}
+
+			}, function(response) {
+						// body...
+						//console.log(response);
+						//debugger
+				//alert("An Error occurred");
+		toaster.pop('error', "error", 'An Error occurred'+ response);
+	})
+
+}
+
+$scope.ConnecttoWES = function(id) {
+	// body...
+	$scope.loading = true;
+//debugger
+	$scope.confirmID = $routeParams.id;
+	$scope.clientSelected.clientURL
+
+	let usernameWES = $scope.clientSelected.username;//  "WAECNGA";
+	let passwordWES =  $scope.clientSelected.password;// "2rDYxvSh6VW2";
+
+	let credential = {
+		username: usernameWES, 
+		password: passwordWES
+	};
+
+	$http({
+		method: 'GET',
+		url: "/exams/connectToWesAPI.json",
+		//data: angular.toJson(credential) ,
+		header: {
+					'Content_Type' :  'application/json'
+				}
+			})
+			.then(function(response){
+						// body...
+	
+			//console.log(response);
+			//debugger
+			$scope.loading = false;
+			
+			  	if (response.status == 200) {
+					SweetAlert.swal("Successful!", "Login to WES was successful");
+					
+					window.sessionStorage.setItem('webClient_key', JSON.stringify(response.data.token));
+
+					//console.log(window.sessionStorage.getItem('webClient_key'));
+
+					$location.path('/result/wes_upload/'+ $scope.confirmID);
+		  		}
+
+			}, function(response) {
+		toaster.pop('error', "error", 'An Error occurred'+ response.message);
+		$scope.loading = false;
+	})
 
 }
 
@@ -708,14 +996,17 @@ $scope.getConfirmByID = function(confirmId) {
 	// body...
 	$scope.loading = true;
 	confirmId = $routeParams.id
+	
 	$scope.confirm = {};
-
+	//debugger
 	$http.get('/confirmations/'+ confirmId +'.json')
 		  .then(function(response) {
 		  	// body...
 		  $scope.loading = false;
 		  //debugger
 		  	$scope.confirm = response.data[0];
+
+			
 		  	console.log($scope.confirm);
 
 		  }, function(response) {
@@ -731,56 +1022,105 @@ $scope.getConfirmByID = function(confirmId) {
 	$scope.wesApplicant.ref_no = 0;
 	$scope.webClient = {} ;
 
-		$scope.wesAuthentication = function (WES_Ref) {
+	// $scope.wesAuthentication1 = function (WES_Ref) {
+	// 	// body...
+	// 	debugger
+	// 	$scope.loading = true;
+	// 					//window.sessionStorage.setItem('clientAuthURL', newValue);
+	// 	let clientAuthURL = window.sessionStorage.getItem('clientAuthURL');
+
+	// 	var ref_no  = WES_Ref;
+	// 	let token = window.sessionStorage.getItem('webClient_key');
+	
+	// $http({
+	// 	method: 'GET',
+	// 	url: clientAuthURL+ref_no,
+	// 	headers: {
+	// 				Authorization :`Bearer ${token}`, //Authorization :`Bearer ${token.replace("\"", "")}`,
+	// 				Content_Type :  'application/json'
+	// 			},
+	// 	//params: { "refNumber": ref_no} 
+	// 	})
+	//   .then(function(response) {
+	// 	  // body...
+	// 	  $scope.loading = false;
+
+	// 	  $scope.wesApplicant = response.data;
+	// 	  if ($scope.wesApplicant != null) {
+			  
+	// 		  //console.log($scope.wesApplicant);
+	// 		  $scope.wesApplicantID = $scope.wesApplicant.id;
+
+	// 		  } else {
+	// 		  //alert("Candidate's Records with "+ ref_no+ " could not be fetched from CLIENT");
+	// 	  }
+
+	//   }, function(response) {
+	// 	  // body...
+	// 	  alert("CLIENT Server not available , please try later " + response.status);
+	// 	  $scope.loading = false;
+		  
+	//   });
+
+	// }
+
+	// $scope.wesAuthentication2 = function (WES_Ref) {
+	// 		// body...
+	// 		debugger
+	// 		$scope.loading = true;
+	// 						//window.sessionStorage.setItem('clientAuthURL', newValue);
+	// 		let clientAuthURL = window.sessionStorage.getItem('clientAuthURL');
+
+	// 		var ref_no  = WES_Ref;
+	// 		let token = window.sessionStorage.getItem('webClient_key');
+		
+	// 	$http({
+	// 		method: 'GET',
+	// 		url: clientAuthURL+ref_no,
+	// 		headers: {
+	// 					Authorization :`Bearer ${token}`, //Authorization :`Bearer ${token.replace("\"", "")}`,
+	// 					Content_Type :  'application/json'
+	// 				},
+	// 		//params: { "refNumber": ref_no} 
+	// 		})
+	// 	  .then(function(response) {
+	// 	  	// body...
+	// 	  	$scope.loading = false;
+
+	// 	  	$scope.wesApplicant = response.data;
+	// 	  	if ($scope.wesApplicant != null) {
+			  	
+	// 		  	//console.log($scope.wesApplicant);
+	// 		  	$scope.wesApplicantID = $scope.wesApplicant.id;
+
+	// 		  	} else {
+	// 	  		//alert("Candidate's Records with "+ ref_no+ " could not be fetched from CLIENT");
+	// 	  	}
+
+	// 	  }, function(response) {
+	// 	  	// body...
+	// 	  	alert("CLIENT Server not available , please try later " + response.status);
+	// 	  });
+
+	// 	}
+
+	$scope.wesAuthentication = function (WES_Ref) {
 			// body...
 			$scope.loading = true;
 							//window.sessionStorage.setItem('clientAuthURL', newValue);
 			let clientAuthURL = window.sessionStorage.getItem('clientAuthURL');
 
-// 			if ($scope.clientID != null ) {
-
-// 					WebClient.getOneWebServices($scope.clientID).then(function(response) {
-// 					// body...
-// 					$scope.webServiceSelected = response.data.data;
-// 					console.log($scope.webServiceSelected);
-
-// 					$scope.$watch('webServiceSelected', function(newValue, oldValue){
-// 						$scope.webClient =  newValue ;
-// 						//window.localStorage.setItem('currentMData', newValue);
-// 					})
-// 				})
-					
-// 			} else {
-// 				alert("Please select a web service to use");
-// 			};
-// console.log($scope.webClient);
-
 			var ref_no  = WES_Ref;
-			let token = window.sessionStorage.getItem('token');
-			//console.log($scope.clientSelected);
-//url: "http://localhost:5000/applicants.json",
-		$http({
-			method: 'GET',
-			url: clientAuthURL,
-			headers: {
-						Authorization :`Bearer ${token.replace("\"", "")}`,
-						Content_Type :  'application/json'
-					},
-			params: { "ref_no": ref_no} 
-			})
-		  .then(function(response) {
+			let token = window.sessionStorage.getItem('webClient_key');
+			let tokenString = `${token.replace("\"", "")}`;
+		
+			$http.get("/exams/retrieveWESApplicantInfo.json", 
+			{"params": { "token": tokenString, "refNumber": ref_no, "url": clientAuthURL}}
+	 				).then(function(response){ 
 		  	// body...
 		  	$scope.loading = false;
 
-		  	$scope.wesApplicant = response.data;
-		  	if ($scope.wesApplicant != null) {
-			  	
-			  	//console.log($scope.wesApplicant);
-			  	$scope.wesApplicantID = $scope.wesApplicant.id;
-
-			  	} else {
-		  		alert("Candidate's Records with "+ ref_no+ " could not be fetched from CLIENT");
-		  	}
+		  	$scope.wesApplicant = response.data.results;
 
 		  }, function(response) {
 		  	// body...
@@ -789,6 +1129,8 @@ $scope.getConfirmByID = function(confirmId) {
 
 		}
 
+		
+
 	 $scope.selectConfirm  = {};
 	// $scope.wesApplicantID = 0;
 	// $scope.wesApplicant.ref_no = 0;
@@ -796,6 +1138,7 @@ $scope.getConfirmByID = function(confirmId) {
 	//Generating Confirmation of Results With Emborsed Signature
 		$scope.generateConfirmation = function(confirm) {
 			// body...
+	//debugger
 
 			Auth.currentUser().then(function (user) { 	
 			if (confirm.user_id != user.id) {
@@ -805,9 +1148,7 @@ $scope.getConfirmByID = function(confirmId) {
 			} 
 			else {
 
-
-
-
+//debugger
 			if (userSession.getCookieData() != null) {
 
 				$scope.second_signatory = [];
@@ -823,10 +1164,11 @@ $scope.getConfirmByID = function(confirmId) {
 				 	$scope.loading = false;
 				 	$scope.answer = response.data
 					//console.log(response.data);
+	//debugger
 
 						if (response.data.success == true ) {
 
-								if (confirm.WES_Ref == $scope.wesApplicant.ref_no ) {
+								if (confirm.WES_Ref === $scope.wesApplicant.refNumber.toString() ) {
 
 									$scope.selectConfirm = confirm; 
 								
@@ -895,6 +1237,8 @@ $scope.getConfirmByID = function(confirmId) {
 
 			$scope.selectConfirm = confirm;
 
+			console.log(confirm)
+			debugger
 							//For School Candidates Results
 						if ($scope.selectConfirm.exam_no.startsWith('4')) {
 						    	$scope.printConfirmation10($scope.selectConfirm );
@@ -944,13 +1288,117 @@ $scope.getBase64ImageFromURL = function(url) {
     });
   }
 
+  function readDataURL(blob, callback) {
+	if (window.FileReader) {
+		var reader = new FileReader();
+		reader.onload = function() {
+			var dataUrl = reader.result;
+			if (dataUrl == null) {
+				callback(null, 'Data URL is not available.');
+			} else {
+				callback(dataUrl, null);
+			}
+		};
+		reader.onerror = function() {
+			callback(null, 'Incorrect blob or file object.');
+		};
+		reader.readAsDataURL(blob);
+	} else {
+		callback(null, 'File API is not supported.');
+	}
+}
+
+  /////////////////////////// send base64 to Api///////////////////////
+	// $scope.SendBase64FileToCarrier = function(){
+		 $scope.SendToCarrier = function(){
+
+		$scope.loading = true;
+
+		let token = window.sessionStorage.getItem('token');
+		let clientSubmitURL = window.sessionStorage.getItem('clientSubmitURL');
+		$scope.photo = $scope.files[0];		
+
+		function blobToFile(theBlob, fileName){       
+			return new File([theBlob], fileName, { lastModified: new Date().getTime(), type: theBlob.type })
+		}
+
+		var myFile2 = blobToFile($scope.BlobPdfFile, $scope.wesApplicant.refNumber+".pdf");
+
+		function dataURLtoBlob(dataurl) {
+			var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+				bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+			while(n--){
+				u8arr[n] = bstr.charCodeAt(n);
+			}
+			return new Blob([u8arr], {type:mime});
+		}
+
+
+		var dataurl = $scope.binaryData;
+		var blobObject = dataURLtoBlob(dataurl);
+
+		//console.log(blobObject);
+
+		var reader = new FileReader();
+		reader.readAsDataURL(myFile2);
+		
+				
+				reader.onloadend = function () {
+				var base64String = reader.result;
+				//console.log('Base64 String - ', base64String);
+			
+				// Simply Print the Base64 Encoded String,
+				// without additional data: Attributes.
+				//console.log('Base64 String without Tags- ', base64String.substr(base64String.indexOf(', ') + 1));
+
+				const regex = /data:.*base64,/
+				
+
+				var base64Pdf = base64String.replace(regex,"");
+
+				console.log($routeParams.id);
+				
+					var recordObject = {
+						content : base64Pdf,
+						refNumber : $scope.wesApplicant.refNumber,
+						filetype : 'PDF',
+						url : clientSubmitURL,
+						title: $scope.wesApplicant.refNumber+".pdf",
+						filesize: myFile2.size,
+						confirmation_id: $routeParams.id,
+					};
+
+					//console.log(recordObject);
+		//debugger
+				$http({
+						method:'POST',
+						url: '/exams/transferFileToWesAPI.json',
+						data: angular.toJson(recordObject) ,
+						header: {
+							'Content_Type' :  'application/json'
+						},	  
+				}).success(function(data){
+
+					$scope.loading = false;
+						console.log(data);
+						alert("PDF submission was successful ");
+						$location.path("/result/confirmations");
+						//console.log(data);
+						
+				});
+			}
+
+	
+	   
+	};
+
 
 		//////////////////////////////////
 
 		$scope.form=[];
     	$scope.files=[];
 
-	$scope.SendToCarrier = function(){
+	$scope.SendToCarrier22 = function(){
 
 			$scope.loading = true;
 
@@ -1000,24 +1448,9 @@ $scope.getBase64ImageFromURL = function(url) {
 			var dataurl = $scope.binaryData;
 			var blobObject = dataURLtoBlob(dataurl);
 
-			//console.log(blobObject);
+			console.log(blobObject);
+
 			var fd = new FormData();
-			// fd.append("file", blob, "hello.txt");
-			// var xhr = new XMLHttpRequest();
-			// xhr.open('POST', '/server.php', true);
-			// xhr.onload = function(){
-			//     alert('upload complete');
-			// };
-			// xhr.send(fd);
-
-			// //var myFile = blobToFile($scope.BlobPdfFile, $scope.wesApplicant.ref_no);
-			// var myFile2 = blob2file($scope.BlobPdfFile, $scope.wesApplicant.ref_no+".pdf");
-
-			// console.log(myFile2);
-			// //console.log(myFile);
-			// console.log($scope.photo);
-		// 	$scope.BlobPdfFile = this;
-  // angular.element(this).scope().uploadedFile(this)
 
   console.log($scope.BlobPdfFile);
 			//url: "http://localhost:5000/documents.json",
@@ -1031,7 +1464,7 @@ $scope.getBase64ImageFromURL = function(url) {
 					var formData = new FormData();
 					//formData.append("document", $scope.photo);
 					formData.append("document", myFile2);
-					formData.append("refnumber", $scope.wesApplicant.ref_no);
+					formData.append("refnumber", $scope.wesApplicant.refNumber);
 					formData.append("filetype", 'PDF');
 					formData.append("applicant_id", $scope.wesApplicantID);
 					
@@ -1051,15 +1484,15 @@ $scope.getBase64ImageFromURL = function(url) {
 
 		   	$scope.loading = false;
 		        alert("PDF submission was successful ");
-		        $location.path("/confirmations");
+		        $location.path("/result/confirmations");
 		        //console.log(data);
 		        
 		   });
 		   
 		};
-			$scope.uploadedFile=function(element)
-			{
-				$scope.currentFile = element.files[0];
+		
+$scope.uploadedFile=function(element) {
+			$scope.currentFile = element.files[0];
 		    var reader = new FileReader();
 
 		    reader.onload = function(event) {
@@ -1071,9 +1504,9 @@ $scope.getBase64ImageFromURL = function(url) {
 		        $scope.files = element.files;
 		      });
 		    }
-                    reader.readAsDataURL(element.files[0]);
-		  }
-
+                    
+		reader.readAsDataURL(element.files[0]);
+}
 
 
 
@@ -1100,25 +1533,25 @@ $scope.BlobPdfFile = {};
 
     	};
 
-    	$scope.getConfirmationById = function(id) {
+$scope.getConfirmationById = function(id) {
     		// body...
-    		var id = $routeParams.id;
+	var id = $routeParams.id;
 
-    		if (id != null) {
+   		if (id != null) {
 
-    						 $scope.loading = true;
-		    			$http.get('/confirmations/'+ id +'.json')
+		 $scope.loading = true;
+		$http.get('confirmations/'+ id +'.json')
 		  .then(function(response) {
-					    		$scope.selectConfirm = response.data[0];
+	    		$scope.selectConfirm = response.data[0];
 					    		//console.log($scope.selectConfirm);
-					   $scope.loading = false;
+	    	   $scope.loading = false;
 						    		
-					    }, function(response){
-					    		alert("There was an Error:");
-					    		 $scope.loading = false;
-					});
-    		}
+		    }, function(response){
+		   		alert("There was an Error:");
+		   		 $scope.loading = false;
+			});
     	}
+}
 
     	    	$scope.clickedEditById = function(selectConfirm) {
     		// body...
@@ -1127,7 +1560,7 @@ $scope.BlobPdfFile = {};
     		if (id != null) {
 
     						 $scope.loading = true;
-		    			$http.get('/confirmations/'+ id +'.json')
+		    			$http.get('confirmations/'+ id +'.json')
 		  .then(function(response) {
 					    		$scope.editConfirm = response.data[0];
 					    		//console.log($scope.editConfirm);
@@ -1172,7 +1605,7 @@ $scope.BlobPdfFile = {};
 							     $('#myModalEdit').modal({backdrop: "false"});
 							    console.log(response.data);
 							   
-							    $location.path('/confirmations/Details/'+response.data[0].id);  
+							    $location.path('/result/confirmations/Details/'+response.data[0].id);  
 							    //$scope.getAllConfirmation();
 
     			},function(response){
@@ -1434,7 +1867,7 @@ console.log(resultDetail);
 
 					// Reload the page
 					$route.reload();
-						$location.path('/confirmations');
+						$location.path('/result/confirmations');
 				}
 			} 
 			else {
@@ -1489,13 +1922,15 @@ console.log(resultDetail);
 			
 				// body...
 						$scope.resultDetail = obj.retResult;
+
+						console.log($scope.resultDetail);
 			
 						let signatory = [];
 						console.log($scope.userID);
 						//debugger
 						$http.get("/users/permitted_users",{"params": { "email": $scope.userID}} ).then(function(response){
 							// body...
-							console.log(response.data);
+						
 							if (response.data.success == false) {
 								alert(response.data.message);
 							} else {
@@ -1663,8 +2098,8 @@ console.log(resultDetail);
 													{
 							//`${subHeading}\n\n`
 													  text:[						 
-																			  {text: $scope.resultDetail[0].examType+' '+ $scope.resultDetail[0].examYear+'\n'},
-																			  {text: $scope.resultDetail[0].CentreName+'\n'},
+																			  {text: $scope.resultDetail[0].examType+'\n'},
+																			  {text: $scope.resultDetail[0].CentreName.trim()+'\n'},
 																			  {text: centre+' / '+candNo +'\n'},
 																			  //{text: $scope.resultDetail[0].CandNo+'\n'},
 																			  {text: $scope.resultDetail[0].candName+'\n'},
@@ -2053,7 +2488,7 @@ console.log(resultDetail);
 
 					// Reload the page
 					$route.reload();
-						$location.path('/confirmations');
+						$location.path('/result/confirmations');
 				}
 			} 
 			else {
@@ -2282,8 +2717,9 @@ console.log(resultDetail);
 												  },
 													{
 							//`${subHeading}\n\n`
-													  text:[						 
-																			  {text: $scope.resultDetail[0].examType+' '+ $scope.resultDetail[0].examYear+'\n'},
+													  text:[			
+																		{text: $scope.resultDetail[0].examType+'\n'},			 
+																			//   {text: $scope.resultDetail[0].examType+' '+ $scope.resultDetail[0].examYear+'\n'},
 																			  // {text: $scope.resultDetail[0].CentreName+'\n'},
 																			  {text: centre+' / '+candNo +'\n'},
 																			  //{text: $scope.resultDetail[0].CandNo+'\n'},
@@ -2661,6 +3097,7 @@ $scope.printConfirmation10 = function(selectConfirm){
 
 $scope.loading = true;
 $scope.selectConfirm = selectConfirm;  
+
 	let base64Pdf;
 
 	$scope.signatory = [];
@@ -2708,7 +3145,7 @@ $scope.selectConfirm = selectConfirm;
 				//console.log(selectConfirm);
 				console.log(newValue);
 				  var date = new Date();
-				console.log(date.toDateString());
+				//console.log(date.toDateString());
 				var nowDate = date.toDateString();
 				
 		
@@ -2720,21 +3157,37 @@ $scope.selectConfirm = selectConfirm;
 			
 
 		
-	ResultService.ResultDetailsFromDB(newValue.exam_no, newValue.examYear, newValue.DietName)
-						.then(function(response){
-								$scope.resultDetail = response.data.results[0];
-								// console.log($scope.resultDetail);
-								// console.log(response.data);
+	// ResultService.ResultDetailsFromDB(newValue.exam_no, newValue.examYear, newValue.DietName)
+	// 					.then(function(response){
+	// 							$scope.resultDetail = response.data.results[0];
+	// 							// console.log($scope.resultDetail);
+	// 							// console.log(response.data);
 		
-						debugger
-							$scope.$broadcast('print',{
-							retResult: $scope.resultDetail
-						});
+	// 					debugger
+	// 						$scope.$broadcast('print',{
+	// 						retResult: $scope.resultDetail
+	// 					});
+	//generateConfirmation2
 								
-								
-							}, function(response){
-								alert('There was an error from reading Result for Printing');
-							});
+	// 						}, function(response){
+	// 							alert('There was an error from reading Result for Printing');
+	// 						});
+
+	ResultService.ResultDetailsFromDBForConfirmation(newValue.exam_no, newValue.examYear, newValue.DietName, newValue.id, newValue.isPrinted)
+	.then(function(response){
+			$scope.resultDetail = response.data.results[0];
+			// console.log($scope.resultDetail);
+			// console.log(response.data);
+
+	debugger
+		$scope.$broadcast('print',{
+		retResult: $scope.resultDetail
+	});
+			
+			
+		}, function(response){
+			alert('There was an error from reading Result for Printing');
+		});
 		
 													  
 			$scope.$on('print', function(event, obj) {
@@ -2912,8 +3365,8 @@ $scope.selectConfirm = selectConfirm;
 											  },
 												{
 						//`${subHeading}\n\n`
-												  text:[
-																		  {text: $scope.resultDetail[0].examType+' '+ $scope.resultDetail[0].examYear+'\n'},
+												  text:[				  {text: $scope.resultDetail[0].examType+'\n'},
+												//{text: $scope.resultDetail[0].examType+' '+ $scope.resultDetail[0].examYear+'\n'},
 																		  {text: $scope.resultDetail[0].CentreName+'\n'},
 																		  {text: centre+' / '+candNo +'\n'},
 																		  //{text: $scope.resultDetail[0].CandNo+'\n'},
@@ -3277,11 +3730,10 @@ $scope.selectConfirm = selectConfirm;
 				 var pdfResult = [];
 		
 				 var dayday ;
-		
-			
+	
 
-		
-	ResultService.ResultDetailsFromDB(newValue.exam_no, newValue.examYear, newValue.DietName)
+	//ResultService.ResultDetailsFromDB(newValue.exam_no, newValue.examYear, newValue.DietName)
+	ResultService.ResultDetailsFromDBForConfirmation(newValue.exam_no, newValue.examYear, newValue.DietName, newValue.id, newValue.isPrinted)
 						.then(function(response){
 								$scope.resultDetail = response.data.results[0];
 								// console.log($scope.resultDetail);
@@ -3480,7 +3932,8 @@ $scope.selectConfirm = selectConfirm;
 												{
 						//`${subHeading}\n\n`
 												  text:[
-																		  {text: $scope.resultDetail[0].examType+' '+ $scope.resultDetail[0].examYear+'\n'},
+																		//   {text: $scope.resultDetail[0].examType+' '+ $scope.resultDetail[0].examYear+'\n'},
+																		{text: $scope.resultDetail[0].examType+'\n'},
 																		  // {text: $scope.resultDetail[0].CentreName+'\n'},
 																		  {text: centre+' / '+candNo +'\n'},
 																		  //{text: $scope.resultDetail[0].CandNo+'\n'},
@@ -3691,7 +4144,7 @@ $scope.selectConfirm = selectConfirm;
 
 			ResultService.UpdateConfirmationToDB(newValue.id).then(function(response) {
 							// body...
-				console.log(response.data);
+				//console.log(response.data);
 			});
 
 				$scope.loading = false;

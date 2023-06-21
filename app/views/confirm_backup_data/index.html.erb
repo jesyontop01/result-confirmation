@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Confirm Backup Data</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Confirmation</th>
+      <th>Candno</th>
+      <th>Results</th>
+      <th>Formno</th>
+      <th>Surname</th>
+      <th>Firstname</th>
+      <th>Othernames</th>
+      <th>Dob</th>
+      <th>Sex</th>
+      <th>Pix</th>
+      <th>Centrename</th>
+      <th>Certificateno</th>
+      <th>Securitydigit</th>
+      <th>Award</th>
+      <th>Certificatestatus</th>
+      <th>Dateprinted</th>
+      <th>Examtitle</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @confirm_backup_data.each do |confirm_backup_datum| %>
+      <tr>
+        <td><%= confirm_backup_datum.confirmation %></td>
+        <td><%= confirm_backup_datum.CandNo %></td>
+        <td><%= confirm_backup_datum.Results %></td>
+        <td><%= confirm_backup_datum.FormNo %></td>
+        <td><%= confirm_backup_datum.Surname %></td>
+        <td><%= confirm_backup_datum.FirstName %></td>
+        <td><%= confirm_backup_datum.OtherNames %></td>
+        <td><%= confirm_backup_datum.DOB %></td>
+        <td><%= confirm_backup_datum.Sex %></td>
+        <td><%= confirm_backup_datum.Pix %></td>
+        <td><%= confirm_backup_datum.CentreName %></td>
+        <td><%= confirm_backup_datum.CertificateNo %></td>
+        <td><%= confirm_backup_datum.SecurityDigit %></td>
+        <td><%= confirm_backup_datum.Award %></td>
+        <td><%= confirm_backup_datum.CertificateStatus %></td>
+        <td><%= confirm_backup_datum.DatePrinted %></td>
+        <td><%= confirm_backup_datum.ExamTitle %></td>
+        <td><%= link_to 'Show', confirm_backup_datum %></td>
+        <td><%= link_to 'Edit', edit_confirm_backup_datum_path(confirm_backup_datum) %></td>
+        <td><%= link_to 'Destroy', confirm_backup_datum, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Confirm Backup Datum', new_confirm_backup_datum_path %>

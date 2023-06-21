@@ -18,4 +18,12 @@ angular.module('verifier')
         return this.userData.year;
   };
 
+  this.setYearName = function(yearName) {
+      this.userData.yearName = yearName;
+};
+
+this.getYearName = function() {
+      return this.userData.yearName;
+};
+
 });

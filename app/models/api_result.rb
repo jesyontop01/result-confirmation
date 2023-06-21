@@ -1,5 +1,6 @@
 class ApiResult < ActiveRecord::Base
 
+##https://ictdapps.waec.org.ng/WaecCert/Services/GetCertificateDetails?ExamYear=2019&CandidateNo=4151001043 
 
 	def self.getData(candNo, yearId, dietId)
   		response = Faraday.get do |req|
@@ -15,23 +16,49 @@ class ApiResult < ActiveRecord::Base
 
 #http://172.21.13.25/resultapi/result/ResultByCandNo?candNo=5010101003&examYear=2020&examType=2
 
-		def self.getSearchedCandidate(candNo, examYear, dietId)
-  		response = Faraday.get do |req|
-              req.url "http://172.21.13.25/result/ResultByCandNo?"
-              req.params['CandNo'] = "#{candNo}" #params[:CandNo]
-              req.params['examYear'] =  "#{examYear}"#params[:yearId]
-              req.params['examType'] = "#{dietId}"#params[:dietId]
-              req.headers['Content-Type'] = 'application/JSON'
+		# def self.getSearchedCandidate(candNo, examYear, dietId)
+  	# 	response = Faraday.get do |req|
+    #           req.url "http://172.21.13.25/result/ResultByCandNo?"
+    #           req.params['CandNo'] = "#{candNo}" #params[:CandNo]
+    #           req.params['examYear'] =  "#{examYear}"#params[:yearId]
+    #           req.params['examType'] = "#{dietId}"#params[:dietId]
+    #           req.headers['Content-Type'] = 'application/JSON'
 
-            end
+    #         end
 
-            #binding.pry
-            JSON.parse(response.body)
-            #binding.pry
-        end
+    #         #binding.pry
+    #         JSON.parse(response.body)
+    #         #binding.pry
+    # end
+
+    ##https://ictdapps.waec.org.ng/WaecCert/Services/GetCertificateDetails?ExamYear=2019&CandidateNo=4151001043 
+
+#     def self.getSearchedCandidate(candNo, yearName,  token )
+#       response = Faraday.get do |req|
+#         req.url "https://ictdapps.waec.org.ng/WaecCert/Services/GetCertificateDetails?"
+#         req.params['CandidateNo'] = '#{candNo}'
+#         req.params['ExamYear'] = '{yearName}'
+#         req.headers['Authorization'] = 'Bearer ' + token
+#         #req.headers['Content-Type'] = 'application/json'
+#       end
+
+#      JSON.parse(response.body)
+# end
+
+def self.getSearchedCandidate(candNo, yearName,  token )
+  response = Faraday.get do |req|
+    req.url "https://ictdapps.waec.org.ng/WaecCert/Services/GetCertificateDetails?"
+    req.params['CandidateNo'] = "#{candNo}"
+    req.params['ExamYear'] = "#{yearName}"
+    req.headers['Authorization'] = 'Bearer ' + token
+    #req.headers['Content-Type'] = 'application/json'
+  end
+
+ JSON.parse(response.body)
+end
 
 
-        def self.getDetailedResults(candNo, examYear, dietId)
+    def self.getDetailedResults(candNo, examYear, dietId)
   		 response = Faraday.get do |req|
               req.url "http://172.21.13.25/result/Candidate_No?"
               req.params['candNo'] = "#{candNo}" #params[:CandNo]

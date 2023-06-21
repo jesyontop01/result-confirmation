@@ -31,7 +31,8 @@
           </select>
         </div>
         <!-- Selected: <p ng-bind="ExamDietId"></p> -->
-        </div> <br> 
+        </div> 
+        <br> 
 
  
     <label>Candidate's Exam No. <span>*</span></label>
@@ -67,13 +68,14 @@
   </thead>
 
   <tbody>
-    <tr ng-repeat="result in results"> 
+    <!-- <tr ng-repeat="result in results">  -->
+  <tr> 
 <!--     <tr> -->
       <td>{{$index+1}}</td>
      <!--  <td>{{result.examType}} {{result.examYear}}</td> -->
-      <td>{{result.candName}} </td>
-      <td>{{result.candNo}}</td>
-      <td><button type="button" class="btn btn-primary" ng-click="viewDetails(result)">Details…</button>
+      <td>{{results.FirstName}} {{results.OtherNames}}</td>
+      <td>{{results.CandNo}}</td>
+      <td><button type="button" class="btn btn-primary" ng-click="viewDetails(results)">Details…</button>
      </td>
     </tr>
   </tbody>

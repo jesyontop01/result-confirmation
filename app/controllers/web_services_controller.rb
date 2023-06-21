@@ -84,6 +84,6 @@ class WebServicesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def web_service_params
-      params.require(:web_service).permit(:clientName, :clientAddress)
+      params.require(:web_service).permit(:clientName, :clientAddress, :username, :password)
     end
 end

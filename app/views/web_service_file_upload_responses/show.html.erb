@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Confirmation:</strong>
+  <%= @web_service_file_upload_response.confirmation %>
+</p>
+
+<p>
+  <strong>Clientuploadid:</strong>
+  <%= @web_service_file_upload_response.clientUploadId %>
+</p>
+
+<p>
+  <strong>Referencenumber:</strong>
+  <%= @web_service_file_upload_response.referenceNumber %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @web_service_file_upload_response.status %>
+</p>
+
+<p>
+  <strong>Uploadid:</strong>
+  <%= @web_service_file_upload_response.uploadId %>
+</p>
+
+<%= link_to 'Edit', edit_web_service_file_upload_response_path(@web_service_file_upload_response) %> |
+<%= link_to 'Back', web_service_file_upload_responses_path %>

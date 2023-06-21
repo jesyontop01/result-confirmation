@@ -13,7 +13,7 @@
  			<div class="row">
  				<div class="col-sm-3">
  					
-<img ng-src="data:image/jpeg;base64,{{result[0].Picture}}" id="photo-id" style="width: 150px; height: 150px"/>
+<img ng-src="data:image/jpeg;base64,{{result.Picture}}" id="photo-id" style="width: 150px; height: 150px"/>
 <!--           <img src="../{{result[0].Picture}}" id="photo-id" alt="" style="width: 150px; height: 150px"> -->
 <div ng-if="pictureEmpty">
     <td><button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#myModalEdit" ng-disabled="confirm.isPrinted" title="Edit"><i class="far fa-edit"></i></button>Upload Picture</td>
@@ -21,13 +21,13 @@
  				</div>
  				<div class="col-sm-1"></div>
  				<div class="col-sm-8">
- 					<p><b>Exam : </b> {{ result[0].examType}} {{result[0].examYear}}</p>
- 					<p><b>Exam No: </b> {{result[0].candNo}}</p>
-				 	<p><b>Full Name:</b> {{result[0].candName}}</p>
-				 	<p><b> Sex:</b> {{ result[0].sex}}</p>
+ 					<p><b>Exam : </b> {{ result.ExamTitle}} </p>
+ 					<p><b>Exam No: </b> {{result.candNo}}</p>
+				 	<p><b>Full Name:</b> {{result.candName}}</p>
+				 	<p><b> Sex:</b> {{ result.sex}}</p>
 <!-- 				 	<p><b>Date of Birth:</b> {{(result.dob).substr(0,2)}}-{{(result.dob).substr(2,2)}}-{{(result.dob).substr(4,4)}} -->
-          <p><b>Date of Birth:</b> {{result[0].dob2}}</p>
-				 	<p><b>Centre Name:</b> {{result[0].CentreName}}</p>	
+          	<p><b>Date of Birth:</b> {{result.dob2}}</p>
+				 	<p><b>Centre Name:</b> {{result.CentreName}}</p>	
  				</div>
  			</div>
  	
@@ -37,54 +37,54 @@
  	<table class="table table-striped " >
  		<tbody class="style="text-align:center;"">
  			<tr>
- 				<td>{{ result[0].Subject }}</td>
- 				<td class="float-right">{{ result[0].Grade}}</td>
+ 				<td>{{ result.Subject1 }}</td>
+ 				<td class="float-right">{{ result.Grade1}}</td>
  			</tr>
  			<tr>
- 				<td>{{ result[1].Subject }}</td>
- 				<td class="float-right">{{ result[1].Grade }}</td>
+ 				<td>{{ result.Subject2 }}</td>
+ 				<td class="float-right">{{ result.Grade2 }}</td>
  			</tr>
  			<tr>
- 				<td>{{ result[2].Subject }}</td>
- 				<td class="float-right">{{ result[2].Grade }}</td>
+ 				<td>{{ result.Subject3 }}</td>
+ 				<td class="float-right">{{ result.Grade3 }}</td>
  			</tr>
  			<tr>
- 				<td>{{ result[3].Subject }}</td>
- 				<td class="float-right">{{ result[3].Grade }}</td>
+ 				<td>{{ result.Subject4 }}</td>
+ 				<td class="float-right">{{ result.Grade4 }}</td>
  			</tr>
  			<tr>
- 				<td>{{ result[4].Subject }}</td>
- 				<td class="float-right">{{ result[4].Grade }}</td>
+ 				<td>{{ result.Subject5 }}</td>
+ 				<td class="float-right">{{ result.Grade5 }}</td>
  			</tr>
  			<tr>
- 				<td>{{ result[5].Subject }}</td>
- 				<td class="float-right">{{ result[5].Grade }}</td>
+ 				<td>{{ result.Subject6 }}</td>
+ 				<td class="float-right">{{ result.Grade6 }}</td>
  			</tr>
  			<tr>
- 				<td>{{ result[6].Subject }}</td>
- 				<td class="float-right">{{ result[6].Grade }}</td>
+ 				<td>{{ result.Subject7 }}</td>
+ 				<td class="float-right">{{ result.Grade7 }}</td>
  			</tr>
  			<tr>
- 				<td>{{ result[7].Subject }}</td>
- 				<td class="float-right">{{ result[7].Grade }}</td>
+ 				<td>{{ result.Subject8 }}</td>
+ 				<td class="float-right">{{ result.Grade8 }}</td>
  			</tr>
  			<tr>
- 				<td>{{ result[8].Subject }}</td>
- 				<td class="float-right">{{ result[8].Grade }}</td>
+ 				<td>{{ result.Subject9 }}</td>
+ 				<td class="float-right">{{ result.Grade9 }}</td>
  			</tr> 			
  		</tbody>
  	</table>
 
 </article>
-<div ng-if="result[0].status">
-  Certificate Printed Status : <strong>{{ result[0].status }}</strong>
+<br>
+<br>
+<div ng-if="result.CertificateStatus">
+  <p>Certificate Printed Status : <strong>{{ result.CertificateStatus }}</strong></p>
+  <p>Date Printed 				 : <strong>{{ result.DatePrinted2 }}</strong></p>
 </div>
-  &nbsp;&nbsp;
   <br>
-  <br>
-
 	<div class="pull-left">
-    <button type="button" class="btn btn-success" ng-click="addressDetails(result[0])">
+    <button type="button" class="btn btn-success" ng-click="addressDetails(result)">
      Create Confirmation ...
     </button>
  	</div>

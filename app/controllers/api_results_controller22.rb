@@ -48,7 +48,7 @@ class ApiResultsController < ApplicationController
           #  #binding.pry        
           @results = ApiResult.getSearchedCandidate(params[:CandNo], params[:examYear], params[:token])
           
-          #binding.pry 
+          binding.pry 
       else
               #@results = WassceD2008.take(10)
               @results =  []
@@ -352,18 +352,9 @@ subjectindex0 = {
 
 
  #https://ictdapps.waec.org.ng/WaecCertConfirmation/Services/GetCertificateStatusWithReason?CandidateNo=4010101003&ExamYear=2019
- params[:token] = nil
 
- if session[:access_token].present?
-  params[:token] = session[:access_token]['access_token']
-else
-  session[:access_token] = ApiResult.getToken()
-  params[:token] = session[:access_token]['access_token']
-  
-end
 
-resultContainer = []
-
+    resultContainer = []
       if params[:CandNo].present? && params[:DietName].present? 
 
           @diet = Diet.find_by(:DietName => params[:DietName])
@@ -371,11 +362,9 @@ resultContainer = []
       
   
 
-          if params[:CandNo].present? && params[:examYear].present? && params[:token].present?## && params[:dietId].present? 
+          if params[:CandNo].present? && params[:examYear].present? && params[:dietId].present?
 
-           ## @results = ApiResult.getDetailedResults(params[:CandNo], params[:examYear], params[:dietId])
-
-           @results = Exam.getSearchedCandidate(params[:CandNo], params[:examYear], params[:token])
+            @results = ApiResult.getDetailedResults(params[:CandNo], params[:examYear], params[:dietId])
             #binding.pry  
                  
           else
@@ -385,25 +374,28 @@ resultContainer = []
 
       end
      
-
-
-
-    if params[:CandNo].present? && params[:examYear].present? && params[:token].present?## && params[:dietId].present? 
-
-      @results = Exam.getSearchedCandidate(params[:CandNo], params[:examYear], params[:token])
       
 
-            subjectsContainer = Array.wrap([ @results["subject1"], @results["subject2"], @results["subject3"],
-                                     @results["subject4"],  @results["subject5"], @results["subject6"],
-                                    @results["subject7"], @results["subject8"], @results["subject9"]])
+    if params[:CandNo].present? && params[:examYear].present? && params[:dietId].present?
 
-            resultsContainer = Array.wrap([ @results["result1"], @results["result2"], @results["result3"],
-                                     @results["result4"],  @results["result5"], @results["result6"],
-                                    @results["result7"], @results["result8"], @results["result9"]])
-    #binding.pry  
+             @results = ApiResult.getDetailedResults(params[:CandNo], params[:examYear], params[:dietId])
+
+             if @results 
+               @picture = ApiResult.getCertificateStatusPicture(params[:CandNo], params[:examYear])
+               @printedStatus =  ApiResult.getCertificateStatusWithReason(params[:CandNo], params[:examYear])
+             #binding.pry
+             end
+
+            subjectsContainer = Array.wrap([ @results[0]["subject1"], @results[0]["subject2"], @results[0]["subject3"],
+                                     @results[0]["subject4"],  @results[0]["subject5"], @results[0]["subject6"],
+                                    @results[0]["subject7"], @results[0]["subject8"], @results[0]["subject9"]])
+
+            resultsContainer = Array.wrap([ @results[0]["result1"], @results[0]["result2"], @results[0]["result3"],
+                                     @results[0]["result4"],  @results[0]["result5"], @results[0]["result6"],
+                                    @results[0]["result7"], @results[0]["result8"], @results[0]["result9"]])
    
-        gradeindex[resultsContainer]
-        subjectindex[subjectsContainer]
+        gradeindex[resultsContainer[0]]
+        subjectindex[subjectsContainer[0]]
         resultObjects = Hash.new
         finalResult = []
         resultsArray = []
@@ -455,18 +447,18 @@ resultContainer = []
       # resultObjects['Picture2'] = pix_filename
       # resultObjects['Picture'] = @picture.Pix
 
-            #  if @picture.present? 
-            #    resultObjects['Picture'] = @picture["Pix"]
-            #  else
-            #    resultObjects['Picture'] = nil
-            #  end
+             if @picture.present? 
+               resultObjects['Picture'] = @picture["Pix"]
+             else
+               resultObjects['Picture'] = nil
+             end
 
 
-            #   if @printedStatus.present?
-            #     resultObjects['status'] = @printedStatus["CertificateStatus"]
-            #   else
-            #     resultObjects['status'] = nil
-            #   end 
+              if @printedStatus.present?
+                resultObjects['status'] = @printedStatus["CertificateStatus"]
+              else
+                resultObjects['status'] = nil
+              end 
 
      #binding.pry
             
@@ -705,9 +697,9 @@ resultContainer = []
    
 
 
-            #  if @results.present? 
-            #    @picture = ApiResult.getCertificateStatusPicture(params[:CandNo], params[:examYear])
-            #  end
+             if @results.present? 
+               @picture = ApiResult.getCertificateStatusPicture(params[:CandNo], params[:examYear])
+             end
 
             ##binding.pry
 

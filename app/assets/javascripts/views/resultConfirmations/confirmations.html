@@ -14,8 +14,47 @@
 
 <div  ng-controller="ResultConfirmationsController" >
 
+    <div class="row">
+
+      <div class="col-md-4">
+      <h5>Exam Diet: <span>*</span></h5>
+      <div  ng-controller="DietController">
+        <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+      <div class="form-group">
+        <select ng-model="ExamDietId" ng-options="d.id as d.DietName for d in diets" ng-change="GetValue(d)" class="form-control" ng-required="true">
+          <option value="">Select Exam Diet</option>
+        </select>
+      </div>
+
+      </div> 
+      </div>
+      <div class="col-md-4">
+        <h5>Date Create</h5>
+        <p class="input-group">
+          <input type="text" 
+                 class="form-control" 
+                 uib-datepicker-popup
+                 ng-model="datePrinted" 
+                 is-open="popup1.opened" 
+                 datepicker-options="dateOptions" 
+                 ng-required="true" 
+                 close-text="Close" 
+                 alt-input-formats="altInputFormats" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open1()"><i class="fas fa-calendar-alt"></i></button>
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <button ng-click="getDate(ExamDietId, datePrinted)" class="btn btn-primary">Search Confirmation</button>
+      </div>
+    </div>
+  
+<hr>
 <div>
-   <p><b>Search: </b><input type="text" name="" placeholder="Search by Receipt number" ng-model='searchText.$'></p>
+   <p><b>Search: </b><input type="text" name="" placeholder="Search" ng-model='searchText.$'></p>
 
     <ul uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></ul>
 
@@ -38,10 +77,10 @@
       <th>Exam Diet</th>
       <th>Candidate No</th>
       <th>Reference No</th>
-      <th>Receipt No</th>
+      <!-- <th>Receipt No</th> -->
       <th>Reference No</th>
      <!--  <th>Destination Title</th> -->
-      <th>Destination Add.1</th>
+      <!-- <th>Destination Add.1</th> -->
       <th>Destination Location</th>
       <th>Date created</th>
       <th colspan="4">Action</th>
@@ -53,15 +92,15 @@
       <td >{{confirm.DietName}} {{confirm.examYear}}</td>
       <td>{{confirm.exam_no}}</td>
       <td>{{confirm.ref_no}}</td>
-      <td>{{confirm.receipt_no}}</td>
+      <!-- <td>{{confirm.receipt_no}}</td> -->
       <td>{{confirm.WES_Ref}}</td>
      <!--  <td>{{confirm.dest_title}}</td> -->
-      <td>{{confirm.dest_address1}}</td>
-      <td>{{confirm.dest_location}}</td>
-      <td>{{confirm.updated_at | date:'dd/MM/yyyy'}}</td>
+      <!-- <td>{{confirm.dest_address1}}</td> -->
+      <td> {{confirm.dest_address1}} {{confirm.dest_location}}</td>
+      <td>{{confirm.updated_at | date:'dd/MM/yyyy'}} ({{confirm.printStatus }})</td>
 
-  <!--     <td><button ng-click="clickedEdit(confirm)" type="button" class="btn btn-primary"  data-toggle="modal" data-target="#myModalEdit" ng-disabled="confirm.isPrinted" title="Edit"><i class="far fa-edit"></i></i></button></td> -->
- <!--     <td><button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="generateConfirmation2(confirm)">Print2</button></td> -->
+  <!-- <td><button ng-click="clickedEdit(confirm)" type="button" class="btn btn-primary"  data-toggle="modal" data-target="#myModalEdit" ng-disabled="confirm.isPrinted" title="Edit"><i class="far fa-edit"></i></i></button></td> -->
+ <!-- <td><button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="generateConfirmation2(confirm)">Print2</button></td> -->
 
       <td><button ng-click="clickConfirm(confirm)" type="button" class="btn btn-info" data-toggle="modal" title="Details"><i class="fas fa-info-circle"></i></button></td>
 

@@ -59,6 +59,105 @@ class ConfirmationsController < ApplicationController
 			format.json { render json: @confirms }
 		end
 	end
+
+	def search_confirmation
+
+		params[:office_id] = current_user.office_id
+		
+		if ( params[:ExamDietId] != 'undefined' && params[:datePrinted].present? )
+		#@confirms = Confirmation.all.paginate(:page => params[:page], :per_page => 10).order("created_at DESC")
+
+		 sql = <<-SQL 
+
+		 SELECT
+		 a.[id] ,a.[user_id] ,b.[DietName], a.[examYear], a.[ref_no],a.[exam_no]
+		,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
+		,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted], a.[DatePrinted], a.Local_Ref_no
+			FROM [dbo].[confirmations] a
+			inner join [dbo].[Diets] b
+			on a.diet_id = b.id
+			inner join [dbo].[offices] d
+			on a.office_id = d.id
+			where a.office_id = '#{params[:office_id]}' and a.diet_id = '#{params[:ExamDietId]}' and a.DatePrinted between  '#{params[:datePrinted]}' and  '#{params[:datePrinted]} 23:59:59'
+			order by a.[created_at] DESC
+
+			  SQL
+
+            @confirms = ActiveRecord::Base.connection.exec_query(sql)
+
+		elsif ( params[:ExamDietId] != 'undefined' )
+				#@confirms = Confirmation.all.paginate(:page => params[:page], :per_page => 10).order("created_at DESC")
+		
+				 sql = <<-SQL 
+		
+				 SELECT
+				 a.[id] ,a.[user_id] ,b.[DietName], a.[examYear], a.[ref_no],a.[exam_no]
+				,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
+				,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted], a.[DatePrinted], a.Local_Ref_no
+					FROM [dbo].[confirmations] a
+					inner join [dbo].[Diets] b
+					on a.diet_id = b.id
+					inner join [dbo].[offices] d
+					on a.office_id = d.id
+					where a.office_id = '#{params[:office_id]}' and a.diet_id = '#{params[:ExamDietId]}'
+					order by a.[created_at] DESC
+		
+					  SQL
+		
+					@confirms = ActiveRecord::Base.connection.exec_query(sql)
+
+				elsif ( params[:datePrinted].present? )
+					
+			
+					 sql = <<-SQL 
+			
+					 SELECT
+					 a.[id] ,a.[user_id] ,b.[DietName], a.[examYear], a.[ref_no],a.[exam_no]
+					,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
+					,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted], a.[DatePrinted], a.Local_Ref_no
+						FROM [dbo].[confirmations] a
+						inner join [dbo].[Diets] b
+						on a.diet_id = b.id
+						inner join [dbo].[offices] d
+						on a.office_id = d.id
+						where a.office_id = '#{params[:office_id]}' and a.DatePrinted between '#{params[:datePrinted]}' and  '#{params[:datePrinted]} 23:59:59'
+						order by a.[created_at] DESC
+						
+			
+						  SQL
+			
+						@confirms = ActiveRecord::Base.connection.exec_query(sql)
+	
+
+	    else
+		#@confirms = Confirmation.where(:office_id => current_user.office_id).paginate(:page => params[:page], :per_page => 10).order("created_at DESC")
+		#@confirms = Confirmation.where(:ref_no[0,11] => current_user.office_id).order("created_at DESC")
+		 # respond_to do |format|
+
+             sql = <<-SQL 
+
+				  SELECT  
+					a.[id] ,a.[user_id] ,b.[DietName], a.[examYear], a.[ref_no],a.[exam_no]
+			      ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
+			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted]
+				  FROM [dbo].[confirmations] a
+				  inner join [dbo].[Diets] b
+				  on a.diet_id = b.id
+				  inner join [dbo].[offices] d
+				  on a.office_id = d.id
+				  order by a.[created_at] DESC
+
+			  SQL
+
+            @confirms = ActiveRecord::Base.connection.exec_query(sql)
+        end  
+   #        format.json { render json: @confirms }
+   #      end
+	   		respond_to do |format|
+			format.html {}
+			format.json { render json: @confirms }
+		end
+	end
 	
 
 	def new
@@ -91,79 +190,77 @@ class ConfirmationsController < ApplicationController
 					if @confirm.exam_no[0,1]=='5'
 				        @global_table = WaecPrivateExam.create(confirmation_id: @confirm.id)
 
-          else
+          			else
 
 				        @global_table = WaecSchoolExam.create(confirmation_id: @confirm.id)
-				  end    
+				    end    
 
           if params[:receiptID] 
 
-          			 	params[:office_id] = current_user.office_id
+          	params[:office_id] = current_user.office_id
 
-			           	@receipt_status = ReceiptStatus.find_by(:id => params[:receiptID])
+			@receipt_status = ReceiptStatus.find_by(:id => params[:receiptID])
 
-			           	@receipt_status.update(confirmation_id: @confirm.id )
-			            @receipt_status.update(status: 'USED')
-			           
+			@receipt_status.update(confirmation_id: @confirm.id )
+			@receipt_status.update(status: 'USED')     
 
           end
 
-          			 if params[:paymentID] 
+          if params[:paymentID] 
 
-			           	@payPrinted = Payment.find_by(:id => params[:paymentID])
+		   	@payPrinted = Payment.find_by(:id => params[:paymentID])
 
-			            @payPrinted.update(printed: true)
+		    @payPrinted.update(printed: true)
 
-          			 end
+         end
 
 
-				    if @global_table.save
+		if @global_table.save
 				#      raise params.inspect
 				        ###########  Extract Reference Number
 
 				        #@serial = 100000000 + @global_table.id
-				         @serial_no = 100000000 + @global_table.id
+		@serial_no = 100000000 + @global_table.id
 				       # @serial_no= @serial.to_s
 
 				        #@my_reference = "L/CR/CONF/" + @waec_confirmation.exam_no[0,1]+ '259' +@serial_no.to_s[1,8]
-				        officeID = @confirm.user.office.id.to_s
-				        if  (officeID.length) == 1
-				        	 officeID = '0'+ officeID
-				        else
-				        	 officeID
-				        end
+		officeID = @confirm.user.office.id.to_s
+						
+		    if  (officeID.length) == 1
+		    	 officeID = '0'+ officeID
+		    else
+		       	 officeID
+		    end
 
-				        unless @confirm.Local_Ref_no.present?
-					         @my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1].to_s + officeID.to_s + @serial_no.to_s[1,8]
+		unless @confirm.Local_Ref_no.present?
+		    @my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1].to_s + officeID.to_s + @serial_no.to_s[1,8]
 
 					         #@my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1].to_s + @confirm.user.office.id.to_s + @serial_no.to_s[1,8]
 					        
 					        # @my_reference = "L/CR/CONF/" + "#{@confirm.exam_no[0,1]}" + "#{@confirm.user.office.id}" +  "#{@serial_no[1,8]} "
 					        #@my_reference = "L/CR/CONF/" + @confirm.exam_no[0,1] + @confirm.user.office.id + @serial_no[1,8]
-					        @confirm.update(:ref_no => @my_reference)
-				        end
+		    @confirm.update(:ref_no => @my_reference)
+		end
 
 
-				        @confirm.update(:office_id => @confirm.user.office_id)
+		@confirm.update(:office_id => @confirm.user.office_id)
 
-				    end
+		end
 
-				    if @confirm.dest_email.present?
-				    	 ConfirmationAlertEmailJob.set(wait: 20.seconds).perform_later(@confirm)
-				    end
-
-
+		if @confirm.dest_email.present?
+        	 ConfirmationAlertEmailJob.set(wait: 20.seconds).perform_later(@confirm)
+	    end
 
 				
-					head :ok
+		head :ok
 
 					#format.html {}
-			        format.json {}
+	    format.json {}
 			        #render json: {status: 'SUCCESS', message: 'saved Confirmation', data: @confirm}, status: :ok
 
-				end
-			end
 		end
+	end
+end
 	#end
 
 	def show

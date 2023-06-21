@@ -19,7 +19,7 @@ gem 'tiny_tds'#, '~> 2.1', '>= 2.1.2'
 gem 'httparty'
 gem 'pry'
 gem 'faraday-encoding'
-#gem 'faraday_middleware'
+gem 'faraday_middleware'
 #gem 'faraday'
 gem 'figaro'
 gem 'faraday', '~> 0.9.2'
@@ -79,6 +79,7 @@ gem "paperclip"
 gem 'angularjs-file-upload-rails'
 gem 'jwt'
 
+gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '3543363026121ee28d98dfce4cb6366980c055ee'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

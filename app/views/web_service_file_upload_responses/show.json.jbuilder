@@ -1,0 +1,1 @@
+json.partial! "web_service_file_upload_responses/web_service_file_upload_response", web_service_file_upload_response: @web_service_file_upload_response

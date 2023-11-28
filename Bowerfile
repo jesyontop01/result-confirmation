@@ -1,7 +1,5 @@
 # START_HIGHLIGHT
 # END_HIGHLIGHT
-#  asset 'angularjs-crypto'
-#  asset 'crypto-js'
 
 asset 'bootstrap-sass-official'
 asset 'angular-mocks','1.5'

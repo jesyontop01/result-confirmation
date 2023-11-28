@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Confirmation Images</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Filetype</th>
+      <th>Filename</th>
+      <th>Filesize</th>
+      <th>Base64image</th>
+      <th>Dietid</th>
+      <th>Candno</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @confirmation_images.each do |confirmation_image| %>
+      <tr>
+        <td><%= confirmation_image.fileType %></td>
+        <td><%= confirmation_image.fileName %></td>
+        <td><%= confirmation_image.fileSize %></td>
+        <td><%= confirmation_image.base64Image %></td>
+        <td><%= confirmation_image.dietId %></td>
+        <td><%= confirmation_image.candNo %></td>
+        <td><%= confirmation_image.user %></td>
+        <td><%= link_to 'Show', confirmation_image %></td>
+        <td><%= link_to 'Edit', edit_confirmation_image_path(confirmation_image) %></td>
+        <td><%= link_to 'Destroy', confirmation_image, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Confirmation Image', new_confirmation_image_path %>

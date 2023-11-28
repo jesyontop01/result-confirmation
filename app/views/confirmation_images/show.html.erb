@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Filetype:</strong>
+  <%= @confirmation_image.fileType %>
+</p>
+
+<p>
+  <strong>Filename:</strong>
+  <%= @confirmation_image.fileName %>
+</p>
+
+<p>
+  <strong>Filesize:</strong>
+  <%= @confirmation_image.fileSize %>
+</p>
+
+<p>
+  <strong>Base64image:</strong>
+  <%= @confirmation_image.base64Image %>
+</p>
+
+<p>
+  <strong>Dietid:</strong>
+  <%= @confirmation_image.dietId %>
+</p>
+
+<p>
+  <strong>Candno:</strong>
+  <%= @confirmation_image.candNo %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @confirmation_image.user %>
+</p>
+
+<%= link_to 'Edit', edit_confirmation_image_path(@confirmation_image) %> |
+<%= link_to 'Back', confirmation_images_path %>

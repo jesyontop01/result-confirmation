@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>App Service Types</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Servicetype</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @app_service_types.each do |app_service_type| %>
+      <tr>
+        <td><%= app_service_type.ServiceType %></td>
+        <td><%= link_to 'Show', app_service_type %></td>
+        <td><%= link_to 'Edit', edit_app_service_type_path(app_service_type) %></td>
+        <td><%= link_to 'Destroy', app_service_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New App Service Type', new_app_service_type_path %>

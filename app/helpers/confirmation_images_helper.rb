@@ -1,0 +1,2 @@
+module ConfirmationImagesHelper
+end

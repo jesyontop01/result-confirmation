@@ -90,7 +90,7 @@ class Exam < ActiveRecord::Base
 
     def self.connectToApi()
 
-      conn = Faraday.new('https://testeuploads.wes.org/api/v2') do |f|
+      conn = Faraday.new('https://euploads.wes.org/api/v2') do |f|
         f.request :json # encode req bodies as JSON and automatically set the Content-Type header
         f.request :retry # retry transient failures
         f.response :json # decode response bodies as JSON
@@ -105,27 +105,27 @@ class Exam < ActiveRecord::Base
       response = conn.post('/authenticate') do |req|
         ##req.params['limit'] = 100
         req.headers['Content-Type'] = 'application/json'
-        req.body = {username: 'WAECNGA', password: '2rDYxvSh6VW2'}.to_json
+        req.body = {username: 'WAECNGA', password: '0zHL5dRUIk5w'}.to_json
       end
       
       # response = conn.post('/authenticate/') do |req|
       #   #req.params['limit'] = 100
       #   req.body = { username: 'WAECNGA', password: '2rDYxvSh6VW2'}.to_json
       # end
-      binding.pry
+      #binding.pry
       JSON.parse(response.body)
 
     end
 
     def self.connectToWES()
-      response = Faraday.new(url: 'https://testeuploads.wes.org/api/v2').post('/authenticate/', {username: 'WAECNGA', password: '2rDYxvSh6VW2'}.to_json, {'Content-Type'=>'application/json'})
+      response = Faraday.new(url: 'https://euploads.wes.org/api/v2').post('/authenticate/', {username: 'WAECNGA', password: '0zHL5dRUIk5w'}.to_json, {'Content-Type'=>'application/json'})
       # response = Faraday.new(url: "https://testeuploads.wes.org/api/v2")
       #                   .post('/authenticate/', {
       #                                             username: "WAECNGA", 
       #                                             password: "2rDYxvSh6VW2"
       #                                         }.to_json, as: :json
       #                                       )
-    binding.pry
+    #binding.pry
     JSON.parse(response.body)
     end
 
@@ -133,7 +133,7 @@ class Exam < ActiveRecord::Base
 
       credential =  {
                  "username": "WAECNGA", 
-                 "password": "2rDYxvSh6VW2"
+                 "password": "0zHL5dRUIk5w"
               }
 
       headers = {
@@ -141,7 +141,7 @@ class Exam < ActiveRecord::Base
         #'authorization'=> 'bearer ' + api_key
       }
       
-      response = HTTParty.post("https://testeuploads.wes.org/api/v2/authenticate/", 
+      response = HTTParty.post("https://euploads.wes.org/api/v2/authenticate/", 
       :headers => headers,
       :body => credential.to_json)
       
@@ -151,12 +151,13 @@ class Exam < ActiveRecord::Base
 
     def self.getWESApplicantInfo(url, refNumber,  token )
 
+      #binding.pry 
       headers = {
         "Content-Type" => "application/json",
         'authorization'=> 'bearer ' + token
       }
       
-      response = HTTParty.get("https://testeuploads.wes.org/api/v2//applicantinfo/"+refNumber, 
+      response = HTTParty.get("https://euploads.wes.org/api/v2//applicantinfo/"+refNumber, 
       :headers => headers
     )
 
@@ -165,7 +166,7 @@ class Exam < ActiveRecord::Base
   end
 
   def self.pastFile(url, refNumber,  token, file, filetype )
-      url = "https://testeuploads.wes.org/api/v2/file/"+refNumber+"/"+filetype
+      url = "https://euploads.wes.org/api/v2/file/"+refNumber+"/"+filetype
       options = {
         headers: {
           'Authorization' => " Bearer #{token}",
@@ -201,7 +202,7 @@ class Exam < ActiveRecord::Base
     }
     
     
-    response = HTTParty.post("https://testeuploads.wes.org/api/v2/file/"+refNumber+"/pdf", 
+    response = HTTParty.post("https://euploads.wes.org/api/v2/file/"+refNumber+"/pdf", 
     :headers => headers,
     :body => credential.to_json
   )
@@ -231,7 +232,7 @@ end
         
         #binding.pry
         
-        response = HTTParty.post("https://testeuploads.wes.org/api/v2/file/base64/#{refNumber}", 
+        response = HTTParty.post("https://euploads.wes.org/api/v2/file/base64/#{refNumber}", 
         :headers => headers,
         :body => credential.to_json
       )
@@ -241,6 +242,33 @@ end
       #response.body
       response
     end
+
+    def self.sendJSON_ConfirmationToClient(url, refNumber,  token , content, title, filetype)
+
+
+      credential =  {
+
+              "fileName": title,
+              "content": content,      }
+
+      headers = {
+        "Content-Type" => "application/json",
+        'authorization'=> 'bearer ' + token
+      }
+      
+      #binding.pry 'https://testeuploads.wes.org/api/v2/file/23456778/json'
+      # https://euploads.wes.org/api/v2/file
+      
+      response = HTTParty.post("#{refNumber}/#{refNumber}/json", 
+      :headers => headers,
+      :body => credential.to_json
+    )
+
+      ##binding.pry
+    #JSON.parse(response)
+    #response.body
+    response
+  end
 
 
 end

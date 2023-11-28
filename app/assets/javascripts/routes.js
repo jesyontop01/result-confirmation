@@ -97,7 +97,9 @@ angular
           permission: ['admin', 'exam_management','exam_national']
           })
 
-        //Using ResultConfirationController
+      
+
+        //Using ResultConfirmationController
 
         .when('/result/search',{
           templateUrl:"views/resultConfirmations/confirm_search.html",
@@ -137,12 +139,14 @@ angular
           permission: ['admin', "exam_management","exam_national"]
           })
 
+
         .when('/result/confirmations',{
             templateUrl:"views/resultConfirmations/confirmations.html",
           controller: "ResultConfirmationsController",
           authenticated: true,
           permission: ['admin', 'exam_management','exam_national']
           })
+
         .when('/result/confirmations/Details/:id',{
             templateUrl:"views/resultConfirmations/confirmations_details.html",
           controller: "ResultConfirmationsController",
@@ -150,8 +154,43 @@ angular
           permission: ['admin', 'exam_management','exam_national']
           })
 
-        .when('/result/webServices/:id',{
+        .when('/result/appServiceTypes/:id',{
+            templateUrl:"views/resultConfirmations/appServices.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
+          })
+
+        .when('/result/webServices/:confirmId',{
             templateUrl:"views/resultConfirmations/webServices.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
+          })
+
+        .when('/result/webServices/:id/:confirmId',{
+            templateUrl:"views/resultConfirmations/webServices.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
+          })
+
+        .when('/result/mailServices/:id/:confirmId',{
+            templateUrl:"views/resultConfirmations/mailServices.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
+          }) 
+          
+          .when('/result/eMail_upload/:id/:confirmId',{
+            templateUrl:"views/resultConfirmations/eMail_connection.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
+          })
+
+          .when('/result/wes_upload/:id/:confirmId',{
+            templateUrl:"views/resultConfirmations/wes_connection.html",
           controller: "ResultConfirmationsController",
           authenticated: true,
           permission: ['admin', 'exam_management','exam_national']
@@ -164,7 +203,43 @@ angular
           permission: ['admin', 'exam_management','exam_national']
           })
 
+          .when('/result/apiResponses',{
+            templateUrl:"views/resultConfirmations/apiResponses.html",
+          controller: "ResultConfirmationsController",
+          authenticated: true,
+          permission: ['admin', 'exam_management','exam_national']
+          })
+
         //End of ResultConfirmation..............
+        // Using VerifierController
+
+      .when('/result/verifier_search',{
+          templateUrl:"views/resultConfirmations/verifierDB_search.html",
+          controller: "VerifierResultsController",
+          authenticated: true,
+          permission: ['admin', "exam_management","exam_national"]
+      })
+
+      .when('/result/verifier_search/:examYear/:examNo',{
+        templateUrl:"views/resultConfirmations/verifier_result_view.html",
+      controller: "VerifierResultsController",
+      authenticated: true,
+      permission: ['admin', "exam_management","exam_national"]
+      })
+
+    .when('/result/verifier_search/address/:examYear/:examNo',{
+        templateUrl:"views/resultConfirmations/verifier_confirm_address.html",
+      controller: "VerifierResultsController",
+      authenticated: true,
+      permission: ['admin', "exam_management","exam_national"]
+    })
+    .when('/result/verifier/confirmations',{
+      templateUrl:"views/resultConfirmations/verifier_confirmations.html",
+    controller: "VerifierResultsController",
+    authenticated: true,
+    permission: ['admin', 'exam_management','exam_national']
+    })
+
 
        
         .when('/users',{

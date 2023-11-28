@@ -1,0 +1,6 @@
+# config/initializers/fourth_dimension_database.rb
+
+FOURTH_DIMENSION_DB = YAML.load_file(File.join(Rails.root, "config", "fourth_dimension_database.yml"))[Rails.env.to_s]
+
+
+##REPORTING_DB = ActiveRecord::Base.configurations["reporting_#{Rails.env}"]

@@ -25,24 +25,34 @@ angular.module('verifier').factory('ResultService', ['$http','$q',function($http
 
 		// };
 
-		fac.ResultDetailsFromDB = function(examno, examyear,examdiet){
+		fac.ResultDetailsFromDB = function(examno, examyear,examdiet, confirmation_id){
 
 			//return $http.get("/api_results.json",  //$http.get("/exams/getSearchedResultDetails.json",
 			return $http.get("/exams/getSearchedResultDetailsForConfirmation.json", 
-				   {"params": { "CandNo": examno, "examYear": examyear, "DietName": examdiet}}
+				   {"params": { "CandNo": examno, "examYear": examyear, "DietName": examdiet, "confirmID": confirmation_id}}
+			);
+		
+
+		};
+
+		fac.ResultDetailsFromVerifierDB = function(examno, examdietId, confirmation_id){
+
+			//return $http.get("/api_results.json",  //$http.get("/exams/getSearchedResultDetails.json",
+			return $http.get("/waec_exams/SearchCandidateFromVerifier.json", 
+				   {"params": { "CandNo": examno,  "dietId": examdietId, "confirmID": confirmation_id}}
 			);
 		
 
 		};
 
 		fac.ResultDetailsFromDBForConfirmation = function(examno, examyear,examdiet, confirmID, isPrinted){
-debugger
+
 			//return $http.get("/api_results.json",  //$http.get("/exams/getSearchedResultDetails.json",
 			return $http.get("/exams/getSearchedResultDetailsForConfirmation.json", 
 				   {"params": { "CandNo": examno, "examYear": examyear, "DietName": examdiet, "confirmID": confirmID, "isPrinted": isPrinted}}
 			);
 		
-
+			debugger
 		};
 
 

@@ -12,6 +12,7 @@ class WebServicesController < ApplicationController
         @web_services = WebService.all
         #binding.pry
       render json: {success: true, data: @web_services, message:"You are authorized"}
+      ##format.json { render success: true, data: @web_services, message:"You are authorized"}
      else
       render json: {success: false, message:"Sorry!, access is denied for your office"}
 
@@ -19,6 +20,57 @@ class WebServicesController < ApplicationController
     #@web_services = WebService.all
     #render json: {success: true, data: @web_services, message:"You are authorized"  }
   end
+
+  def get_WebServices_By_ServiceType
+    user = current_user
+    
+    if user.office.office_name.strip! == "Yaba"
+
+        if params[:web_service_id].present?
+          @web_services = WebService.where(app_service_types_id:  params[:web_service_id])
+          #binding.pry
+          render json: {success: true, data: @web_services, message:"You are authorized"}
+        end
+
+      ##format.json { render success: true, data: @web_services, message:"You are authorized"}
+     else
+      render json: {success: false, message:"Sorry!, access is denied for your office"}
+
+     end
+    #@web_services = WebService.all
+    #render json: {success: true, data: @web_services, message:"You are authorized"  }
+  end
+
+  # GET /web_services/1
+  # GET /web_services/1.json
+  def api_transaction_responses
+
+            sql = <<-SQL 
+
+          SELECT a.[id]
+              ,c.[DietName], b.[examYear], b.[ref_no],b.[exam_no]
+                ,a.[confirmation_id]
+                ,a.[clientUploadId]
+                ,a.[referenceNumber]
+                ,a.[status]
+                ,a.[uploadId]
+                ,a.[created_at]
+                ,a.[updated_at]
+            FROM [verifierApp].[dbo].[web_service_file_upload_responses] a
+            inner join [dbo].[confirmations] b on a.confirmation_id = b.id
+            left join [dbo].[Diets] c on b.diet_id = c.id
+            order by id DESC
+
+        SQL
+
+        @web_services = ActiveRecord::Base.connection.exec_query(sql) 
+
+        respond_to do |format|
+        format.html {}
+        format.json { render json: @web_services }
+        end
+  end
+
 
   # GET /web_services/1
   # GET /web_services/1.json

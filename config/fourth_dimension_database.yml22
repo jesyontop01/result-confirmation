@@ -1,0 +1,21 @@
+# config/fourth_dimension_database.yml
+default: &default
+  adapter: sqlserver
+  encoding: utf8
+  mode:     dblib
+  port: 5500
+
+development:
+  <<: *default
+  database: fourth_dimension_db_prod
+  dataserver: <%= ENV["TERTIARY_DATABASE_DATASERVER"] %>
+  database: Verifier
+  username: <%= ENV["TERTIARY_DATABASE_USERNAME"] %>
+  password: <%= ENV["TERTIARY_DATABASE_USERNAME"] %>
+
+test:
+  <<: *default
+  host: localhost
+  username:
+  password:
+  database: fourth_dimension_db_test

@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
   
+  resources :app_service_types
+  resources :confirmation_images
   resources :confirm_backup_data
   resources :web_service_file_upload_responses
   get 'main_offices/index'
   resources :main_offices
   resources :waec_zonal_offices
   #resources :api_results
-  resources :waec_exams
+  # resources :waec_exams
   resources :waec_centres
   resources :waec_offices
   resources :finance_depts
@@ -21,7 +23,13 @@ Rails.application.routes.draw do
     end
     
   end
-  resources :web_services
+  resources :web_services do
+    collection do
+      get :api_transaction_responses
+      get :get_WebServices_By_ServiceType
+    end
+    get :get_WebServices_By_ServiceType
+  end
   resources :transaction_types
   resources :receipt_corrections
   resources :peoples
@@ -133,6 +141,13 @@ Rails.application.routes.draw do
           post :transferFileToWesAPI
         end
     end
+
+resources :waec_exams  do
+  collection do
+   get :SearchCandidateFromVerifier
+   get :confirmations
+ end
+end
 
   resources :api_results do
          collection do

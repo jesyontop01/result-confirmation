@@ -17,8 +17,9 @@ class ConfirmationsController < ApplicationController
 					a.[id] ,a.[user_id] ,b.[DietName], a.[examYear], a.[ref_no],a.[exam_no]
 			      ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
 			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted]
+				  ,a.IsVeriferResult, a.diet_id
 				  FROM [dbo].[confirmations] a
-				  inner join [dbo].[Diets] b
+				  left join [dbo].[Diets] b
 				  on a.diet_id = b.id
 				  inner join [dbo].[offices] d
 				  on a.office_id = d.id
@@ -40,8 +41,9 @@ class ConfirmationsController < ApplicationController
 					a.[id] ,a.[user_id] ,b.[DietName], a.[examYear], a.[ref_no],a.[exam_no]
 			      ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
 			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted]
+				  ,a.IsVeriferResult, a.diet_id
 				  FROM [dbo].[confirmations] a
-				  inner join [dbo].[Diets] b
+				  left join [dbo].[Diets] b
 				  on a.diet_id = b.id
 				  inner join [dbo].[offices] d
 				  on a.office_id = d.id
@@ -73,8 +75,9 @@ class ConfirmationsController < ApplicationController
 		 a.[id] ,a.[user_id] ,b.[DietName], a.[examYear], a.[ref_no],a.[exam_no]
 		,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
 		,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted], a.[DatePrinted], a.Local_Ref_no
+		,a.IsVeriferResult, a.diet_id
 			FROM [dbo].[confirmations] a
-			inner join [dbo].[Diets] b
+			left join [dbo].[Diets] b
 			on a.diet_id = b.id
 			inner join [dbo].[offices] d
 			on a.office_id = d.id
@@ -94,8 +97,9 @@ class ConfirmationsController < ApplicationController
 				 a.[id] ,a.[user_id] ,b.[DietName], a.[examYear], a.[ref_no],a.[exam_no]
 				,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
 				,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted], a.[DatePrinted], a.Local_Ref_no
+				,a.IsVeriferResult, a.diet_id
 					FROM [dbo].[confirmations] a
-					inner join [dbo].[Diets] b
+					left join [dbo].[Diets] b
 					on a.diet_id = b.id
 					inner join [dbo].[offices] d
 					on a.office_id = d.id
@@ -115,8 +119,9 @@ class ConfirmationsController < ApplicationController
 					 a.[id] ,a.[user_id] ,b.[DietName], a.[examYear], a.[ref_no],a.[exam_no]
 					,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
 					,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted], a.[DatePrinted], a.Local_Ref_no
-						FROM [dbo].[confirmations] a
-						inner join [dbo].[Diets] b
+					,a.IsVeriferResult, a.diet_id	
+					FROM [dbo].[confirmations] a
+						left join [dbo].[Diets] b
 						on a.diet_id = b.id
 						inner join [dbo].[offices] d
 						on a.office_id = d.id
@@ -140,8 +145,9 @@ class ConfirmationsController < ApplicationController
 					a.[id] ,a.[user_id] ,b.[DietName], a.[examYear], a.[ref_no],a.[exam_no]
 			      ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
 			      ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted]
+				  ,a.IsVeriferResult, a.diet_id 
 				  FROM [dbo].[confirmations] a
-				  inner join [dbo].[Diets] b
+				  left join [dbo].[Diets] b
 				  on a.diet_id = b.id
 				  inner join [dbo].[offices] d
 				  on a.office_id = d.id
@@ -273,9 +279,9 @@ end
               a.[id] ,a.[user_id] ,b.[DietName],  a.[examYear], a.[ref_no],a.[exam_no]
               ,a.[Cand_address] ,a.[dest_title] ,a.[dest_address1] ,a.[dest_address2]
               ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted]
-							,e.[CandName] ,e.[cand_email]
+			  ,a.IsVeriferResult, a.diet_id	,e.[CandName] ,e.[cand_email]
         FROM [dbo].[confirmations] a
-        inner join [dbo].[Diets] b
+        left join [dbo].[Diets] b
         on a.diet_id = b.id
         inner join [dbo].[offices] d
         on a.office_id = d.id
@@ -341,7 +347,7 @@ end
                               ,a.[dest_location] ,a.[dest_email] ,a.[created_at] ,a.[updated_at] ,d.[office_name] ,a.[receipt_no], a.[WES_Ref], a.[isPrinted]
 							  ,e.[CandName] ,e.[cand_email]
                                   FROM [dbo].[confirmations] a
-                                  inner join [dbo].[Diets] b
+                                  left join [dbo].[Diets] b
                                   on a.diet_id = b.id
                                   inner join [dbo].[offices] d
                                   on a.office_id = d.id
@@ -402,7 +408,7 @@ end
 	def confirmation_params
 		params.require(:confirmation).permit(:user_id,:diet_id,:year_id, :examYear, :ref_no,:exam_no,:Cand_address,:dest_title,
 						:dest_address1,:dest_address2,:dest_location,:dest_email, :confirm_type_id, :confirm_country_id, :Local_Ref_no,
-						:receipt_no, :WES_Ref, :payment_id, :isPrinted, :DatePrinted)
+						:receipt_no, :WES_Ref, :payment_id, :isPrinted, :DatePrinted, :IsVeriferResult)
 	end
 
 	protected

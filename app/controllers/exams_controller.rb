@@ -1,6 +1,7 @@
 class ExamsController < ApplicationController
   include ApplicationHelper
   before_action :set_api_token
+  skip_before_action :set_api_token, only: [:connectToWesAPI, :retrieveWESApplicantInfo, :transferFileToWesAPI]
 
 
   before_action :authenticate_user!
@@ -123,116 +124,112 @@ class ExamsController < ApplicationController
   ### get getResultStatus
   def getSearchedResultDetails
       
-       subjectindex = {
-        "101"=>"ENGLISHLANG",
-        "103"=>"COMMERCE",
-        "104"=>"FIN. ACCOUNTING",
-        "106"=>"SHORTHAND",
-        "107"=>"TYPEWRITING",
-        "108"=>"AUTO PSM/DISING",
-        "109"=>"BOOK KEEPING",
-        "110"=>"DATA PROCESSING",
-        "111"=>"INSURANCE",
-        "112"=>"MARKETING",
-        "113"=>"OFFICE PRACTICE",
-        "114"=>"SALESMANSHIP",
-        "116"=>"STORE KEEPING",
-        "117"=>"STORE M/GEMENT",
-        "201"=>"XTIAN-REL-KNOWL",        
-        "202"=>"CR/STUDIES",
-        "203"=>"ECONOMICS",
-        "204"=>"GEOGRAPHY",
-        "205"=>"GOVERNMENT",
-        "207"=>"HISTORY",
-        "208"=>"ISLAMIC STUDIES",
-        "210"=>"LIT-IN-ENGLISH",
-        #"211"=>"HAUSA LIT",
-        "211"=>"LITINENG",        
-        "212"=>"IGBO LIT",
-        "213"=>"YORUBA LIT",
-        "216"=>"CIVIC EDUCATION",
-        "217"=>"TOURISM",
-        "221"=>"RELKNOWLEDGE",
-        "231"=>"ISLAMIC",
-        "241"=>"HISTORY",
-        "251"=>"GEOG",
-        "261"=>"GOVERNMENT",
-        "271"=>"ECONOMICS",
-        "311"=>"MATHEMATICS",
-        "312"=>"GERMAN",
-        "321"=>"STATS",        
-        "301"=>"ARABIC",
-        "302"=>"ENGLISH LANG",
-        "304"=>"FRENCH",
-        "327"=>"HAUSA LANGUAGE",
-        "175"=>"HAUSA LANGUAGE",
-        #"311"=>"MATHEMATICS",
-        #"321"=>"STATS",
-        "328"=>"IGBO LANGUAGE",
-        "329"=>"YORUBA LANGUAGE",
-        "330"=>"EDO",
-        "331"=>"EFIK",
-        "165"=>"HAUSA LANG",
-        "332"=>"IBIBIO",
-        "401"=>"FURTHER MATHS",
-        "402"=>"MATHEMATICS",
-        "441"=>"CHEMISTRY",
-        "451"=>"BIOLOGY",
-        "461"=>"AGRICSCIENCE",
-        "471"=>"HEALTHSCIENCE",
-        "502"=>"AGRIC SCIENCE",
-        "504"=>"BIOLOGY",
-        "505"=>"CHEMISTRY",
-        "508"=>"HEALTH SCIENCE", 
-        "511"=>"PHYSICAL-EDUC",
-        "512"=>"PHYSICS",
-        "518"=>"ANIMAL H/BANDRY",
-        "519"=>"FISHERIES",
-        "520"=>"HEALTHEDUCATION",
-        "602"=>"APPLIED ELECT-B",
-        "603"=>"AUTO MECHANICS",
-        "604"=>"BUILDING CONSTR",
-        "605"=>"ELECTRONICS",        
-        "607"=>"METALWORK",
-        "608"=>"TECHNICAL DRG",
-        "609"=>"WOODWORK",
-        "610"=>"AIR-CON/REFRIG",
-        "611"=>"AUTOBODY & PT",
-        "612"=>"AUTO ELECT WORK",
-        "613"=>"AUTO MECH WORK",
-        "614"=>"BASIC ELECTRIC",
-        "615"=>"BASIC ELECTRON",
-        "616"=>"BL,BRI LAY&CONC",
-        "617"=>"CARP & JOINERY",
-        "618"=>"COMPUT STUDIES",
-        "619"=>"ELECT INS&MWRKS",
-        "620"=>"FURNITURE MAKNG",
-        "621"=>"GSM M & REPAIR",
-        "624"=>"M/C WOODWORKING",
-        "625"=>"MINING",
-        "626"=>"P&PIPE FITTING",
-        "627"=>"PRI CRAFT PRACT",
-        "628"=>"RA TV& EL. WORK",
-        "629"=>"UPHOLSTERY",
-        "630"=>"WELDFENG",
-        "701"=>"CLOTH & TEXTILE",
-        "702"=>"FOODS & NUTR",
-        "703"=>"HOME MANAGEMENT",
-        "705"=>"MUSIC",
-        "706"=>"VISUAL ART",
-        "716"=>"CATE CRAFT PRAC",
-        "717"=>"COSMETOLOGY",
-        "718"=>"DYE & BLEACHING",
-        "719"=>"GARMENT M",
-        "720"=>"LEATHER&REPAIRS",
-        "711"=>"COMMERCE",
-        "721"=>"ACCOUNTS",
-        #"721"=>"PAINTING & DECO",
-        "722"=>"PHOTOGRAPHY",
-        # "721" => "PAINTING & DECO"
-         
-        # "211" =>  "HAUSA LIT"
-  }
+    subjectindex = {
+      "101"=>"ENGLISHLANG",
+      "103"=>"COMMERCE",
+      "104"=>"FIN. ACCOUNTING",
+      "106"=>"SHORTHAND",
+      "107"=>"TYPEWRITING",
+      "108"=>"AUTO PSM/DISING",
+      "109"=>"BOOK KEEPING",
+      "110"=>"DATA PROCESSING",
+      "111"=>"INSURANCE",
+      "112"=>"MARKETING",
+      "113"=>"OFFICE PRACTICE",
+      "114"=>"SALESMANSHIP",
+      "116"=>"STORE KEEPING",
+      "117"=>"STORE M/GEMENT",
+      "165"=>"HAUSA LANG",
+      "175"=>"HAUSA LANGUAGE",
+      "201"=>"XTIAN-REL-KNOWL",        
+      "202"=>"CR/STUDIES",
+      "203"=>"ECONOMICS",
+      "204"=>"GEOGRAPHY",
+      "205"=>"GOVERNMENT",
+      "207"=>"HISTORY",
+      "208"=>"ISLAMIC STUDIES",
+      "210"=>"LIT-IN-ENGLISH",
+     #"211"=>"HAUSA LIT",
+      "211"=>"LITINENG",        
+      "212"=>"IGBO LIT",
+      "213"=>"YORUBA LIT",
+      "216"=>"CIVIC EDUCATION",
+      "217"=>"TOURISM",
+      "221"=>"RELKNOWLEDGE",
+      "231"=>"ISLAMIC",
+      "241"=>"HISTORY",
+      "251"=>"GEOGRAPY",
+      "261"=>"GOVERNMENT",
+      "271"=>"ECONOMICS",       
+      "301"=>"ARABIC",
+      "302"=>"ENGLISH LANG",
+      "304"=>"FRENCH",
+      "311"=>"MATHEMATICS",
+      "312"=>"GERMAN",
+      "321"=>"STATS", 
+      "327"=>"HAUSA LANGUAGE",
+      "328"=>"IGBO LANGUAGE",
+      "329"=>"YORUBA LANGUAGE",
+      "330"=>"EDO",
+      "331"=>"EFIK",
+      "332"=>"IBIBIO",
+      "401"=>"FURTHER MATHS",
+      "402"=>"GENERAL MATHEMATICS",
+      "441"=>"CHEMISTRY",
+      "451"=>"BIOLOGY",
+      "461"=>"AGRICSCIENCE",
+      "471"=>"HEALTHSCIENCE",
+      "502"=>"AGRIC SCIENCE",
+      "504"=>"BIOLOGY",
+      "505"=>"CHEMISTRY",
+      "508"=>"HEALTH SCIENCE",         
+      "511"=>"PHYSICAL-EDUC",
+      "512"=>"PHYSICS",
+      "518"=>"ANIMAL H/BANDRY",
+      "519"=>"FISHERIES",
+      "520"=>"HEALTHEDUCATION",
+      "602"=>"APPLIED ELECT-B",
+      "603"=>"AUTO MECHANICS",
+      "604"=>"BUILDING CONSTR",
+      "605"=>"ELECTRONICS",       
+      "607"=>"METALWORK",
+      "608"=>"TECHNICAL DRG",
+      "609"=>"WOODWORK",
+      "610"=>"AIR-CON/REFRIG",
+      "611"=>"AUTOBODY & PT",
+      "612"=>"AUTO ELECT WORK",
+      "613"=>"AUTO MECH WORK",
+      "614"=>"BASIC ELECTRIC",
+      "615"=>"BASIC ELECTRON",
+      "616"=>"BL,BRI LAY&CONC",
+      "617"=>"CARP & JOINERY",
+      "618"=>"COMPUT STUDIES",
+      "619"=>"ELECT INS&MWRKS",
+      "620"=>"FURNITURE MAKNG",
+      "621"=>"GSM M & REPAIR",
+      "624"=>"M/C WOODWORKING",
+      "625"=>"MINING",
+      "626"=>"P&PIPE FITTING",
+      "627"=>"PRI CRAFT PRACT",
+      "628"=>"RA TV& EL. WORK",
+      "629"=>"UPHOLSTERY",
+      "630"=>"WELDFENG",
+      "701"=>"CLOTH & TEXTILE",
+      "702"=>"FOODS & NUTR",
+      "703"=>"HOME MANAGEMENT",
+      "705"=>"MUSIC",
+      "706"=>"VISUAL ART",
+      "716"=>"CATE CRAFT PRAC",
+      "717"=>"COSMETOLOGY",
+      "718"=>"DYE & BLEACHING",
+      "719"=>"GARMENT M",
+      "720"=>"LEATHER&REPAIRS",
+     "711"=>"COMMERCE",
+     "721"=>"ACCOUNTS",
+     # "721" => "PAINTING & DECO"  
+     # "211" =>  "HAUSA LIT"
+      "722"=>"PHOTOGRAPHY"
+}
 
 subjectindex0 = {
     "010"=>"ENGLISH LANG",
@@ -317,7 +314,7 @@ subjectindex0 = {
   "271"=>"ECONOMICS",
   "311"=>"MATHEMATICS",
   "312"=>"GERMAN",
-      "321"=>"STATS",
+  "321"=>"STATS",
   "341"=>"FUTHERMATHS",
   "412"=>"ITALIAN",
   "431"=>"PHYSICS",
@@ -406,7 +403,7 @@ subjectindex0 = {
   @resultVals = Exam.getSearchedCandidate(params[:CandNo], params[:examYear], params[:token])
   
 
-binding.pry
+#binding.pry
 
 ##if params[:CandidateNo].present? && params[:ExamYear].present?
 
@@ -650,117 +647,116 @@ end
   def getSearchedResultDetailsForConfirmation
 
     params[:token] = nil
+    resultContainer = []
+    resultObjects = Hash.new
+    finalResult = []
 
       
     subjectindex = {
-     "101"=>"ENGLISHLANG",
-     "103"=>"COMMERCE",
-     "104"=>"FIN. ACCOUNTING",
-     "106"=>"SHORTHAND",
-     "107"=>"TYPEWRITING",
-     "108"=>"AUTO PSM/DISING",
-     "109"=>"BOOK KEEPING",
-     "110"=>"DATA PROCESSING",
-     "111"=>"INSURANCE",
-     "112"=>"MARKETING",
-     "113"=>"OFFICE PRACTICE",
-     "114"=>"SALESMANSHIP",
-     "116"=>"STORE KEEPING",
-     "117"=>"STORE M/GEMENT",
-     "201"=>"XTIAN-REL-KNOWL",        
-     "202"=>"CR/STUDIES",
-     "203"=>"ECONOMICS",
-     "204"=>"GEOGRAPHY",
-     "205"=>"GOVERNMENT",
-     "207"=>"HISTORY",
-     "208"=>"ISLAMIC STUDIES",
-     "210"=>"LIT-IN-ENGLISH",
+      "101"=>"ENGLISHLANG",
+      "103"=>"COMMERCE",
+      "104"=>"FIN. ACCOUNTING",
+      "106"=>"SHORTHAND",
+      "107"=>"TYPEWRITING",
+      "108"=>"AUTO PSM/DISING",
+      "109"=>"BOOK KEEPING",
+      "110"=>"DATA PROCESSING",
+      "111"=>"INSURANCE",
+      "112"=>"MARKETING",
+      "113"=>"OFFICE PRACTICE",
+      "114"=>"SALESMANSHIP",
+      "116"=>"STORE KEEPING",
+      "117"=>"STORE M/GEMENT",
+      "165"=>"HAUSA LANG",
+      "175"=>"HAUSA LANGUAGE",
+      "201"=>"XTIAN-REL-KNOWL",        
+      "202"=>"CR/STUDIES",
+      "203"=>"ECONOMICS",
+      "204"=>"GEOGRAPHY",
+      "205"=>"GOVERNMENT",
+      "207"=>"HISTORY",
+      "208"=>"ISLAMIC STUDIES",
+      "210"=>"LIT-IN-ENGLISH",
      #"211"=>"HAUSA LIT",
-     "211"=>"LITINENG",        
-     "212"=>"IGBO LIT",
-     "213"=>"YORUBA LIT",
-     "216"=>"CIVIC EDUCATION",
-     "217"=>"TOURISM",
-     "221"=>"RELKNOWLEDGE",
-     "231"=>"ISLAMIC",
-     "241"=>"HISTORY",
-     "251"=>"GEOG",
-     "261"=>"GOVERNMENT",
-     "271"=>"ECONOMICS",
-     "311"=>"MATHEMATICS",
-     "312"=>"GERMAN",
-     "321"=>"STATS",        
-     "301"=>"ARABIC",
-     "302"=>"ENGLISH LANG",
-     "304"=>"FRENCH",
-     "327"=>"HAUSA LANGUAGE",
-     "175"=>"HAUSA LANGUAGE",
-     #"311"=>"MATHEMATICS",
-     #"321"=>"STATS",
-     "328"=>"IGBO LANGUAGE",
-     "329"=>"YORUBA LANGUAGE",
-     "330"=>"EDO",
-     "331"=>"EFIK",
-     "165"=>"HAUSA LANG",
-     "332"=>"IBIBIO",
-     "401"=>"FURTHER MATHS",
-     "402"=>"MATHEMATICS",
-     "441"=>"CHEMISTRY",
-     "451"=>"BIOLOGY",
-     "461"=>"AGRICSCIENCE",
-     "471"=>"HEALTHSCIENCE",
-     "502"=>"AGRIC SCIENCE",
-     "504"=>"BIOLOGY",
-     "505"=>"CHEMISTRY",
-     "508"=>"HEALTH SCIENCE", 
-     "511"=>"PHYSICAL-EDUC",
-     "512"=>"PHYSICS",
-     "518"=>"ANIMAL H/BANDRY",
-     "519"=>"FISHERIES",
-     "520"=>"HEALTHEDUCATION",
-     "602"=>"APPLIED ELECT-B",
-     "603"=>"AUTO MECHANICS",
-     "604"=>"BUILDING CONSTR",
-     "605"=>"ELECTRONICS",        
-     "607"=>"METALWORK",
-     "608"=>"TECHNICAL DRG",
-     "609"=>"WOODWORK",
-     "610"=>"AIR-CON/REFRIG",
-     "611"=>"AUTOBODY & PT",
-     "612"=>"AUTO ELECT WORK",
-     "613"=>"AUTO MECH WORK",
-     "614"=>"BASIC ELECTRIC",
-     "615"=>"BASIC ELECTRON",
-     "616"=>"BL,BRI LAY&CONC",
-     "617"=>"CARP & JOINERY",
-     "618"=>"COMPUT STUDIES",
-     "619"=>"ELECT INS&MWRKS",
-     "620"=>"FURNITURE MAKNG",
-     "621"=>"GSM M & REPAIR",
-     "624"=>"M/C WOODWORKING",
-     "625"=>"MINING",
-     "626"=>"P&PIPE FITTING",
-     "627"=>"PRI CRAFT PRACT",
-     "628"=>"RA TV& EL. WORK",
-     "629"=>"UPHOLSTERY",
-     "630"=>"WELDFENG",
-     "701"=>"CLOTH & TEXTILE",
-     "702"=>"FOODS & NUTR",
-     "703"=>"HOME MANAGEMENT",
-     "705"=>"MUSIC",
-     "706"=>"VISUAL ART",
-     "716"=>"CATE CRAFT PRAC",
-     "717"=>"COSMETOLOGY",
-     "718"=>"DYE & BLEACHING",
-     "719"=>"GARMENT M",
-     "720"=>"LEATHER&REPAIRS",
+      "211"=>"LITINENG",        
+      "212"=>"IGBO LIT",
+      "213"=>"YORUBA LIT",
+      "216"=>"CIVIC EDUCATION",
+      "217"=>"TOURISM",
+      "221"=>"RELKNOWLEDGE",
+      "231"=>"ISLAMIC",
+      "241"=>"HISTORY",
+      "251"=>"GEOGRAPY",
+      "261"=>"GOVERNMENT",
+      "271"=>"ECONOMICS",       
+      "301"=>"ARABIC",
+      "302"=>"ENGLISH LANG",
+      "304"=>"FRENCH",
+      "311"=>"MATHEMATICS",
+      "312"=>"GERMAN",
+      "321"=>"STATS", 
+      "327"=>"HAUSA LANGUAGE",
+      "328"=>"IGBO LANGUAGE",
+      "329"=>"YORUBA LANGUAGE",
+      "330"=>"EDO",
+      "331"=>"EFIK",
+      "332"=>"IBIBIO",
+      "401"=>"FURTHER MATHS",
+      "402"=>"GENERAL MATHEMATICS",
+      "441"=>"CHEMISTRY",
+      "451"=>"BIOLOGY",
+      "461"=>"AGRICSCIENCE",
+      "471"=>"HEALTHSCIENCE",
+      "502"=>"AGRIC SCIENCE",
+      "504"=>"BIOLOGY",
+      "505"=>"CHEMISTRY",
+      "508"=>"HEALTH SCIENCE",         
+      "511"=>"PHYSICAL-EDUC",
+      "512"=>"PHYSICS",
+      "518"=>"ANIMAL H/BANDRY",
+      "519"=>"FISHERIES",
+      "520"=>"HEALTHEDUCATION",
+      "602"=>"APPLIED ELECT-B",
+      "603"=>"AUTO MECHANICS",
+      "604"=>"BUILDING CONSTR",
+      "605"=>"ELECTRONICS",       
+      "607"=>"METALWORK",
+      "608"=>"TECHNICAL DRG",
+      "609"=>"WOODWORK",
+      "610"=>"AIR-CON/REFRIG",
+      "611"=>"AUTOBODY & PT",
+      "612"=>"AUTO ELECT WORK",
+      "613"=>"AUTO MECH WORK",
+      "614"=>"BASIC ELECTRIC",
+      "615"=>"BASIC ELECTRON",
+      "616"=>"BL,BRI LAY&CONC",
+      "617"=>"CARP & JOINERY",
+      "618"=>"COMPUT STUDIES",
+      "619"=>"ELECT INS&MWRKS",
+      "620"=>"FURNITURE MAKNG",
+      "621"=>"GSM M & REPAIR",
+      "624"=>"M/C WOODWORKING",
+      "625"=>"MINING",
+      "626"=>"P&PIPE FITTING",
+      "627"=>"PRI CRAFT PRACT",
+      "628"=>"RA TV& EL. WORK",
+      "629"=>"UPHOLSTERY",
+      "630"=>"WELDFENG",
+      "701"=>"CLOTH & TEXTILE",
+      "702"=>"FOODS & NUTR",
+      "703"=>"HOME MANAGEMENT",
+      "705"=>"MUSIC",
+      "706"=>"VISUAL ART",
+      "716"=>"CATE CRAFT PRAC",
+      "717"=>"COSMETOLOGY",
+      "718"=>"DYE & BLEACHING",
+      "719"=>"GARMENT M",
+      "720"=>"LEATHER&REPAIRS",
      "711"=>"COMMERCE",
      "721"=>"ACCOUNTS",
-     #"721"=>"PAINTING & DECO",
-     "722"=>"PHOTOGRAPHY",
-     # "721" => "PAINTING & DECO"
-      
+     # "721" => "PAINTING & DECO"  
      # "211" =>  "HAUSA LIT"
+      "722"=>"PHOTOGRAPHY"
 }
 
 subjectindex0 = {
@@ -929,9 +925,9 @@ ordinal = [ "ZERO", "ONE","TWO","THREE", "FOUR","FIVE","SIX", "SEVEN","EIGHT","N
 
 params[:token] = nil
 
-resultContainer = []
-resultObjects = Hash.new
-finalResult = []
+# resultContainer = []
+# resultObjects = Hash.new
+# finalResult = []
 
 if session[:access_token].present?
  params[:token] = session[:access_token]['access_token']
@@ -940,7 +936,6 @@ else
  params[:token] = session[:access_token]['access_token']
  
 end
-
 
 
 if params[:CandNo].present? && params[:examYear].present? ##&& params[:token].present?## && params[:dietId].present? 
@@ -972,7 +967,9 @@ if  params[:isPrinted] == 'false' && @resultVals.present?
     
 end
 
-binding.pry
+
+
+#binding.pry
 
 ##if params[:CandidateNo].present? && params[:ExamYear].present?
 
@@ -1015,8 +1012,8 @@ if @resultVals["CandNo"].present?
        if @resultVals["CandNo"].length == 10
 
 
-           # @centre = WaecCentre.where("centre_no = ?", @resultVals["CandNo"][0,7])
-       @centre = WaecCentre.where(["CentreCode = ? and ExamYear = ?", @resultVals["CandNo"][0,7], params[:examYear]])
+          #@centre = WaecCentre.where("centre_no = ?", @resultVals["CandNo"][0,7])
+      @centre = WaecCentre.where(["CentreCode = ? and ExamYear = ?", @resultVals["CandNo"][0,7], params[:examYear]])
 
            #centres['centre'] = @centre
            resultObjects['Picture'] = @resultVals["Pix"]
@@ -1034,6 +1031,15 @@ if @resultVals["CandNo"].present?
            resultObjects['DatePrinted'] = @resultVals["DatePrinted"]
            resultObjects['DatePrinted2'] = @resultVals["DatePrinted"] == nil ? "N/A" : @resultVals["DatePrinted"][8,2] +"/"+ @resultVals["DatePrinted"][5,2]+"/"+ @resultVals["DatePrinted"][0,4] 
            
+
+           ## Set 402 based on the year
+
+           if params[:examYear] >= "2021"
+            subjectindex["402"] = "GENERAL MATHEMATICS"
+           else
+            subjectindex["402"] = "MATHEMATICS"
+           end
+
            resultObjects["Subject1"] = subjectindex[subjectsContainer[0]]
            resultObjects["Subject2"] = subjectindex[subjectsContainer[1]]
            resultObjects["Subject3"] = subjectindex[subjectsContainer[2]]
@@ -1396,16 +1402,63 @@ resultsArray[0][:NoOfSubjects] =  resultsArray.length
 
      finalResult << resultsArray
 
+     confirmResult_Json = {}
+
+# binding.pry
+     if params[:confirmID].present? && resultsArray.length > 0
+
+      subjectsGrade = []
+      resultComponent = {}
+       @confirmation = Confirmation.find(params[:confirmID])
+
+       resultsArray.each do |result|
+        resultComponent = {
+          "subject": result[:Subject],
+          "grade": result[:Grade],
+          "intrepretation": result[:GradeInter]
+        }
+
+        subjectsGrade << resultComponent
+        
+       end
+
      
-  #binding.pry
+       confirmResult_Json = {
+         "WAECRefNumber": @confirmation.ref_no,
+         "WesRefNumber": @confirmation.WES_Ref,        
+         "examName":   resultsArray[0][:examType],
+         "examYear": resultsArray[0][:examYear],
+         "candidateNumber": @confirmation.exam_no,
+         "candidateType": "School Candidate",
+         "candidateName": resultsArray[0][:candName],
+         "sex": resultsArray[0][:sex],
+         "dateOfBirth": resultsArray[0][:dob2],
+         "noOfSubjects": resultsArray.length,
+         "issuedate": "17/03/2023",
+         "country": "Nigeria",
+         "subjectsData": subjectsGrade
+       }
 
+      #  Saving:
 
+      cookies[:my_data] = { 
+        :value => confirmResult_Json.to_json, 
+        :expires => 4.years.from_now
+      }
+      # Reading:
+
+      my_object = JSON.parse(cookies[:my_data])
+     
+  
+     end
+
+    binding.pry
   
 end
 
  respond_to do |format|
 
-   if @resultVals.empty?
+   if finalResult.empty?
          format.html { render :new }
          format.json { render json: {success: false, message: "Candidate's Result is not available" }}
    else
@@ -1451,18 +1504,22 @@ end
 
 
   def connectToWesAPI
-    
+
+
     if session[:Wes_access_token].present?
       @Wes_access_token = session[:Wes_access_token]['token']
-    else
-      @Wes_access_token  =  Exam.wesConnection() 
-      session[:Wes_access_token] = @Wes_access_token 
+    
+    elsif session[:Wes_access_token].nil?
+      
+      session[:Wes_access_token]  =  Exam.wesConnection() 
+      #binding.pry  
+      @Wes_access_token = session[:Wes_access_token]['token']
       
     end
-    ##binding.pry  
+   
 
     respond_to do |format|
-
+      #binding.pry  
       if @Wes_access_token.nil?          
             format.json { render json: {success: false, message: "WEB Service not available" }}
       else
@@ -1485,6 +1542,15 @@ end
       #binding.pry 
 
       @resultVals = Exam.sendBase64ConfirmationToClient(params[:url], params[:refNumber], session[:Wes_access_token]['token'], params[:content], params[:title], params[:filesize] )
+
+      ## Send JSON format of Result Confirmation
+      
+      # if @resultVals.present?
+      #   my_object = JSON.parse(cookies[:my_data])
+
+      #   @myJsonObject = Exam.sendJSON_ConfirmationToClient(params[:url], params[:refNumber], session[:Wes_access_token]['token'], params[:content], params[:title])
+      #   #my_object = my_object.to_json
+      # end
 
       @resultVals = @resultVals.to_json
       @resultVals = JSON.parse(@resultVals)

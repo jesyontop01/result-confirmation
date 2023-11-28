@@ -25,7 +25,7 @@
               <!-- Left navbar links -->
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link" data-widget="pushmenu" href="#/" role="button"><i class="fas fa-bars"></i></a>
+                  <a ng-show="sessions.signedIn()" class="nav-link" data-widget="pushmenu" href="#/" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                   <a href="#/" class="nav-link">Home</a>
@@ -157,7 +157,7 @@
             <!-- /.navbar -->
 
             <!-- Main Sidebar Container -->
-            <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <aside ng-show="sessions.signedIn()" class="main-sidebar sidebar-dark-primary elevation-4" >
               <!-- Brand Logo -->
               <a href="#/" class="brand-link">
                 <%= image_tag('Waeclogo.png', :alt=> "WAEC Logo", :class=> "brand-image img-circle elevation-3", :style=> "opacity: .8") %>
@@ -330,12 +330,33 @@
                             <p>Search Verifier</p>
                           </a>
                         </li>
+                        <li class="nav-item">
+                          <a href="#/result/verifier_search" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <%# <p> Search By Name</p> %>
+                            <p>Search All Year</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="#/result/verifier/confirmations" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <%# <p> Search By Name</p> %>
+                            <p>Confirmations List - Ext</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="#/result/apiResponses" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <%# <p> Search By Name</p> %>
+                            <p>Electronic Despatch Responses</p>
+                          </a>
+                        </li>
 <!--                         <li class="nav-item">
                           <a href="#/result/certifcateEnquiry" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p> Result Certificate Status</p>
                           </a>
-                        </li> -->
+                        </li> --> 
                       </ul>
                     </li>
  <!--                  <li class="nav-item" ng-show="sessions.signedIn() && sessions.headOfficeAccess">
@@ -409,7 +430,7 @@
             Anything you want
           </div> -->
           <!-- Default to the left -->
-          <strong>Copyright &copy; 2021 <a href="https://waecnigeria.org">WAEC</a>.</strong> All rights reserved.
+          <strong>Copyright &copy; <%= Date.current.year %> <a href="https://waecnigeria.org">WAEC</a>.</strong> All rights reserved.
         </footer>
 
 

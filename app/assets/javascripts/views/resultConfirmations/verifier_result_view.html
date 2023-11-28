@@ -1,0 +1,138 @@
+<div class="container" ng-controller="VerifierResultsController" ng-init="loadResultDetail(candNo)">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+      <div class="card card-success">
+        <header class="card-header">
+           <h2>Searched result Details</h2>
+        </header>
+      
+        <div class="card-body">
+    
+
+ 			<div class="row">
+ 				<div class="col-sm-3">
+ 					
+<img ng-src="data:image/jpeg;base64,{{result.Picture}}" id="photo-id" style="width: 150px; height: 150px"/>
+<!--           <img src="../{{result[0].Picture}}" id="photo-id" alt="" style="width: 150px; height: 150px"> -->
+<div ng-if="pictureEmpty">
+    <td><button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#myModalEdit" ng-disabled="confirm.isPrinted" title="Edit"><i class="far fa-edit"></i></button>Upload Picture</td>
+</div>
+ 				</div>
+ 				<div class="col-sm-1"></div>
+ 				<div class="col-sm-8">
+ 					<p><b>Exam : </b> {{ result.ExamTitle}} </p>
+ 					<p><b>Exam No: </b> {{result.candNo}}</p>
+				 	<p><b>Full Name:</b> {{result.candName}}</p>
+				 	<p><b> Sex:</b> {{ result.sex}}</p>
+<!-- 				 	<p><b>Date of Birth:</b> {{(result.dob).substr(0,2)}}-{{(result.dob).substr(2,2)}}-{{(result.dob).substr(4,4)}} -->
+          	<p><b>Date of Birth:</b> {{result.dob2}}</p>
+				 	<p><b>Centre Name:</b> {{result.CentreName}}</p>	
+ 				</div>
+ 			</div>
+ 	
+<div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+ 	<p><b>Subjects :</b></p>
+
+ 	<table class="table table-striped " >
+ 		<tbody class="style="text-align:center;"">
+ 			<tr>
+ 				<td>{{ result.Subject1 }}</td>
+ 				<td class="float-right">{{ result.Grade1}}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject2 }}</td>
+ 				<td class="float-right">{{ result.Grade2 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject3 }}</td>
+ 				<td class="float-right">{{ result.Grade3 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject4 }}</td>
+ 				<td class="float-right">{{ result.Grade4 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject5 }}</td>
+ 				<td class="float-right">{{ result.Grade5 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject6 }}</td>
+ 				<td class="float-right">{{ result.Grade6 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject7 }}</td>
+ 				<td class="float-right">{{ result.Grade7 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject8 }}</td>
+ 				<td class="float-right">{{ result.Grade8 }}</td>
+ 			</tr>
+ 			<tr>
+ 				<td>{{ result.Subject9 }}</td>
+ 				<td class="float-right">{{ result.Grade9 }}</td>
+ 			</tr> 			
+ 		</tbody>
+ 	</table>
+
+</article>
+<br>
+<br>
+<div ng-if="result.CertificateStatus">
+  <p>Certificate Printed Status : <strong>{{ result.CertificateStatus }}</strong></p>
+  <p>Date Printed 				 : <strong>{{ result.DatePrinted2 }}</strong></p>
+</div>
+  <br>
+	<div class="pull-left">
+    <button type="button" class="btn btn-success" ng-click="addressDetails(result)">
+     Create Confirmation ...
+    </button>
+ 	</div>
+    </div>
+      </div>
+
+ 	<br>
+ 	<br>
+
+
+
+
+  <div class="modal fade preview-modal" data-backdrop="" id="myModalEdit" ng-controller="VerifierResultsController"  role="dialog" aria-labelledby="preview-modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+       <div class="modal-header">
+        <h4 class="modal-title">Upload Picture For Confirmation</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        
+         <form name="record" ng-controller="VerifierResultsController" ng-init="loadResultDetail(candNo)">
+
+          <div class="form-group">
+            <label for="confirmImage"> Candidate's Image <span>*</span></label>
+
+              <input type="file" class="form-control" accept="image/*" id="confirmImage" aria-describedby="confirmImage" placeholder="confirmImage" ng-model="record.confirmImage" onchange="angular.element(this).scope().uploadedFile(this)" ng-required="true" base-sixty-four-input /><br>
+
+          </div>
+
+           <div class="col-lg-4"><img id="output" style="width:200px; height:150px" class="img-responsive"/></div><br>
+                <!-- Modal footer -->
+      <div class="modal-footer">
+         <button type="submit" class="btn btn-primary" ng-click="loadConfirmImage(record)">Submit</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+       
+        </form>
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+

@@ -413,13 +413,13 @@ angular.module('sessionsController', [])
                    window.location.reload();
                    $location.path('/');
 
-                    SweetAlert.swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                    SweetAlert.swal("Logged Out!", "You have been logged out.", "success");
                     toaster.pop('success', "success", "You have been logged out.");
                  } else {
 
                                 //alert(" Operation was cancelled ");
-                    SweetAlert.swal("Cancelled", "Your imaginary file is safe :)", "error");
-                    toaster.pop('info', "info", "You have been logged out.");
+                    SweetAlert.swal("Cancelled", "Operation Cancelled :)", "error");
+                    toaster.pop('info', "info", "Operation Cancelled");
                                 window.location.reload();
                                 $route.reload(); // Reload the page
                                $location.path('/');

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_20_152514) do
+ActiveRecord::Schema.define(version: 2023_09_21_155826) do
 
   create_table "Grade", primary_key: "GradeType", id: :string, limit: 1, default: nil, force: :cascade do |t|
     t.string "GradeValue", limit: 2, null: false
@@ -18,6 +18,12 @@ ActiveRecord::Schema.define(version: 2023_06_20_152514) do
   end
 
   create_table "api_results", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "app_service_types", force: :cascade do |t|
+    t.string "ServiceType"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -76,6 +82,19 @@ ActiveRecord::Schema.define(version: 2023_06_20_152514) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "confirmation_images", force: :cascade do |t|
+    t.string "filetype"
+    t.string "filename"
+    t.string "filesize"
+    t.text "base64"
+    t.integer "dietId"
+    t.string "candNo"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_confirmation_images_on_user_id"
+  end
+
   create_table "confirmations", force: :cascade do |t|
     t.integer "user_id"
     t.integer "diet_id"
@@ -100,6 +119,7 @@ ActiveRecord::Schema.define(version: 2023_06_20_152514) do
     t.boolean "isPrinted", default: false
     t.string "Local_Ref_no"
     t.datetime "DatePrinted"
+    t.boolean "IsVeriferResult", default: false
     t.index ["confirm_country_id"], name: "index_confirmations_on_confirm_countries_id"
     t.index ["confirm_type_id"], name: "index_confirmations_on_confirm_type_id"
     t.index ["diet_id"], name: "index_confirmations_on_dietTbl_id"
@@ -408,14 +428,6 @@ ActiveRecord::Schema.define(version: 2023_06_20_152514) do
     t.varchar "centre_name", limit: 255
   end
 
-  create_table "waec_centres2", force: :cascade do |t|
-    t.string "centre_no"
-    t.string "centre_type"
-    t.string "centre_name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "waec_exams", id: :integer, force: :cascade do |t|
     t.varchar "exam_name", limit: 25
     t.varchar "exam_diet", limit: 100, null: false
@@ -426,16 +438,6 @@ ActiveRecord::Schema.define(version: 2023_06_20_152514) do
     t.boolean "consolidated"
     t.integer "waec_user_id"
     t.integer "exam_year"
-  end
-
-  create_table "waec_exams2", force: :cascade do |t|
-    t.string "exam_name"
-    t.string "exam_diet"
-    t.string "table_name"
-    t.string "centre_table_name"
-    t.string "pix_folder"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "waec_exams3", id: :integer, force: :cascade do |t|
@@ -527,6 +529,18 @@ ActiveRecord::Schema.define(version: 2023_06_20_152514) do
     t.varchar "award", limit: 1
   end
 
+  create_table "web_service_credentials", force: :cascade do |t|
+    t.bigint "web_services_id"
+    t.string "clientURL"
+    t.string "authURL"
+    t.string "submitURL"
+    t.string "username"
+    t.string "password"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["web_services_id"], name: "index_web_service_credentials_on_web_services_id"
+  end
+
   create_table "web_service_file_upload_responses", force: :cascade do |t|
     t.bigint "confirmation_id"
     t.string "clientUploadId"
@@ -547,6 +561,8 @@ ActiveRecord::Schema.define(version: 2023_06_20_152514) do
     t.string "submitURL"
     t.string "username"
     t.string "password"
+    t.bigint "app_service_types_id"
+    t.index ["app_service_types_id"], name: "index_web_services_on_app_service_types_id"
   end
 
   create_table "years", force: :cascade do |t|
@@ -558,6 +574,7 @@ ActiveRecord::Schema.define(version: 2023_06_20_152514) do
   add_foreign_key "confirm_amounts", "confirm_types"
   add_foreign_key "confirm_backup_data", "confirmations"
   add_foreign_key "confirm_countries", "confirm_types"
+  add_foreign_key "confirmation_images", "users"
   add_foreign_key "confirmations", "confirm_countries"
   add_foreign_key "confirmations", "confirm_types"
   add_foreign_key "departments", "divisions"

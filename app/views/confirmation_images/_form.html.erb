@@ -1,0 +1,52 @@
+<%= form_with(model: confirmation_image, local: true) do |form| %>
+  <% if confirmation_image.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(confirmation_image.errors.count, "error") %> prohibited this confirmation_image from being saved:</h2>
+
+      <ul>
+      <% confirmation_image.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :fileType %>
+    <%= form.text_field :fileType %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fileName %>
+    <%= form.text_field :fileName %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fileSize %>
+    <%= form.text_field :fileSize %>
+  </div>
+
+  <div class="field">
+    <%= form.label :base64Image %>
+    <%= form.text_area :base64Image %>
+  </div>
+
+  <div class="field">
+    <%= form.label :dietId %>
+    <%= form.number_field :dietId %>
+  </div>
+
+  <div class="field">
+    <%= form.label :candNo %>
+    <%= form.text_field :candNo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

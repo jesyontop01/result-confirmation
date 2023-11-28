@@ -1,0 +1,82 @@
+<style>
+	li{
+		display: inline;
+		float: left;
+	}
+	</style>
+
+
+    <!-- client/app/views/user_sessions/new.html -->
+
+		<div class="alert alert-danger" role="alert" ng-show="error">
+		  {{error}}
+		</div>
+
+		<div class="container" ng-controller="ResultConfirmationsController">
+		  <div class="row">
+		     <div class="col-sm-2"></div>
+		    <div class="col-sm-8">
+		    	
+			<div class="card card-primary">
+		        <header class="card-header">
+		           <h3 class="card-title">Select A Web Service Type.</h3>
+		        </header>
+		      
+		     <div class="card-body">
+
+
+		<form ng-submit="ServiceTypeSelection(webAppType)" role="form" ng-init="logUserForm = {}">
+
+		<label>Select A Service Type <span>*</span></label>
+      
+        <!-- <div  ng-controller="WebServicesCtrl as webServe"> -->
+       <div>
+        <div class="form-group">
+          <select ng-model="webAppType" ng-options="d as d.ServiceType for d in appServices" ng-init="getAllAppServices()" ng-change="GetValue(webClientURL)" class="form-control" ng-required="true" >
+            <option value="">Select App Service</option>
+          </select> <!--:clientName, :clientAddress-->
+        </div>
+        Selected: <p ng-model="webAppType"></p><br>
+          <button type="submit" class="btn btn-primary btn-lg"><b ng-bind="webAppType.ServiceType"></b></button>
+        </div> <br>
+	
+		</form>
+		</div>
+		</div>
+
+
+		  </div>
+			</div>
+			   <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+			</div>
+		</div>
+		</div>
+		</div>
+
+		<!-- <li ng-repeat="d in appServices">
+			<div class="col-md-6 py-2">
+		
+				<div class="card flat-card z-depth-1">
+					<div class="row-table">
+						<div class="col-sm-12 card-body border border-dark py-4">
+							<div class="row">
+								<div class="col-2 card-body text-center">
+									 <img src="~/Content/images/supervisor.svg" style="height:40px; width:auto" /> -->
+								<!-- </div>
+								<div class="col-10 py2">
+									<h6 class="font-weight-bold">Service Type</h6>
+									<a href="" class="btn btn-default">
+										<i class="feather icon-calendar"></i>
+										{{d.ServiceType}}
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+	
+			</div>
+		</li> --> 
+
+
+

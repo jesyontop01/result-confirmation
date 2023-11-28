@@ -1,0 +1,218 @@
+
+        <div class="container">
+          <div class="row" ng-controller="ResultConfirmationsController">
+            <div class="col-md-9">
+                    <div class="card card-primary">
+                      <div class="card-header ">
+                        <h4 class="text-header">Confirmation Details</h4>
+                      </div>
+                    <div class="card-body">
+              <table class="table" ng-init="getConfirmationById(id)">
+                <tr>
+                <td><h5>Exam Diet: <span style="color: blue;">{{selectConfirm.DietName}} {{selectConfirm.examYear}}</span></h5></td>
+                </tr>
+                <tr>
+                  <td><strong><p>Candidate Examination No:</p></strong></td>
+                  <td>{{selectConfirm.exam_no}}</td>
+                </tr>
+                 <tr>
+                  <td><strong><p>Candidate Reference No:</p></strong></td>
+                  <td>{{selectConfirm.ref_no}}</td>
+                </tr>
+
+                  <tr>
+                  <td><strong><p>Receipt No:</p></strong></td>
+                  <td>{{selectConfirm.receipt_no}}</td>
+                </tr>
+
+                <tr>
+                  <td><strong><p>Recipient Title:</p></strong></td>
+                  <td>{{selectConfirm.dest_title}}</td>
+                </tr>
+                <tr>
+                  <td><strong><p>Recipient Address 1:</p></strong></td>
+                 <td>{{selectConfirm.dest_address1}}</td>
+                </tr>
+                <tr>
+                  <td><strong><p>Recipient Address 1:</p></strong></td>
+                 <td>{{selectConfirm.dest_address2}}</td>
+                </tr>
+                <tr>
+                  <td><strong><p>Recipient Location:</p></strong></td>
+                 <td>{{selectConfirm.dest_location}}</td>
+                </tr>
+                <tr>
+                  <td><strong><p>Recipient Email:</p></strong></td>
+                 <td>{{selectConfirm.dest_email}}</td>
+                </tr>
+               <tr>
+                  <td><strong><p>Reference No:</p></strong></td>
+                <td>{{selectConfirm.WES_Ref}}</td>
+                </tr>
+ <!--                  <tr>
+                  <td><strong><p>Confirmation Type:</p></strong></td>
+                 <td>{{selectConfirm.typeName}}</td>
+                </tr> -->
+                <tr>
+                  <td><strong><p>Confirmation Created / Updated Date/Time :</p></strong></td>
+                   <td>{{selectConfirm.updated_at}}</td>
+                </tr>
+
+                                    <!-- Modal footer -->
+                <div class="card-footer">
+                  
+      <td><button ng-click="clickedEdit(selectConfirm)" type="button" class="btn btn-primary"  data-toggle="modal" data-target="#myModalEdit" ng-disabled="confirm.isPrinted" title="Edit"><i class="far fa-edit"></i></i></button></td>
+
+                </div>
+
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+
+
+
+    <!--------------------------------  Modal View for Details ------------------------------------->
+
+<!-- The Modal -->
+
+  
+
+<!------------------------View for Editing Details-------------->
+
+  <!-- The Modal -->
+<!-- <div class="modal fade" id="myModalEdit" ng-controller="ConfirmationsController"> -->
+<div class="modal fade preview-modal" data-backdrop="" id="myModalEdit" ng-controller="ResultConfirmationsController"  role="dialog" aria-labelledby="preview-modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+       <div class="modal-header">
+        <h4 class="modal-title">Edit Confirmation Details</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        
+        <form name="editConfirmForm" method="post" accept-charset="UTF-8"  ng-init="clickedEditById(selectConfirm)">
+          <h3>Exam Diet: <span style="color: blue;">{{editConfirm.DietName}} {{editConfirm.examYear}}</span> </h3>
+          <div class="form-group">
+            <label for="exam_no">Exam no:*</label>
+            <input type="text" ng-model="editConfirm.exam_no" value="exam_no" class="form-control" disabled="true"/>  
+          </div>
+          <div class="form-group">
+            <label for="Cand_address">Candidate's Address:*</label>
+            <input  size="30" type="text" ng-model="editConfirm.Cand_address" class="form-control" placeholder="Candidate Address" required/>
+          </div>
+
+          <div colspan="2">
+
+           <div class="form-group">
+            <label for="Cand_address">Payment Receipt No.:*</label>
+            <input  size="30" type="text" ng-model="editConfirm.receipt_no" class="form-control" placeholder="Receipt No." disabled="true"/>
+          </div>
+
+          <div class="form-group">
+            <label for="Cand_address">Destination Title:*</label>
+            <input  size="30" type="text" ng-model="editConfirm.dest_title" class="form-control" placeholder="Destination Title" required/>
+          </div>
+            <div class="form-group">
+            <label for="Cand_address">Destination Address Line1:*</label>
+            <input  size="30" type="text" ng-model="editConfirm.dest_address1" class="form-control" placeholder="Destination Address1" required/>
+          </div>
+          <div class="form-group">
+            <label for="dest_address2">Destination Address Line2:</label>
+            <input  size="30" type="text" ng-model="editConfirm.dest_address2" class="form-control" placeholder="Destination Address2"> (Optional)
+          </div>
+
+          <div class="form-group">
+            <label for="dest_address2">REFERENCE NO:</label>
+            <input  size="30" type="text" ng-model="editConfirm.WES_Ref" class="form-control" placeholder="Reference No"> (Optional)
+          </div>
+
+          <div class="form-group">
+            <label for="dest_location">Destination Location:*</label>
+            <input  size="30" type="text" value="NULL" class="for" ng-model="editConfirm.dest_location" placeholder="Destination Location" required/>
+          </div>
+
+          <div class="form-group">
+            <label for="dest_email">Destination Email</label>
+            <input  size="30" type="text" value="NULL" ng-model="editConfirm.dest_email" class="form-control" placeholder="Destination Email Address">(Optional)
+          </div>
+
+          </div>
+
+                <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="submit" ng-click="UpdateConfirm()" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+       
+        </form>
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal for Second User Log In -->
+
+              <div class="modal" id="userLogIn">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Sign In</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <!-- <p>Modal body text goes here.</p> -->
+
+                          <form ng-submit="sessions.submitLogUser(logUserForm)" role="form" ng-init="logUserForm = {}">
+                            <div class="form-group">
+                              <label for="email">Email</label>
+                              <input type="email"
+                                     name="email"
+                                     id="email"
+                                     ng-model="logUserForm.email"
+                                     required="required"
+                                     class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                              <label for="password">Password</label>
+                              <input type="password"
+                                     name="password"
+                                     id="password"
+                                     ng-model="logUserForm.password"
+                                     required="required"
+                                     class="form-control">
+                            </div>
+
+                            
+                    
+
+
+                   
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Sign in</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      </div>
+                    </form>
+                   </div>
+                  </div>
+                </div>
+              </div>
+

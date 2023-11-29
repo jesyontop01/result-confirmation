@@ -657,7 +657,7 @@ if @resultVals[0]["exam_no"].present?
 
            ## Set 402 based on the year
 
-           if @examYear >= "2021"
+           if @examYear.to_s >= "2021"
             subjectindex["402"] = "GENERAL MATHEMATICS"
            else
             subjectindex["402"] = "MATHEMATICS"

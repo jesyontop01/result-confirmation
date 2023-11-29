@@ -871,6 +871,10 @@ $scope.loading = true;
 
 	}
 
+	$scope.selectAppService = function(confirm){
+		$location.path("/result/appServiceTypes/" + confirm.id );
+	}
+
 
 	$scope.selectWebService = function(confirm){
 			$location.path("/result/webServices/" + confirm.id );

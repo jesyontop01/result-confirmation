@@ -1452,7 +1452,7 @@ resultsArray[0][:NoOfSubjects] =  resultsArray.length
   
      end
 
-    binding.pry
+    #binding.pry
   
 end
 
@@ -1544,7 +1544,7 @@ end
       @resultVals = Exam.sendBase64ConfirmationToClient(params[:url], params[:refNumber], session[:Wes_access_token]['token'], params[:content], params[:title], params[:filesize] )
 
       ## Send JSON format of Result Confirmation
-      
+
       # if @resultVals.present?
       #   my_object = JSON.parse(cookies[:my_data])
 

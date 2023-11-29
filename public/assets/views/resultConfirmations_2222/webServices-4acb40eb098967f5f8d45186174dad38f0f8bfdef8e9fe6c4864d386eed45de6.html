@@ -1,0 +1,51 @@
+
+
+
+    <!-- client/app/views/user_sessions/new.html -->
+
+		<div class="alert alert-danger" role="alert" ng-show="error">
+		  {{error}}
+		</div>
+
+		<div class="container" ng-controller="ResultConfirmationsController">
+		  <div class="row">
+		     <div class="col-sm-2"></div>
+		    <div class="col-sm-8">
+		    	
+			<div class="card card-primary">
+		        <header class="card-header">
+		           <h3 class="card-title">Connect To A Web Service.</h3>
+		        </header>
+		      
+		     <div class="card-body">
+
+
+		<form ng-submit="ConnecttoWES(confirm)" role="form" ng-init="logUserForm = {}">
+
+		<label>Select An Institution <span>*</span></label>
+      
+        <!-- <div  ng-controller="WebServicesCtrl as webServe"> -->
+       <div>
+        <div class="form-group">
+          <select ng-model="webClientURL" ng-options="d as d.clientName for d in webClients" ng-init="getAllWebServices()" ng-change="GetValue(webClientURL)" class="form-control" ng-required="true" >
+            <option value="">Select Client Service</option>
+          </select> <!--:clientName, :clientAddress-->
+        </div>
+        Selected: <p ng-model="webClientURL"></p><br>
+          <button type="submit" class="btn btn-primary btn-lg">Connect to <b ng-bind="webClientURL.clientName"></b></button>
+        </div> <br>
+		
+		</form>
+		</div>
+		</div>
+
+
+		  </div>
+			</div>
+			   <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+			</div>
+		</div>
+		</div>
+		</div>
+
+		

@@ -1,0 +1,173 @@
+
+<div class="container" >
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+    
+      <div class="row">
+
+      <div class="card card-warning">
+        <header class="card-header">
+           <h3>Local Confirmation Details</h3><br>
+        </header>
+      
+        <div class="card-body">
+
+
+      <form name="createConfirmForm" ng-submit="createConfirm(resultAddress);" method="post" accept-charset="UTF-8" ng-controller="ResultConfirmationsController" ng-init="loadResultDetail(CandNo)">     
+
+
+        <div class="modal-body">                       
+       
+        <div id="main">
+                  <h4>To Send A Confirmation, Please fill out the following:</h4>  
+
+      <!--[form:waec_confirmation]-->
+
+             <table>
+
+                  <tbody>
+                        <tr><td colspan="2">
+                      CANDIDATES CORRESPONDENCE<hr>
+
+                      </td></tr>
+
+                    <tr>   <td> <label ><strong>Payment Receipt No:</strong></label>&nbsp;</td>
+                         <td><input  size="30" type="text" ng-model="resultAddress.receipt_no" placeholder="Receipt No"  ng-blur="confirmPayment(resultAddress.receipt_no)" required  class="form-control"/>
+                            <span style="color:Blue">
+                               <div ng-if="receiptConfirm2 === true">
+                                    <input type="checkbox" ng-model="resultAddress.receiptConfirm1"  ng-change="getdetails()">
+                                  <label style="color:Blue"> Receipt is valid</label><br>
+                                  </div>
+
+                                  <div ng-if="receiptConfirm2 === false">
+                                    <input type="checkbox" ng-model="resultAddress.receiptConfirm1" disabled="true">
+                                  <label style="color:Red"> Receipt is invalid</label><br>
+                                </div>
+
+                            </span>
+                        </td>
+                    </tr>
+              <tr>
+                <td>
+                  <label>Select Exam Diet <span>*</span></label>
+                </td>
+                <td>
+                    <div  ng-controller="DietController">
+                      <div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+                      <select ng-model="ExamDietId" ng-options="d.id as d.DietName for d in diets" ng-change="GetValue(d)" class="form-control" ng-required="true">
+                        <option value="">Select Exam Diet</option>
+                      </select>
+                    <!-- Selected: <p ng-bind="ExamDietId"></p> -->
+                    </div> <br>
+                </td>
+              </tr>
+        <tr>
+          <td>
+             <label>Select Year <span>*</span></label>
+          </td>
+          <td>
+            <input type="text" 
+                   size="30"
+                   name="examYear" 
+                   class="form-control"
+                   placeholder="Please Type In Examination Year"
+                   ng-model="resultAddress.examYear" ng-disabled="!resultAddress.receiptConfirm1"><br>
+          </td>
+        </tr> 
+                      <tr><td><label ><strong>Candidate's Name:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="resultAddress.candName" placeholder="Candidate Name"  class="form-control" ng-disabled="!resultAddress.receiptConfirm1" >
+                      </td></tr>
+                      <tr><td><label ><strong>Exam no:</strong></label>&nbsp;
+                      </td>
+                      <td> <font color="red">
+                        <input type="text" 
+                        ng-model="resultAddress.candNo" 
+                        value="resultAddress.candNo"  
+                        class="form-control"
+                        placeholder="Candidate's Examination Number"
+                        ng-disabled="!resultAddress.receiptConfirm1"/></font> 
+                      </td></tr>
+
+                      <tr><td><label ><strong>Candidate's Address:</strong></label>&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="resultAddress.Cand_address" placeholder="Candidate Address"  class="form-control" required ng-disabled="!resultAddress.receiptConfirm1"/>
+                      </td></tr><hr>
+
+                    <tr><td colspan="2">
+                      <br><br>
+                    <strong> PAYMENT CONFIRMATION</strong><hr>
+                      </td></tr>
+
+<div class="loading loading--full-height" ng-show="loading"><strong>Loading....Please Wait!</strong></div>
+
+                      <tr><td><label ><strong>Candidate's Name (Payment):</strong></label>&nbsp;&nbsp;</td>
+                      <td><input  size="30" type="text" value="NULL" ng-model="resultAddress.Cand_payment_Name" placeholder="Candidate Name"  class="form-control" ng-disabled="true">
+                      </td></tr>
+
+                      <tr><td><label ><strong>Candidate's Email (Payment):</strong></label>&nbsp;&nbsp;</td>
+                      <td><input  size="30" type="text" value="NULL" ng-model="resultAddress.cand_email" placeholder="Candidate Email Address"  class="form-control" ng-disabled="true">
+                      </td></tr>
+
+                      <tr><td><label ><strong>Candidate's Email (Payment):</strong></label>&nbsp;&nbsp;</td>
+                      <td><input  size="30" type="text" value="NULL" ng-model="resultAddress.amount" placeholder="Amount Paid"  class="form-control" ng-disabled="true">
+                      </td></tr><hr>
+
+                      <tr><td colspan="2">
+                      <br><br>
+                      DESTINATION CORRESPONDENCE<hr>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Local Confirmation Reference No:</strong></label>&nbsp;&nbsp;
+                      </td><td><input size="25" type="text" ng-model="resultAddress.Local_Ref_no" placeholder="Local Confirmation Reference No" ng-disabled="!resultAddress.receiptConfirm1" required  class="form-control" />
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Title:</strong></label>&nbsp;&nbsp;
+                      </td><td><input size="25" type="text" ng-model="resultAddress.dest_title" placeholder="Title of the Recipient" ng-disabled="!resultAddress.receiptConfirm1" required  class="form-control" />
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Address Line1:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="resultAddress.dest_address1" placeholder="Destination Address1" ng-disabled="!resultAddress.receiptConfirm1" required  class="form-control"/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Address Line2:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="resultAddress.dest_address2" placeholder="Destination Address2" ng-disabled="!resultAddress.receiptConfirm1"  class="form-control"> (Optional)
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Location:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="resultAddress.dest_location" placeholder="Destination Location" ng-disabled="!resultAddress.receiptConfirm1" required  class="form-control"/>
+                      </td></tr>
+
+                      <tr><td><label ><strong>Reference No:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" ng-model="resultAddress.WES_Ref" placeholder="Client Reference No"  class="form-control"> (Optional)
+                      </td></tr>
+
+                      <tr><td><label ><strong>Destination Email:</strong></label>&nbsp;&nbsp;
+                      </td><td><input  size="30" type="text" value="NULL" ng-model="resultAddress.dest_email" placeholder="Destination Email Address" ng-disabled="!resultAddress.receiptConfirm1"  class="form-control">(Optional)
+                      </td></tr>
+                  </tbody>
+              </table>
+                  
+
+        </div>
+
+          <div class="footer">
+            <br>
+                <input name="commit" type="submit" value="Save Confirmation" ng-disabled="createConfirmForm.$invalid" class="btn btn-success">
+            <br>
+            <br/>
+
+            
+          </div>
+        </div>
+
+      </form>
+      </div>
+      </div> 
+
+
+
+
+              </div>
+    </div>
+  </div>
+</div>

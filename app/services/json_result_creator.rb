@@ -26,7 +26,7 @@ class JsonResultCreator
             #issuedDate = Date.parse(DateTime.current).strftime("%B %e, %Y") # DateTime.current.strptime("%d/%m/%Y")
             issuedDate = ActiveSupport::TimeZone["Central Time (US & Canada)"].parse(DateTime.current.to_s).utc.to_date.strftime("%d/%m/%Y")
          
-            binding.pry
+            #binding.pry
             
            confirmResult_Json = {
              "WAECRefNumber": @confirmation.ref_no,

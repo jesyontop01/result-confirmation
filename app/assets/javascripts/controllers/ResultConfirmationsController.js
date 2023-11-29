@@ -1216,7 +1216,8 @@ var isBlankSignature = false;
 					console.log($scope.ServiceType)
 
 						if (response.data.success == true ) {
-
+					
+					debugger
 							 if($scope.ServiceType === "Send e-Mail"){
 
 								$scope.selectConfirm = confirm; 
@@ -1228,8 +1229,7 @@ var isBlankSignature = false;
 
 								$scope.printConfirmation3($scope.selectConfirm, $scope.wesApplicantID, isBlankSignature );
 							}
-
-							if (confirm.WES_Ref === $scope.wesApplicant.refNumber.toString() ) {
+							else if ($scope.wesApplicant.refNumber != "" && confirm.WES_Ref == $scope.wesApplicant.refNumber) {
 
 									$scope.selectConfirm = confirm; 
 								
@@ -1237,7 +1237,7 @@ var isBlankSignature = false;
 									$scope.wesApplicantID = $scope.wesApplicant.id;
 
 									isBlankSignature = true;
-						debugger
+						
 									$scope.printConfirmation3($scope.selectConfirm, $scope.wesApplicantID, isBlankSignature );
 								
 										// if ($scope.selectConfirm.exam_no.startsWith('4')) {
@@ -1257,11 +1257,16 @@ var isBlankSignature = false;
 
 								else{
 										alert("Please Confirm Returned Details From Remote Server\n Against Candidate's Record to proceed");
+
+										// Reload the page
+										$route.reload();
 									} 
 
 						}
 						else{
 							alert(response.data.message);
+								// Reload the page
+								$route.reload();
 						}
 
 
@@ -1859,7 +1864,7 @@ $scope.getConfirmationById = function(id) {
 
 		if (window.sessionStorage.getItem('App_Service_Type') === "Send Via API") {
 			debugger
-			if (newValue.WES_Ref === null) {
+			if (newValue.WES_Ref === null || newValue.WES_Ref === "") {
 				body = 		[
 					{text: newValue.dest_title},
 					{text: newValue.dest_address1},
@@ -2154,7 +2159,7 @@ debugger
 					 var dayday ;
 		
 		var promisedObject = null;
-			
+	debugger		
 		if (newValue.IsVeriferResult == false) {
 			promisedObject = ResultService.ResultDetailsFromDB(newValue.exam_no, newValue.examYear, newValue.DietName, newValue.id);
 
